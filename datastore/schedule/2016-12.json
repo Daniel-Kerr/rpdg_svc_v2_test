@@ -1,0 +1,75 @@
+[
+    {
+        "start": "2016-12-10T08:00:00.000Z",
+        "title": "input",
+        "id": 1480970872367,
+        "type": "input",
+        "values": [
+            "ignore",
+            "ignorenot",
+            "ignorenot",
+            "ignore"
+        ]
+    },
+    {
+        "start": "2016-12-20T07:45:00.000Z",
+        "title": "ALLOFF",
+        "id": 1480973724235,
+        "type": "scene",
+        "values": []
+    },
+    {
+        "start": "2016-12-07T18:30:00.000Z",
+        "title": "ALLOFF",
+        "id": 1481055562884,
+        "type": "scene",
+        "values": []
+    },
+    {
+        "start": "2016-12-24T06:30:00.000Z",
+        "title": "ALLOFF",
+        "id": 1481055576388,
+        "type": "scene",
+        "values": []
+    },
+    {
+        "start": "2016-12-16T08:45:00.000Z",
+        "title": "TOP_ON",
+        "id": 1480919362155,
+        "type": "scene",
+        "values": []
+    },
+    {
+        "start": "2016-12-21T23:00:00.000Z",
+        "title": "input",
+        "id": 1481065199528,
+        "type": "input",
+        "values": [
+            "ignore",
+            "ignore",
+            "ignore",
+            "ignore"
+        ]
+    },
+    {
+        "start": "2016-12-28T06:30:00.000Z",
+        "title": "ALLOFF",
+        "id": 1481306536488,
+        "type": "scene",
+        "values": []
+    },
+    {
+        "start": "2016-12-29T23:15:00.000Z",
+        "title": "----",
+        "id": 1481306565608,
+        "type": "scene",
+        "values": []
+    },
+    {
+        "start": "2016-12-01T18:15:00.000Z",
+        "title": "----",
+        "id": 1481306751351,
+        "type": "scene",
+        "values": []
+    }
+]

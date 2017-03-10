@@ -1,0 +1,93 @@
+{
+    "type": "Configuration",
+    "fixtures": [
+        {
+            "type": "OnOffFixture",
+            "assignedname": "my_simple_onoff",
+            "interface": "",
+            "interfacename": "enocean",
+            "outputid": "",
+            "image": "/images/bulb_off.jpg",
+            "candledim": false,
+            "parameters": {
+                "dimoptions": "0",
+                "dimrate": "0",
+                "brightenrate": "0",
+                "resptooc": "-1",
+                "resptovac": "-1",
+                "resptodl50": "-1",
+                "resptodl40": "-1",
+                "resptodl30": "-1",
+                "resptodl20": "-1",
+                "resptodl10": "-1",
+                "resptodl0": "-1",
+                "daylightceiling": "-1",
+                "manualceiling": "-1",
+                "daylightfloor": "-1",
+                "manualfloor": "-1",
+                "resptoocc": "-1"
+            },
+            "level": 0,
+            "previousvalue": 0,
+            "zero2teninputs": []
+        },
+        {
+            "type": "DimFixture",
+            "assignedname": "",
+            "interfacename": "",
+            "outputid": "",
+            "image": "",
+            "candledim": false,
+            "parameters": {
+                "dimoptions": 0,
+                "dimrate": 0,
+                "brightenrate": 0,
+                "resptooc": -1,
+                "resptovac": -1,
+                "resptodl50": 10,
+                "resptodl40": 20,
+                "resptodl30": 30,
+                "resptodl20": -1,
+                "resptodl10": -1,
+                "resptodl0": -1,
+                "daylightceiling": -1,
+                "manualceiling": -1,
+                "daylightfloor": -1,
+                "manualfloor": -1
+            },
+            "level": 0,
+            "previousvalue": 0
+        },
+        {
+            "type": "OnOffFixture",
+            "assignedname": "onoff1",
+            "interface": {},
+            "interfacename": "enocean",
+            "outputid": "4444666677",
+            "image": "",
+            "candledim": false,
+            "parameters": {
+                "dimoptions": 0,
+                "dimrate": 0,
+                "brightenrate": 0,
+                "resptooc": -1,
+                "resptovac": -1,
+                "resptodl50": -1,
+                "resptodl40": -1,
+                "resptodl30": -1,
+                "resptodl20": 66,
+                "resptodl10": -1,
+                "resptodl0": -1,
+                "daylightceiling": -1,
+                "manualceiling": -1,
+                "daylightfloor": -1,
+                "manualfloor": -1
+            },
+            "level": 0,
+            "previousvalue": 0
+        }
+    ],
+	"inputs": [
+       
+    ]
+}

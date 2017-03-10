@@ -1,0 +1,21 @@
+[
+    {
+        "start": "0NaN-NaN-NaNTNaN:NaN:NaN.NaNZ",
+        "title": "output",
+        "id": 1481054302432,
+        "type": "output",
+        "values": [
+            "on",
+            "off",
+            "on",
+            "nochange"
+        ]
+    },
+    {
+        "start": "0NaN-NaN-NaNTNaN:NaN:NaN.NaNZ",
+        "title": "----",
+        "id": 1481061197901,
+        "type": "scene",
+        "values": []
+    }
+]
