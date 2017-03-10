@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Config</title>
+    <script src="javascripts/wNumb.js"></script>
+    <script src="javascripts/nouislider.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="bsmaster/assets/js/bootstrap.min.js"></script>
+    <!-- page scripts -->
+    <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <!-- theme scripts -->
+    <script src="bsmaster/assets/js/custom.min.js"></script>
+    <script src="bsmaster/assets/js/core.min.js"></script>
+    <script src="bsmaster/assets/js/raphael.min.js"></script>
+    <script src="bsmaster/assets/js/justgage.1.0.1.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.noty.min.js"></script>
+    <script src="javascripts/nodecontrol.js"></script>
+
+    <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
+    <link href="stylesheets/nouislider.min.css" rel="stylesheet">
+    <script src="javascripts/configuration.js"></script>
+    <script src="javascripts/jquery.steps.js"></script>
+    <link href="stylesheets/jquery.steps.css" rel="stylesheet">
+    <!--script src="javascripts/client_rest.js"></script-->
+    <script src="javascripts/crud_config.js"></script>
+
+</head>
+
+
+<body onload="init()">
+
+<form id="myForm">
+
+    <ul class="nav nav-tabs" >
+        <li ><a href="status" >Status</a></li>
+        <li class="active"><a href="config" >Configuration</a></li>
+        <li><a href="override_scene" >Override/Scene Edit</a></li>
+        <li><a href="schedule" >Schedule</a></li>
+        <li><a href="groups" >Groups</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+            <p>
+
+
+            <div id="titlebar"></div>
+            <div id="wizard" class="col-sm-11">
+                <div class="col-lg-10">
+                    <div class="box">
+                        <div class="box-header" data-original-title>
+                            <h2><i class="fa fa-user"></i><span class="break"></span>Output Devices</h2>
+                            <div class="box-icon">
+                                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                            </div>
+                        </div>
+                        <div class="box-content">
+
+                            <div id="fixturetablediv" class = "tg"></div>
+                            <table id="fixturetable" class="table table-striped table-bordered "></table>
+                            <br>
+                            <br>
+
+                            <label>Name: </label><input id="fixturename" type="text" />
+
+                            <label>Type: </label>
+                            <select id="fixturetype" class="btn btn-large btn-primary" onchange="updateAvalibleStartingOutputNumbers()">
+                                <option value="on_off">ON/OFF</option>
+                                <option value="cct">CCT</option>
+                                <option value="rgbw">RGBW</option>
+                                <option value="dim">DIMMABLE</option>
+                            </select>
+
+                            <label> Interface</label>
+                            <select id="interface" class="btn btn-large btn-primary">
+                                <option value="rpdg-pwm">RPDG-PWM</option>
+                                <option value="rpdg-plc">RPDG-PLC</option>
+                                <option value="enocean">Enocean</option>
+                                <option value="synapse">Synapse</option>
+                            </select>
+
+                            <label> Starting Output Number</label>
+                            <select id="starting_output" class="btn btn-large btn-primary">
+                            </select>
+
+                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            <label>Candle Dim</label>
+                            <input type="checkbox"  id="candledim"  >
+
+                            <br>
+                            <div id="inputsheader">
+                                <label>Bound Inputs</label>
+                            </div>
+                            <br>
+                            <div id="boundinputs">
+
+                            </div>
+                            <br>
+
+                            <div id="fixtureparamstable" class = "tg"></div>
+
+                            <input type="button" id = "btsavefixture" class="btn btn-large btn-success" onclick=saveNewFixture() value="SAVE FIXURE"/>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="inputconfigheader" class="col-sm-11">
+
+
+        <div class="col-lg-10">
+            <div class="box">
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Wet & Dry Contact Inputs</h2>
+                    <div class="box-icon">
+                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div id="wetdrycontactdiv" class = "tg"></div>
+                    <table id="wetdrycontacttable" class="table table-striped table-bordered "></table>
+                    <br>
+                    <br>
+
+                    <label>Name: </label><input id="contactname" type="text" />
+                    &nbsp;
+                    &nbsp;
+                    <label>Type: </label>
+                    <input type="radio" name="contacttype" value="wet" checked="true" onclick="updateInputContactActionDropDowns()">Wet
+                    <input type="radio" name="contacttype" value="dry" onclick="updateInputContactActionDropDowns()" >Dry
+
+
+                    <label> Interface</label>
+                    <select id="contactinputinterface" class="btn btn-large btn-primary">
+                        <option value="rpdg">RPDG</option>
+                        <option value="enocean">Enocean</option>
+                        <!--option value="synapse">Synapse</option-->
+                    </select>
+                    &nbsp;
+                    &nbsp;
+                    <label>Sub - Type: </label>
+                    <input type="radio" name="contactsubtype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >Momentary
+                    <input type="radio" name="contactsubtype" value="maintained" onclick="enableDisableInputActionDropDowns()" >Maintained
+                    &nbsp;
+                    &nbsp;
+
+                    <label> Input Number</label>
+                    <select id="contact_inputnum" class="btn btn-large btn-primary">
+                    </select>
+                    <br>
+                    <br>
+                    <label> On Active Edge Do</label>
+                    <select id="active_action_sel" class="btn btn-large btn-primary"></select>
+                    &nbsp;
+                    &nbsp;
+                    <label> To Group: </label>
+                    <select id="active_action_target" class="btn btn-large btn-primary"></select>
+
+                    <br>
+                    <br>
+
+
+                    <label> On Inactive Edge Do</label>
+                    <select id="inactive_action_sel" class="btn btn-large btn-primary"></select>
+
+                    &nbsp;
+                    &nbsp;
+                    <label> To Group: </label>
+                    <select id="inactive_action_target" class="btn btn-large btn-primary"></select>
+
+                    <br>
+                    <br>
+                    <input type="button" id = "btsaveinputcontactobj" class="btn btn-large btn-success" onclick=saveNewContactInputObj() value="Save Contact Configuration"/>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-10">
+            <div class="box">
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Level Inputs</h2>
+                    <div class="box-icon">
+                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div id="levelinputdiv" class = "tg"></div>
+                    <table id = "levelinputstable"  border=2 class="table table-striped table-bordered "></table>
+
+                    <label>Name: </label><input id="levelinputname" type="text" />
+                    &nbsp;
+                    <label>Type: </label>
+                    <select id="levelinputtype" class="btn btn-large btn-primary">
+                        <option value="dimmer">Dimmer</option>
+                        <option value="daylight">DayLight Sensor</option>
+                    </select>
+
+                    <label> Interface</label>
+                    <select id="levelinputinterface" class="btn btn-large btn-primary">
+                        <option value="rpdg">RPDG</option>
+                        <option value="enocean">Enocean</option>
+                        <!--option value="synapse">Synapse</option-->
+                    </select>
+
+                    <label> Input Number</label>
+                    <select id="levelinput_inputs" class="btn btn-large btn-primary">
+                    </select>
+
+
+                    <label>Active Drive Level</label>
+                    <select id="levelinput_drive" class="btn btn-large btn-primary">
+                        <option value="0">0</option>
+                        <option value=".25">.25</option>
+                        <option value=".50">.50</option>
+                        <option value=".75">.75</option>
+                        <option value=".85">.85</option>
+                        <option value=".90">.90</option>
+                        <option value=".95">.95</option>
+                        <option value="1">1</option>
+                        <option value="1.1">1.1</option>
+                        <option value="1.2">1.2</option>
+                        <option value="1.25">1.25</option>
+                        <option value="1.3">1.3</option>
+                        <option value="1.4">1.4</option>
+                        <option value="1.5">1.5</option>
+                        <option value="1.6">1.6</option>
+                        <option value="1.7">1.7</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="3.5">3.5</option>
+                        <option value="4">4</option>
+                        <option value="4.5">4.5</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="16">16</option>
+                        <option value="32">32</option>
+                        <option value="64">64</option>
+                    </select>
+
+                    <br>
+                    <br>
+                    <input type="button" id = "btsavelevelinput" class="btn btn-large btn-success" onclick=saveNewLevelInput() value="Save Input"/>
+
+                </div>
+            </div>
+        </div>
+        </p>
+    </div>
+    </div>
+</form>
+</body>
+</html>

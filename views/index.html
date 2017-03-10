@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Landing Page</title>
+    <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
+    <link href="stylesheets/nouislider.min.css" rel="stylesheet">
+
+    <script src="javascripts/wNumb.js"></script>
+    <script src="javascripts/nouislider.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="bsmaster/assets/js/bootstrap.min.js"></script>
+    <!-- page scripts -->
+    <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <!-- theme scripts -->
+    <script src="bsmaster/assets/js/custom.min.js"></script>
+    <script src="bsmaster/assets/js/core.min.js"></script>
+    <script src="bsmaster/assets/js/raphael.min.js"></script>
+    <script src="bsmaster/assets/js/justgage.1.0.1.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.noty.min.js"></script>
+    <script src="javascripts/nodecontrol.js"></script>
+
+    <script type="text/javascript">
+        // Global Varaibles
+
+        $(function(){
+            $("#titlebar").load("customtitlebar.html");
+        });
+
+
+        $(document).ready(function() {
+
+            //$('#B').load('status.html');
+
+            /*$('[data-toggle="tabajax"]').click(function(e) {
+                var $this = $(this),
+                        loadurl = $this.attr('href'),
+                        targ = $this.attr('data-target');
+
+                $.get(loadurl, function(data) {
+                    $(targ).html(data);
+                });
+
+                $this.tab('show');
+                return false;
+            });  */
+        });
+
+    </script>
+</head>
+
+<body>
+<div id="titlebar"></div>
+
+<!--div class="tabbable">
+    <ul class="nav nav-tabs tabs-up" id="friends">
+        <li><a href="/status" data-target="#status" class="media_node active span" id="status_tab" data-toggle="tabajax" rel="tooltip"> Status </a></li>
+        <li><a href="/config" data-target="#config" class="media_node span" id="config_tab" data-toggle="tabajax" rel="tooltip">Configuration</a></li>
+        <li><a href="/overridectrl2" data-target="#override" class="media_node span" id="override_tab" data-toggle="tabajax" rel="tooltip">Override / Scene Edit</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="status">
+
+        </div>
+        <div class="tab-pane" id="config">
+
+        </div>
+        <div class="tab-pane" id="override">
+
+        </div>
+    </div>
+</div-->
+
+
+
+<div id="content" class="col-sm-11">
+    <div class="col-lg-12">
+
+        <div class="box">
+            <div class="box-header" data-original-title>
+                <h2>
+                    <i class="fa fa-user"></i><span class="break"></span>Main Options
+                </h2>
+            </div>
+            <div class="box-content">
+                <input type="button" class="btn btn-large btn-primary" onclick="location.href='/status';" value="Status Page" />
+
+                <input type="button" class="btn btn-large btn-primary" onclick="location.href='/config';" value="Config Page" />
+
+                <!--input type="button" class="btn btn-large btn-primary" onclick="location.href='/parameters';" value="Parameters Page" /-->
+
+                <input type="button" class="btn btn-large btn-primary" onclick="location.href='/overridectrl';" value="Override / Scene Manage Page" />
+
+                <input type="button" class="btn btn-large btn-primary" onclick="location.href='/history';" value="History Page" />
+
+                <input type="button" class="btn btn-large btn-primary" onclick="location.href='/scheduler';" value="Schedule Page" />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

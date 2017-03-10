@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ENOCEAN STUFF</title>
+    <script src="javascripts/client_rest.js"></script>
+    <script>
+        function teach()
+        {
+            var teachid = $('#teachid').val();
+            teachFixture(teachid);
+        }
+    </script>
+</head>
+<body>
+<label>TEACH ID: </label><input id="teachid" type="text" />
+<input type="button" id = "btteachstart" class="btn btn-large btn-primary" onclick=teach() value="Teach Fixture"/>
+
+</br>
+</br>
+<input type="button" id = "btStartLearning" class="btn btn-large btn-primary" onclick=startLearning() value="Start Learning"/>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Status</title>
+    <script src="javascripts/wNumb.js"></script>
+    <script src="javascripts/nouislider.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="bsmaster/assets/js/bootstrap.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="bsmaster/assets/js/custom.min.js"></script>
+    <script src="bsmaster/assets/js/core.min.js"></script>
+    <script src="bsmaster/assets/js/raphael.min.js"></script>
+    <script src="bsmaster/assets/js/justgage.1.0.1.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.noty.min.js"></script>
+    <script src="javascripts/nodecontrol.js"></script>
+    <script src="javascripts/status2.js"></script>
+
+    <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
+    <link href="stylesheets/nouislider.min.css" rel="stylesheet">
+    <script src="javascripts/client_rest.js"></script>
+
+    <style type="text/css">
+        .guagerow {
+            width: 100%;
+            margin: 0 0;
+        }
+        .gaugeblock {
+            width: 120px;
+            height: 100px;
+            display: inline-block;
+        }
+
+        .bulbiconrow {
+            width: 50px;
+            height: 80px;
+            display: inline-block;
+        }
+        .powerlevelvalue {
+            margin: 10px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function() {
+
+
+            initFixtureStatusBoxes();
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+
+<ul class="nav nav-tabs" >
+    <li class="active"><a href="status" >Status</a></li>
+    <li><a href="config" >Configuration</a></li>
+    <li><a href="override_scene" >Override/Scene Edit</a></li>
+    <li><a href="schedule" >Schedule</a></li>
+    <li><a href="groups" >Groups</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="tab1">
+        <p>
+
+        <div id="titlebar"></div>
+
+        <div id="content" class="col-lg-8">
+            <div class="container">
+
+                <div class="row" id="fixture_row1">
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="box">
+                            <div class="box-header" data-original-title>
+                                <h2>
+                                    <i class="fa fa-user"></i><span class="break"></span>DayLight Level (Volts) -- FC
+                                </h2>
+                            </div>
+                            <div class="box-content">
+                                <div class="guagerow">
+                                    <label class="control-label" id="daylightlevel">DayLight Level Volts Holder</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="box">
+                            <div class="box-header" data-original-title>
+                                <h2>
+                                    <i class="fa fa-user"></i><span class="break"></span>Occupancy State
+                                </h2>
+                            </div>
+                            <div class="box-content">
+                                <label class="control-label ">State</label>
+                                <label class="control-label " id="occ_state" >Occupied</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="box">
+                            <div class="box-header" data-original-title>
+                                <h2>
+                                    <i class="fa fa-user"></i><span class="break"></span>0-10 V inputs
+                                </h2>
+                            </div>
+                            <div class="box-content">
+
+                                <table id="raw_data_table" class="table table-striped table-bordered ">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Level(Volts)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="input1">??</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="input2">??</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>3</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="input3">??</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>4</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="input4">??</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="box">
+                            <div class="box-header" data-original-title>
+                                <h2>
+                                    <i class="fa fa-user"></i><span class="break"></span>Wet / Dry Contact Inputs
+                                </h2>
+                            </div>
+                            <div class="box-content">
+                                <table id="table_dry_contact" class="table table-striped table-bordered ">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Level</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="wdc1">0</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="wdc2">0</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>3</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="wdc3">0</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>4</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="wdc4">0</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-2">
+                        <div class="box">
+                            <div class="box-header" data-original-title>
+                                <h2>
+                                    <i class="fa fa-user"></i><span class="break"></span>24 V Outputs
+                                </h2>
+                            </div>
+                            <div class="box-content">
+
+                                <table id="table_24v_output" class="table table-striped table-bordered ">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Level(V)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="output1">??</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="output2">??</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>3</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="output3">??</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>4</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label " id="output4">??</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="box">
+                            <div class="box-header" data-original-title>
+                                <h2>
+                                    <i class="fa fa-user"></i><span class="break"></span>Network/Bluetooth
+                                </h2>
+                            </div>
+                            <div class="box-content">
+                                <table id="table_network" class="table table-striped table-bordered ">
+                                    <thead>
+                                    <tr>
+                                        <th>Interface</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Lan</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label ">OK</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>WIFI</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label ">Diss</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bluetooth</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label ">OK</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-2">
+                        <div class="box">
+                            <div class="box-header" data-original-title>
+                                <h2>
+                                    <i class="fa fa-user"></i><span class="break"></span>Zone Cordinates
+                                </h2>
+                            </div>
+                            <div class="box-content">
+
+                                <table id="table_network2" class="table table-striped table-bordered ">
+                                    <thead>
+                                    <tr>
+                                        <th>Zone #</th>
+                                        <th>X, Y</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label ">200,300</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label ">30,400</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td>
+                                            <div class="col-md-1 col-sm-2 col-xs-3">
+                                                <label class="control-label ">100,343</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+    </p>
+</div>
+</div>​
+
+
+</body>
+</html>

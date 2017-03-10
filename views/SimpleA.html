@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="stylesheets/rangeslider.css" rel="stylesheet">
+    <script src="javascripts/rangeslider.js"></script>
+
+    <style>
+        .frameA {
+            display: inline-block;
+            margin-left: 20px;
+            width: 600px;
+            text-align: center;
+            height: 800px;
+            background-color: #FFC237;
+        }
+
+        body {
+            color: #404040;
+            padding: 50px;
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .rangeslider,
+        .rangeslider__fill {
+            transition: background 0.3s;
+        }
+
+        .rangeslider--is-lowest-value {
+            background-color: white;
+        }
+
+        .rangeslider--is-highest-value .rangeslider__fill {
+            background-color: hotpink;
+        }
+
+        #ex1Slider .slider-selection {
+            background: #BABABA;
+        }
+    </style>
+    <script>
+
+        $(document).ready(function() {
+            // Without JQuery
+            var slider = new Slider('#ex1', {
+                formatter: function (value) {
+                    return 'Current value: ' + value;
+                }
+            });
+
+        });
+
+
+    </script>
+    <meta charset="UTF-8">
+    <title>Hello Joe , simple test</title>
+
+    <div class="frameA">
+        <h1>this is a simple test for joe</h1>
+
+
+        <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
+    </div>
+</head>
+<body>
+
+</body>
+</html>

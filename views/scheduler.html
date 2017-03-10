@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scheduler</title>
+    <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="javascripts/schedular.js"></script>
+
+    <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="bsmaster/assets/js/bootstrap.min.js"></script>
+
+    <script src="bsmaster/assets/js/custom.min.js"></script>
+    <script src="bsmaster/assets/js/core.min.js"></script>
+    <script src="bsmaster/assets/js/raphael.min.js"></script>
+    <script src="bsmaster/assets/js/justgage.1.0.1.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.noty.min.js"></script>
+
+    <script src="javascripts/bootstrap-timepicker.js"></script>
+
+    <script src='fullcalendar-3.0.1/lib/moment.min.js'></script>
+    <script src='fullcalendar-3.0.1/fullcalendar.js'></script>
+    <script src="javascripts/bootbox.min.js"></script>
+
+    <script src="bsmaster/assets/js/moment.min.js"></script>
+
+    <link rel='stylesheet' href='fullcalendar-3.0.1/fullcalendar.css' />
+    <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
+    <link href="stylesheets/bootstrap-timepicker.css" rel="stylesheet">
+    <script src="javascripts/client_rest.js"></script>
+
+    <style>
+        .hero {
+            background-color: #2ba6cb;
+            padding: 0 90px;
+        }
+    </style>
+
+
+    <script type="text/javascript">
+
+        var toggles;
+        var sliders;
+        var leavecheckboxes;
+        var dialogrepeatsel;
+        var eventtypesel;
+        var dateselector;
+        var timeselector;
+        // for del dev,
+        var selectedevent;
+        var selectedeventdiv;
+
+
+        $( function() {
+            $( "#eventdate" ).datepicker();
+        } );
+
+        $(document).ready(function() {
+
+            $myCalendar = $('#myCalendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek, agendaDay'
+                },
+                theme: true,
+                selectable: true,
+                selectHelper: true,
+                height: 500,
+                eventColor: '#9ec3ff',
+                events: '/schedule/getschedule',
+                select: function(start, end, allDay) {
+                    // $('#eventStart').datepicker("setDate", new Date(start));
+                    // $('#eventEnd').datepicker("setDate", new Date(end));
+                    // var startd = end._d.toString();
+                    var t = moment(end._d);
+                    //t.hours(0);
+                    // var bla = t.format('YYYY-MM-DD');
+                    var bla2 = t.format('MM/DD/YYYY');
+                    //  console.log(bla);
+                    $( "#eventdate").datepicker( "setDate", bla2 );
+                    // dateselector.select_date(bla);
+                    selectedevent = undefined;
+                    document.getElementById("btdelete").disabled = true;
+
+                    document.getElementById("eventmgtitle").style.color = 'black';
+                    document.getElementById("eventmgtitle").innerHTML = "Event Managment";
+                    // $('#calEventDialog').dialog('open');
+                    $(selectedeventdiv).css('background-color','#9ec3ff');
+                    selectedeventdiv = undefined;
+                },
+                eventRender: function(event, element) {
+
+                    // if(event.rweekly != undefined)
+                    //     console.log("found a weekly repeat"); // Writes "1"
+                },
+
+                eventClick: function (calEvent, jsEvent, view) {
+
+                    document.getElementById("eventmgtitle").style.color = 'red';
+                    document.getElementById("eventmgtitle").innerHTML = "Event Managment (EDITING)";
+                    resetEventTypeOptions();
+
+                    if( selectedeventdiv != undefined)
+                    {
+                        $(selectedeventdiv).css('background-color','#9ec3ff');
+                        selectedeventdiv = undefined;
+                    }
+
+                    selectedeventdiv = this;
+                    //  $(this).css('background-color','red');
+                    $(selectedeventdiv).css('background-color','red');
+                    //  $('#mycalendar').fullCalendar('updateEvent', calEvent);
+
+                    document.getElementById("btdelete").disabled = false;
+                    selectedevent = calEvent;
+                    var seldata = calEvent.start._i;
+
+                    var t = moment(seldata);
+                    var bla2 = t.format('MM/DD/YYYY');
+                    // console.log(seldata);
+                    $( "#eventdate").datepicker( "setDate", bla2);
+
+
+                    $('#eventtime').timepicker('setTime', seldata.substring(10));
+
+
+                    var repeatradios = document.getElementsByName("repeat");
+                    for(var i = 0; i < repeatradios.length; i++)
+                    {
+                        if(calEvent.rweekly && repeatradios[i].value == 'weekly')
+                        {
+                            repeatradios[i].checked = true;
+                            break;
+                        }
+                    }
+
+                    var eventtype = document.getElementsByName("eventtype");
+                    for(var i = 0; i < eventtype.length; i++)
+                    {
+                        if(calEvent.type == 'scene' && eventtype[i].value == 'scene')
+                        {
+                            eventtype[i].checked = true;
+
+                            $('#div_scene_config').show();
+                            $('#div_output_config').hide();
+                            $('#div_input_config').hide();
+                            $('#div_dryinput_config').hide();
+                            // now set the scene.
+                            document.getElementById('scene').value = calEvent.title;
+                            break;
+                        }
+
+                        if(calEvent.type == 'output' && eventtype[i].value == 'output')
+                        {
+                            eventtype[i].checked = true;
+                            $('#div_scene_config').hide();
+                            $('#div_output_config').show();
+                            $('#div_input_config').hide();
+                            $('#div_dryinput_config').hide();
+                            for(var idx = 1; idx < 5; idx++) {  //for each selection,
+                                var insel= document.getElementsByName('out' + idx);  //get the two options
+                                var values = calEvent.values;
+                                var selvalue = values[idx-1];
+                                if (selvalue == 'nochange')
+                                    insel[0].checked =true;
+                                else if(selvalue == 'on')
+                                    insel[1].checked =true;
+                                else
+                                    insel[2].checked = true;
+                            }
+                            break;
+                        }
+
+                        if(calEvent.type == 'input' && eventtype[i].value == 'input')
+                        {
+                            eventtype[i].checked = true;
+                            $('#div_scene_config').hide();
+                            $('#div_output_config').hide();
+                            $('#div_input_config').show();
+                            $('#div_dryinput_config').hide();
+                            for(var idx = 1; idx < 5; idx++) {  //for each selection,
+                                var insel= document.getElementsByName('in' + idx);  //get the two options
+                                var values = calEvent.values;
+                                var selvalue = values[idx-1];
+                                if (selvalue == 'ignore') {
+                                    insel[0].checked =true;
+                                }
+                                else
+                                    insel[1].checked =true;
+                            }
+                            break;
+                        }
+                        if(calEvent.type == 'dryinput' && eventtype[i].value == 'dryinput')
+                        {
+                            eventtype[i].checked = true;
+                            $('#div_scene_config').hide();
+                            $('#div_output_config').hide();
+                            $('#div_input_config').hide();
+                            $('#div_dryinput_config').show();
+                            for(var idx = 1; idx < 5; idx++) {  //for each selection,
+                                var insel= document.getElementsByName('dryin' + idx);  //get the two options
+                                var values = calEvent.values;
+                                var selvalue = values[idx-1];
+                                if (selvalue == 'ignore') {
+                                    insel[0].checked =true;
+                                }
+                                else
+                                    insel[1].checked =true;
+                            }
+                            break;
+                        }
+                    }
+
+                }
+            });
+
+            initscenesel();
+            initdayofmonthsel();
+            dialogrepeatsel = document.getElementsByName('repeat');
+
+            eventtypesel = document.getElementsByName('eventtype');
+
+
+            $('#eventtime').timepicker();
+
+            $('.toggleButton').click(function(){
+
+                var target = $('#' + $(this).attr('data-target'));
+                $('.toggleDiv').not(target).hide();
+                target.show();
+            });
+
+            $('#div_scene_config').show();
+            $('#div_output_config').hide();
+            $('#div_input_config').hide();
+            $('#div_dryinput_config').hide();
+
+            //target.show();
+
+        });
+
+
+        function initscenesel()
+        {
+            getSceneNameList(processSceneNameList);
+        }
+
+
+        function initdayofmonthsel()
+        {
+            var sel = document.getElementById('dayofmonth');
+            for (var i = 1 ; i < 31; i++) {
+                var opt = document.createElement('option');
+                opt.setAttribute('value', i);
+                opt.appendChild(document.createTextNode(i));
+                sel.appendChild(opt);
+            }
+        }
+
+    </script>
+
+</head>
+<body>
+
+
+
+<ul class="nav nav-tabs" >
+    <li ><a href="status" >Status</a></li>
+    <li ><a href="config" >Configuration</a></li>
+    <li><a href="override_scene" >Override/Scene Edit</a></li>
+    <li class="active"><a href="schedule" >Schedule</a></li>
+    <li><a href="groups" >Groups</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="tab1">
+        <p>
+
+
+
+        <div id="dialog" title="My dialog" style="display:none">
+            <form>
+                <fieldset>
+                    <label for="Id">Id</label>
+                    <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
+                    <label for="Id">Title</label>
+                    <input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all">
+                </fieldset>
+            </form>
+
+        </div>
+
+
+        <div id="includedContent"></div>
+        <div id='myCalendar'></div>
+
+
+        <div id="configheader" class="col-sm-14">
+            <div class="col-lg-9">
+                <div class="box">
+                    <div class="box-header" data-original-title>
+                        <h2><i class="fa fa-user"></i><span class="break"></span><label id="eventmgtitle">Event Managment</label></h2>
+                        <div class="box-icon">
+                            <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                        </div>
+                    </div>
+                    <div >
+                        <div class="box-content" >
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="eventdate">Date</label><input type="text" id="eventdate" ><br><br>
+                                    <div class="bootstrap-timepicker">
+                                        <label for="eventtime">Time</label>
+                                        <input id="eventtime" type="text" class="input-small">
+                                    </div>
+
+                                    <br>
+                                    <div class="">
+                                        <label >Repeat</label><br>
+                                        <input type="radio" name="repeat" value="none" checked = "true"> <label >None</label><br>
+                                        <input type="radio" name="repeat" value="daily"> <label >Daily</label><br>
+                                        <input type="radio" name="repeat" value="weekly"><label >Weekly</label><br>
+                                        <input type="radio" name="repeat" value="dayofmonth"><label >On </label>
+                                        <select id="dayofmonth" class="btn btn-large btn-primary"></select><label> Day of Each Month </label> <br>
+                                    </div>
+                                    <br>
+                                    <input type="button" id = "btsaveevent" class="btn btn-large btn-primary" onclick=saveevent() value="SAVE"/>
+
+                                    <input type="button" id = "btdelete" class="btn btn-large btn-danger" onclick=deleteevent() value="DELETE" disabled />
+
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <input type="radio" name="eventtype" value="scene" checked="true"  data-target="div_scene_config" class="toggleButton">
+                                    <label for="scene">Scene</label><br>
+                                    <input type="radio" name="eventtype" value="output"  data-target="div_output_config" class="toggleButton">
+                                    <label class="control-label" >PLC(24 V) Outputs</label><br>
+                                    <input type="radio" name="eventtype" value="input" data-target="div_input_config" class="toggleButton">
+                                    <label class="control-label" >0-10 V inputs</label><br>
+                                    <input type="radio" name="eventtype" value="dryinput" data-target="div_dryinput_config" class="toggleButton">
+                                    <label class="control-label" >Dry Contact inputs</label>
+                                </div>
+
+                                <div class=" col-sm-3 toggleDiv" id="div_scene_config">
+                                    <select id="scene"  class="btn btn-large btn-primary"></select>
+                                </div>
+
+                                <div class="col-sm-3 toggleDiv" id="div_output_config">
+                                    <table id = "output_config"  border=2 class="table table-striped table-bordered " >
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>No Change</th>
+                                            <th>ON</th>
+                                            <th>OFF</th>
+                                        </tr>
+                                        </thead>
+
+                                        <colgroup>
+                                            <col class = "col-sm-1">
+                                            <col class = "col-sm-1">
+                                            <col class = "col-sm-1">
+                                            <col class = "col-sm-1">
+
+                                        </colgroup>
+                                        <tbody>
+                                        <tr>
+                                            <td><label class="control-label" >1</label></td>
+                                            <td><input type="radio" name="out1" value="nochange"   checked="true" ></td>
+                                            <td><input type="radio" name="out1" value="on"  ></td>
+                                            <td><input type="radio" name="out1" value="off"  ></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="control-label" >2</label></td>
+                                            <td><input type="radio" name="out2" value="nochange"  checked="true"  ></td>
+                                            <td><input type="radio" name="out2" value="on"  ></td>
+                                            <td><input type="radio" name="out2" value="off"  ></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="control-label" >3</label></td>
+                                            <td><input type="radio" name="out3" value="nochange" checked="true"  ></td>
+                                            <td><input type="radio" name="out3" value="on"  ></td>
+                                            <td><input type="radio" name="out3" value="off"  ></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><label class="control-label" >4</label></td>
+                                            <td><input type="radio" name="out4" value="nochange"  checked="true" ></td>
+                                            <td><input type="radio" name="out4" value="on"  ></td>
+                                            <td><input type="radio" name="out4" value="off"  ></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-sm-3 toggleDiv" id="div_input_config">
+
+                                    <table id = "input_config"  border=2 class="table table-striped table-bordered " >
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Ignore Input</th>
+                                            <th>Stop Ignoring</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><label class="control-label" >1</label></td>
+                                            <td><input type="radio" name="in1" value="ignore"  checked="true"  ></td>
+                                            <td><input type="radio" name="in1" value="ignorenot"  ></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="control-label" >2</label></td>
+                                            <td><input type="radio" name="in2" value="ignore"  checked="true"  ></td>
+                                            <td><input type="radio" name="in2" value="ignorenot"  ></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><label class="control-label" >3</label></td>
+                                            <td><input type="radio" name="in3" value="ignore"  checked="true" ></td>
+                                            <td><input type="radio" name="in3" value="ignorenot"  ></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><label class="control-label" >4</label></td>
+                                            <td><input type="radio" name="in4" value="ignore"  checked="true" ></td>
+                                            <td><input type="radio" name="in4" value="ignorenot"  ></td>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-sm-3 toggleDiv" id="div_dryinput_config">
+
+                                    <table id = "dryinput_config"  border=2 class="table table-striped table-bordered " >
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Ignore Input</th>
+                                            <th>Stop Ignoring</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><label class="control-label" >1</label></td>
+                                            <td><input type="radio" name="dryin1" value="ignore" checked="true"  ></td>
+                                            <td><input type="radio" name="dryin1" value="ignorenot"  ></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label class="control-label" >2</label></td>
+                                            <td><input type="radio" name="dryin2" value="ignore"  checked="true" ></td>
+                                            <td><input type="radio" name="dryin2" value="ignorenot"  ></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><label class="control-label" >3</label></td>
+                                            <td><input type="radio" name="dryin3" value="ignore"  checked="true" ></td>
+                                            <td><input type="radio" name="dryin3" value="ignorenot"  ></td>
+
+                                        </tr>
+                                        <tr>
+                                            <td><label class="control-label" >4</label></td>
+                                            <td><input type="radio" name="dryin4" value="ignore"  checked="true" ></td>
+                                            <td><input type="radio" name="dryin4" value="ignorenot"  ></td>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        </p>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

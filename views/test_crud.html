@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>This is test crud page</title>
+    <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="bsmaster/assets/js/bootstrap.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="bsmaster/assets/js/moment.min.js"></script>
+
+    <script src="javascripts/require.js"></script>
+    <script src="javascripts/crud_config.js"></script>
+
+
+
+    <script>
+
+        function restRxHandler(result)
+        {
+
+            var k = 0;
+            k = k + 1;
+        }
+
+        function savefix()
+        {
+            var fix = {};
+            fix.type = "on_off";
+            fix.assignedname = "NicksFixture";
+            fix.interfacename = "enocean";
+            fix.outputid = "2888888";
+            fix.candledim = false;
+            saveConfigObject("fixture",fix,restRxHandler);
+        }
+
+        function savelevelinput()
+        {
+            var li = {};
+            li.type = "MotionSensor";
+            li.assignedname = "nickssensor";
+            li.interfacename = "enocean";
+            li.inputid = "2888888";
+            saveConfigObject("levelinput",li,restRxHandler);
+        }
+
+        function savecontactinput()
+        {
+            var li = {};
+            li.type = "dry";
+            li.assignedname = "nickscontactinput";
+            li.interfacename = "enocean";
+            li.inputid = "2888888";
+            saveConfigObject("contactinput",li,restRxHandler);
+        }
+
+        function delfix()
+        {
+            var fix = {};
+            fix.assignedname = "NicksFixture";
+            deleteConfigObject("fixture",fix,restRxHandler);
+        }
+
+        function delli()
+        {
+            var li = {};
+            li.assignedname = "nickssensor";
+            deleteConfigObject("levelinput",li,restRxHandler);
+        }
+
+        function delci()
+        {
+            var ci = {};
+            ci.assignedname = "nickscontactinput";
+            deleteConfigObject("contactinput",ci,restRxHandler);
+        }
+
+        function savenewgroup()
+        {
+            var grp = {};
+            grp.name = "nickstestgroup";
+            grp.type = "brightness";
+            saveConfigObject("group",grp,restRxHandler);
+        }
+
+        function delgroup()
+        {
+            var grp = {};
+            grp.name = "nickstestgroup";
+            deleteConfigObject("group",grp,restRxHandler);
+        }
+
+        function addfixtogroup()
+        {
+            var grp = {};
+            grp.groupname = "nickstestgroup";
+            grp.fixturename = "onoff1";
+            addFixtureToGroup(grp,restRxHandler);
+        }
+
+        function delfixfromgroup()
+        {
+            var grp = {};
+            grp.groupname = "nickstestgroup";
+            grp.fixturename = "onoff1";
+            deleteFixtureFromGroup(grp,restRxHandler);
+        }
+
+    </script>
+</head>
+<body>
+test crud page
+
+<input type="button" id = "btsavefixture"  onclick=savefix() value="SAVE FIXURE"/>
+
+<input type="button" id = "btdelfixture"  onclick=delfix() value="del FIXURE"/>
+</br>
+</br>
+<input type="button" id = "btsaveli"  onclick=savelevelinput() value="SAVE LEVELINPUT"/>
+
+<input type="button" id = "btdelli"  onclick=delli() value="DEL LEVELINPUT"/>
+</br>
+</br>
+
+
+<input type="button" id = "btsaveci"  onclick=savecontactinput() value="SAVE CONTACT_INPUT"/>
+<input type="button" id = "btdelci"  onclick=delgroup() value="DEL CONTACT INPUT"/>
+</br>
+</br>
+
+<input type="button" id = "btsavegrp"  onclick=savenewgroup() value="SAVE GROUP"/>
+<input type="button" id = "btdelgrp"  onclick=delgroup() value="DEL_GROUP"/>
+</br>
+</br>
+
+
+<input type="button" id = "btaddtogrp"  onclick=addfixtogroup() value="ADD fix to group"/>
+<input type="button" id = "btremovefromgroup"  onclick=delfixfromgroup() value="del fix from group"/>
+</br>
+</br>
+</body>
+</html>
