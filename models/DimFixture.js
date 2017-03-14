@@ -5,7 +5,7 @@ var moment = require('moment');
 var pad = require('pad');
 var path = require('path');
 var FixtureParameters = require('./FixtureParameters');
-
+var filter_utils = require('../utils/filter_utils.js');
 var DimFixture = function(name, interface, outputid)
 {
     //model.
@@ -22,6 +22,7 @@ var DimFixture = function(name, interface, outputid)
     this.level = 0;
     this.previousvalue = 0;
     this.lastupdated = undefined;
+    this.powerwatts = 0;
 
 
     DimFixture.prototype.fromJson = function(obj)
@@ -51,8 +52,19 @@ var DimFixture = function(name, interface, outputid)
 
     this.setLevel = function(requestobj, apply){
 
-        this.previousvalue= this.value;
-        this.level = requestobj.level;
+        // for debug
+        //global.currentconfig.daylightlevelvolts = 2;
+
+        var dlsensor = global.currentconfig.getDayLightSensor();
+        var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
+
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound);
+        var modpct = returndataobj.modifiedlevel;
+        requestobj.level = modpct;
+
+
+        this.previousvalue= Number(this.value);
+        this.level = Number(requestobj.level);
         this.lastupdated = moment();
         this.interface.setOutputToLevel(this.outputid, this.level, apply);
 
@@ -67,6 +79,16 @@ var DimFixture = function(name, interface, outputid)
     this.getlastupdated=function() {
         return this.lastupdated;
     };
+
+    this.isBoundToInput = function(name)
+    {
+        for(var k = 0; k < this.boundinputs.length; k++)
+        {
+            if(this.boundinputs[k] == name)
+                return true;
+        }
+        return false;
+    }
 };
 
 

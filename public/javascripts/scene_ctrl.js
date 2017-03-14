@@ -1,25 +1,11 @@
 /**
- * Created by Nick on 1/15/2017.
+ * Created by Nick on 3/13/2017.
  */
 
-var loadedconfig = "";
+
 var selecteditem;
 var defaultcolor = "rgba(0,0,0,0)";
-var selected_group;
-
-$(document).ready(function() {
-
-    getConfig(processConfig);
-});
-
-
-function processConfig(configobj)
-{
-    loadedconfig = configobj;  // cache config.
-    redrawGroups();
-}
-
-
+var selected_scene;
 
 $(function () {
     // click handler for boxes.. just under test.
@@ -43,7 +29,7 @@ $(function () {
 
             var selectedindex = selecteditem.attr('index');
 
-            selected_group = loadedconfig.groups[Number(selectedindex)];
+            selected_scene = cachedconfig.scenes[Number(selectedindex)];
             filterAvalibleFixtures();
 
         }
@@ -55,21 +41,21 @@ $(function () {
             $(this).droppable("option", "disabled", false);
 
             var selectedindex = selecteditem.attr('index');
-            selected_group = loadedconfig.groups[Number(selectedindex)];
+            selected_scene = cachedconfig.scenes[Number(selectedindex)];
             filterAvalibleFixtures();
         }
     });
 
 });
 
-function redrawGroups()
+function redrawScenes()
 {
     var groups_div = document.getElementById("active_groups_holder");
     groups_div.innerHTML = "";
-    for(var i = 0; i < loadedconfig.groups.length; i++)
+    for(var i = 0; i < cachedconfig.scenes.length; i++)
     {
-        var group = loadedconfig.groups[i];
-        constructGroupBox(groups_div, group,i);
+        var scene = cachedconfig.scenes[i];
+        constructSceneBox(groups_div, scene,i);
     }
 }
 
@@ -83,35 +69,29 @@ function redrawGroup(groupname)
     //{
     //    var group = loadedconfig.groups[i];
     //    constructSceneBox(groups_div, group,i);
-   // }
+    // }
     //.
 }
 
-function openNewGroupEditDialog()
+function openNewSceneEditDlg()
 {
     bootbox.confirm("<form id='infos' action=''>\
-    Group Name:<input type='text' id='group_name' /><br/>\
-    Group Type: <select id='grouptype'>\
-            <option value='brightness'>Brightness</option>\
-            <option value='ctemp'>Color Temp</option>\
-            <option value='red'>Red Level</option>\
-              <option value='green'>Green Level</option>\
-       </select>\
+    Scene Name:<input type='text' id='group_name' /><br/>\
     </form>", function(result) {
         if(result) {
             var grouptype = $('#grouptype').val();
-            var groupname = $('#group_name').val();
-            if(groupname.length > 0) {  //todo validate its unique.
+            var scenename = $('#group_name').val();
+            if(scenename.length > 0) {  //todo validate its unique.
                 var groups_div = document.getElementById("active_groups_holder");
-                var group1 = {};
-                group1.name = groupname;
-                group1.type = grouptype;
-                saveConfigObject("group", group1,function (retval) {
+                var scene = {};
+                scene.name = scenename;
+
+                saveConfigObject("scene", scene,function (retval) {
                     if(retval != undefined)  // as of 1/24/17, added version.
                     {
-                        loadedconfig = retval;
-                        var grpnum = loadedconfig.groups.length-1;
-                        constructGroupBox(groups_div, group1, grpnum);
+                        cachedconfig = retval;
+                        var grpnum = cachedconfig.scenes.length-1;
+                        constructSceneBox(groups_div, scene, grpnum);
                     }
                     else
                         noty({text: 'Error creating group ', type: 'error'});
@@ -124,9 +104,9 @@ function openNewGroupEditDialog()
 }
 
 
-function createnewgroup()
+function createNewScene()
 {
-    openNewGroupEditDialog();
+    openNewSceneEditDlg();
 }
 function enableDisableFixturesInDiv(groupdiv, enable)
 {
@@ -141,15 +121,15 @@ function enableDisableFixturesInDiv(groupdiv, enable)
 }
 
 
-function deleteSelectedGroup()
+function deleteSelScene()
 {
-    deleteConfigObject("group",selected_group,function (retval) {
-    //deleteConfigObject(selected_scene.name, function (retval) {
+    deleteConfigObject("scene",selected_scene,function (retval) {
+        //deleteConfigObject(selected_scene.name, function (retval) {
         if(retval != undefined)  // as of 1/24/17, added version.
         {
-            loadedconfig = retval;
-            selected_group = undefined;
-            redrawGroups();
+            cachedconfig = retval;
+            selected_scene = undefined;
+            redrawScenes();
 
             filterAvalibleFixtures();
         }
@@ -163,61 +143,31 @@ function filterAvalibleFixtures()
     var filteredlist = [];
     // var groupobj = selected_scene;
 
-    if(selected_group != undefined)
+    if(selected_scene != undefined)
     {
-        var type = selected_group.type;
+        // var type = selected_scene.type;
         // first filter what the group already has in it,
-        var fixtures =  loadedconfig.fixtures;
+        var fixtures =  cachedconfig.fixtures;
         for(var i = 0; i < fixtures.length; i++) {
             var fix = fixtures[i];
 
+            var include = true;
+            // now check if its in the fixture is already in the grup.
 
-           // if(selected_group.fixtures.indexOf(fix.assignedname) > -1) // if it contains it, alreayd,
-           // {
-           //     include = false;
-           // }
-          //  if(include)
-          //      filteredlist.push(fix);
-            // smart filter,
-            if(selected_group.type == "brightness") // include all types  && (fix.type == "cct" || fix.type == "dim" || fix.type == "rgbw"))
+            for(var k = 0; k < selected_scene.fixtures.length; k++)
             {
-                var include = true;
-                // now check if its in the fixture is already in the grup.
-                if(selected_group.fixtures.indexOf(fix.assignedname) > -1) // if it contains it, alreayd,
+                var fixname = selected_scene.fixtures[k].name;
+                if(fixname == fix.assignedname)
                 {
                     include = false;
+                    break;
                 }
-                if(include)
-                    filteredlist.push(fix);
-            }
-            else if(selected_group.type == "ctemp" && fix.type == "cct")
-            {
-                var include = true;
-                // now check if its in the fixture is already in the grup.
-                if(selected_group.fixtures.indexOf(fix.assignedname) > -1) // if it contains it, alreayd,
-                {
-                    include = false;
-                }
-                if(include)
-                    filteredlist.push(fix);
-            }
-            else if(selected_group.type == "red" && fix.type == "rgbw" ||
-                selected_group.type == "green" && fix.type == "rgbw"||
-                selected_group.type == "blue" && fix.type == "rgbw")
-            {
-                var include = true;
-                // now check if its in the fixture is already in the grup.
-                if(selected_group.fixtures.indexOf(fix.assignedname) > -1) // if it contains it, alreayd,
-                {
-                    include = false;
-                }
-                if(include)
-                    filteredlist.push(fix);
             }
 
+            if (include)
+                filteredlist.push(fix);
 
         }
-        // filter any that are already included in the group.
     }
 
     var fixturebucketdiv = document.getElementById("fixholder");
@@ -272,20 +222,20 @@ function filterAvalibleFixtures()
             var name = dropped.get(0).innerText;
             //var uid = fixtureNameToUID(name);
             if (name != undefined) {
-                var updatelayout = selected_group.fixtures.length == 4;  // if going from 4--> 3
+                var updatelayout = selected_scene.fixtures.length == 4;  // if going from 4--> 3
 
-                var index = selected_group.fixtures.indexOf(name);
+                var index = selected_scene.fixtures.indexOf(name);
                 if (index > -1) {
-                    selected_group.fixtures.splice(index, 1);
+                    selected_scene.fixtures.splice(index, 1);
                 }
                 var element = {};
-                element.groupname = selected_group.name;
+                element.scenename = selected_scene.name;
                 element.fixturename = name;
 
-                deleteFixtureFromGroup(element,function (retval) {
+                deleteFixtureFromScene(element,function (retval) {
                     if(retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
                     {
-                        loadedconfig = retval;
+                        cachedconfig = retval;
                     }
                     else if(retval.error != undefined)
                         noty({text: 'Error saving config ' + retval.error, type: 'error'});
@@ -295,9 +245,9 @@ function filterAvalibleFixtures()
                 if (updatelayout)
                 {
                     var selectedindex = selecteditem.attr('index');
-                   // var k = $('.selecteditem').attr('id');
+                    // var k = $('.selecteditem').attr('id');
                     // this should be a "group_X",
-                 //   var num = k.substr(6);
+                    //   var num = k.substr(6);
                     var bla = document.getElementById("group_holder_"+selectedindex);
                     bla.className = "col-lg-5";
                 }
@@ -311,14 +261,19 @@ function filterAvalibleFixtures()
 
 }
 
+function captureScenceSettings()
+{
+    var k = 0;
+    k = k + 1;
 
+}
 
-function constructGroupBox(currentdiv, group,groupnum) {
+function constructSceneBox(currentdiv, scene, groupnum) {
     var fixcol = document.createElement("div");
     fixcol.className = "col-lg-5";
     fixcol.id = "group_holder_"+groupnum;
 
-    if(group.fixtures != undefined && group.fixtures.length >= 4)
+    if(scene.fixtures != undefined && scene.fixtures.length >= 4)
         fixcol.className = "col-lg-10";
 
     currentdiv.appendChild(fixcol);
@@ -331,8 +286,55 @@ function constructGroupBox(currentdiv, group,groupnum) {
     fixboxheader.className = "box-header";
     fixbox.appendChild(fixboxheader);
 
+
+    var capturesettings = document.createElement("input");
+    capturesettings.className = "btn btn-large btn-primary";
+    capturesettings.type = "button";
+    capturesettings.value = "capture settings";
+    capturesettings.setAttribute('scene', scene.name);
+    capturesettings.onclick = function () {
+
+        var scenename = this.getAttribute('scene');
+        var element = {};
+        element.name = scenename;
+        saveFixtureSettingsToScene(element,function (retval) {
+            if(retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
+            {
+                cachedconfig = retval;
+            }
+            else if(retval.error != undefined)
+                noty({text: 'Error saving config ' + retval.error, type: 'error'});
+        });
+    };
+    fixboxheader.appendChild(capturesettings);
+
+
+
+    var btinvokescene = document.createElement("input");
+    btinvokescene.className = "btn btn-large btn-primary";
+    btinvokescene.type = "button";
+    btinvokescene.value = "invoke";
+    btinvokescene.setAttribute('scene', scene.name);
+    btinvokescene.onclick = function () {
+        var scenename = this.getAttribute('scene');
+        var element = {};
+        element.name = scenename;
+        invokescene(element,function (retval) {
+            if(retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
+            {
+                cachedconfig = retval;
+            }
+            else if(retval.error != undefined)
+                noty({text: 'Error invoking ' + retval.error, type: 'error'});
+        });
+    };
+    fixboxheader.appendChild(btinvokescene);
+
+
+
+
     var header = document.createElement("h2");
-    header.innerHTML = group.name;
+    header.innerHTML = scene.name;
     fixboxheader.appendChild(header);
 
     var fixcontent = document.createElement("div");
@@ -360,25 +362,26 @@ function constructGroupBox(currentdiv, group,groupnum) {
             if (name != undefined) {
 
                 // 1/28/17, make sure its not already in the array:
-               // if(selected_group.fixtures != undefined || selected_group.fixtures.indexOf(name) != -1)
-               //     return;
+                if(selected_scene.fixtures == undefined)
+                    return;
 
-                selected_group.fixtures.push(name);
+                selected_scene.fixtures.push(name);
 
                 var element = {};
-                element.groupname = selected_group.name;
+                element.scenename = selected_scene.name;
                 element.fixturename = name;
+                element.type = getFixtureByName(name).type;
 
-                addFixtureToGroup(element,function (retval) {
+                addFixtureToScene(element,function (retval) {
                     if(retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
                     {
-                        loadedconfig = retval;
+                        cachedconfig = retval;
                     }
                     else if(retval.error != undefined)
                         noty({text: 'Error saving fixture to group: ' + retval.error, type: 'error'});
                 });
 
-                if (selected_group.fixtures != undefined && selected_group.fixtures.length == 4)  // if going from 2-->3
+                if (selected_scene.fixtures != undefined && selected_scene.fixtures.length == 4)  // if going from 2-->3
                 {
                     var k = $(this).attr('id');
                     // this should be a "group_X",
@@ -390,10 +393,9 @@ function constructGroupBox(currentdiv, group,groupnum) {
         }
     });
     // now add in the existing fixutres:
-    for(var i = 0; i < group.fixtures.length; i++)
+    for(var i = 0; i < scene.fixtures.length; i++)
     {
-
-        var fixname = group.fixtures[i];
+        var fixname = scene.fixtures[i].name;
         var fixobj = getFixtureByName(fixname);
         if(fixobj != undefined) {
             var fixdiv = document.createElement("div");
@@ -419,12 +421,13 @@ function constructGroupBox(currentdiv, group,groupnum) {
 
 function getFixtureByName(name)
 {
-    for(var i = 0 ; i < loadedconfig.fixtures.length; i++)
+    for(var i = 0 ; i < cachedconfig.fixtures.length; i++)
     {
-        var fixobj = loadedconfig.fixtures[i];
+        var fixobj = cachedconfig.fixtures[i];
         if(name == fixobj.assignedname)
             return fixobj;
     }
     return undefined;
 }
+
 

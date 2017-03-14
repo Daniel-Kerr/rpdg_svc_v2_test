@@ -71,7 +71,21 @@ exports.setOutputToLevel = function(outputid, level, apply, options) {
 
 }
 
+exports.latchOutputLevelsToHW = function() {
+    setHW_PLC();
+    setHW_PWMLevels();
+}
 
+exports.getPWMPower = function() {
+
+    var watts = [];
+    for (var i = 0; i < pwm_current_amps.length; i++) {
+        var amps = pwm_current_amps[i];
+        var power = (amps * 24);
+        watts.push(power.toFixed(2))
+    }
+    return watts;
+}
 
 
 var tempcounter = 0;
@@ -240,10 +254,8 @@ function readHW_CurrentCounts()
                         var amps = val / 310;
                         pwm_current_amps[index] = amps;  //12/30/16, chnaged to current, stuff,
                         index++;
-                        // console.log("byte val: " + res[i] +  " | " + res[i+1]);
                     }
-                    // updateFixtureCurrentStatus();  < ---------------------------------------------------------Poll for this from svc,  and update fixture status per.
-                    // printCurrentCounts();
+                     printCurrentCounts();
                 }
                 if (err != null)
                     global.applogger.error(TAG, "readHW_CurrentCounts",  err);

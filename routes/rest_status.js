@@ -6,17 +6,11 @@ var moment = require('moment');
 var app = express();
 var os = require( 'os' )
 
-var service = require('../controllers/service.js');
+//var service = require('../controllers/service.js');
 
 router.get('/', function(req, res, next) {
-    res.sendFile(path.join( app.get('views') +'/status2.html'));
+    res.sendFile(path.join( app.get('views') +'/status.html'));
 });
 
-router.get('/getstatus', function(req, res) {
-    var package = service.getStatus2();
-    var dataset = JSON.stringify(package, null, 2);
-    res.send(dataset);
-
-});
 
 module.exports = router;

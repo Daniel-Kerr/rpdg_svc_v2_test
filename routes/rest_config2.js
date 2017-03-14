@@ -40,6 +40,7 @@ router.get('/', function(req, res, next) {
 var OnOffFixture = require('../models/OnOffFixture.js');
 var DimFixture = require('../models/DimFixture.js');
 var CCTFixture = require('../models/CCTFixture.js');
+var RGBWFixture = require('../models/RGBWFixture.js');
 
 var OccSensor = require('../models/OccSensor.js');
 var MotionSensor = require('../models/MotionSensor.js');
@@ -47,6 +48,7 @@ var Dimmer = require('../models/Dimmer.js');
 var DayLightSensor = require('../models/DayLightSensor.js');
 
 var Group = require('../models/Group.js');
+var Scene = require('../models/Scene.js');
 var ContactInput = require('../models/ContactInput.js');
 // CRUD interface for modifying the configuration.
 var file_paramoptions = 'datastore/paramoptions.json';
@@ -104,13 +106,14 @@ router.post('/savefixture', function(req, res) {
             {
                 // update it,
                 exists = true;
-                global.currentconfig.fixtures[i] = req.body;
+                global.currentconfig.fixtures.splice(i,1); //remove it,
+              //  global.currentconfig.fixtures[i] = req.body;
                 break;
             }
         }
 
         var fix = undefined;
-        if(!exists) {
+       // if(!exists) {
             switch (req.body.type) {
                 case "on_off":
                     fix = new OnOffFixture();
@@ -128,11 +131,14 @@ router.post('/savefixture', function(req, res) {
                     global.currentconfig.fixtures.push(fix);
                     break;
                 case "rgbw":
+                    var fix = new RGBWFixture();
+                    fix.fromJson(req.body);
+                    global.currentconfig.fixtures.push(fix);
                     break;
                 default:
                     break;
             }
-        }
+       // }
 
         if(fix != undefined)
         {
@@ -163,6 +169,38 @@ router.post('/deletefixture', function(req, res) {
                 break;
             }
         }
+
+        // delete from groups
+        for(var i = 0; i < global.currentconfig.groups.length; i++)
+        {
+            var group = global.currentconfig.groups[i];
+            for(var k = 0; k < group.fixtures.length; k++) {
+
+                var fixname = group.fixtures[k];
+                if (fixname == req.body.assignedname) {
+
+                    group.fixtures.splice(k, 1);
+                    break;
+                }
+            }
+        }
+
+
+        // delete from groups
+        for(var i = 0; i < global.currentconfig.scenes.length; i++)
+        {
+            var scene = global.currentconfig.scenes[i];
+            for(var k = 0; k < scene.fixtures.length; k++) {
+
+                var fixname = scene.fixtures[k].name;
+                if (fixname == req.body.assignedname) {
+
+                    scene.fixtures.splice(k, 1);
+                    break;
+                }
+            }
+        }
+
     }
 
     var cfg = JSON.stringify(global.currentconfig,null,2);
@@ -404,11 +442,7 @@ router.post('/addfixturetogroup', function(req, res) {
         {
             if(global.currentconfig.groups[i].fixtures.indexOf(fixturename) == -1) {
                 global.currentconfig.groups[i].fixtures.push(fixturename);
-                //returndata = bumpConfigVersionAndUpdate();
             }
-           // else {
-            //    returndata = data_utils.generateErrorMessage("duplicate");
-           // }
             break;
         }
     }
@@ -423,7 +457,6 @@ router.post('/deletefixturefromgroup', function(req, res) {
 
     var fixturename = req.body.fixturename;
     var groupname = req.body.groupname;
-
     var returndata = "error";
     for(var i = 0; i < global.currentconfig.groups.length; i++)
     {
@@ -433,11 +466,8 @@ router.post('/deletefixturefromgroup', function(req, res) {
             if(index > -1)
             {
                 global.currentconfig.groups[i].fixtures.splice(index,1);
-               // returndata = bumpConfigVersionAndUpdate();
             }
-           // else {
-              //  returndata = "not found";
-           // }
+
             break;
         }
     }
@@ -469,6 +499,149 @@ router.post('/getgroupmembers', function(req, res) {
 });
 
 
+
+
+
+
+
+
+
+router.post('/savescene', function(req, res) {
+
+    if (req.body != undefined && req.body.name != undefined) {
+
+        var scenename = req.body.name;
+
+        var found = false;
+        for (var i = 0; i < global.currentconfig.scenes.length; i++) {
+            var scene = global.currentconfig.scenes[i];
+            if (scene.name == scenename) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            var grp = new Scene();
+            grp.fromJson(req.body);
+
+            global.currentconfig.scenes.push(grp);
+        }
+    }
+
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+});
+
+router.post('/deletescene', function(req, res) {
+
+    var scenename = req.body.name;
+    var returndata = "error";
+    var found = false;
+    for(var i = 0; i < global.currentconfig.scenes.length; i++)
+    {
+        var group = global.currentconfig.scenes[i];
+        if(group.name == scenename)
+        {
+            global.currentconfig.scenes.splice(i,1);
+            found = true;
+            break;
+        }
+    }
+
+
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+});
+
+
+
+
+router.post('/addfixturetoscene', function(req, res) {
+
+    var fixturename = req.body.fixturename;
+    var fixtype = req.body.type;
+    var scenename = req.body.scenename;
+
+    var returndata = "error";
+
+    var sceneobj = global.currentconfig.getSceneByName(scenename);
+    if(sceneobj != undefined)
+    {
+        var found = sceneobj.containsFixture(fixturename);
+        if(!found)
+        {
+         sceneobj.addFixture(fixturename, fixtype);
+        }
+    }
+
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+
+});
+
+
+router.post('/deletefixturefromscene', function(req, res) {
+
+    var fixturename = req.body.fixturename;
+    var scenename = req.body.scenename;
+    var returndata = "error";
+
+    var sceneobj = global.currentconfig.getSceneByName(scenename);
+    if(sceneobj != undefined) {
+        sceneobj.removeFixture(fixturename);
+    }
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+
+});
+
+
+
+router.post('/savefixturescenesettings', function(req, res) {
+
+    var scenename = req.body.name;
+    var returndata = "error";
+
+    var sceneobj = global.currentconfig.getSceneByName(scenename);
+    if(sceneobj != undefined)
+    {
+        // iter through each fixture, get its current setting, and svae it to the scene.
+        var k = 0;
+        for(var k = 0; k < sceneobj.fixtures.length; k++) // for each fixture in this scene,
+        {
+            var scenefix = sceneobj.fixtures[k];
+            // get the fixture out of the global list,
+            var fixobj = global.currentconfig.getFixtureByName(scenefix.name);
+            if(fixobj.type == "on_off" || fixobj.type == "dim")
+            {
+                scenefix.level = fixobj.level;
+            }
+            else if(fixobj.type == "cct")
+            {
+                scenefix.colortemp = fixobj.colortemp;
+                scenefix.brightness = fixobj.brightness;
+
+            }
+            else if(fixobj.type == "rgbw")
+            {
+                scenefix.red = Number(fixobj.red);
+                scenefix.green = Number(fixobj.green);
+                scenefix.blue = Number(fixobj.blue);
+                scenefix.white = Number(fixobj.white);
+            }
+        }
+    }
+
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+
+});
 
 
 

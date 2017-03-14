@@ -5,6 +5,7 @@ var moment = require('moment');
 var pad = require('pad');
 var path = require('path');
 var FixtureParameters = require('./FixtureParameters');
+var filter_utils = require('../utils/filter_utils.js');
 
 var CCTFixture = function(name, interface, outputid)
 {
@@ -24,6 +25,7 @@ var CCTFixture = function(name, interface, outputid)
     this.previouscolortemp = 3500;
     this.previousbrightness = 100;
     this.lastupdated = undefined;
+    this.powerwatts = 0;
 
 
     CCTFixture.prototype.fromJson = function(obj)
@@ -41,23 +43,36 @@ var CCTFixture = function(name, interface, outputid)
             this.boundinputs = obj.boundinputs;
     };
 
+    this.setLevel = function(requestobj, apply){
 
+        var dlsensor = global.currentconfig.getDayLightSensor();
+        var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
 
-    this.setvalue = function(colortemp, brightness, apply){
-        if(colortemp != undefined) {
-            this.previouscolortemp = this.colortemp;
-            this.colortemp = colortemp;
-            // to do ,  translate color temp to level, here,
+        var brightness = this.brightness;
+        if(requestobj.brightness != undefined)
+            brightness = requestobj.brightness;
 
-            this.interface.setOutputToLevel(this.outputid, this.colortemp, apply);
-        }
-        if(brightness != undefined)
-        {
-            this.previousbrightness = this.brightness;
-            this.brightness = brightness;
-            var bchannel = Number(this.outputid) + 1;
-            this.interface.setOutputToLevel(bchannel, this.brightness, apply);
-        }
+        var colortemp = this.colortemp;
+        if(requestobj.colortemp != undefined)
+            colortemp = requestobj.colortemp;
+
+        // dl/light filter
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, brightness, this.parameters, isdaylightbound);
+        var modpct = returndataobj.modifiedlevel;
+        brightness = modpct;  // modify the req obj.
+
+        // color temp calculation
+        var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(2000, 6500, colortemp, brightness, this.candledim);
+
+        this.previouscolortemp = this.colortemp;
+        this.colortemp = colortemp;
+        this.interface.setOutputToLevel(Number(this.outputid), warmcoolvals[0], apply);
+
+        this.previousbrightness = this.brightness;
+        this.brightness = brightness;
+        var bchannel = Number(this.outputid) + 1;
+        this.interface.setOutputToLevel(bchannel, warmcoolvals[1], apply);
+
         this.lastupdated = moment();
     };
 
@@ -70,6 +85,16 @@ var CCTFixture = function(name, interface, outputid)
     this.getlastupdated=function() {
         return this.lastupdated;
     };
+
+    this.isBoundToInput = function(name)
+    {
+        for(var k = 0; k < this.boundinputs.length; k++)
+        {
+            if(this.boundinputs[k] == name)
+                return true;
+        }
+        return false;
+    }
 };
 
 

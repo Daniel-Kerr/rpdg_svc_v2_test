@@ -229,10 +229,10 @@ function init()
 {
 
     getConfig(processConfig);
-      getSceneNameList(cacheAndProcessSceneNames);
+    getSceneNameList(cacheAndProcessSceneNames);
 
-      updateInputContactActionDropDowns();
-      enableDisableInputActionDropDowns();
+    updateInputContactActionDropDowns();
+    enableDisableInputActionDropDowns();
 
 
 }
@@ -253,16 +253,16 @@ function processConfig(configobj)
 
     getFixtureParameterOptions(cacheFixtureParamOptions);
     // loadParamOptions();
-   // loadedfixtures = configobj.fixtures;
+    // loadedfixtures = configobj.fixtures;
     updateFixturesTable();
 
     populateBoundInputOptions();
 
-  //  loadedinputcontacts = configobj.contactinputs;
+    //  loadedinputcontacts = configobj.contactinputs;
 
     updateWetDryContactTable();
 
-   // loadedlevelinputs = configobj.levelinputs;
+    // loadedlevelinputs = configobj.levelinputs;
     updateLevelInputsTable();
 
 
@@ -486,27 +486,30 @@ function saveNewFixture() {
 
     var selstart = startout.options[startout.selectedIndex].value;
     var seltype = type.options[type.selectedIndex].value;
-    var assignment = buildassignment(Number(selstart), seltype);
-    fixture.assignment = assignment;
+  //  var assignment = buildassignment(Number(selstart), seltype);
+  //  fixture.assignment = assignment;
 
     // convert assignemtn array to numbers with _ between them,
-    var custom = assignment.join("_");
+   // var custom = assignment.join("_");
     fixture.assignedname = document.getElementById("fixturename").value;
-   // var uidbase = hostip.split(".").join("_");
-   // fixture.uid = uidbase + "_" + custom;
+    // var uidbase = hostip.split(".").join("_");
+    // fixture.uid = uidbase + "_" + custom;
     fixture.type = seltype;
     fixture.interfacename = $("#interface").val();
-  //  fixture.globalgroups = 0;
-  //  fixture.localgroups = "";
+    //  fixture.globalgroups = 0;
+    //  fixture.localgroups = "";
     fixture.outputid = selstart;
 
     fixture.status = 0;
-    if(seltype == "on_off")
+    if (seltype == "on_off")
         fixture.image = "/images/bulb_off.jpg";
-    else if(seltype == "dim")
+    else if (seltype == "dim")
         fixture.image = "/images/light_eg1.jpg";
-    else if(seltype == "cct")
+    else if (seltype == "cct") {
+
         fixture.image = "/images/ceiling_spotlight.jpg";
+        fixture.candledim = document.getElementById("candledim").checked;
+    }
     else if(seltype == "rgbw")
         fixture.image = "/images/rgbw_fixture.jpg";
 
@@ -525,7 +528,7 @@ function saveNewFixture() {
 
 
     fixture.boundinputs = boundinputs;
-    fixture.candledim = document.getElementById("candledim").checked;
+    //  fixture.candledim = document.getElementById("candledim").checked;
 
     var params = {};  // will contain current settings,
     params.dimoptions = document.getElementById("fixtureparam_0").value;
@@ -774,8 +777,8 @@ function updateAvalibleStartingOutputNumbers()
 
 
         // make sure to set the type to on/off,
-         $("#fixturetype").val("on_off");
-         $("#fixturetype").prop("disabled",true);
+        $("#fixturetype").val("on_off");
+        $("#fixturetype").prop("disabled",true);
 
     }
     else

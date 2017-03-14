@@ -15,11 +15,10 @@ var MotionSensor = require('../models/MotionSensor.js');
 var Dimmer = require('../models/Dimmer.js');
 var DayLightSensor = require('../models/DayLightSensor.js');
 
-
-
 var OnOffFixture = require('../models/OnOffFixture.js');
 var DimFixture = require('../models/DimFixture.js');
 var CCTFixture = require('../models/CCTFixture.js');
+var RGBWFixture = require('../models/RGBWFixture.js');
 
 var Configuration = require('../models/Configuration.js');
 var FixtureParameters = require('../models/FixtureParameters.js');
@@ -29,10 +28,7 @@ var ContactInput = require('../models/ContactInput.js');
 
 var data_utils = require('../utils/data_utils.js');
 
-//var OnOffFixture3 = require('../models/OnOffFixture3.js').OnOffFixture3;
-
-//var inputdevices = [];
-//var outputdevices = [];
+var filter_utils = require('./../utils/filter_utils.js');
 
 
 /***
@@ -58,6 +54,45 @@ function incommingHWChangeHandler(interface, type, inputid,level)
             if (dev.interface == interface) {
                 if (dev.inputid == inputid) {
                     global.applogger.info(TAG, "(LEVEL INPUT) message handler found device ", dev.interface + " : " + dev.assignedname + " : at level: " + level);
+
+
+                    // check if input is a daylight sensor, and apply it, to global.
+                    if(dev.type == "daylight")
+                    {
+                        global.applogger.info(TAG, "(LEVEL INPUT) message handler found device ", "DAYLIGHT UPDATE");
+                        global.currentconfig.daylightlevelvolts = level.toFixed(2); //
+                    }
+
+                    dev.setvalue(level.toFixed(2));
+                    // if dimmer, then make call to dim,
+
+                    // look through all devices conntect and set to level (wallstation)
+                    for(var k = 0; k < global.currentconfig.fixtures.length; k++)
+                    {
+                        var fixobj = global.currentconfig.fixtures[k];
+                        if(fixobj.isBoundToInput(dev.assignedname))
+                        {
+                            global.applogger.info(TAG, "(LEVEL INPUT) bound to this input", "wall station update" + fixobj.assignedname);
+                            var reqobj = {};
+                            reqobj.requesttype = "wallstation";
+                            if(fixobj instanceof OnOffFixture || fixobj instanceof DimFixture)
+                            {
+                                // the input level is 0 - 10, so mult by 10, and round to int,
+                                var targetlevel = level * 10;
+                                reqobj.level = targetlevel.toFixed(0);
+                                fixobj.setLevel(reqobj,true);
+                            }
+                            if(fixobj instanceof CCTFixture)
+                            {
+                                // create request here iwthout a change to color temp,  tell driver to use last known,
+                                var targetlevel = level * 10;
+                                reqobj.brightness = targetlevel.toFixed(0);
+                                fixobj.setLevel(reqobj,true);
+                            }
+                        }
+                    }
+
+
                 }
             }
         }
@@ -72,6 +107,34 @@ function incommingHWChangeHandler(interface, type, inputid,level)
             if (dev.interface == interface) {
                 if (dev.inputid == inputid) {
                     global.applogger.info(TAG, "(CONTACT INPUT) message handler found device ", dev.interface + " : " + dev.assignedname + " : at level: " + level);
+                    dev.setvalue(level);
+
+
+                    for(var k = 0; k < global.currentconfig.fixtures.length; k++)
+                    {
+                        var fixobj = global.currentconfig.fixtures[k];
+                        if(fixobj.isBoundToInput(dev.assignedname))
+                        {
+                            global.applogger.info(TAG, "(CONTACT INPUT) bound to this input", "wall station update" + fixobj.assignedname);
+                            var reqobj = {};
+                            reqobj.requesttype = "wallstation";
+                            if(fixobj instanceof OnOffFixture || fixobj instanceof DimFixture)
+                            {
+                                // the input level is 0 or 1, so mult by 10, and round to int,
+                                var targetlevel = level * 100;
+                                reqobj.level = targetlevel.toFixed(0);
+                                fixobj.setLevel(reqobj,true);
+                            }
+                            if(fixobj instanceof CCTFixture)
+                            {
+                                // create request here iwthout a change to color temp,  tell driver to use last known,
+                                var targetlevel = level * 100;
+                                reqobj.brightness = targetlevel.toFixed(0);
+                                fixobj.setLevel(reqobj,true);
+                            }
+                        }
+                    }
+
                 }
             }
         }
@@ -82,50 +145,6 @@ function incommingHWChangeHandler(interface, type, inputid,level)
 
 var service = module.exports =  {
 
-    setOnOffFixture: function(name, level, apply)
-    {
-        for(var i = 0; i < outputdevices.length; i++) {
-            // match up interface,
-            var dev = outputdevices[i];
-            if (dev.assignedname == name && dev instanceof OnOffFixture) {
-                dev.setLevel(level,apply);
-                break;
-            }
-        }
-    },
-
-    setDimFixture: function(name, level, apply)
-    {
-        for(var i = 0; i < outputdevices.length; i++) {
-            // match up interface,
-            var dev = outputdevices[i];
-            if (dev.assignedname == name && dev instanceof DimFixture) {
-                dev.setLevel(level,apply);
-                break;
-            }
-        }
-    },
-
-    setCCTFixture : function(name, ctemp, brightness, apply)
-    {
-        for(var i = 0; i < outputdevices.length; i++) {
-            // match up interface,
-            var dev = outputdevices[i];
-            if (dev.assignedname == name && dev instanceof CCTFixture) {
-                dev.setvalue(ctemp,brightness,apply);
-                break;
-            }
-        }
-    },
-
-
-    setBrightnessGroup : function(name, level)
-    {
-        // stub
-        module.exports.setDimFixture("dimA",level,false);
-        module.exports.setDimFixture("dimB",level,false);
-        module.exports.setDimFixture("dim_enocean",level,false);
-    },
 
     initService : function () {
 
@@ -146,6 +165,8 @@ var service = module.exports =  {
 
         // test functions.
         var fix = global.currentconfig.getFixtureByName("jkjj0988999");
+
+
         if(fix != undefined)
         {
             var k = 0;
@@ -175,24 +196,41 @@ var service = module.exports =  {
         // global.applogger.info(TAG, "TIMER LOOP :",  "polling timer started");
         // console.log("starting driver periodic poller");
         periodictimer = setInterval(function () {
+
+
+            // poll for pwm output power.(RPDG PWM ONLY)
+            var power_watts = rpdg.getPWMPower(); // should be 8 doubles... to be inserted into fixture table,
+            for(var i = 0; i < global.currentconfig.fixtures.length; i++) {
+                var fixobj = global.currentconfig.fixtures[i];
+                if(fixobj.interfacename == "rpdg-pwm") {
+                    if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
+
+                        var power = power_watts[Number(fixobj.outputid) - 1];
+                        fixobj.powerwatts = power;
+                       // global.applogger.info(TAG, "polling", "updated power on device: " + fixobj.assignedname + "   " + power);
+
+                    }
+                    else if (fixobj instanceof CCTFixture) {
+                        var powerwarm = power_watts[Number(fixobj.outputid) - 1];
+                        var powercool = power_watts[Number(fixobj.outputid)];
+                        fixobj.powerwatts = powerwarm + powercool;
+                      //  global.applogger.info(TAG, "polling", "updated power on device: " + fixobj.assignedname + "   " + power);
+                    }
+                }
+            }
+            // in here we need to do the following,
+
+
+
+            // poll check the current daylight sensor input, and update the daylight level volts inthe config.
+            // every x min,  make call,
+            //global.currentconfig.daylightlevelvolts
+            //
+
+
             //  global.applogger.info(TAG, "TIMER LOOP :",  "timer fired");
         }, BasePollingPeriod);
     },
-
-
-
-
-// *********************************************************************************************************************
-// *********************************************************************************************************************
-// *********************************************************************************************************************
-// *********************************************************************************************************************
-    // FROM OLD RPDG DRIVER <<<< public exposed,
-// *********************************************************************************************************************
-// *********************************************************************************************************************
-// *********************************************************************************************************************
-// *********************************************************************************************************************
-// *********************************************************************************************************************
-// *********************************************************************************************************************
 
     setGroupToBrightnessLevel : function (groupname, level)
     {
@@ -204,66 +242,41 @@ var service = module.exports =  {
                 {
                     var groupobj =  global.currentconfig.groups[i]; //extract group obj .
                     var requesttype = "wallstation";
-
-                    // iter through full fix list,
-                    for(var fixidx = 0; fixidx < global.currentconfig.fixtures.length; fixidx++)
-                    {
-                        // if in side of this group.
-                        var fix = global.currentconfig.fixtures[fixidx];
-                        var fixstatusobj = fixture_status_map[fix.uid];
-
-                        if(groupobj.fixtures.indexOf(fix.uid) > -1)
-                        {
-                            var type = fix.type;
-
-                            if(type == "on_off")
-                            {
-                                var adjlevel = 0;
-                                if(level != 0)
-                                    adjlevel = 100;
-
-
-                                fixstatusobj.status.lastuserintensity = adjlevel;
-                                setGenericFixtureLevels(requesttype, fix.uid, adjlevel, false);
+                    for (var i = 0; i < groupobj.fixtures.length; i++) {
+                        var fixname = groupobj.fixtures[i];
+                        var fixobj = global.currentconfig.getFixtureByName(fixname);
+                        if (fixobj != undefined) {
+                            // create a reqeuest obj, pass it in
+                            if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
+                                var reqobj = {};
+                                reqobj.name = fixobj.assignedname;
+                                reqobj.level = level;
+                                reqobj.requesttype = requesttype;
+                                module.exports.setFixtureLevels(reqobj,false);
                             }
-                            else if(type == "dim")
-                            {
-                                fixstatusobj.status.lastuserintensity = level;
-                                setGenericFixtureLevels(requesttype, fix.uid, level, false);
+                            else if (fixobj instanceof CCTFixture) {
+                                var reqobj = {};
+                                reqobj.name = fixobj.assignedname;
+                                reqobj.brightness = level;
+                                reqobj.requesttype = requesttype;
+                                module.exports.setFixtureLevels(reqobj,false);
                             }
-                            else if (type == "cct") {
-                                // use existing settinsg for ctemp.
-
-                                var colortemp =  fixstatusobj.status.currentlevels.ctemp;  // use last known hw level, dont mess with it,
-                                fixstatusobj.status.lastuserintensity = level;
-
-
-                                setCCTFixtureLevels(requesttype, fix.uid, level, colortemp, false);
-                            }
-                            else if (type == "rgbw") {
-
-                                //  fix.status.lastuserintensity = level;
-                                //use existing r/ g/ b,  and only update the white,
-                                var fixstatusobj = fixture_status_map[fix.uid];
-                                var red = fixstatusobj.status.currentlevels.red;
-                                var green = fixstatusobj.status.currentlevels.green;
-                                var blue = fixstatusobj.status.currentlevels.blue;
-                                setRGBWFixtureLevels(requesttype, fix.uid, red, green, blue, level);
+                            else if (fixobj instanceof RGBWFixture) {
+                                var reqobj = {};
+                                reqobj.name = fixobj.assignedname;
+                                reqobj.white = level;
+                                reqobj.requesttype = requesttype;
+                                module.exports.setFixtureLevels(reqobj,false);
                             }
                         }
                     }
 
-                    break;  // get out of loop
+
+                    module.exports.latchOutputValuesToHardware();
+                    break;  // get out of group loop,
                 }
             }
-            setHW_PWMLevels();  // update pwm at hw level.
         }
-
-        printZoneLevels();
-        // 1/2/17, return the full status pkg.
-        var package = this.getStatus2();
-        var dataset = JSON.stringify(package, null, 2);
-        return dataset;
     },
 
     setGroupToColorTemp :  function (groupname, colortemp)
@@ -309,8 +322,7 @@ var service = module.exports =  {
         return dataset;
     },
 
-
-    setMultipleFixtureLevels : function (requestobj, applytohw)
+    setMultipleFixtureLevels : function (requestobj)
     {
         if(requestobj != undefined)
         {
@@ -322,16 +334,12 @@ var service = module.exports =  {
                 this.setFixtureLevels(fixturelevelsetobj,false);
                 updatehw = true;
             }
-
-            if(updatehw)
-                setHW_PWMLevels();  // update pwm at hw level.
         }
 
-        printZoneLevels();
-        // 1/2/17, return the full status pkg.
-        var package = this.getStatus2();
-        var dataset = JSON.stringify(package, null, 2);
-        return dataset;
+        if(updatehw)
+            module.exports.latchOutputValuesToHardware();
+
+
     },
     /***
      *
@@ -340,210 +348,45 @@ var service = module.exports =  {
      */
     setFixtureLevels : function (requestobj, applytohw)
     {
-        // var bla = zone_levels_pct;
-        //printZoneLevels();
         global.applogger.info(TAG, "set fixture levels " ,JSON.stringify(requestobj));
         if(requestobj != undefined) {
             if(requestobj.name != undefined) {
-
                 var fix = global.currentconfig.getFixtureByName(requestobj.name);
-
-                global.applogger.info(TAG, "found fixture wil ltry  to set level" ,"");
-                //if(fix instanceof OnOffFixture)
-                fix.setLevel(requestobj, true);
-                /*
-                 var fixstatobj = fixture_status_map[requestobj.uid];
-                 if(fixstatobj != undefined) {   // check uid is on this machine,
-                 var fixtype = fixstatobj.fixture.type;
-
-                 var reqtype = requestobj.requesttype;
-
-
-
-
-                 var uid = requestobj.uid;
-                 //var intensity = requestobj.intensity;
-                 switch(fixtype)
-                 {
-                 case "on_off":
-                 if(requestobj.on_off != undefined)
-                 {
-                 var levelpct = requestobj.on_off.levelpct;  // should be 0 or 100 (off/on)
-
-                 //sainity check,
-                 if(levelpct > 0)
-                 levelpct = 100;
-
-                 if(reqtype == "wallstation" || reqtype == "override")
-                 fixstatobj.status.lastuserintensity = levelpct;  // record intensity
-
-
-                 setGenericFixtureLevels(reqtype, uid, levelpct, applytohw);
-                 }
-                 break;
-                 case "dim":
-                 if(requestobj.dim != undefined)
-                 {
-                 var levelpct = requestobj.dim.levelpct;  // should be 0 -- > 100
-
-                 if(reqtype == "wallstation"|| reqtype == "override")
-                 fixstatobj.status.lastuserintensity = levelpct;  // record intensity
-
-                 setGenericFixtureLevels(reqtype, uid, levelpct, applytohw);
-                 }
-                 break;
-                 case "cct":
-                 if(requestobj.cct != undefined)
-                 {
-                 var levelpct = requestobj.cct.levelpct;  // should be 0 --> 100
-                 var ctemp = requestobj.cct.ctemp;  // should be 2500 --> 6500
-
-                 if(reqtype == "wallstation"|| reqtype == "override") {
-                 fixstatobj.status.lastuserintensity = levelpct;  // record intensity
-                 fixstatobj.status.lastusercolortemp = ctemp;  // 2/22/17, store ctemp too
-                 }
-                 setCCTFixtureLevels(reqtype, uid, levelpct, ctemp, applytohw);
-                 }
-                 break;
-                 case "rgbw":
-                 if(requestobj.rgbw != undefined)
-                 {
-                 var red = requestobj.rgbw.red;  // should be 0 --> 100 (pct)
-                 var green = requestobj.rgbw.green;  // should be 0 --> 100
-                 var blue = requestobj.rgbw.blue;  // should be 0 --> 100
-                 var white = requestobj.rgbw.white;  // should be 0 --> 100
-
-                 if(reqtype == "wallstation"|| reqtype == "override")
-                 fixstatobj.status.lastuserintensity = white;  // record intensity
-
-                 if(red != undefined && green != undefined && blue != undefined && white != undefined)
-                 setRGBWFixtureLevels(reqtype, uid, red, green,blue,white, applytohw);
-                 }
-                 break;
-                 default:
-                 break;
-                 }
-                 }*/
+                if(fix != undefined) {
+                    global.applogger.info(TAG, "found fixture wil ltry  to set level", "");
+                    fix.setLevel(requestobj, applytohw);
+                }
             }
         }
-        //for debug,
-        // console.log("modified zone levels (pct)");
-        // printZoneLevels();
-        // 1/2/17, return the full status pkg.
-        var package = this.getStatus2();
-        var dataset = JSON.stringify(package, null, 2);
-        return dataset;
-
     },
-
-    getStatus2 : function() {
-        try {
-
-            var outputlevels = [];
-            ////plc output switches
-            for (var outidx = 0; outidx < 4; outidx++) {
-                var bit = (plc_output_switch[0] >> outidx) & 0x01;
-                if (bit > 0)
-                    outputlevels.push("ON");
-                else
-                    outputlevels.push("OFF");
+    invokeScene : function(name) {
+        var sceneobj = global.currentconfig.getSceneByName(name);
+        var requesttype = "wallstation";
+        // ... todo   add hold set hw ,  until after we are done setting levels,  (levels only )
+        for (var i = 0; i < sceneobj.fixtures.length; i++) {
+            var scenefix = sceneobj.fixtures[i];
+            // rewrite,  get fixobj from master list,
+            var fixobj = global.currentconfig.getFixtureByName(scenefix.name);
+            if (fixobj != undefined) {
+                // create a reqeuest obj, pass it in
+                if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
+                    var reqobj = {};
+                    reqobj.name = fixobj.assignedname;
+                    reqobj.level = scenefix.level;
+                    reqobj.requesttype = requesttype;
+                    module.exports.setFixtureLevels(reqobj,true);
+                }
             }
-            // 12/30/16,
-            // status is now fixture based,
-            // data is structured per fixture:
-            // current for each fixture is stuffed into its status
-            var statuspackage = {};
-            statuspackage.fixtures = fixture_status_map;
-            statuspackage.zero2ten = Zero_to_Ten_Volt_inputs;
-            statuspackage.plcoutput = outputlevels;
-
-            var dllevel = Zero_to_Ten_Volt_inputs[daylightSensorInputNumber-1];
-            statuspackage.daylightlevelvolts = dllevel;
-            statuspackage.occupancy = "Not Occupied";
-
-            // 1/2/17, place latest pwm output levels into status pkg,
-            statuspackage.pwmzonelevelspct = zone_levels_pct;
-
-
-            statuspackage.wetdrycontacts = WetDryContacts;
-            return statuspackage;
-        } catch(err)
-        {
-
-            global.log.error("rpdg_driver.js ", "getStatus2 :",  err);
-            // console.log("!!! - exception: " + err);
         }
     },
 
 
-    setHW_PLC_Switch : function(plcnumber, state) {
-        // mask in value
-        //console.log("driver called to set plc switch")
-
-        try {
-
-            var outindex = plcnumber - 1;
-
-            var mask = 1 << outindex;
-            if (state == 1) {
-                plc_output_switch[0] |= mask;
-            } else {
-                plc_output_switch[0] &= ~mask;
-            }
-
-            printPLCOutputLevels();
-            setHW_PLC();   //consolidated 1/8/17,
-
-        } catch(err)
-        {
-            global.log.error("rpdg_driver.js ", "setHW_PLC_Switch :",  err);
-            // console.log("!!! - exception: " + err);
-        }
-
-        var package = this.getStatus2();
-        var dataset = JSON.stringify(package, null, 2);
-        return dataset;
+    latchOutputValuesToHardware : function ()
+    {
+        rpdg.latchOutputLevelsToHW();
     },
 
-    initFixtureStatusMap : function(fixtures) {
 
-        fixture_status_map = {}; // blank it out.
-        for (var i = 0; i < fixtures.length; i++) {
-
-            var fix = fixtures[i];
-            var base = {}; // status container
-            base.fixture = fix;
-            var status = {};
-            status.lastusercolortemp = 3500; // changed on 2/28/170;
-            status.lastuserintensity = 100; // changed on 2/28/17 ,,,,0;
-            status.current = 0;
-
-            // 1/20/17,
-            var levels = {};
-            if(fix.type == "on_off" || fix.type == "dim")
-            {
-                levels.levelpct = 100; // changed on 2/28/100 0;
-            }
-            else if(fix.type == "cct")
-            {
-                levels.levelpct = 100; // 2/28/17 ,0;
-                levels.ctemp = 3500;
-            }
-            else if(fix.type == "rgbw")
-            {
-                levels.red = 0;
-                levels.green = 0;
-                levels.blue = 0;
-                levels.white = 100; // 2/28/170;
-            }
-
-            status.currentlevels = levels;
-
-            base.status = status;
-            status.isdaylightlimited = false;
-            fixture_status_map[fix.uid] = base;
-        }
-    },
     /*
      exports.startPolling: function() {
 
@@ -665,36 +508,32 @@ var service = module.exports =  {
      },
      */
 
-    updateConfigData : function() {
-        //  current_config = config;
+    /* updateConfigData : function() {
+     //  current_config = config;
 
-        this.initFixtureStatusMap(global.currentconfig.fixtures);
+     this.initFixtureStatusMap(global.currentconfig.fixtures);
 
-        daylightSensorInputNumber = getDayLightSensorInputNumber(); //update global.
-
-
-        // console.log("daylight sensor input number  updated to: " + daylightSensorInputNumber);
-
-        // 1/8/1
-        if(daylightSensorInputNumber > 0)
-        {
-            Zero_to_Ten_Volt_inputs[daylightSensorInputNumber-1] = 10; // default set to 10 volts for daylight, (= dark),
-        }
-
-        hal_enocean.initFixtureList();
+     daylightSensorInputNumber = getDayLightSensorInputNumber(); //update global.
 
 
-        // 2/8/17, update config data for each fixture.
-        setDimmerEdgeConfig();
+     // console.log("daylight sensor input number  updated to: " + daylightSensorInputNumber);
 
-        setHW_ConfigureZero2TenDrive();
+     // 1/8/1
+     if(daylightSensorInputNumber > 0)
+     {
+     Zero_to_Ten_Volt_inputs[daylightSensorInputNumber-1] = 10; // default set to 10 volts for daylight, (= dark),
+     }
 
-    },
+     hal_enocean.initFixtureList();
 
-    updateScenelist :function(scenelist) {
-        current_scenelist = scenelist;
-    },
 
+     // 2/8/17, update config data for each fixture.
+     setDimmerEdgeConfig();
+
+     setHW_ConfigureZero2TenDrive();
+
+     },
+     */
 
     setTestDayLightLevel : function (dlinputnumber, dl_levelvolts)
     {
@@ -754,98 +593,6 @@ var service = module.exports =  {
     setDayLightPollingPeriodSeconds : function(intervalsec) {
         DaylightPollingConfigSeconds = intervalsec;
         daylightpolcount = 0;
-    },
-    invokeScene : function(sceneobj, requesttype) {
-
-        // ... todo   add hold set hw ,  until after we are done setting levels,  (levels only )
-        for (var i = 0; i < sceneobj.fixtures.length; i++) {
-
-            var fix = sceneobj.fixtures[i];
-
-            var fixobj = fixture_status_map[fix.uid];
-            if (fixobj != undefined) {
-
-                var type = fixobj.fixture.type;
-                // if fix type is cct, then run color tomep
-                //decode
-                // type.// now set its level into hw.
-                // 2/22//17,  for scene invoke, we save the last setting , this is treated as "user requested" levels.
-                if(type == "on_off" || type == "dim")
-                {
-                    global.log.info("rpdg_driver.js ", "invokeScene", " saving user intensity: " +  fix.settings.level);
-                    fixobj.status.lastuserintensity = fix.settings.level;
-                    setGenericFixtureLevels(requesttype, fix.uid, fix.settings.level, false);
-                }
-                else if (type == "cct") {
-
-                    global.log.info("rpdg_driver.js ", "invokeScene", " saving user intensity: " +  fix.settings.level);
-                    global.log.info("rpdg_driver.js ", "invokeScene", " saving user ctemp: " +  fix.settings.ctemp);
-                    fixobj.status.lastusercolortemp = fix.settings.ctemp;  // 2/22/17,
-                    fixobj.status.lastuserintensity = fix.settings.level;
-                    setCCTFixtureLevels(requesttype, fix.uid, fix.settings.level, fix.settings.ctemp, false);
-                }
-                else if (type == "rgbw") {
-                    setRGBWFixtureLevels(requesttype, fix.uid, fix.settings.red, fix.settings.green, fix.settings.blue, fix.settings.white, false);
-                }
-            }
-        }
-
-        setHW_PWMLevels(); // now apply changes .
-        printZoneLevels();
-
-
-        // now plc set
-        if(sceneobj.plcstate != undefined)
-        {
-            if(sceneobj.plcstate._1 != "ignore")
-            {
-                var set = sceneobj.plcstate._1;
-                var mask = 1 << 0;
-                if (set) {
-                    plc_output_switch[0] |= mask;
-                } else {
-                    plc_output_switch[0] &= ~mask;
-                }
-            }
-            if(sceneobj.plcstate._2 != "ignore")
-            {
-                var set = sceneobj.plcstate._2;
-                var mask = 1 << 1;
-                if (set) {
-                    plc_output_switch[0] |= mask;
-                } else {
-                    plc_output_switch[0] &= ~mask;
-                }
-
-            }
-            if(sceneobj.plcstate._3 != "ignore")
-            {
-                var set = sceneobj.plcstate._3;
-                var mask = 1 << 2;
-                if (set) {
-                    plc_output_switch[0] |= mask;
-                } else {
-                    plc_output_switch[0] &= ~mask;
-                }
-
-            }
-            if(sceneobj.plcstate._4 != "ignore")
-            {
-                var set = sceneobj.plcstate._4;
-                var mask = 1 << 3;
-                if (set) {
-                    plc_output_switch[0] |= mask;
-                } else {
-                    plc_output_switch[0] &= ~mask;
-                }
-            }
-
-            setHW_PLC();   //consolidated 1/8/17,
-        }  // end plc update part.
-
-        var package = this.getStatus2();
-        var dataset = JSON.stringify(package, null, 2);
-        return dataset;
     },
     teachEnoceanDevice : function(id)
     {

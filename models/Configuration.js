@@ -6,7 +6,7 @@ var moment = require('moment');
 var OnOffFixture = require('./OnOffFixture.js');
 var DimFixture = require('./DimFixture.js');
 var CCTFixture = require('./CCTFixture.js');
-
+var RGBWFixture = require('./RGBWFixture.js');
 // inputs(sensors..etc)
 var MotionSensor = require('./MotionSensor.js');
 var OccSensor = require('./OccSensor.js');
@@ -17,6 +17,8 @@ var ContactInput = require('./ContactInput.js');
 
 var Group = require('./Group.js');
 
+var Scene = require('./Scene.js');
+
 var Configuration = function(obj)
 {
     this.type = Configuration.name;
@@ -24,6 +26,9 @@ var Configuration = function(obj)
     this.levelinputs = [];
     this.contactinputs = [];
     this.groups = [];
+    this.scenes = [];
+    this.daylightlevelvolts = 0;
+    this.occupiedstate = 0;
 
     for(var i = 0; i < obj.fixtures.length; i++)
     {
@@ -42,6 +47,17 @@ var Configuration = function(obj)
                 this.fixtures.push(f);
                 break;
 
+            case "cct":
+                var f = new CCTFixture(fix);
+                f.fromJson(fix);
+                this.fixtures.push(f);
+                break;
+
+            case "rgbw":
+                var f = new RGBWFixture(fix);
+                f.fromJson(fix);
+                this.fixtures.push(f);
+                break;
             default:
                 break;
         }
@@ -91,6 +107,17 @@ var Configuration = function(obj)
         }
     }
 
+    if(obj.scenes != undefined) {
+        for (var i = 0; i < obj.scenes.length; i++) {
+            var scene = obj.scenes[i];
+            var f = new Scene();
+
+
+            f.fromJson(scene);
+            this.scenes.push(f);
+        }
+    }
+
     this.getFixtureByName = function(name)
     {
         for(var i = 0; i < this.fixtures.length; i++)
@@ -127,6 +154,23 @@ var Configuration = function(obj)
             else
                 fix.interface = enocean;
         }
+    }
+
+    this.getSceneByName = function(name)
+    {
+        for(var i = 0; i < this.scenes.length; i++) {
+            var scene = this.scenes[i];
+            if (scene.name == name) // locate scene
+            {
+                return scene;
+            }
+        }
+        return undefined;
+    }
+
+    this.containsDayLightSensor = function(boundinputlist)
+    {
+
     }
 };
 

@@ -6,6 +6,8 @@ var pad = require('pad');
 var path = require('path');
 var FixtureParameters = require('./FixtureParameters');
 var TAG = pad(path.basename(__filename),15);
+
+var filter_utils = require('../utils/filter_utils.js');
 //var OnOffFixture = function(name, interface, outputid)
 var OnOffFixture = function()
 {
@@ -24,7 +26,8 @@ var OnOffFixture = function()
     this.level = 0;
     this.previousvalue = 0;
     this.lastupdated = new moment();
-    this.currentdraw = 0;
+    this.powerwatts = 0;
+
 
     OnOffFixture.prototype.fromJson = function(obj)
     {
@@ -53,14 +56,27 @@ var OnOffFixture = function()
 
     this.setLevel = function(requestobj, apply){
 
+        // for debug set dl level,
+        //global.currentconfig.daylightlevelvolts = 5;
+
+        if(this.interfacename != "rpdg-plc") {
+            var dlsensor = global.currentconfig.getDayLightSensor();
+            var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
+
+            var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound);
+            var modpct = returndataobj.modifiedlevel;
+            requestobj.level = modpct;
+        }
+
 
         var modlevel = 0;
         if(requestobj.level > 0)
             modlevel = 100;
 
-        this.previousvalue= this.value;
-        this.level = modlevel;
+        this.previousvalue= Number(this.value);
+        this.level = Number(modlevel);
         this.lastupdated = moment();
+
 
         var options = (this.interfacename.includes("plc"))?"plc":undefined;
 
@@ -79,6 +95,16 @@ var OnOffFixture = function()
     this.getlastupdated=function() {
         return this.lastupdated;
     };
+
+    this.isBoundToInput = function(name)
+    {
+        for(var k = 0; k < this.boundinputs.length; k++)
+        {
+            if(this.boundinputs[k] == name)
+                return true;
+        }
+        return false;
+    }
 };
 
 

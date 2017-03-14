@@ -26,6 +26,15 @@ var REST_GET_INTERFACE_OUTPUTS = "/config/getinterfaceoutputs";
 
 var REST_GET_SCENE_NAME_LIST = "/override_scene/getscenenamelist";
 
+
+var REST_SAVE_SCENE = "/config/savescene";
+var REST_DELETE_SCENE = "/config/deletescene";
+
+var REST_ADD_FIXTURE_TO_SCENE = "/config/addfixturetoscene";
+var REST_DELETE_FIXTURE_FROM_SCENE = "/config/deletefixturefromscene";
+
+var REST_SAVE_FIXTURE_SETTINGS_TO_SCENE = "/config/savefixturescenesettings"
+
 // config get / set,
 function getConfig(callback)
 {
@@ -63,6 +72,9 @@ function saveConfigObject(objtype, obj, callback) {
             break;
         case "group":
             target = REST_SAVE_GROUP;
+            break;
+        case "scene":
+            target = REST_SAVE_SCENE;
             break;
         default:
             return;
@@ -102,6 +114,9 @@ function deleteConfigObject(objtype,obj, callback) {
             break;
         case "group":
             target = REST_DELETE_GROUP;
+            break;
+        case "scene":
+            target = REST_DELETE_SCENE;
             break;
         default:
             return;
@@ -195,6 +210,8 @@ function getInterfaceOutputs(callback)
 
 
 
+
+
 function getSceneNameList(callback)
 {
     function onDataReceived(result) {
@@ -212,3 +229,62 @@ function getSceneNameList(callback)
 }
 
 
+
+
+
+function addFixtureToScene(obj, callback) {
+
+    var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: REST_ADD_FIXTURE_TO_SCENE,
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}
+
+
+function deleteFixtureFromScene(obj, callback) {
+
+    var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: REST_DELETE_FIXTURE_FROM_SCENE,
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}
+
+
+
+function saveFixtureSettingsToScene(obj, callback) {
+
+    var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: REST_SAVE_FIXTURE_SETTINGS_TO_SCENE,
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}

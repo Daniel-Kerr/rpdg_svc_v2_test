@@ -46,15 +46,6 @@ var Dimmer = function()
     this.getlastupdated=function() {
         return this.lastupdated;
     };
-    /*
-    this.tomodel=function() {
-        var model = {};
-        model.assignedname = this.assignedname;  //e.g. nw room a
-        model.type = this.type;  // e.g. class name,
-        model.interface = this.interface;   //rpdg, enocean,
-        model.inputid = this.inputid;  //enocean ....id..holder.for enocean this will be the enocean id
-        return model;
-    }*/
 };
 
 

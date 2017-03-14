@@ -43,7 +43,8 @@ var index = require('./routes/index');
 
 var config = require('./routes/rest_config2');
 var override_scene = require('./routes/rest_override_scene');
-//var status = require('./routes/rest_status');
+var groupshandler = require('./routes/rest_groups');
+var status = require('./routes/rest_status');
 
 var app = express();
 
@@ -52,7 +53,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -67,7 +67,8 @@ app.use('/', index);
 
 app.use('/config', config);
 app.use('/override_scene', override_scene);
-//app.use('/status', status);
+app.use('/groups', groupshandler);
+app.use('/status', status);
 
 
 // catch 404 and forward to error handler
