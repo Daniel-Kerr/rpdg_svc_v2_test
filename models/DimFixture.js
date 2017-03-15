@@ -23,6 +23,7 @@ var DimFixture = function(name, interface, outputid)
     this.previousvalue = 0;
     this.lastupdated = undefined;
     this.powerwatts = 0;
+    this.daylightlimited = false;
 
 
     DimFixture.prototype.fromJson = function(obj)
@@ -52,21 +53,21 @@ var DimFixture = function(name, interface, outputid)
 
     this.setLevel = function(requestobj, apply){
 
-        // for debug
-        //global.currentconfig.daylightlevelvolts = 2;
-
         var dlsensor = global.currentconfig.getDayLightSensor();
         var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
 
         var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound);
-        var modpct = returndataobj.modifiedlevel;
-        requestobj.level = modpct;
+        this.daylightlimited = returndataobj.isdaylightlimited;
 
+        if(returndataobj.modifiedlevel > -1) {
 
-        this.previousvalue= Number(this.value);
-        this.level = Number(requestobj.level);
-        this.lastupdated = moment();
-        this.interface.setOutputToLevel(this.outputid, this.level, apply);
+            var modpct = returndataobj.modifiedlevel;
+            requestobj.level = modpct;
+            this.previousvalue = Number(this.value);
+            this.level = Number(requestobj.level);
+            this.lastupdated = moment();
+            this.interface.setOutputToLevel(this.outputid, this.level, apply);
+        }
 
     };
 

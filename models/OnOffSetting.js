@@ -6,7 +6,7 @@ var OnOffSetting = function()
 {
     this.name = "";
     this.type = "on_off";
-    this.level = "";
+    this.level = "100";
 
     OnOffSetting.prototype.fromJson = function(obj)
     {

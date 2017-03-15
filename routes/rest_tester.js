@@ -5,27 +5,21 @@ var fs = require('fs');
 var moment = require('moment');
 var app = express();
 var os = require( 'os' )
-
-var rpdg_driver = require('./rpdg_driver.js');
-var data_utils = require('./data_utils.js');
-global.test_mode =false;
-//global.test_config;  //used for holding test config in memory,
-
-
-global.test_scenelist = [];   //1/8/17 used for holding scenes during test.  in mem only
+var data_utils = require('../utils/data_utils.js');
+var service = require('../controllers/service');
+//global.test_mode =false;
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 
 });
 
-
+/*
 router.post('/setmode', function(req, res) {
 
     global.test_mode = true;
     global.test_config= {};
     global.test_scenelist = [];
-
     res.status(200).send("OK");
 
 });
@@ -41,59 +35,30 @@ router.post('/clearmode', function(req, res) {
     res.status(200).send("OK");
 
 });
+*/
 
+router.post('/setinputlevel', function(req, res) {
 
-router.post('/setdaylightlevel', function(req, res) {
-
-    var retval = "BadData";
-    if(req.body.inputnumber != undefined) {
-
-        var inputnumber = req.body.inputnumber;
-        var levelvolts = req.body.levelvolts;
-        rpdg_driver.setTestDayLightLevel(inputnumber,levelvolts);
-        retval = "OK";
+    if(req.body.interface != undefined) {
+        var interface = req.body.interface;  //rpdg / enocean
+        var type = req.body.type;     // type -  level  / contact
+        var inputid = req.body.inputid;   // the input number (1 based)
+        var levelvolts = req.body.levelvolts;   // the value of hte input,  (0- 10 for level) 0 / 1 for contact
+        service.testSetInputLevelVolts(interface, type, inputid, levelvolts);
     }
-
-    res.status(200).send(retval);
-
-
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
 });
 
-router.post('/setdimmerlevel', function(req, res) {
-
-    var retval = "BadData";
-    if(req.body.inputnumber != undefined) {
-        var inputnumber = req.body.inputnumber;
-        var levelvolts = req.body.levelvolts;
-        rpdg_driver.setTestDimmerLevel(inputnumber,levelvolts);
-        retval = "OK";
-    }
-    res.status(200).send(retval);
-
-});
-
-router.post('/setwetdrycontactlevel', function(req, res) {
-
-    var retval = "BadData";
-    if(req.body.inputnumber != undefined) {
-        var inputnumber = req.body.inputnumber;
-        var level = req.body.level;
-        rpdg_driver.setTestWetDryContactLevel(inputnumber,level);
-        retval = "OK";
-    }
-    res.status(200).send(retval);
-
-});
 
 router.post('/setdaylighttimerinterval', function(req, res) {
 
-    var retval = "BadData";
     if(req.body.interval != undefined) {
         var interval = req.body.interval;
-        rpdg_driver.setDayLightPollingPeriodSeconds(interval);
-        retval = "OK";
+        service.setDayLightPollingPeriodSeconds(interval);
     }
-    res.status(200).send(retval);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
 
 });
 
@@ -120,57 +85,28 @@ router.post('/clearvirtualdatetime', function(req, res) {
 router.post('/sendoccupancytogroup', function(req, res) {
 
     var group = req.body.groupname
-    rpdg_driver.sendOccupancyMessageToGroup(group);
-    res.status(200).send("OK");
+    service.sendOccupancyMessageToGroup(group);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
 
 });
 
 router.post('/sendvacancytogroup', function(req, res) {
 
     var group = req.body.groupname
-    rpdg_driver.sendVacancyMessageToGroup(group);
-    res.status(200).send("OK");
-
-});
-
-
-router.post('/clearallscenes', function(req, res) {
-
-    if (global.test_mode) {
-        global.test_scenelist = {};
-        res.status(200).send("OK");
-    }
-    else
-        res.status(200).send("Not in Test mode");
-
-});
-
-router.post('/clearallgroups', function(req, res) {
-
-    if (global.test_mode) {
-        global.currentconfig.groups = [];
-        res.status(200).send("OK");
-    }
-    else
-        res.status(200).send("Not in Test mode");
+    service.sendVacancyMessageToGroup(group);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
 
 });
 
 
 // test hook for zero to 10 v driver
-router.get('/zero2tendrive', function(req, res, next) {
+/*router.get('/dimmeredgecfg', function(req, res, next) {
 
-    rpdg_driver.testZero2TenVoltDriver();
-    res.send('command sent to driver');
-
-});
-
-// test hook for zero to 10 v driver
-router.get('/dimmeredgecfg', function(req, res, next) {
-
-    rpdg_driver.testDimmerEdgeConfig();
+    service.testDimmerEdgeConfig();
     res.send('dimmer edge command sent to driver');
 
-});
+});  */
 
 module.exports = router;

@@ -27,6 +27,7 @@ var OnOffFixture = function()
     this.previousvalue = 0;
     this.lastupdated = new moment();
     this.powerwatts = 0;
+    this.daylightlimited = false;
 
 
     OnOffFixture.prototype.fromJson = function(obj)
@@ -56,17 +57,25 @@ var OnOffFixture = function()
 
     this.setLevel = function(requestobj, apply){
 
-        // for debug set dl level,
-        //global.currentconfig.daylightlevelvolts = 5;
-
+        var filterblocked = false;
         if(this.interfacename != "rpdg-plc") {
             var dlsensor = global.currentconfig.getDayLightSensor();
             var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
 
             var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound);
-            var modpct = returndataobj.modifiedlevel;
-            requestobj.level = modpct;
+            this.daylightlimited = returndataobj.isdaylightlimited;
+            if(returndataobj.modifiedlevel > -1) {
+
+                var modpct = returndataobj.modifiedlevel;
+                requestobj.level = modpct;
+            }
+            else
+                filterblocked = true;
         }
+
+
+        if(filterblocked)
+            return;
 
 
         var modlevel = 0;
@@ -77,13 +86,9 @@ var OnOffFixture = function()
         this.level = Number(modlevel);
         this.lastupdated = moment();
 
-
         var options = (this.interfacename.includes("plc"))?"plc":undefined;
-
-
         this.interface.setOutputToLevel(this.outputid, this.level, apply, options);
 
-        //todo, if request type in request obj is override..etc,  then set add vars to keep last user requested value.
     };
 
     this.getLevel=function(){

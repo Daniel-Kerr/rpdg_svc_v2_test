@@ -168,9 +168,15 @@ var Configuration = function(obj)
         return undefined;
     }
 
-    this.containsDayLightSensor = function(boundinputlist)
+    this.getGroupByName = function(name)
     {
-
+        for(var i = 0 ; i < this.groups.length; i++)  //find the group.
+        {
+            if (name == this.groups[i].name) {
+                return this.groups[i];
+            }
+        }
+        return undefined;
     }
 };
 

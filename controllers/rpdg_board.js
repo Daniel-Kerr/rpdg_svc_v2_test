@@ -88,6 +88,46 @@ exports.getPWMPower = function() {
 }
 
 
+exports.setZero2TenDrive = function(inputs)
+{
+    try {
+
+        global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive ", "sending drive to hw");
+        var config = new Uint8Array(4);
+
+        if(inputs.length == 4) {
+            //drive is .25 mA --> 20 mA ,
+            config[0] = inputs[0] / .25;
+            config[1] = inputs[1] / .25;
+            config[2] = inputs[2] / .25;
+            config[3] = inputs[3] / .25;
+            // console.log("drive config sending to hw(byte0) :  " + config[0] );
+            var wire = getI2cWire();
+            if (wire != undefined) {
+                wire.writeBytes(3, config, function (err) {
+                    if (err != null)
+                        global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
+
+                });
+                wire.writeBytes(3, config, function (err) {
+                    if (err != null)
+                        global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
+                });
+            }
+            else {
+                global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive", "no i2c hw");
+            }
+        }
+        else
+        {
+            global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive ", "cant set,  no config info to set");
+        }
+    } catch (err)
+    {
+        global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
+    }
+}
+
 var tempcounter = 0;
 function startHWPolling() {
 
@@ -185,45 +225,7 @@ function setHW_PWMLevels()
 
 
 
-function setHW_ConfigureZero2TenDrive()
-{
-    try {
 
-        global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive ", "sending drive to hw");
-        var config = new Uint8Array(4);
-
-        if( global.currentconfig.inputcfg.zero2tendrive != undefined &&  global.currentconfig.inputcfg.zero2tendrive.length == 4) {
-            //drive is .25 mA --> 20 mA ,
-            config[0] = global.currentconfig.inputcfg.zero2tendrive[0] / .25;
-            config[1] = global.currentconfig.inputcfg.zero2tendrive[1] / .25;
-            config[2] = global.currentconfig.inputcfg.zero2tendrive[2] / .25;
-            config[3] = global.currentconfig.inputcfg.zero2tendrive[3] / .25;
-            // console.log("drive config sending to hw(byte0) :  " + config[0] );
-            var wire = getI2cWire();
-            if (wire != undefined) {
-                wire.writeBytes(3, config, function (err) {
-                    if (err != null)
-                        global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
-
-                });
-                wire.writeBytes(3, config, function (err) {
-                    if (err != null)
-                        global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
-                });
-            }
-            else {
-                global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive", "no i2c hw");
-            }
-        }
-        else
-        {
-            global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive ", "cant set,  no config info to set");
-        }
-    } catch (err)
-    {
-        global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
-    }
-}
 
 
 

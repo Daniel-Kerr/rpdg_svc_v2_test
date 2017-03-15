@@ -1,0 +1,132 @@
+{
+    "018eb546": {
+        "id": "018eb546",
+        "eep": "a5-07-01",
+        "manufacturer": "ENOCEAN_GMBH",
+        "title": "New Occupancy Sensor",
+        "desc": "I'm a new sensor...",
+        "eepFunc": "Occupancy Sensor",
+        "eepType": "Occupancy with Supply Voltage Monitor",
+        "last": [
+            {
+                "type": "PIR Status",
+                "unit": "",
+                "value": "on",
+                "lastModified": "2017-03-08T23:55:58.395Z"
+            },
+            {
+                "type": "Supply voltage",
+                "unit": "",
+                "value": "supported"
+            },
+            {
+                "type": "Voltage",
+                "unit": "V",
+                "value": 3.3000000000000003,
+                "lastModified": "2017-03-15T23:03:51.695Z"
+            }
+        ]
+    },
+    "0193f05e": {
+        "id": "0193f05e",
+        "eep": "a5-07-01",
+        "manufacturer": "ENOCEAN_GMBH",
+        "title": "New Occupancy Sensor",
+        "desc": "I'm a new sensor...",
+        "eepFunc": "Occupancy Sensor",
+        "eepType": "Occupancy with Supply Voltage Monitor",
+        "last": [
+            {
+                "type": "PIR Status",
+                "unit": "",
+                "value": "on",
+                "lastModified": "2017-02-23T19:36:48.884Z"
+            },
+            {
+                "type": "Supply voltage",
+                "unit": "",
+                "value": "supported"
+            },
+            {
+                "type": "Voltage",
+                "unit": "V",
+                "value": 3.18,
+                "lastModified": "2017-02-23T18:43:20.548Z"
+            }
+        ]
+    },
+    "01994c2f": {
+        "id": "01994c2f",
+        "eep": "a5-06-02",
+        "manufacturer": "ENOCEAN_GMBH",
+        "title": "New Light Sensors",
+        "desc": "I'm a new sensor...",
+        "eepFunc": "Light Sensors",
+        "eepType": "Range 0lx to 1020lx",
+        "last": [
+            {
+                "type": "illumination",
+                "unit": "lux",
+                "value": 708,
+                "lastModified": "2017-02-23T19:26:14.219Z"
+            },
+            {
+                "type": "voltage",
+                "unit": "V",
+                "value": 2.26,
+                "lastModified": "2017-02-23T19:26:14.219Z"
+            }
+        ]
+    },
+    "002d8f46": {
+        "id": "002d8f46",
+        "eep": "f6-02-03",
+        "manufacturer": "unknown",
+        "title": "New RPS Switch",
+        "desc": "I'm a new sensor...",
+        "eepFunc": "Rocker Switch, 2 Rocker",
+        "eepType": "Light Control - Application Style 1",
+        "last": [
+            {
+                "type": "state",
+                "unit": "",
+                "value": "released",
+                "lastModified": "2017-02-23T19:36:59.903Z"
+            }
+        ]
+    },
+    "002c0d1f": {
+        "id": "002c0d1f",
+        "eep": "f6-02-03",
+        "manufacturer": "unknown",
+        "title": "New RPS Switch",
+        "desc": "I'm a new sensor...",
+        "eepFunc": "Rocker Switch, 2 Rocker",
+        "eepType": "Light Control - Application Style 1",
+        "last": [
+            {
+                "type": "state",
+                "unit": "",
+                "value": "released",
+                "lastModified": "2017-02-23T19:36:55.601Z"
+            }
+        ]
+    },
+    "002c0e0d": {
+        "id": "002c0e0d",
+        "eep": "f6-02-03",
+        "manufacturer": "unknown",
+        "title": "New RPS Switch",
+        "desc": "I'm a new sensor...",
+        "eepFunc": "Rocker Switch, 2 Rocker",
+        "eepType": "Light Control - Application Style 1",
+        "last": [
+            {
+                "type": "state",
+                "unit": "",
+                "value": "released",
+                "lastModified": "2017-02-23T19:36:57.936Z"
+            }
+        ]
+    }
+}

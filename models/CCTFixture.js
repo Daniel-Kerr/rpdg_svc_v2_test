@@ -26,6 +26,7 @@ var CCTFixture = function(name, interface, outputid)
     this.previousbrightness = 100;
     this.lastupdated = undefined;
     this.powerwatts = 0;
+    this.daylightlimited = false;
 
 
     CCTFixture.prototype.fromJson = function(obj)
@@ -48,9 +49,9 @@ var CCTFixture = function(name, interface, outputid)
         var dlsensor = global.currentconfig.getDayLightSensor();
         var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
 
-        var brightness = this.brightness;
+        var brightness = this.brightness;   //use current by default
         if(requestobj.brightness != undefined)
-            brightness = requestobj.brightness;
+            brightness = requestobj.brightness;   //use requested if present,
 
         var colortemp = this.colortemp;
         if(requestobj.colortemp != undefined)
@@ -58,8 +59,11 @@ var CCTFixture = function(name, interface, outputid)
 
         // dl/light filter
         var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, brightness, this.parameters, isdaylightbound);
-        var modpct = returndataobj.modifiedlevel;
-        brightness = modpct;  // modify the req obj.
+        this.daylightlimited = returndataobj.isdaylightlimited;
+        if(returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
+            var modpct = returndataobj.modifiedlevel;
+            brightness = modpct;  // modify the req obj.
+        }
 
         // color temp calculation
         var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(2000, 6500, colortemp, brightness, this.candledim);

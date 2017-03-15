@@ -35,6 +35,9 @@ var REST_DELETE_FIXTURE_FROM_SCENE = "/config/deletefixturefromscene";
 
 var REST_SAVE_FIXTURE_SETTINGS_TO_SCENE = "/config/savefixturescenesettings"
 
+
+var REST_GET_ENOCEAN_INPUTS = "/config/getenoceaninputs"
+
 // config get / set,
 function getConfig(callback)
 {
@@ -50,6 +53,20 @@ function getConfig(callback)
     });
 }
 
+
+function getEnoceanInputs(callback)
+{
+    function onDataReceived(series) {
+        if(series != null)
+            callback(series);
+    }
+    $.ajax({
+        url: REST_GET_ENOCEAN_INPUTS,
+        type: "GET",
+        dataType: "json",
+        success: onDataReceived,
+    });
+}
 /***
  *
  * @param

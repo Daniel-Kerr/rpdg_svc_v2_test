@@ -31,6 +31,7 @@ var RGBWFixture = function(name, interface, outputid)
 
     this.lastupdated = undefined;
     this.powerwatts = 0;
+    this.daylightlimited = false;
 
 
     RGBWFixture.prototype.fromJson = function(obj)
@@ -71,8 +72,11 @@ var RGBWFixture = function(name, interface, outputid)
 
         // dl/light filter
         var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, white, this.parameters, isdaylightbound);
-        var modpct = returndataobj.modifiedlevel;
-        white = modpct;  // modify the req obj.
+        this.daylightlimited = returndataobj.isdaylightlimited;
+        if(returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
+            var modpct = returndataobj.modifiedlevel;
+            white = modpct;  // modify the req obj.
+        }
 
         this.previousred = this.red;
         this.red = red;

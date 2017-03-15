@@ -2,6 +2,10 @@
  * Created by Nick on 12/19/2016.
  */
 
+var path = require('path');
+var pad = require('pad');
+var TAG = pad(path.basename(__filename),15);
+
 function FCLookupTable (Zero2TenInputVolts) {
 
     // takes in 0-10V and returns a FC reading
@@ -52,13 +56,14 @@ module.exports = {
 
         var DaylightZerotoTenValueVolts = global.currentconfig.daylightlevelvolts;
 
-        if (RequestType == undefined)                 { global.log.error ("RequestType is undefined to LightLevelFilter");   }
-       // if (typeof (UserLevelRequestedPCT) != "number")           { global.log.error("UserLevelRequestedPCT is NOT a number to LightLevelFilter");   }
-        if (fixtureparams == undefined)                { global.log.error("fixtureparams is undefined to LightLevelFilter");   }
-        if (DaylightZerotoTenValueVolts == undefined)  { global.log.error("DaylightZerotoTenValueVolts is undefined to LightLevelFilter");   }
-      //  if (fixtureuid == undefined)                   { global.log.error("fixtureuid is undefined to LightLevelFilter");   }
-        if (isDaylightSensitive == undefined)          { global.log.error("isDaylightSensitive is undefined to LightLevelFilter");   }
-       global.applogger.info ("ATTN", "LightLevelFilter", "The requested level UserLevelRequestedPCT in is: " + UserLevelRequestedPCT);
+        if (RequestType == undefined)                  { global.applogger.error (TAG, "RequestType is undefined to LightLevelFilter", "");   }
+        if (fixtureparams == undefined)                { global.applogger.error(TAG,"fixtureparams is undefined to LightLevelFilter", "");   }
+        if (DaylightZerotoTenValueVolts == undefined)  { global.applogger.error(TAG,"DaylightZerotoTenValueVolts is undefined to LightLevelFilter" ,"");   }
+        if (isDaylightSensitive == undefined)          { global.applogger.error(TAG,"isDaylightSensitive is undefined to LightLevelFilter","");   }
+
+
+        if(global.loghw.lightfilter)
+            global.applogger.info (TAG, "LightLevelFilter", "  The requested level UserLevelRequestedPCT in is: " + UserLevelRequestedPCT);
 
         var returndataobj = {};
         returndataobj.modifiedlevel = UserLevelRequestedPCT;
@@ -85,10 +90,10 @@ module.exports = {
         if(isDaylightSensitive) {
             var currentDaylightLevel = FCLookupTable(DaylightZerotoTenValueVolts);
             // This needs to connect to the 0-10V level assigned for the daylight sensor.
-           // if(global.loghw.lightfilter)
-             //   global.log.info("filter_utils.js ", "LightLevelFilter ","Requested Level PCT:  " + UserLevelRequestedPCT + "    Daylight volts: " + DaylightZerotoTenValueVolts + "   Daylight (FC) calculated to: " + currentDaylightLevel );
+            // if(global.loghw.lightfilter)
+            //   global.log.info("filter_utils.js ", "LightLevelFilter ","Requested Level PCT:  " + UserLevelRequestedPCT + "    Daylight volts: " + DaylightZerotoTenValueVolts + "   Daylight (FC) calculated to: " + currentDaylightLevel );
 
-           // console.log("Requested Level PCT:  " + UserLevelRequestedPCT + "    Daylight volts: " + DaylightZerotoTenValueVolts + "   Daylight (FC) calculated to: ", currentDaylightLevel);
+            // console.log("Requested Level PCT:  " + UserLevelRequestedPCT + "    Daylight volts: " + DaylightZerotoTenValueVolts + "   Daylight (FC) calculated to: ", currentDaylightLevel);
             switch (currentDaylightLevel) {
 
                 case 50:
@@ -113,8 +118,8 @@ module.exports = {
                     CurrentDaylightCeiling = 96.4;
 
                     if(global.loghw.lightfilter)
-                        global.applogger.info("filter_utils.js ", "LightLevelFilter ", "The Daylight celling for fixture uid: "+ fixtureuid, "was set to " + CurrentDaylightCeiling );
-                   // console.log("The Daylight celling for fixture uid: ", fixtureuid, "was set to ", CurrentDaylightCeiling);
+                        global.applogger.info(TAG, "LightLevelFilter ", "    The Daylight celling for fixture uid: "+ fixtureuid, "was set to " + CurrentDaylightCeiling );
+                    // console.log("The Daylight celling for fixture uid: ", fixtureuid, "was set to ", CurrentDaylightCeiling);
                     break;
             }
         }
@@ -131,14 +136,18 @@ module.exports = {
         if (fixtureparams.manualceiling < 0) {manualceiling_mod = 100} else {manualceiling_mod = fixtureparams.manualceiling};
 
         var maxModifiedLevel = Math.min (UserLevelRequestedPCT, CurrentDaylightCeiling, daylightceiling_mod, manualceiling_mod);
-        global.applogger.info ("ATTN: ", "LIGHTLEVELFILTER" , " The maxModifiedLevel is " + maxModifiedLevel + "  UserLevelRequestedPCT is " + UserLevelRequestedPCT);
+
+        if(global.loghw.lightfilter)
+            global.applogger.info (TAG, "LIGHTLEVELFILTER" , "   The maxModifiedLevel is " + maxModifiedLevel + "  UserLevelRequestedPCT is " + UserLevelRequestedPCT);
+
+
         // GetConfigValue ("Daylight Ceiling", ZoneRequested), GetConfigValue ("Manual Ceiling", ZoneRequested));
-       // console.log ("maxModifiedLevel is ", maxModifiedLevel);
+        // console.log ("maxModifiedLevel is ", maxModifiedLevel);
         if (maxModifiedLevel < 0 ){
-            global.applogger.error("filter_utils.js ", "LightLevelFilter ", "ERROR: Config error in trim settings");
+            global.applogger.error(TAG, "LightLevelFilter ", "ERROR: Config error in trim settings");
         }
         if (maxModifiedLevel == "undefined" ){
-            global.applogger.error("filter_utils.js ", "LightLevelFilter ", "ERROR: maxModifiedLevel is UNDEFINED");
+            global.applogger.error(TAG, "LightLevelFilter ", "ERROR: maxModifiedLevel is UNDEFINED");
         }
 
         if (UserLevelRequestedPCT > maxModifiedLevel)
@@ -152,15 +161,15 @@ module.exports = {
         if (fixtureparams.manualfloor < 0) {manualfloor_mod = 0} else {manualfloor_mod = fixtureparams.manualfloor};
 
         daylightModifiedLevel = Math.max (maxModifiedLevel, daylightfloor_mod, manualfloor_mod);
-       // console.log ("daylightModifiedLevel is ", daylightModifiedLevel);
+        // console.log ("daylightModifiedLevel is ", daylightModifiedLevel);
         if (daylightModifiedLevel < 0){
-            global.applogger.error("filter_utils.js ", "LightLevelFilter ", "ERROR: Config error in trim settings" );
-          //  console.log ("ERROR: Config error in trim settings");
+            global.applogger.error(TAG, "LightLevelFilter ", "   ERROR: Config error in trim settings" );
+            //  console.log ("ERROR: Config error in trim settings");
         }
 
         OccupiedLevel = fixtureparams.resptoocc;
         VacancyLevel = fixtureparams.resptovac;
-      //  var currentstate = 'Occupied';		// indicates if the current room is Occupied or Vacant.  Currently binary but leaves room for additional states
+        //  var currentstate = 'Occupied';		// indicates if the current room is Occupied or Vacant.  Currently binary but leaves room for additional states
         switch (RequestType) {
             case 'override':
                 ModifiedLevel = UserLevelRequestedPCT;
@@ -169,16 +178,19 @@ module.exports = {
             case 'network':
                 break;
             case 'wallstation':
-                	currentstate = 'Occupied';
-                    ModifiedLevel = daylightModifiedLevel;
+                currentstate = 'Occupied';
+                ModifiedLevel = daylightModifiedLevel;
                 break;
             case 'daylight':
-	                if (currentstate == 'Occupied') { ModifiedLevel = daylightModifiedLevel;}	// Only adjust daylight if occupied
-                	else { ModifiedLevel = VacancyLevel;}			// ignore if Vacant
+                if (currentstate == 'Occupied') { ModifiedLevel = daylightModifiedLevel;}	// Only adjust daylight if occupied
+                else { ModifiedLevel = VacancyLevel;}			// ignore if Vacant
                 break;
             case 'occupancy':
                 ModifiedLevel = OccupiedLevel;
-                global.applogger.info("ATT", "Recieved an Occupancy Request ", OccupiedLevel);
+
+                if(global.loghw.lightfilter)
+                    global.applogger.info(TAG, "Recieved an Occupancy Request ", OccupiedLevel);
+
                 currentstate = 'Occupied';
                 break;
             case 'vacancy':
@@ -191,14 +203,14 @@ module.exports = {
                 break;
             case 'wetdrycontact':
                 ModifiedLevel = UserLevelRequestedPCT;
-                currentstate = 'Occupied';      
+                currentstate = 'Occupied';
                 break;
             case 'zero2teninput':
-                currentstate = 'Occupied';      
+                currentstate = 'Occupied';
                 break;
             default:
                 ModifiedLevel = UserLevelRequestedPCT;
-                global.applogger.error("filter_utils.js ", "LightLevelFilter ", "ERROR: That requst type was not found "+ RequestType );
+                global.applogger.error(TAG, "LightLevelFilter ", "   ERROR: That requst type was not found "+ RequestType );
 
                 break;
 
@@ -206,9 +218,9 @@ module.exports = {
 
         if(global.loghw.lightfilter)
         {
-            global.applogger.info("filter_utils.js ", "LightLevelFilter ","*****************************************************************") ;
-            global.applogger.info("filter_utils.js ", "LightLevelFilter ","Request: " + RequestType + " occ state: " + currentstate   + "Req PCT:  " + UserLevelRequestedPCT + "  DL(V): " + DaylightZerotoTenValueVolts + "  DL(FC): " + currentDaylightLevel) ;
-            global.applogger.info("filter_utils.js ", "LightLevelFilter ","DL-Mod: " + daylightModifiedLevel + " MaxMod: " + maxModifiedLevel + "  Fix DL ceiling:  " + CurrentDaylightCeiling + "R Modified Level: " + ModifiedLevel);
+            global.applogger.info(TAG, "LightLevelFilter ","*****************************************************************") ;
+            global.applogger.info(TAG, "LightLevelFilter ","Request: " + RequestType + " occ state: " + currentstate   + "    Req PCT:  " + UserLevelRequestedPCT + "  DL(V): " + DaylightZerotoTenValueVolts + "  DL(FC): " + currentDaylightLevel) ;
+            global.applogger.info(TAG, "LightLevelFilter ","DL-Mod: " + daylightModifiedLevel + " MaxMod: " + maxModifiedLevel + "  Fix DL ceiling:  " + CurrentDaylightCeiling + "   Modified Level: " + ModifiedLevel);
         }
         returndataobj.modifiedlevel = ModifiedLevel;
         return returndataobj;
@@ -254,8 +266,8 @@ module.exports = {
         if(global.loghw.colortemp) {
             global.applogger.info("filter_utils.js ", "CalculateCCTAndDimLevels ", "INPUT:  min: "+ min + " max: " + max + "  desiredctemp: " + DesiredColorTemp + "  desiredIntensity: " + DesiredIntensityPCT + " cdmin: " + CandleDim);
             global.applogger.info("filter_utils.js ", "CalculateCCTAndDimLevels ", "Cool White Level: "+ CoolWhiteLevel +  "  Warm White Level: " + WarmWhiteLevel);
-           // console.log("Cool White Level is: ", CoolWhiteLevel);
-           // console.log("Warm White Level is: ", WarmWhiteLevel);
+            // console.log("Cool White Level is: ", CoolWhiteLevel);
+            // console.log("Warm White Level is: ", WarmWhiteLevel);
         }
         var WarmCoolLevels = [WarmWhiteLevel,CoolWhiteLevel];
         return WarmCoolLevels;

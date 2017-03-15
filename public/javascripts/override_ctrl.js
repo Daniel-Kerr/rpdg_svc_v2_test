@@ -52,6 +52,19 @@ $(document).ready(function() {
 
     // handler for fixture table,
     $("#fixturetable").on("click", " tr", function(e) {
+
+        // 3/15/17, remove selected scene if on the table,
+        if(selecteditem != undefined) {
+
+            selecteditem.css("border-color", defaultcolor);
+            selecteditem.droppable("option", "disabled", true);
+            enableDisableFixturesInDiv(selecteditem, false);
+            selected_scene = undefined;
+            filterAvalibleFixtures();
+        }
+
+
+
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         }

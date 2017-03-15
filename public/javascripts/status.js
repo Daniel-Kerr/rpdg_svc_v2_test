@@ -188,7 +188,7 @@ function updateUIPageComponents(config)
         var sunboxholder = daylight_limit_icon_map[fixobj.assignedname];
         if(sunboxholder != undefined)
         {
-            if(fixobj.isdaylightlimited)
+            if(fixobj.daylightlimited)
                 sunboxholder.src = "/images/sun_1.gif";
             else
                 sunboxholder.src = "/images/handtinytrans.gif";

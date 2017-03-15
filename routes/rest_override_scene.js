@@ -49,15 +49,10 @@ router.post('/invokescene', function(req, res) {
     var status = {};
     if(name != undefined)
     {
-         service.invokeScene(name);
-
+         service.invokeScene(name, "wallstation");
     }
-
     var cfg = JSON.stringify(global.currentconfig,null,2);
-    data_utils.writeConfigToFile();
     res.status(200).send(cfg);
-
-   // res.send(status);
 });
 
 /*

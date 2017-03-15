@@ -73,7 +73,7 @@ router.get('/getinterfaceoutputs', function(req, res) {
 
     var interfaces = {};
 
-  //  var interfaces = [];
+    //  var interfaces = [];
     var rpdg = {};
     rpdg.pwmoutputs = ["1","2","3","4","5","6","7","8"];
     rpdg.plcoutputs = ["1","2","3","4"];
@@ -83,7 +83,7 @@ router.get('/getinterfaceoutputs', function(req, res) {
     var enocean = {};
     enocean.outputs = ["002c0d1f","002c0d33","002c0d123","00440d1f"];
     enocean.levelinputs = ["ff445566","00667788"];
-    enocean.contactinputs = ["00112233","00224455"];
+    enocean.contactinputs = service.getEnoceanKnownContactInputs(); //["00112233","00224455"];
 
     interfaces.rpdg = rpdg;
     interfaces.enocean = enocean;
@@ -107,38 +107,38 @@ router.post('/savefixture', function(req, res) {
                 // update it,
                 exists = true;
                 global.currentconfig.fixtures.splice(i,1); //remove it,
-              //  global.currentconfig.fixtures[i] = req.body;
+                //  global.currentconfig.fixtures[i] = req.body;
                 break;
             }
         }
 
         var fix = undefined;
-       // if(!exists) {
-            switch (req.body.type) {
-                case "on_off":
-                    fix = new OnOffFixture();
-                    fix.fromJson(req.body);
-                    global.currentconfig.fixtures.push(fix);
-                    break;
-                case "dim":
-                     fix = new DimFixture();
-                    fix.fromJson(req.body);
-                    global.currentconfig.fixtures.push(fix);
-                    break;
-                case "cct":
-                    var fix = new CCTFixture();
-                    fix.fromJson(req.body);
-                    global.currentconfig.fixtures.push(fix);
-                    break;
-                case "rgbw":
-                    var fix = new RGBWFixture();
-                    fix.fromJson(req.body);
-                    global.currentconfig.fixtures.push(fix);
-                    break;
-                default:
-                    break;
-            }
-       // }
+        // if(!exists) {
+        switch (req.body.type) {
+            case "on_off":
+                fix = new OnOffFixture();
+                fix.fromJson(req.body);
+                global.currentconfig.fixtures.push(fix);
+                break;
+            case "dim":
+                fix = new DimFixture();
+                fix.fromJson(req.body);
+                global.currentconfig.fixtures.push(fix);
+                break;
+            case "cct":
+                var fix = new CCTFixture();
+                fix.fromJson(req.body);
+                global.currentconfig.fixtures.push(fix);
+                break;
+            case "rgbw":
+                var fix = new RGBWFixture();
+                fix.fromJson(req.body);
+                global.currentconfig.fixtures.push(fix);
+                break;
+            default:
+                break;
+        }
+        // }
 
         if(fix != undefined)
         {
@@ -219,35 +219,33 @@ router.post('/savelevelinput', function(req, res) {
         // validate here,
         // make sure fix params exists if not add them in, blank, (default),
         // check if name already exists,  if so update,
-        var exists = false;
+
         for(var i = 0; i < global.currentconfig.levelinputs.length; i++)
         {
             var fix = global.currentconfig.levelinputs[i];
             if(fix.assignedname == req.body.assignedname)
             {
-                // update it,
-                exists = true;
-                global.currentconfig.levelinputs[i] = req.body;
+                global.currentconfig.levelinputs.splice(i,1); //remove it,
                 break;
             }
         }
 
-        if(!exists) {
-            switch (req.body.type) {
-                case "daylight":
-                    var fix = new DayLightSensor();
-                    fix.fromJson(req.body);
-                    global.currentconfig.levelinputs.push(fix);
-                    break;
-                case "dimmer":
-                    var fix = new Dimmer();
-                    fix.fromJson(req.body);
-                    global.currentconfig.levelinputs.push(fix);
-                    break;
-                default:
-                    break;
-            }
+        switch (req.body.type) {
+            case "daylight":
+                var fix = new DayLightSensor();
+                fix.fromJson(req.body);
+                global.currentconfig.levelinputs.push(fix);
+                break;
+            case "dimmer":
+                var fix = new Dimmer();
+                fix.fromJson(req.body);
+                global.currentconfig.levelinputs.push(fix);
+                break;
+            default:
+                break;
         }
+
+        service.updateRPDGInputDrive();
     }
 
     var cfg = JSON.stringify(global.currentconfig,null,2);
@@ -573,7 +571,7 @@ router.post('/addfixturetoscene', function(req, res) {
         var found = sceneobj.containsFixture(fixturename);
         if(!found)
         {
-         sceneobj.addFixture(fixturename, fixtype);
+            sceneobj.addFixture(fixturename, fixtype);
         }
     }
 
@@ -646,7 +644,13 @@ router.post('/savefixturescenesettings', function(req, res) {
 
 
 
+/*
+router.get('/getenoceaninputs', function(req, res) {
 
+    var bla = service.getEnoceanKnownContactInputs();
+    res.status(200).send(bla);
 
+});
+*/
 
 module.exports = router;

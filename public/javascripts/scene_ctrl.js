@@ -10,8 +10,17 @@ var selected_scene;
 $(function () {
     // click handler for boxes.. just under test.
     $('.dropzone2').live('click', function(){
-        var x = $(this).css('backgroundColor');
 
+        // 3/15/17, remove any thing else that is highlighted,
+        // remove any selected items from table X
+        $('#fixturetable > tbody  > tr').each(function() {
+            $(this).removeClass('active');
+        });
+        var fixsetting = document.getElementById("fixturesettingsdiv");  // clear the control
+        fixsetting.innerHTML = ""; //clear
+
+
+        var x = $(this).css('backgroundColor');
         var selecteditemthistime = $(this);
         // if selected item is not ud , and it does not equal the current.
         // then disable the current,
@@ -233,7 +242,7 @@ function filterAvalibleFixtures()
                 element.fixturename = name;
 
                 deleteFixtureFromScene(element,function (retval) {
-                    if(retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
+                    if(retval != undefined)  // as of 1/24/17, added version.
                     {
                         cachedconfig = retval;
                     }
@@ -298,7 +307,7 @@ function constructSceneBox(currentdiv, scene, groupnum) {
         var element = {};
         element.name = scenename;
         saveFixtureSettingsToScene(element,function (retval) {
-            if(retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
+            if(retval != undefined)  // as of 1/24/17, added version.
             {
                 cachedconfig = retval;
             }
@@ -320,7 +329,7 @@ function constructSceneBox(currentdiv, scene, groupnum) {
         var element = {};
         element.name = scenename;
         invokescene(element,function (retval) {
-            if(retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
+            if(retval != undefined)  // as of 1/24/17, added version.
             {
                 cachedconfig = retval;
             }

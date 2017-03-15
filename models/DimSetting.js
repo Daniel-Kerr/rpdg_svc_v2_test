@@ -6,7 +6,7 @@ var DimSetting = function()
 {
     this.name = "";
     this.type = "dim";
-    this.level = "";
+    this.level = "100";
     DimSetting.prototype.fromJson = function(obj)
     {
         for (var prop in obj) {

@@ -36,7 +36,7 @@ global.loghw.plcoutputlevels=true;
 //global.loghw.wetdrycontactchanged=true;
 
 global.loghw.colortemp=true;
-global.loghw.lightfilter=true;
+global.loghw.lightfilter=false;
 var index = require('./routes/index');
 //var users = require('./routes/users');
 
@@ -45,6 +45,7 @@ var config = require('./routes/rest_config2');
 var override_scene = require('./routes/rest_override_scene');
 var groupshandler = require('./routes/rest_groups');
 var status = require('./routes/rest_status');
+var tester = require('./routes/rest_tester');
 
 var app = express();
 
@@ -69,7 +70,7 @@ app.use('/config', config);
 app.use('/override_scene', override_scene);
 app.use('/groups', groupshandler);
 app.use('/status', status);
-
+app.use('/tester', tester);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -6,10 +6,10 @@ var RGBWSetting = function()
 {
     this.name = "";
     this.type = "rgbw";
-    this.red = "";
-    this.green = "";
-    this.blue = "";
-    this.white = "";
+    this.red = "100";
+    this.green = "100";
+    this.blue = "100";
+    this.white = "100";
 
     RGBWSetting.prototype.fromJson = function(obj)
     {

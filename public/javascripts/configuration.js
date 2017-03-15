@@ -20,10 +20,18 @@ $(function(){
 $(document).ready(function() {
 
     $("#fixturetable").on("click", " tr", function(e) {
+
+        // 3/15/17, remove any thing else that is highlighted,
+        $('#wetdrycontacttable > tbody  > tr').each(function() {
+            $(this).removeClass('active');
+        });
+        $('#levelinputstable > tbody  > tr').each(function() {
+            $(this).removeClass('active');
+        });
+
+
         if ( $(this).hasClass('active') ) {
             $(this).removeClass('active');
-
-
         }
         else {
             //$("#fixturetable").$('tr.active').removeClass('active');
@@ -107,10 +115,18 @@ $(document).ready(function() {
 
     // start, click handler for contact input
     $("#wetdrycontacttable").on("click", " tr", function(e) {
+
+        // 3/15/17, remove any thing else that is highlighted,
+        $('#fixturetable > tbody  > tr').each(function() {
+            $(this).removeClass('active');
+        });
+        $('#levelinputstable > tbody  > tr').each(function() {
+            $(this).removeClass('active');
+        });
+
+
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
-
-
         }
         else {
             $(this).addClass('active').siblings().removeClass('active');
@@ -132,7 +148,7 @@ $(document).ready(function() {
                     updateContactInputs_InputSel();
 
 
-                    $("#contact_inputnum").val(ic.inputnum).change();
+                    $("#contact_inputnum").val(ic.inputid).change();
 
                     updateInputContactActionDropDowns();
                     enableDisableInputActionDropDowns();
@@ -193,6 +209,17 @@ $(document).ready(function() {
 
     // start, click handler for contact input
     $("#levelinputstable").on("click", " tr", function(e) {
+
+        // 3/15/17, remove any thing else that is highlighted,
+        $('#fixturetable > tbody  > tr').each(function() {
+            $(this).removeClass('active');
+        });
+        $('#wetdrycontacttable > tbody  > tr').each(function() {
+            $(this).removeClass('active');
+        });
+
+
+
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
         }
@@ -229,12 +256,19 @@ function init()
 {
 
     getConfig(processConfig);
-    getSceneNameList(cacheAndProcessSceneNames);
+    //getSceneNameList(cacheAndProcessSceneNames);
 
     updateInputContactActionDropDowns();
     enableDisableInputActionDropDowns();
 
 
+    getEnoceanInputs(cacheenoceaninputs);
+}
+
+var cached_enocean_inputs;
+function cacheenoceaninputs(data)
+{
+    cached_enocean_inputs = data;
 }
 
 
@@ -271,6 +305,13 @@ function processConfig(configobj)
     {
         loadedgroupnames.push(cachedconfig.groups[i].name);
     }
+
+    // place holder,
+    for(var i = 0 ; i < cachedconfig.scenes.length; i++ )
+    {
+        loadedscenenames.push(cachedconfig.scenes[i].name);
+    }
+
 
     initgroupsel();
 
@@ -890,7 +931,7 @@ function updateWetDryContactTable() {
             col4part.innerHTML = wetdrycontactlist[i].subtype;
 
             var col5part = document.createElement("TD");
-            col5part.innerHTML = wetdrycontactlist[i].inputnum;
+            col5part.innerHTML = wetdrycontactlist[i].inputid;
 
             var col6part = document.createElement("TD");
             col6part.innerHTML = wetdrycontactlist[i].active_action;
