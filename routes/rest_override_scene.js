@@ -63,7 +63,8 @@ router.get('/getscenenamelist', function(req, res) {
     res.status(200).send(names);
 
 });
-
+*/
+/*
 router.get('/getscenedata', function(req, res) {
     var scenename = req.query.name;
     var retscene = data_utils.getSceneObjDataByName(scenename);

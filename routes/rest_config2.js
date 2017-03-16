@@ -708,5 +708,20 @@ router.post('/enoceanlearn', function(req, res) {
 
 
 
+// **************************************************SET CONFIG API FOR TEST ONLY **********************
+
+
+router.post('/setconfig', function(req, res) {
+
+    service.testmode_SetConfig(req.body);
+    // NO WRITE
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
+
+});
+// *********************************************************************************************************
+
+
+
 
 module.exports = router;

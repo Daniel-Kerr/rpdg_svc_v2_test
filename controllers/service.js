@@ -554,6 +554,14 @@ var service = module.exports =  {
             outputdevs.push(dev.enoceanid);
         }
         return outputdevs;
+    },
+    testmode_SetConfig : function(cfg)
+    {
+        var active_cfg = new Configuration(cfg);
+        active_cfg.initHWInterfaces(rpdg,enocean);
+        global.currentconfig = active_cfg;
+        //setup the 0-10 v drive values for current config,
+        module.exports.updateRPDGInputDrive();
     }
 
     //testZero2TenVoltDriver : function()
