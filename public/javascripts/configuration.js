@@ -254,21 +254,9 @@ function SelectRadioButton(name, value) {
 }
 function init()
 {
-
     getConfig(processConfig);
-    //getSceneNameList(cacheAndProcessSceneNames);
-
     updateInputContactActionDropDowns();
     enableDisableInputActionDropDowns();
-
-
-    getEnoceanInputs(cacheenoceaninputs);
-}
-
-var cached_enocean_inputs;
-function cacheenoceaninputs(data)
-{
-    cached_enocean_inputs = data;
 }
 
 

@@ -27,6 +27,7 @@ var Configuration = function(obj)
     this.contactinputs = [];
     this.groups = [];
     this.scenes = [];
+    this.enocean = [];
     this.daylightlevelvolts = 0;
     this.occupiedstate = 0;
 
@@ -115,6 +116,14 @@ var Configuration = function(obj)
 
             f.fromJson(scene);
             this.scenes.push(f);
+        }
+    }
+
+    if(obj.enocean != undefined) {
+        for (var i = 0; i < obj.enocean.length; i++) {
+            this.enocean.push(obj.enocean[i]);
+           // f.fromJson(scene);
+           // this.scenes.push(f);
         }
     }
 

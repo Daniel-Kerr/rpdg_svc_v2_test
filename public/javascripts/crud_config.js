@@ -36,7 +36,13 @@ var REST_DELETE_FIXTURE_FROM_SCENE = "/config/deletefixturefromscene";
 var REST_SAVE_FIXTURE_SETTINGS_TO_SCENE = "/config/savefixturescenesettings"
 
 
-var REST_GET_ENOCEAN_INPUTS = "/config/getenoceaninputs"
+var REST_ENOCEAN_TEACH = "/config/enoceanteach";
+var REST_ENOCEAN_LEARN = "/config/enoceanlearn";
+
+var REST_SAVE_ENOCEAN = "/config/saveenocean";
+var REST_DELETE_ENOCEAN = "/config/deleteenocean";
+
+
 
 // config get / set,
 function getConfig(callback)
@@ -54,19 +60,6 @@ function getConfig(callback)
 }
 
 
-function getEnoceanInputs(callback)
-{
-    function onDataReceived(series) {
-        if(series != null)
-            callback(series);
-    }
-    $.ajax({
-        url: REST_GET_ENOCEAN_INPUTS,
-        type: "GET",
-        dataType: "json",
-        success: onDataReceived,
-    });
-}
 /***
  *
  * @param
@@ -92,6 +85,9 @@ function saveConfigObject(objtype, obj, callback) {
             break;
         case "scene":
             target = REST_SAVE_SCENE;
+            break;
+        case "enocean":
+            target = REST_SAVE_ENOCEAN;
             break;
         default:
             return;
@@ -134,6 +130,9 @@ function deleteConfigObject(objtype,obj, callback) {
             break;
         case "scene":
             target = REST_DELETE_SCENE;
+            break;
+        case "enocean":
+            target = REST_DELETE_ENOCEAN;
             break;
         default:
             return;
@@ -305,3 +304,48 @@ function saveFixtureSettingsToScene(obj, callback) {
         }
     });
 }
+
+
+
+
+
+function teachenocean(obj, callback) {
+
+    var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: REST_ENOCEAN_TEACH,
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}
+
+
+
+
+function learnenocean(callback) {
+
+   // var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: REST_ENOCEAN_LEARN,
+        type: 'post',
+      //  data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}
+
+

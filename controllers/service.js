@@ -44,7 +44,7 @@ var daylightpolcount = 0;   // used for tracking of dl upddates. interval.
  */
 function incommingHWChangeHandler(interface, type, inputid,level)
 {
-    global.applogger.info(TAG, "incomming hw change handler: " + type + "  " + interface +  "  " + inputid, "");
+    global.applogger.info(TAG, "rx handler -- interface:"+  interface + " type: " + type + "  inputid: " + inputid + "  level: " + level, "");
     // loop through inputdevices looking for device, then,
     // translate the message from a hw specific to a genreic input message pass to app layer.
     //e.g.
@@ -236,7 +236,7 @@ var service = module.exports =  {
         module.exports.updateRPDGInputDrive();
 
         // test code
-        module.exports.getEnoceanKnownContactInputs();
+       // module.exports.getEnoceanKnownContactInputs();
 
     },
 
@@ -267,14 +267,14 @@ var service = module.exports =  {
                     if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
 
                         var power = power_watts[Number(fixobj.outputid) - 1];
-                        fixobj.powerwatts = power;
+                        fixobj.powerwatts = Number(power).toFixed(2);
                         // global.applogger.info(TAG, "polling", "updated power on device: " + fixobj.assignedname + "   " + power);
 
                     }
                     else if (fixobj instanceof CCTFixture) {
                         var powerwarm = power_watts[Number(fixobj.outputid) - 1];
                         var powercool = power_watts[Number(fixobj.outputid)];
-                        fixobj.powerwatts = powerwarm + powercool;
+                        fixobj.powerwatts = Number(Number(powerwarm) + Number(powercool)).toFixed(2);
                         //  global.applogger.info(TAG, "polling", "updated power on device: " + fixobj.assignedname + "   " + power);
                     }
                 }
@@ -479,26 +479,23 @@ var service = module.exports =  {
     },
     // ******************************************ENOCEAN SUPPORT **********************************************
     // ********************************************************************************************************
-    teachEnoceanDevice : function(id)
+    teachEnoceanDevice : function(enoceanid)
     {
         try {
-            hal_enocean.teachFixture(id);
+            enocean.teachFixture(enoceanid);
 
-            var package = this.getStatus2();
-            var dataset = JSON.stringify(package, null, 2);
-            return dataset;
+            //var package = this.getStatus2();
+            //var dataset = JSON.stringify(package, null, 2);
+           // return dataset;
         } catch (err)
         {
             global.log.error("rpdg_driver.js ", "teachEnoceanDevice :",  err);
         }
     },
-    startLearning : function(id)
+    startEnoceanLearning : function()
     {
         try {
-            hal_enocean.startLearning();
-            var package = this.getStatus2();
-            var dataset = JSON.stringify(package, null, 2);
-            return dataset;
+            enocean.startLearning();
         } catch (err)
         {
             global.log.error("rpdg_driver.js ", "teachEnoceanDevice :",  err);
@@ -517,23 +514,46 @@ var service = module.exports =  {
         }
         rpdg.setZero2TenDrive(inputdrives);
     },
-    getEnoceanKnownContactInputs : function()
+    getEnoceanKnownContactInputs : function()    // contacts are occ and rocker switches
     {
         var contactinputs = [];
+        // refresh
+         enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
         for(var key in enocean_known_sensors)
         {
-
             var device = enocean_known_sensors[key];
-            if(device.eepFunc.includes("Occupancy"))
+            if(device.eepFunc.includes("Occupancy") || device.eepFunc.includes("Rocker Switch"))
             {
-                var y = 0;
                 contactinputs.push(key);
             }
-
         }
-
         return contactinputs;
+    },
+    getEnoceanKnownLevelInputs : function()    // level is light sensors.
+    {
+        var levelinputs = [];
+        // refresh
+        enocean_known_sensors = require('../enocean_db/knownSensors.json');
+        for(var key in enocean_known_sensors)
+        {
+            var device = enocean_known_sensors[key];
+            if(device.eepFunc.includes("Light Sensors"))
+            {
+                levelinputs.push(key);
+            }
+        }
+        return levelinputs;
+    },
+    getEnoceanKnownOutputDevices : function()
+    {
+        var outputdevs = [];
+        for(var i = 0; i < global.currentconfig.enocean.length; i++)
+        {
+            var dev = global.currentconfig.enocean[i];
+            outputdevs.push(dev.enoceanid);
+        }
+        return outputdevs;
     }
 
     //testZero2TenVoltDriver : function()

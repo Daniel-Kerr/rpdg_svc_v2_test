@@ -81,8 +81,8 @@ router.get('/getinterfaceoutputs', function(req, res) {
     rpdg.contactinputs = ["1","2","3","4"];
 
     var enocean = {};
-    enocean.outputs = ["002c0d1f","002c0d33","002c0d123","00440d1f"];
-    enocean.levelinputs = ["ff445566","00667788"];
+    enocean.outputs = service.getEnoceanKnownOutputDevices(); //["002c0d1f","002c0d33","002c0d123","00440d1f"];
+    enocean.levelinputs = service.getEnoceanKnownLevelInputs(); //["ff445566","00667788"];
     enocean.contactinputs = service.getEnoceanKnownContactInputs(); //["00112233","00224455"];
 
     interfaces.rpdg = rpdg;
@@ -644,13 +644,69 @@ router.post('/savefixturescenesettings', function(req, res) {
 
 
 
-/*
-router.get('/getenoceaninputs', function(req, res) {
+router.post('/deleteenocean', function(req, res) {
 
-    var bla = service.getEnoceanKnownContactInputs();
-    res.status(200).send(bla);
 
+    for(var i = 0 ; i < global.currentconfig.enocean.length; i++)
+    {
+        var endev = global.currentconfig.enocean[i];
+        if(endev.enoceanid == req.body.enoceanid)
+        {
+            global.currentconfig.enocean.splice(i,1);
+            break;
+        }
+    }
+
+
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
 });
-*/
+
+
+
+
+
+router.post('/saveenocean', function(req, res) {
+
+    for(var i = 0 ; i < global.currentconfig.enocean.length; i++)
+    {
+        var endev = global.currentconfig.enocean[i];
+        if(endev.enoceanid == req.body.enoceanid)
+        {
+            global.currentconfig.enocean.splice(i,1);
+            break;
+        }
+    }
+
+    global.currentconfig.enocean.push(req.body);
+
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+});
+
+
+
+
+
+router.post('/enoceanteach', function(req, res) {
+
+    service.teachEnoceanDevice(req.body.enoceanid);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
+});
+
+
+
+router.post('/enoceanlearn', function(req, res) {
+
+    service.startEnoceanLearning();
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
+});
+
+
+
 
 module.exports = router;
