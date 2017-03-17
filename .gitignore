@@ -1,7 +1,5 @@
-/runtime_log
 /.idea/workspace.xml
 /.idea/runConfigurations
-
 /datastore/config.json
 /datastore/scenes.json
 logs/
