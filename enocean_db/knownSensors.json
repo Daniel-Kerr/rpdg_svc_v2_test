@@ -11,8 +11,8 @@
             {
                 "type": "PIR Status",
                 "unit": "",
-                "value": "off",
-                "lastModified": "2017-03-16T20:41:33.938Z"
+                "value": "on",
+                "lastModified": "2017-03-17T16:03:54.805Z"
             },
             {
                 "type": "Supply voltage",
@@ -22,8 +22,8 @@
             {
                 "type": "Voltage",
                 "unit": "V",
-                "value": 3.3000000000000003,
-                "lastModified": "2017-03-16T20:31:34.642Z"
+                "value": 3.54,
+                "lastModified": "2017-03-17T16:56:53.095Z"
             }
         ]
     },
@@ -141,8 +141,8 @@
             {
                 "type": "state",
                 "unit": "",
-                "value": "A0 down",
-                "lastModified": "2017-03-16T20:32:13.948Z"
+                "value": "released",
+                "lastModified": "2017-03-17T17:44:14.092Z"
             }
         ]
     }

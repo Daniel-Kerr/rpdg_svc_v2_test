@@ -15,13 +15,42 @@ var israspberrypi = (process.arch == 'arm');
 
 var isready = false;
 
-var enocean = require("node-enocean")(
-    {sensorFilePath:known_s},
-    {configFilePath:config},
-    {timeout:30}
-);
+//var enocean = require("node-enocean")(
+//    {sensorFilePath:known_s},
+//    {configFilePath:config},
+//    {timeout:30}
+//);
 
-var Dimmer   = require("node-enocean-dimmer");
+var enocean = undefined;
+var Dimmer = undefined;
+
+
+if(!israspberrypi) {
+    enocean = require("../crossplatform_modules/windows/node-enocean")(
+        {sensorFilePath: known_s},
+        {configFilePath: config},
+        {timeout: 30}
+    );
+
+     Dimmer = require("../crossplatform_modules/windows/node-enocean-dimmer");
+}
+else
+{
+    enocean = require("../crossplatform_modules/rpi/node-enocean")(
+        {sensorFilePath:known_s},
+        {configFilePath:config},
+        {timeout:30}
+    );
+
+    Dimmer = require("../crossplatform_modules/rpi/node-enocean-dimmer");
+}
+
+
+
+
+
+
+//var Dimmer = require("node-enocean-dimmer");
 
 enocean.on("ready",function(data){
     global.applogger.info(TAG, "isReady", "  Enocean device is now Ready");
