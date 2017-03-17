@@ -5,3 +5,5 @@
 /datastore/config.json
 /datastore/scenes.json
 logs/
+crossplatform_modules/rpi/
+crossplatform_modules/windows/
