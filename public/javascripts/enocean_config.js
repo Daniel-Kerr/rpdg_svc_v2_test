@@ -249,3 +249,5 @@ function updateInputDeviceMapTable() {
     $("#tableOutput").html(oTable);
     inputdevtablediv.appendChild(oTable);
 }
+
+}

@@ -225,7 +225,41 @@ function contactSwitchHandler(contactdef)
 
 
 
+function invokeAllToLevel(level, requesttype)
+{
+    for (var i = 0; i < global.currentconfig.fixtures.length; i++) {
+        var fixobj = global.currentconfig.fixtures[i];
+        if (fixobj != undefined) {
+            // create a reqeuest obj, pass it in
+            if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
+                var reqobj = {};
+                reqobj.name = fixobj.assignedname;
+                reqobj.level = level;
+                reqobj.requesttype = requesttype;
+                module.exports.setFixtureLevels(reqobj,true);
+            }
+            else if (fixobj instanceof CCTFixture) {
+                var reqobj = {};
+                reqobj.name = fixobj.assignedname;
+                reqobj.brightness = level;
+                reqobj.colortemp = 3500;
+                reqobj.requesttype = requesttype;
+                module.exports.setFixtureLevels(reqobj,true);
+            }
+            else if (fixobj instanceof RGBWFixture) {
+                var reqobj = {};
+                reqobj.name = fixobj.assignedname;
+                reqobj.red = level;
+                reqobj.green = level;
+                reqobj.blue = level;
+                reqobj.white = level;
+                reqobj.requesttype = requesttype;
+                module.exports.setFixtureLevels(reqobj,true);
+            }
 
+        }
+    }
+}
 
 
 var service = module.exports =  {
@@ -453,7 +487,24 @@ var service = module.exports =  {
         }
     },
     invokeScene : function(name, requesttype) {
+
+        if(name == "ALL_ON")
+        {
+            invokeAllToLevel(100,requesttype);
+            return;
+        }
+        if(name == "ALL_OFF")
+        {
+            invokeAllToLevel(0,requesttype);
+            return;
+        }
+
+
+
         var sceneobj = global.currentconfig.getSceneByName(name);
+
+
+
         // var requesttype = "wallstation";
         if(sceneobj == undefined)
         {

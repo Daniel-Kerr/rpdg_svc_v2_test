@@ -95,6 +95,12 @@ function openNewSceneEditDlg()
                 var scene = {};
                 scene.name = scenename;
 
+
+                if(scenename == "ALL_ON" || scenename == "ALL_OFF")
+                {
+                    noty({text: 'Error: scene name already taken  ', type: 'error'});
+                    return ;
+                }
                 saveConfigObject("scene", scene,function (retval) {
                     if(retval != undefined)  // as of 1/24/17, added version.
                     {
@@ -103,7 +109,7 @@ function openNewSceneEditDlg()
                         constructSceneBox(groups_div, scene, grpnum);
                     }
                     else
-                        noty({text: 'Error creating group ', type: 'error'});
+                        noty({text: 'Error creating scene ', type: 'error'});
                 });
             }
             else
@@ -440,3 +446,31 @@ function getFixtureByName(name)
 }
 
 
+
+function invokeAllOn()
+{
+    var element = {};
+    element.name = "ALL_ON";
+    invokescene(element,function (retval) {
+        if(retval != undefined)  // as of 1/24/17, added version.
+        {
+            cachedconfig = retval;
+        }
+        else if(retval.error != undefined)
+            noty({text: 'Error invoking ' + retval.error, type: 'error'});
+    });
+}
+
+
+function invokeAllOff() {
+    var element = {};
+    element.name = "ALL_OFF";
+    invokescene(element,function (retval) {
+        if(retval != undefined)  // as of 1/24/17, added version.
+        {
+            cachedconfig = retval;
+        }
+        else if(retval.error != undefined)
+            noty({text: 'Error invoking ' + retval.error, type: 'error'});
+    });
+}
