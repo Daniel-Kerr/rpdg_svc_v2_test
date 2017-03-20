@@ -52,7 +52,11 @@ var RGBWFixture = function(name, interface, outputid)
     this.setLevel = function(requestobj, apply){
 
         var dlsensor = global.currentconfig.getDayLightSensor();
-        var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
+
+        var isdaylightbound = false;
+        if(dlsensor != undefined)
+            isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
+      //  var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
 
         var red = this.red;
         if(requestobj.red != undefined)

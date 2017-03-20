@@ -60,7 +60,9 @@ var OnOffFixture = function()
         var filterblocked = false;
         if(this.interfacename != "rpdg-plc") {
             var dlsensor = global.currentconfig.getDayLightSensor();
-            var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
+            var isdaylightbound = false;
+            if(dlsensor != undefined)
+                isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
 
             var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound);
             this.daylightlimited = returndataobj.isdaylightlimited;

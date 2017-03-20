@@ -54,7 +54,11 @@ var DimFixture = function(name, interface, outputid)
     this.setLevel = function(requestobj, apply){
 
         var dlsensor = global.currentconfig.getDayLightSensor();
-        var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
+
+        var isdaylightbound = false;
+        if(dlsensor != undefined)
+            isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
+       // var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
 
         var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound);
         this.daylightlimited = returndataobj.isdaylightlimited;
