@@ -31,10 +31,21 @@ var data_utils = require('../utils/data_utils.js');
 
 var filter_utils = require('./../utils/filter_utils.js');
 
+var schedule_mgr = require('./schedule_mgr.js');
+
+
 var enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
 var daylightpollseconds = 5;     // global variable (can be set via api).
 var daylightpolcount = 0;   // used for tracking of dl upddates. interval.
+
+var schedulepollseconds = 60;
+var schedulepollcount = 0;
+
+
+
+var currentschedule_event = undefined;
+var reinit_schedule_countdown = -1;
 /***
  * this is where the messages from rpdg driver or the enocean hw come in ,  like (occ, vac...polling changes..etc),
  * @param interface  rpdg, / enocean
@@ -235,6 +246,8 @@ var service = module.exports =  {
         //setup the 0-10 v drive values for current config,
         module.exports.updateRPDGInputDrive();
 
+
+        schedule_mgr.initManager();
         // test code
        // module.exports.getEnoceanKnownContactInputs();
 
@@ -328,6 +341,41 @@ var service = module.exports =  {
                 }
             }
             // ****************************************END DL POLLING ******************************************
+
+
+            // 3/17/17/    Schedule manage polling,*******************************************************************
+            //********************************************************************************************************
+            if(reinit_schedule_countdown >= 0)
+            {
+                reinit_schedule_countdown--;
+                if(reinit_schedule_countdown < 0)
+                {
+                    global.applogger.info(TAG, "---- Schedule Re init----", "");
+                    schedule_mgr.initManager();
+                    currentschedule_event = undefined;
+                }
+            }
+
+
+            schedulepollcount++;
+            var schedulepollperiod = Math.round ((schedulepollseconds * 1000) / BasePollingPeriod);
+            if (schedulepollcount >= schedulepollperiod || currentschedule_event == undefined) {  // periodic or , at start
+                schedulepollcount = 0;
+                var event = schedule_mgr.getCurrentEvent();
+                if (event != undefined) {
+                    if (currentschedule_event == undefined || event.title != currentschedule_event.title) {
+                        global.applogger.info(TAG, "Sched Event INVOKE -- : ", event.type + "   " + event.title + "   " + event.start);
+                        currentschedule_event = event;
+                        module.exports.invokeScene(event.title, "wallstation");
+                    }
+                }
+            }
+
+            // ******************************************** END SCHEDULE POLLING ***************************************
+            // *********************************************************************************************************
+
+
+
         }, BasePollingPeriod);
     },
 
@@ -407,6 +455,11 @@ var service = module.exports =  {
     invokeScene : function(name, requesttype) {
         var sceneobj = global.currentconfig.getSceneByName(name);
         // var requesttype = "wallstation";
+        if(sceneobj == undefined)
+        {
+            global.applogger.info(TAG, "cant invoke scene: " + name ,"");
+            return;
+        }
         // ... todo   add hold set hw ,  until after we are done setting levels,  (levels only )
         for (var i = 0; i < sceneobj.fixtures.length; i++) {
             var scenefix = sceneobj.fixtures[i];
@@ -477,6 +530,11 @@ var service = module.exports =  {
         daylightpollseconds = intervalsec;
         daylightpolcount = 0;
     },
+    reinitScheduleMgr : function()
+    {
+        reinit_schedule_countdown = 2;
+
+    },
     // ******************************************ENOCEAN SUPPORT **********************************************
     // ********************************************************************************************************
     teachEnoceanDevice : function(enoceanid)
@@ -489,7 +547,7 @@ var service = module.exports =  {
            // return dataset;
         } catch (err)
         {
-            global.log.error("rpdg_driver.js ", "teachEnoceanDevice :",  err);
+            global.applogger.error("rpdg_driver.js ", "teachEnoceanDevice :",  err);
         }
     },
     startEnoceanLearning : function()

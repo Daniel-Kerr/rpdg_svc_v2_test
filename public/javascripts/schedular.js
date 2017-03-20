@@ -125,6 +125,8 @@ function saveEventonHost(existingid)
         var event = {};
         var sdate = startdt.clone();
         var bla = sdate;
+        var k = sdate.toISOString();
+
         event.start = sdate;
         event.title = title;
 
@@ -274,16 +276,46 @@ function eventDeleteHandler(result)
 
 }
 
-function processSceneNameList(namelist)
+function processSceneNameList(config)
 {
-    if(namelist != null)
+    cachedconfig = config;
+
+    var sel = document.getElementById('scene');
+
+    for(var i = 0; i < config.scenes.length; i++)
     {
-        var sel = document.getElementById('scene');
-        for (var i = 0 ; i < namelist.length; i += 1) {
-            var opt = document.createElement('option');
-            opt.setAttribute('value', namelist[i]);
-            opt.appendChild(document.createTextNode(namelist[i]));
-            sel.appendChild(opt);
-        }
+        var name = config.scenes[i].name;
+
+        var opt = document.createElement('option');
+        opt.setAttribute('value', name);
+        opt.appendChild(document.createTextNode(name));
+        sel.appendChild(opt);
+    }
+
+
+      //  for (var i = 0 ; i < namelist.length; i += 1) {
+
+      //  }
+
+}
+
+
+var cachedconfig;
+
+function initscenesel()
+{
+
+    getConfig(processSceneNameList);
+}
+
+
+function initdayofmonthsel()
+{
+    var sel = document.getElementById('dayofmonth');
+    for (var i = 1 ; i < 31; i++) {
+        var opt = document.createElement('option');
+        opt.setAttribute('value', i);
+        opt.appendChild(document.createTextNode(i));
+        sel.appendChild(opt);
     }
 }

@@ -4,7 +4,11 @@ var path = require("path");
 var fs = require('fs');
 var moment = require('moment');
 var app = express();
-var os = require( 'os' )
+var os = require( 'os' );
+var pad = require('pad');
+var TAG = pad(path.basename(__filename),15);
+
+var service = require('../controllers/service');
 
 var file_schedule = 'datastore/schedule.json';
 /* GET */
@@ -21,6 +25,17 @@ router.post('/addevent', function(req, res) {
 
   var event = req.body;
   var start = event.start;
+
+
+ // var bla = moment.utc(event.start);
+  //var localTime = moment.utc(event.start).local().format();
+
+  //event.start = moment.utc(event.start).local().format();
+
+  //var offset = moment().utcOffset();
+  //global.applogger.info(TAG, "--------------Server tz Offset-------------: " +offset, "");
+ // event.start = moment.utc(event.start).utcOffset(offset).format();
+
 
   var target_file;
   if(event.rdaily)
@@ -52,8 +67,11 @@ router.post('/addevent', function(req, res) {
 
   eventlist.push(req.body);
 
+
+
   writeEventListToFile(eventlist,target_file);
-  res.send(200);
+ // res.send(200);
+  res.status(200).send("OK");
 });
 
 
@@ -87,7 +105,8 @@ router.post('/delevent', function(req, res) {
     }
   }
   writeEventListToFile(eventlist,target_file);
-  res.send(200);
+ // res.send(200);
+  res.status(200).send("OK");
 });
 
 function getEventListFromFile(schedfile)
@@ -120,8 +139,10 @@ function writeEventListToFile(eventlist, schedfile)
     if (err) {
       console.log(err);
     }
-    else
-      console.log("The file was saved!");
+    else {
+      //console.log("The file was saved!");
+    }
+    service.reinitScheduleMgr();
   });
 }
 

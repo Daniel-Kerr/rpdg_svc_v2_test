@@ -46,6 +46,7 @@ var override_scene = require('./routes/rest_override_scene');
 var groupshandler = require('./routes/rest_groups');
 var status = require('./routes/rest_status');
 var tester = require('./routes/rest_tester');
+var schedule = require('./routes/rest_schedule');
 
 var app = express();
 
@@ -71,6 +72,7 @@ app.use('/override_scene', override_scene);
 app.use('/groups', groupshandler);
 app.use('/status', status);
 app.use('/tester', tester);
+app.use('/schedule', schedule);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -30,7 +30,8 @@
     <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
     <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
     <link href="stylesheets/bootstrap-timepicker.css" rel="stylesheet">
-    <script src="javascripts/client_rest.js"></script>
+    <script src="javascripts/crud_config.js"></script>
+    <script src="javascripts/crud_schedule.js"></script>
 
     <style>
         .hero {
@@ -68,6 +69,7 @@
                 },
                 theme: true,
                 selectable: true,
+                ignoreTimezone: false,
                 selectHelper: true,
                 height: 500,
                 eventColor: '#9ec3ff',
@@ -94,6 +96,8 @@
                 },
                 eventRender: function(event, element) {
 
+                    var i = 0;
+                    i = i + 1;
                     // if(event.rweekly != undefined)
                     //     console.log("found a weekly repeat"); // Writes "1"
                 },
@@ -244,22 +248,7 @@
         });
 
 
-        function initscenesel()
-        {
-            getSceneNameList(processSceneNameList);
-        }
 
-
-        function initdayofmonthsel()
-        {
-            var sel = document.getElementById('dayofmonth');
-            for (var i = 1 ; i < 31; i++) {
-                var opt = document.createElement('option');
-                opt.setAttribute('value', i);
-                opt.appendChild(document.createTextNode(i));
-                sel.appendChild(opt);
-            }
-        }
 
     </script>
 
@@ -337,8 +326,8 @@
                                 <div class="col-sm-3">
                                     <input type="radio" name="eventtype" value="scene" checked="true"  data-target="div_scene_config" class="toggleButton">
                                     <label for="scene">Scene</label><br>
-                                    <input type="radio" name="eventtype" value="output"  data-target="div_output_config" class="toggleButton">
-                                    <label class="control-label" >PLC(24 V) Outputs</label><br>
+                                    <!--input type="radio" name="eventtype" value="output"  data-target="div_output_config" class="toggleButton">
+                                    <label class="control-label" >PLC(24 V) Outputs</label><br-->
                                     <input type="radio" name="eventtype" value="input" data-target="div_input_config" class="toggleButton">
                                     <label class="control-label" >0-10 V inputs</label><br>
                                     <input type="radio" name="eventtype" value="dryinput" data-target="div_dryinput_config" class="toggleButton">
