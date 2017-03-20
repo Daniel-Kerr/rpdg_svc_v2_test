@@ -16,7 +16,8 @@
 		"a5a43772-57f9-8830-ce3b-4c75ebc35f9d",
 		"a5955b3f-6223-320f-5d15-236201832767",
 		"b4998045-0021-2fd4-b5b3-1986417cb1c3",
-		"e211bf23-ee99-de77-8f03-7ab6b3b0fed6"
+		"e211bf23-ee99-de77-8f03-7ab6b3b0fed6",
+		"e20e452b-3084-3a14-9545-3230ae673fa3"
 	],
 	"folders": [],
 	"timestamp": 1489700683727,
@@ -248,6 +249,25 @@
 			"helperAttributes": {},
 			"isFromCollection": true,
 			"collectionRequestId": "9d069814-1dc0-d785-c8fb-9d86f5da1b20"
+		},
+		{
+			"id": "e20e452b-3084-3a14-9545-3230ae673fa3",
+			"headers": "Content-Type: application/json\n",
+			"url": "http://localhost:3000/tester/enablerpdgpolling",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1490029395022,
+			"name": "enable rpdg hw polling",
+			"description": "",
+			"collectionId": "bc1a5394-be64-57fb-6ffa-65d616952238",
+			"responses": [],
+			"rawModeData": "{\n\t\"polling\": \"false\"\n}"
 		},
 		{
 			"id": "e211bf23-ee99-de77-8f03-7ab6b3b0fed6",
