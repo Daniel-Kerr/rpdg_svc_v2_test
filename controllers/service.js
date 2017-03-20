@@ -586,6 +586,11 @@ var service = module.exports =  {
         reinit_schedule_countdown = 2;
 
     },
+    enableRPDGHardwarePolling : function(enable)
+    {
+        global.applogger.error("rpdg_driver.js ", "enable rpdg polling : " + enable,  "");
+        rpdg.enableHardwarePolling(enable);
+    },
     // ******************************************ENOCEAN SUPPORT **********************************************
     // ********************************************************************************************************
     teachEnoceanDevice : function(enoceanid)

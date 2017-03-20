@@ -100,6 +100,18 @@ router.post('/sendvacancytogroup', function(req, res) {
 
 });
 
+router.post('/enablerpdgpolling', function(req, res) {
+
+    var enable = JSON.parse(req.body.polling);
+
+    service.enableRPDGHardwarePolling(enable);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
+
+});
+
+
+
 
 // test hook for zero to 10 v driver
 /*router.get('/dimmeredgecfg', function(req, res, next) {

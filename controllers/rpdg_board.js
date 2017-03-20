@@ -128,15 +128,26 @@ exports.setZero2TenDrive = function(inputs)
     }
 }
 
+exports.enableHardwarePolling = function(enable)
+{
+    polling_enabled = enable;
+}
+
 var tempcounter = 0;
+
+
+var polling_enabled = true;
+
 function startHWPolling() {
 
     var BasePollingPeriod = 100;        // Time interval in mSec that we do the most frequent checks.
     global.applogger.info(TAG, "Polling :",  "polling timer started");
     periodictimer = setInterval(function () {
-        readHW_0to10inputs();
-        readHW_WetDryContactinputs();
-        readHW_CurrentCounts();
+        if(polling_enabled) {
+            readHW_0to10inputs();
+            readHW_WetDryContactinputs();
+            readHW_CurrentCounts();
+        }
         // global.applogger.info(TAG, "hw polling",  "timer fired");
     }, BasePollingPeriod);
 }
