@@ -16,61 +16,23 @@ function init() {
 function processConfig(configobj)
 {
     cachedconfig = configobj;
-    redrawScenes();
-    filterAvalibleFixtures();
+    refreshUpdatedConfig();
 }
 
-$(function () {
-    // click handler for boxes.. just under test.
-   /* $('.dropzone2').live('click', function(){
 
-        // 3/15/17, remove any thing else that is highlighted,
-        // remove any selected items from table X
-        $('#fixturetable > tbody  > tr').each(function() {
-            $(this).removeClass('active');
-        });
-        //  var fixsetting = document.getElementById("fixturesettingsdiv");  // clear the control
-        // fixsetting.innerHTML = ""; //clear
+function refreshUpdatedConfig()
+{
+    cachedconfig.scenelists.sort(function(a, b){
+        if(a.name < b.tname) return -1;
+        if(a.name > b.name) return 1;
+        return 0;
+    })
+    redrawSceneLists();
+    filterAvalibleFixtures();
+    constructTrashCan();
+}
 
-
-        var x = $(this).css('backgroundColor');
-        var selecteditemthistime = $(this);
-        // if selected item is not ud , and it does not equal the current.
-        // then disable the current,
-        if(selecteditem != undefined && selecteditem.get(0) != selecteditemthistime.get(0))
-        {
-
-            selecteditem.css("border-color", defaultcolor);
-            selecteditem.droppable("option", "disabled", true);
-            enableDisableFixturesInDiv(selecteditem, false);
-
-            $(this).css("border-color", "blue");
-            selecteditem = selecteditemthistime; //$(this);
-            enableDisableFixturesInDiv(selecteditem, true);
-            $(this).droppable("option", "disabled", false);
-
-            var selectedindex = selecteditem.attr('index');
-
-           // selected_scene = cachedconfig.scenes[Number(selectedindex)];
-            // filterAvalibleFixtures();
-
-        }
-        else if(selecteditem == undefined)
-        {
-            $(this).css("border-color", "blue");
-            selecteditem = selecteditemthistime; //$(this);
-            enableDisableFixturesInDiv(selecteditem, true);
-            $(this).droppable("option", "disabled", false);
-
-            var selectedindex = selecteditem.attr('index');
-          //  selected_scene = cachedconfig.scenes[Number(selectedindex)];
-            // filterAvalibleFixtures();
-        }
-    });*/
-
-});
-
-function redrawScenes()
+function redrawSceneLists()
 {
     var groups_div = document.getElementById("active_scenes_holder");
     groups_div.innerHTML = "";
@@ -81,19 +43,6 @@ function redrawScenes()
     }
 }
 
-function redrawGroup(groupname)
-{
-    var groups_div = document.getElementById("active_scenes_holder");
-
-    $('.group_holder_0 div').remove();
-    // groups_div.innerHTML = "";
-    //for(var i = 0; i < loadedconfig.groups.length; i++)
-    //{
-    //    var group = loadedconfig.groups[i];
-    //    constructSceneBox(groups_div, group,i);
-    // }
-    //.
-}
 
 function openNewSceneEditDlg()
 {
@@ -149,7 +98,7 @@ function deleteSelScene()
         if(retval != undefined)  // as of 1/24/17, added version.
         {
             cachedconfig = retval;
-           // selected_scene = undefined;
+            // selected_scene = undefined;
             redrawScenes();
 
             filterAvalibleFixtures();
@@ -190,69 +139,65 @@ function filterAvalibleFixtures()
             $(this).show();
         }
     });
-
-
-/*
-    $('.availiblefixturesholder').droppable({
-        tolerance: 'touch',
-        drop: function(event, ui) {
-            var dropped = ui.draggable;
-            var droppedOn = $(this);
-            //  $(dropped).parent().droppable("enable");
-            $(dropped).detach().appendTo(droppedOn);
-            // when droppede on, we need to remove it from the selected group.
-            var name = dropped.get(0).innerText;
-            //var uid = fixtureNameToUID(name);
-            if (name != undefined) {
-               // var updatelayout = selected_scene.fixtures.length == 4;  // if going from 4--> 3
-
-               // var index = selected_scene.fixtures.indexOf(name);
-               // if (index > -1) {
-               //     selected_scene.fixtures.splice(index, 1);
-               // }
-               // var element = {};
-               // element.scenename = selected_scene.name;
-               // element.fixturename = name;
-
-               // // todo ,  dont allow duplicates.
-                /* deleteFixtureFromScene(element,function (retval) {
-                 if(retval != undefined)  // as of 1/24/17, added version.
-                 {
-                 cachedconfig = retval;
-                 }
-                 else if(retval.error != undefined)
-                 noty({text: 'Error saving config ' + retval.error, type: 'error'});
-                 });
-                 */
-
-                //if (updatelayout)
-               // {
-               //     var selectedindex = selecteditem.attr('index');
-                    // var k = $('.selecteditem').attr('id');
-                    // this should be a "group_X",
-                    //   var num = k.substr(6);
-                //    var bla = document.getElementById("group_holder_"+selectedindex);
-                //    bla.className = "col-lg-5";
-               // }
-
-          //  }
-            //  droppedOn.droppable("disable");
-       // }
-   // });
-   // */
-
-    // $(".availiblefixture").draggable();
-    // $(".dropzone2").droppable();
-
 }
 
 function captureScenceSettings()
 {
     var k = 0;
     k = k + 1;
-
 }
 
+
+function constructTrashCan()
+{
+    var fixturebucketdiv = document.getElementById("trashholder");
+    fixturebucketdiv.innerHTML = "";
+    var container = document.createElement("div");
+    container.className = "trashcan";
+    fixturebucketdiv.appendChild(container);
+
+    $('.trashcan').droppable({
+        tolerance: 'touch',
+        drop: function(event, ui) {
+            var dropped = ui.draggable;
+            var droppedOn = $(this);
+            //  $(dropped).parent().droppable("enable");  // enable by default
+            // $(dropped).detach().appendTo(droppedOn);
+            $(dropped).appendTo(droppedOn);
+            var name = dropped.get(0).innerText;
+            if (name != undefined) {
+
+                var scenename = dropped[0].getAttribute("scene");
+                if (scenename != undefined) {
+                    var scenelist = getSceneListByName(scenename);
+
+                    if(scenelist != undefined) {
+                        var index = dropped[0].getAttribute("listindex");
+
+                        scenelist.scenes.splice(Number(index),1);
+
+                        saveConfigObject("scenelist", scenelist, function (retval) {
+                            if (retval != undefined)  // as of 1/24/17, added version.
+                            {
+                                cachedconfig = retval;
+                                refreshUpdatedConfig();
+                                //redrawSceneLists();
+                                //filterAvalibleFixtures();
+                                //constructTrashCan();
+                            }
+                            else
+                                noty({text: 'Error creating scene ', type: 'error'});
+                        });
+                        //filterAvalibleFixtures();
+                    }
+                }
+                // remove it from the parent scenelist,  save it
+            }
+        }
+    });
+
+
+}
 function constructSceneListBox(currentdiv, scenelist, groupnum) {
     var fixcol = document.createElement("div");
     fixcol.className = "col-lg-2";
@@ -272,6 +217,7 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     fixbox.appendChild(fixboxheader);
 
 
+    /*
     var capturesettings = document.createElement("input");
     capturesettings.className = "btn btn-large btn-primary";
     capturesettings.type = "button";
@@ -282,17 +228,9 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
         var scenename = this.getAttribute('scenelist');
         var element = {};
         element.name = scenename;
-
-        /* saveFixtureSettingsToScene(element,function (retval) {
-         if(retval != undefined)  // as of 1/24/17, added version.
-         {
-         cachedconfig = retval;
-         }
-         else if(retval.error != undefined)
-         noty({text: 'Error saving config ' + retval.error, type: 'error'});
-         });*/
     };
     fixboxheader.appendChild(capturesettings);
+    */
 
     var header = document.createElement("h2");
     header.innerHTML = scenelist.name;
@@ -305,9 +243,8 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     var dropzonediv = document.createElement("div");
     dropzonediv.className = "dropzone2";
 
-    dropzonediv.id = "group_"+groupnum;
-    dropzonediv.setAttribute("index",groupnum);
-    // dropzonediv.innerHTML = "test";
+    dropzonediv.id = scenelist.name;
+   // dropzonediv.setAttribute(scenelist.name);
     fixcontent.appendChild(dropzonediv);
 
 
@@ -317,42 +254,31 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
         drop: function(event, ui) {
             var dropped = ui.draggable;
             var droppedOn = $(this);
-           //  $(dropped).parent().droppable("enable");  // enable by default
-            $(dropped).detach().appendTo(droppedOn);
+            //  $(dropped).parent().droppable("enable");  // enable by default
+            // $(dropped).detach().appendTo(droppedOn);
+            $(dropped).appendTo(droppedOn);
             var name = dropped.get(0).innerText;
-            var updatelayout = false;
+
             if (name != undefined) {
+                var scenelist = getSceneListByName(droppedOn[0].id);
 
-                var k = 0;
-                k = k + 1;
-                // 1/28/17, make sure its not already in the array:
-               // if(selected_scene.scenes == undefined)
-                //    return;
+                if(scenelist != undefined) {
+                    scenelist.scenes.push(dropped[0].innerText);
 
-              //  selected_scene.scenes.push(name);
-
-              //  var element = {};
-              //  element.scenename = selected_scene.name;
-              //  element.fixturename = name;
-                // element.type = getFixtureByName(name).type;
-
-                /* addFixtureToScene(element,function (retval) {
-                 if(retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
-                 {
-                 cachedconfig = retval;
-                 }
-                 else if(retval.error != undefined)
-                 noty({text: 'Error saving fixture to group: ' + retval.error, type: 'error'});
-                 });*/
-
-                /*if (selected_scene.scenes != undefined && selected_scene.scenes.length == 4)  // if going from 2-->3
-                 {
-                 var k = $(this).attr('id');
-                 // this should be a "group_X",
-                 var num = k.substr(6);
-                 var bla = document.getElementById("group_holder_"+num);
-                 bla.className = "col-lg-10";
-                 }*/
+                    saveConfigObject("scenelist", scenelist, function (retval) {
+                        if (retval != undefined)  // as of 1/24/17, added version.
+                        {
+                            cachedconfig = retval;
+                            refreshUpdatedConfig();
+                           // redrawSceneLists();
+                            //filterAvalibleFixtures();
+                            //constructTrashCan();
+                        }
+                        else
+                            noty({text: 'Error creating scene ', type: 'error'});
+                    });
+                   // filterAvalibleFixtures();
+                }
             }
         }
     });
@@ -377,24 +303,28 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
         var debug_label = document.createElement("label");
         debug_label.innerHTML = scenename;
         fixdiv.appendChild(debug_label);
+        fixdiv.setAttribute("scene", scenelist.name);
+        fixdiv.setAttribute("listindex", i);
 
     }
 
 
     var test = $(dropzonediv);
-   // enableDisableFixturesInDiv(test,false);
+    // enableDisableFixturesInDiv(test,false);
     $(dropzonediv).droppable("option", "disabled", false);
 }
 
 
 
-function getFixtureByName(name)
+
+
+function getSceneListByName(name)
 {
-    for(var i = 0 ; i < cachedconfig.fixtures.length; i++)
+    for(var i = 0 ; i < cachedconfig.scenelists.length; i++)
     {
-        var fixobj = cachedconfig.fixtures[i];
-        if(name == fixobj.assignedname)
-            return fixobj;
+        var scenelist = cachedconfig.scenelists[i];
+        if(name == scenelist.name)
+            return scenelist;
     }
     return undefined;
 }

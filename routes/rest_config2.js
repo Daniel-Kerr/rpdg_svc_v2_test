@@ -740,15 +740,17 @@ router.post('/savescenelist', function(req, res) {
             var scene = global.currentconfig.scenelists[i];
             if (scene.name == scenelistname) {
                 found = true;
+                // remove it,
+                global.currentconfig.scenelists.splice(i,1);
                 break;
             }
         }
 
-        if (!found) {
-            var sc = new SceneList();
-            sc.fromJson(req.body);
-            global.currentconfig.scenelists.push(sc);
-        }
+
+        var sc = new SceneList();
+        sc.fromJson(req.body);
+        global.currentconfig.scenelists.push(sc);
+
     }
 
     var cfg = JSON.stringify(global.currentconfig,null,2);
@@ -777,6 +779,9 @@ router.post('/deletescenelist', function(req, res) {
     data_utils.writeConfigToFile();
     res.status(200).send(cfg);
 });
+
+
+
 
 
 

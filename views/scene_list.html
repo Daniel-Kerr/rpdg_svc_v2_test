@@ -116,13 +116,18 @@
             cursor: default;
         }
 
+        .verticallistitem {
+            border: 4px solid #1111FF;
+            width: 100px;
+            margin: 5px;
+            height: 30px;
+            cursor: default;
+        }
+
         .availiblefixturesholder {
             margin: 0px;
-
             width: 100%;
             height: 100%;
-
-
         }
 
         .groups_row {
@@ -150,7 +155,12 @@
             height: 1000px;
 
         }
+         .trashcan {
+             background-color: #77003a;
+             width: 100%;
+             height: 100%;
 
+         }
 
 
         html, body {
@@ -193,11 +203,19 @@
 
                 <input type="button" id = "btmakescene" class="btn btn-large btn-primary" onclick=createNewScene() value="NEW"/>
                 <input type="button" id = "btdelgroup" class="btn btn-large btn-primary" onclick=deleteSelScene() value="Delete"/>
+
                 <div class="box-header" data-original-title>
                     <h2><i class="fa fa-user"></i><span class="break"></span>Scenes</h2>
                 </div>
                 <div class="box-content fill">
                     <div id="fixholder" class="availiblefixturesholder"></div>
+                </div>
+
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Trash</h2>
+                </div>
+                <div class="box-content fill">
+                    <div id="trashholder" class="availiblefixturesholder"></div>
                 </div>
             </div>
 
