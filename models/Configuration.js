@@ -28,6 +28,7 @@ var Configuration = function(obj)
     this.groups = [];
     this.scenes = [];
     this.enocean = [];
+    this.scenelists = [];
     this.daylightlevelvolts = 0;
     this.occupiedstate = 0;
 

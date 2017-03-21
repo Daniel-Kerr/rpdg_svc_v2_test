@@ -30,6 +30,10 @@ var REST_GET_SCENE_NAME_LIST = "/override_scene/getscenenamelist";
 var REST_SAVE_SCENE = "/config/savescene";
 var REST_DELETE_SCENE = "/config/deletescene";
 
+var REST_SAVE_SCENELIST = "/config/savescenelist";
+var REST_DELETE_SCENELIST = "/config/deletescenelist";
+
+
 var REST_ADD_FIXTURE_TO_SCENE = "/config/addfixturetoscene";
 var REST_DELETE_FIXTURE_FROM_SCENE = "/config/deletefixturefromscene";
 
@@ -89,6 +93,9 @@ function saveConfigObject(objtype, obj, callback) {
         case "enocean":
             target = REST_SAVE_ENOCEAN;
             break;
+        case "scenelist":
+            target = REST_SAVE_SCENELIST;
+            break;
         default:
             return;
     }
@@ -133,6 +140,9 @@ function deleteConfigObject(objtype,obj, callback) {
             break;
         case "enocean":
             target = REST_DELETE_ENOCEAN;
+            break;
+        case "scenelist":
+            target = REST_DELETE_SCENELIST;
             break;
         default:
             return;

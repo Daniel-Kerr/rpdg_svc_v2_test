@@ -20,6 +20,14 @@ router.get('/', function(req, res, next) {
 
 });
 
+
+
+//router.get('/list', function(req, res, next) {
+//    res.sendFile(path.join( app.get('views') +'/scene_list.html'));
+//
+///});
+
+
 router.post('/setfixturelevel', function(req, res) {
 
    // global.applogger.info(TAG, "rest -- set fixture level" ,"");

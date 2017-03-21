@@ -85,28 +85,21 @@ function redrawGroup(groupname)
 function openNewSceneEditDlg()
 {
     bootbox.confirm("<form id='infos' action=''>\
-    Scene Name:<input type='text' id='group_name' /><br/>\
+    Scene List:<input type='text' id='scenelist_name' /><br/>\
     </form>", function(result) {
         if(result) {
-            var grouptype = $('#grouptype').val();
-            var scenename = $('#group_name').val();
-            if(scenename.length > 0) {  //todo validate its unique.
+            var listname = $('#scenelist_name').val();
+            if(listname.length > 0) {
                 var groups_div = document.getElementById("active_scenes_holder");
-                var scene = {};
-                scene.name = scenename;
+                var scenelist = {};
+                scenelist.name = listname;
 
-
-                if(scenename == "ALL_ON" || scenename == "ALL_OFF")
-                {
-                    noty({text: 'Error: scene name already taken  ', type: 'error'});
-                    return ;
-                }
-                saveConfigObject("scene", scene,function (retval) {
+                saveConfigObject("scenelist", scene,function (retval) {
                     if(retval != undefined)  // as of 1/24/17, added version.
                     {
                         cachedconfig = retval;
                         var grpnum = cachedconfig.scenes.length-1;
-                        constructSceneBox(groups_div, scene, grpnum);
+                        constructSceneListBox(groups_div, scene, grpnum);
                     }
                     else
                         noty({text: 'Error creating scene ', type: 'error'});

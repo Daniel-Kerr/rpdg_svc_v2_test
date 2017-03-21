@@ -49,6 +49,7 @@ var DayLightSensor = require('../models/DayLightSensor.js');
 
 var Group = require('../models/Group.js');
 var Scene = require('../models/Scene.js');
+var SceneList = require('../models/SceneList.js');
 var ContactInput = require('../models/ContactInput.js');
 // CRUD interface for modifying the configuration.
 var file_paramoptions = 'datastore/paramoptions.json';
@@ -721,6 +722,61 @@ router.post('/setconfig', function(req, res) {
 });
 // *********************************************************************************************************
 
+
+
+// ***** 3/21/17 , scene list support
+
+
+
+
+router.post('/savescenelist', function(req, res) {
+
+    if (req.body != undefined && req.body.name != undefined) {
+
+        var scenelistname = req.body.name;
+
+        var found = false;
+        for (var i = 0; i < global.currentconfig.scenelists.length; i++) {
+            var scene = global.currentconfig.scenelists[i];
+            if (scene.name == scenelistname) {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            var sc = new SceneList();
+            sc.fromJson(req.body);
+            global.currentconfig.scenelists.push(sc);
+        }
+    }
+
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+});
+
+router.post('/deletescenelist', function(req, res) {
+
+    var scenename = req.body.name;
+    var returndata = "error";
+    var found = false;
+    for(var i = 0; i < global.currentconfig.scenes.length; i++)
+    {
+        var group = global.currentconfig.scenes[i];
+        if(group.name == scenename)
+        {
+            global.currentconfig.scenes.splice(i,1);
+            found = true;
+            break;
+        }
+    }
+
+
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+});
 
 
 
