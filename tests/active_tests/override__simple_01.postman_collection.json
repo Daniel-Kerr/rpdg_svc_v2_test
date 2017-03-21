@@ -1,0 +1,438 @@
+{
+	"variables": [],
+	"info": {
+		"name": "override__simple_01",
+		"_postman_id": "7b0ad400-bf94-34c9-3f5e-8f8e6572193d",
+		"description": "Two fixtures sending override commands to one should not affect the state of the other",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_8_dim",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_5\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_6\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"6\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_7\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"7\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_8\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"8\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation\"\n            ]\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"daylightlevelvolts\": 0,\n    \"occupiedstate\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set fixture1 and 2 to 50%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_1\",\n\t\t\"level\": \"50\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_2\",\n\t\t\"level\": \"50\"\n\t}\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "override fixture1 to 10%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_1\",\n\t\t\"level\": \"10\"\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "override fixture2 to 20%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 20;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_2\",\n\t\t\"level\": \"20\"\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "override fixture3 to 30%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 20;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 30;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_3\",\n\t\t\"level\": \"30\"\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "override fixture4 to 40%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 20;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 30;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 40;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_4\",\n\t\t\"level\": \"40\"\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "override fixture5 to 50%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 20;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 30;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 40;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_5\",\n\t\t\"level\": \"50\"\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "override fixture6 to 60%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 20;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 30;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 40;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 60;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_6\",\n\t\t\"level\": \"60\"\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "override fixture7 to 70%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 20;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 30;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 40;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 60;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 70;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_7\",\n\t\t\"level\": \"70\"\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "override fixture8 to 80%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 20;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 30;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 40;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 60;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 70;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 80;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_8\",\n\t\t\"level\": \"80\"\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setMultipleFixtures_ALL_OFF",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_1\",\n\t\t\"level\": \"0\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_2\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_3\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_4\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_5\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_6\",\n\t\t\"level\": \"0\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_7\",\n\t\t\"level\": \"0\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_8\",\n\t\t\"level\": \"0\"\n\t}\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
