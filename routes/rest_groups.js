@@ -30,8 +30,9 @@ router.post('/setgrouptocolortemp', function(req, res) {
 
     var groupname = req.body.name;
     var ctemp = req.body.ctemp;
+    var brightness = req.body.brightness;
 
-    var status = service.setGroupToColorTemp(groupname,ctemp);
+    var status = service.setGroupToColorTemp(groupname,ctemp,brightness);
     res.send(status);
 });
 

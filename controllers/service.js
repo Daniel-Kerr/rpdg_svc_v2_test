@@ -424,7 +424,7 @@ var service = module.exports =  {
         }
     },
 
-    setGroupToColorTemp :  function (groupname, colortemp)
+    setGroupToColorTemp :  function (groupname, colortemp, brightness)
     {
         if(groupname != undefined )
         {
@@ -439,6 +439,7 @@ var service = module.exports =  {
                             var reqobj = {};
                             reqobj.name = fixobj.assignedname;
                             reqobj.colortemp = colortemp;
+                            reqobj.brightness = brightness;
                             reqobj.requesttype = "wallstation";
                             module.exports.setFixtureLevels(reqobj,false);
                         }
