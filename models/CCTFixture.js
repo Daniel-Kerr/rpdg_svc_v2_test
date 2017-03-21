@@ -28,6 +28,9 @@ var CCTFixture = function(name, interface, outputid)
     this.powerwatts = 0;
     this.daylightlimited = false;
 
+    //filteredlevel
+    this.hwwarm = 0;
+    this.hwcool = 0;
 
     CCTFixture.prototype.fromJson = function(obj)
     {
@@ -80,6 +83,8 @@ var CCTFixture = function(name, interface, outputid)
         this.previousbrightness = this.brightness;
         this.brightness = brightness;
         var bchannel = Number(this.outputid) + 1;
+        this.hwwarm = warmcoolvals[0];
+        this.hwcool = warmcoolvals[1];
         this.interface.setOutputToLevel(bchannel, warmcoolvals[1], apply);
 
         this.lastupdated = moment();

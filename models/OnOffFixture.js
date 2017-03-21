@@ -29,6 +29,8 @@ var OnOffFixture = function()
     this.powerwatts = 0;
     this.daylightlimited = false;
 
+    // 3/21/17, post filter value,(hw value)
+
 
     OnOffFixture.prototype.fromJson = function(obj)
     {

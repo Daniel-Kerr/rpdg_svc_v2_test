@@ -18,6 +18,7 @@ var ContactInput = require('./ContactInput.js');
 var Group = require('./Group.js');
 
 var Scene = require('./Scene.js');
+var SceneList = require('./SceneList');
 
 var Configuration = function(obj)
 {
@@ -117,6 +118,15 @@ var Configuration = function(obj)
 
             f.fromJson(scene);
             this.scenes.push(f);
+        }
+    }
+
+    if(obj.scenelists != undefined) {
+        for (var i = 0; i < obj.scenelists.length; i++) {
+            var scene = obj.scenelists[i];
+            var f = new SceneList();
+            f.fromJson(scene);
+            this.scenelists.push(f);
         }
     }
 
