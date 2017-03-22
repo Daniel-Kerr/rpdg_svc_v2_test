@@ -27,6 +27,7 @@ $(document).ready(function() {
             enableDisableFixturesInDiv(selecteditem, false);
             selected_scene = undefined;
             filterAvalibleFixtures();
+            selecteditem = undefined;
         }
 
 
