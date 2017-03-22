@@ -181,16 +181,14 @@ function constructTrashCan()
                             {
                                 cachedconfig = retval;
                                 refreshUpdatedConfig();
-                                //redrawSceneLists();
-                                //filterAvalibleFixtures();
-                                //constructTrashCan();
                             }
                             else
                                 noty({text: 'Error creating scene ', type: 'error'});
                         });
-                        //filterAvalibleFixtures();
                     }
                 }
+                else
+                    refreshUpdatedConfig();
                 // remove it from the parent scenelist,  save it
             }
         }
@@ -218,19 +216,19 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
 
     /*
-    var capturesettings = document.createElement("input");
-    capturesettings.className = "btn btn-large btn-primary";
-    capturesettings.type = "button";
-    capturesettings.value = "Step";
-    capturesettings.setAttribute('scenelist', scenelist.name);
-    capturesettings.onclick = function () {
+     var capturesettings = document.createElement("input");
+     capturesettings.className = "btn btn-large btn-primary";
+     capturesettings.type = "button";
+     capturesettings.value = "Step";
+     capturesettings.setAttribute('scenelist', scenelist.name);
+     capturesettings.onclick = function () {
 
-        var scenename = this.getAttribute('scenelist');
-        var element = {};
-        element.name = scenename;
-    };
-    fixboxheader.appendChild(capturesettings);
-    */
+     var scenename = this.getAttribute('scenelist');
+     var element = {};
+     element.name = scenename;
+     };
+     fixboxheader.appendChild(capturesettings);
+     */
 
     var header = document.createElement("h2");
     header.innerHTML = scenelist.name;
@@ -244,7 +242,7 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     dropzonediv.className = "dropzone2";
 
     dropzonediv.id = scenelist.name;
-   // dropzonediv.setAttribute(scenelist.name);
+    // dropzonediv.setAttribute(scenelist.name);
     fixcontent.appendChild(dropzonediv);
 
 
@@ -259,25 +257,27 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
             $(dropped).appendTo(droppedOn);
             var name = dropped.get(0).innerText;
 
+            // check if we are just reordering.
+            var scenename = dropped[0].getAttribute('scene');
+
             if (name != undefined) {
                 var scenelist = getSceneListByName(droppedOn[0].id);
-
                 if(scenelist != undefined) {
-                    scenelist.scenes.push(dropped[0].innerText);
+
+                    if(scenename == undefined)
+                        scenelist.scenes.push(dropped[0].innerText);
+
 
                     saveConfigObject("scenelist", scenelist, function (retval) {
                         if (retval != undefined)  // as of 1/24/17, added version.
                         {
                             cachedconfig = retval;
                             refreshUpdatedConfig();
-                           // redrawSceneLists();
-                            //filterAvalibleFixtures();
-                            //constructTrashCan();
+
                         }
                         else
                             noty({text: 'Error creating scene ', type: 'error'});
                     });
-                   // filterAvalibleFixtures();
                 }
             }
         }
@@ -287,7 +287,38 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
 
     $('.dropzone2').sortable({
-        //  connectWith: ".connectedSortable"
+        update: function( ) {
+            var droppedOn = $(this);
+            var name = droppedOn.get(0).innerText;
+            if (name != undefined) {
+
+                var updatedscenelist = {};
+                updatedscenelist.name = droppedOn[0].id;
+                updatedscenelist.scenes = [];
+                var children = $(this).children();
+                for(var i = 0 ; i < children.length; i++ )
+                    updatedscenelist.scenes.push(children[i].innerText);
+
+                //var scenelist = getSceneListByName(droppedOn[0].id);
+                if(updatedscenelist != undefined) {
+
+                   // if(scenename == undefined)
+                       // scenelist.scenes.push(dropped[0].innerText);
+
+
+                    saveConfigObject("scenelist", updatedscenelist, function (retval) {
+                        if (retval != undefined)  // as of 1/24/17, added version.
+                        {
+                            cachedconfig = retval;
+                            refreshUpdatedConfig();
+                        }
+                        else
+                            noty({text: 'Error creating scene ', type: 'error'});
+                    });
+                }
+            }
+
+        }
     }).disableSelection();
 
 
