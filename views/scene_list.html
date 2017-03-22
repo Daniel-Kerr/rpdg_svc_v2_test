@@ -123,10 +123,27 @@
             cursor: default;
         }
 
+        .verticallistitem_sel {
+            border: 4px solid #FF5555;
+            background-color: #ffff00;
+            width: 100px;
+            margin: 5px;
+            height: 30px;
+            cursor: default;
+        }
+
         .availiblefixturesholder {
             margin: 0px;
             width: 100%;
             height: 100%;
+        }
+
+
+        .actionbuttons {
+            position: absolute;
+            right: 2px;
+            width: 150px;
+            padding: 0px;
         }
 
         .groups_row {
@@ -196,19 +213,14 @@
     <div class="tab-pane active" id="tab1">
         <p>
         <div id="includedContent"></div>
-
             <div class="availible_scene_holder">
-
-                <input type="button" id = "btmakescene" class="btn btn-large btn-primary" onclick=createNewScene() value="NEW"/>
-                <input type="button" id = "btdelgroup" class="btn btn-large btn-primary" onclick=deleteSelScene() value="Delete"/>
-
+                <input type="button" id = "btmakescene" class="btn-sm btn-large btn-primary" onclick=openNewSceneListEditDlg() value="New List"/>
                 <div class="box-header" data-original-title>
                     <h2><i class="fa fa-user"></i><span class="break"></span>Scenes</h2>
                 </div>
                 <div class="box-content fill">
                     <div id="fixholder" class="availiblefixturesholder"></div>
                 </div>
-
                 <div class="box-header" data-original-title>
                     <h2><i class="fa fa-user"></i><span class="break"></span>Trash</h2>
                 </div>
@@ -222,10 +234,6 @@
                     <div id="active_scenes_holder" class="groups_row" ></div>
                 </div>
             </div>
-
-
-        <!--/div-->
-
         </p>
     </div>
 </div>

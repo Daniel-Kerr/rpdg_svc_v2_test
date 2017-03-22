@@ -1,16 +1,13 @@
 /**
  * Created by Nick on 3/13/2017.
  */
-
-
-//var selecteditem;
-var defaultcolor = "rgba(0,0,0,0)";
 //var selected_scene;
-
+var pendingdeleteitem = undefined;
+// for tracking walk
+var current_sel_scene_map = {};  // scene name : sel index
 
 function init() {
     getConfig(processConfig);
-    //  getSceneNameList(cacheAndProcessSceneNames);
 }
 
 function processConfig(configobj)
@@ -18,7 +15,6 @@ function processConfig(configobj)
     cachedconfig = configobj;
     refreshUpdatedConfig();
 }
-
 
 function refreshUpdatedConfig()
 {
@@ -43,70 +39,37 @@ function redrawSceneLists()
     }
 }
 
-
-function openNewSceneEditDlg()
+function openNewSceneListEditDlg()
 {
-    bootbox.confirm("<form id='infos' action=''>\
-    Scene List:<input type='text' id='scenelist_name' /><br/>\
-    </form>", function(result) {
-        if(result) {
-            var listname = $('#scenelist_name').val();
-            if(listname.length > 0) {
-                var groups_div = document.getElementById("active_scenes_holder");
-                var scenelist = {};
-                scenelist.name = listname;
+    bootbox.confirm({
+        message: "<form id='infos' action=''>\
+                Scene List:<input type='text' id='scenelist_name' /><br/>\
+                </form>",
+        size: 'small',
+        callback: function(result) {
+            if(result) {
+                var listname = $('#scenelist_name').val();
+                if(listname.length > 0) {
+                    var groups_div = document.getElementById("active_scenes_holder");
+                    var scenelist = {};
+                    scenelist.name = listname;
 
-                saveConfigObject("scenelist", scenelist,function (retval) {
-                    if(retval != undefined)  // as of 1/24/17, added version.
-                    {
-                        cachedconfig = retval;
-                        var grpnum = cachedconfig.scenelists.length-1;
-                        constructSceneListBox(groups_div, scenelist, grpnum);
-                    }
-                    else
-                        noty({text: 'Error creating scene ', type: 'error'});
-                });
+                    saveConfigObject("scenelist", scenelist,function (retval) {
+                        if(retval != undefined)
+                        {
+                            cachedconfig = retval;
+                            refreshUpdatedConfig();
+                        }
+                        else
+                            noty({text: 'Error creating scene ', type: 'error'});
+                    });
+                }
+                else
+                    noty({text: 'Incomplete Name, please try again ', type: 'error'});
             }
-            else
-                noty({text: 'Incomplete Name, please try again ', type: 'error'});
-        }
-    });
+        }});
 }
 
-
-function createNewScene()
-{
-    openNewSceneEditDlg();
-}
-function enableDisableFixturesInDiv(groupdiv, enable)
-{
-    //var test = document.getElementById(groupdiv.attr('id'));
-    var kids = groupdiv.children();
-    for(var i = 0; i < kids.length; i++ )
-    {
-        var fixdiv = kids[i];
-        // fixdiv.draggable( "option", "disabled", !enable );
-        $(fixdiv).draggable({disabled:!enable});
-    }
-}
-
-
-function deleteSelScene()
-{
-    deleteConfigObject("scene",selected_scene,function (retval) {
-        //deleteConfigObject(selected_scene.name, function (retval) {
-        if(retval != undefined)  // as of 1/24/17, added version.
-        {
-            cachedconfig = retval;
-            // selected_scene = undefined;
-            redrawScenes();
-
-            filterAvalibleFixtures();
-        }
-        else
-            noty({text: 'Error deleting group: ' + retval, type: 'error'});
-    });
-}
 
 function filterAvalibleFixtures()
 {
@@ -141,11 +104,6 @@ function filterAvalibleFixtures()
     });
 }
 
-function captureScenceSettings()
-{
-    var k = 0;
-    k = k + 1;
-}
 
 
 function constructTrashCan()
@@ -198,7 +156,7 @@ function constructTrashCan()
 }
 function constructSceneListBox(currentdiv, scenelist, groupnum) {
     var fixcol = document.createElement("div");
-    fixcol.className = "col-lg-2";
+    fixcol.className = "col-lg-3";
     fixcol.id = "group_holder_"+groupnum;
 
     // if(scenelist.fixtures != undefined && scenelist.fixtures.length >= 4)
@@ -215,28 +173,143 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     fixbox.appendChild(fixboxheader);
 
 
-    /*
-     var capturesettings = document.createElement("input");
-     capturesettings.className = "btn btn-large btn-primary";
-     capturesettings.type = "button";
-     capturesettings.value = "Step";
-     capturesettings.setAttribute('scenelist', scenelist.name);
-     capturesettings.onclick = function () {
-
-     var scenename = this.getAttribute('scenelist');
-     var element = {};
-     element.name = scenename;
-     };
-     fixboxheader.appendChild(capturesettings);
-     */
-
+    // scene list name,
     var header = document.createElement("h2");
     header.innerHTML = scenelist.name;
     fixboxheader.appendChild(header);
 
+
+    var buttonholder = document.createElement("div");
+    buttonholder.className = "actionbuttons";
+    fixboxheader.appendChild(buttonholder);
+
+
+    var btnwalk = document.createElement("input");
+    btnwalk.className = "btn btn-xs btn-primary";
+    btnwalk.type = "button";
+    btnwalk.value = "Walk";
+    btnwalk.setAttribute('scenelist', scenelist.name);
+    btnwalk.onclick = function () {
+
+        var scenelistname = this.getAttribute('scenelist');
+        var scenelistobj = getSceneListByName(scenelistname);
+        if (scenelistobj.scenes.length > 0) {
+
+            var targetscene = undefined;
+            if (current_sel_scene_map[scenelistname].selection == undefined) {
+                // get first item , and highlight it, and invoke it,
+                current_sel_scene_map[scenelistname].selection = 0;
+                targetscene = scenelistobj.scenes[current_sel_scene_map[scenelistname].selection];
+                console.log("todo: invoke: " + targetscene);
+                var ctrl = current_sel_scene_map[scenelistname].controls[0];
+                $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
+
+
+
+            }
+            else {
+                //switch curr back to unsel,
+                var ctrl = current_sel_scene_map[scenelistname].controls[current_sel_scene_map[scenelistname].selection];
+                $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
+
+                if (current_sel_scene_map[scenelistname].selection < scenelistobj.scenes.length -1) {
+                    current_sel_scene_map[scenelistname].selection++;
+                }
+                else
+                {
+                    current_sel_scene_map[scenelistname].selection = 0;
+                }
+
+                var ctrl = current_sel_scene_map[scenelistname].controls[current_sel_scene_map[scenelistname].selection];
+                $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
+
+                targetscene = scenelistobj.scenes[current_sel_scene_map[scenelistname].selection];
+                console.log("todo: invoke: " + targetscene);
+            }
+
+            if(targetscene != undefined) {
+                var element = {};
+                element.name = targetscene;
+                invokescene(element, function (retval) {
+                    if (retval != undefined)  // as of 1/24/17, added version.
+                    {
+                        cachedconfig = retval;
+                    }
+                    else if (retval.error != undefined)
+                        noty({text: 'Error invoking ' + retval.error, type: 'error'});
+                });
+            }
+        }
+
+    };
+    buttonholder.appendChild(btnwalk);
+
+
+    var btnreset = document.createElement("input");
+    btnreset.className = "btn btn-xs btn-warn";
+    btnreset.type = "button";
+    btnreset.value = "Reset";
+    btnreset.setAttribute('scenelist', scenelist.name);
+    btnreset.onclick = function () {
+        var scenelistname = this.getAttribute('scenelist');
+        var scenelistobj = getSceneListByName(scenelistname);
+        if (scenelistobj.scenes.length > 0) {
+            if(current_sel_scene_map[scenelistname].selection != undefined)
+            {
+                //switch curr back to unsel,
+                var ctrl = current_sel_scene_map[scenelistname].controls[current_sel_scene_map[scenelistname].selection];
+                $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
+
+                current_sel_scene_map[scenelistname].selection = undefined;
+            }
+
+
+        }
+
+    };
+    buttonholder.appendChild(btnreset);
+
+    var btndelete = document.createElement("input");
+    btndelete.className = "btn btn-xs btn-danger";
+    btndelete.type = "button";
+    btndelete.value = "Delete";
+    btndelete.setAttribute('scenelist', scenelist.name);
+    btndelete.onclick = function () {
+
+        pendingdeleteitem = this.getAttribute('scenelist');
+
+        bootbox.confirm({
+            message : "Please Confirm Delete of Scene List",
+            size: 'small',
+            callback: function(result){
+                if(result) {
+                    var element = {};
+                    element.name = pendingdeleteitem; //this.getAttribute('scenelist');
+
+                    deleteConfigObject("scenelist", element, function (retval) {
+                        if (retval != undefined) {
+                            cachedconfig = retval;
+                            refreshUpdatedConfig();
+                        }
+                        else
+                            noty({text: 'Error deleting scenelist: ' + retval, type: 'error'});
+                    });
+                }
+            }});
+
+    };
+    buttonholder.appendChild(btndelete);
+
+
+
+
+
     var fixcontent = document.createElement("div");
     fixcontent.className = "box-content";
     fixbox.appendChild(fixcontent);
+
+
+
 
     var dropzonediv = document.createElement("div");
     dropzonediv.className = "dropzone2";
@@ -245,6 +318,11 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     // dropzonediv.setAttribute(scenelist.name);
     fixcontent.appendChild(dropzonediv);
 
+
+
+    //   var fixboxfooter = document.createElement("div");
+    // fixboxfooter.className = "verticallistitem";
+    //  fixbox.appendChild(fixboxfooter);
 
 
     $('.dropzone2').droppable({
@@ -302,8 +380,8 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
                 //var scenelist = getSceneListByName(droppedOn[0].id);
                 if(updatedscenelist != undefined) {
 
-                   // if(scenename == undefined)
-                       // scenelist.scenes.push(dropped[0].innerText);
+                    // if(scenename == undefined)
+                    // scenelist.scenes.push(dropped[0].innerText);
 
 
                     saveConfigObject("scenelist", updatedscenelist, function (retval) {
@@ -322,8 +400,9 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     }).disableSelection();
 
 
-
-
+    current_sel_scene_map[scenelist.name] = {};
+    current_sel_scene_map[scenelist.name].selection = undefined;
+    current_sel_scene_map[scenelist.name].controls = [];
     // now add in the existing fixutres:
     for(var i = 0; i < scenelist.scenes.length; i++)
     {
@@ -336,18 +415,12 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
         fixdiv.appendChild(debug_label);
         fixdiv.setAttribute("scene", scenelist.name);
         fixdiv.setAttribute("listindex", i);
-
+        current_sel_scene_map[scenelist.name].controls.push(fixdiv);
     }
 
-
     var test = $(dropzonediv);
-    // enableDisableFixturesInDiv(test,false);
     $(dropzonediv).droppable("option", "disabled", false);
 }
-
-
-
-
 
 function getSceneListByName(name)
 {
@@ -358,34 +431,4 @@ function getSceneListByName(name)
             return scenelist;
     }
     return undefined;
-}
-
-
-
-function invokeAllOn()
-{
-    var element = {};
-    element.name = "ALL_ON";
-    invokescene(element,function (retval) {
-        if(retval != undefined)  // as of 1/24/17, added version.
-        {
-            cachedconfig = retval;
-        }
-        else if(retval.error != undefined)
-            noty({text: 'Error invoking ' + retval.error, type: 'error'});
-    });
-}
-
-
-function invokeAllOff() {
-    var element = {};
-    element.name = "ALL_OFF";
-    invokescene(element,function (retval) {
-        if(retval != undefined)  // as of 1/24/17, added version.
-        {
-            cachedconfig = retval;
-        }
-        else if(retval.error != undefined)
-            noty({text: 'Error invoking ' + retval.error, type: 'error'});
-    });
 }

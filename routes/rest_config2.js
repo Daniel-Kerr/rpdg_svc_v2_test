@@ -763,12 +763,12 @@ router.post('/deletescenelist', function(req, res) {
     var scenename = req.body.name;
     var returndata = "error";
     var found = false;
-    for(var i = 0; i < global.currentconfig.scenes.length; i++)
+    for(var i = 0; i < global.currentconfig.scenelists.length; i++)
     {
-        var group = global.currentconfig.scenes[i];
+        var group = global.currentconfig.scenelists[i];
         if(group.name == scenename)
         {
-            global.currentconfig.scenes.splice(i,1);
+            global.currentconfig.scenelists.splice(i,1);
             found = true;
             break;
         }
