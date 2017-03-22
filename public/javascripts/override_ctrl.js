@@ -15,37 +15,6 @@ var lastrgbcolor;
 
 $(document).ready(function() {
 
-    /* $("#sceneeditform").validate({
-     "rules": {
-     "scenename": {
-     "required": true,
-     "maxlength": 40,
-     "minlength": 4
-     },
-     "scenedesc": {
-     "required": true,
-     "maxlength": 40,
-     "minlength": 8
-     }
-     },
-     "messages": {
-     "scenename": {
-     "required": "scene name is required."
-     },
-     "scenedesc": {
-     "required": "scene desc is required."
-     }
-     }
-     });
-     */
-
-    // With JQuery
-    /* $('#ex1').bootstrapSlider({
-     formatter: function(value) {
-     return 'Current value: ' + value;
-     }
-     });
-     */
 
     // handler for fixture table,
     $("#fixturetable").on("click", " tr", function(e) {

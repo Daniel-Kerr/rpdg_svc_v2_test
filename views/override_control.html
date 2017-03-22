@@ -160,6 +160,12 @@
             height: 100%;
         }
 
+        .actionbuttons {
+            position: absolute;
+            right: 2px;
+            width: 170px;
+            padding: 0px;
+        }
 
 
     </style>
@@ -232,8 +238,10 @@
 
         <div class="scenemgt_holder">
             <div class="col-lg-10">
-                <input type="button" id = "btallon" class="btn btn-large btn-primary" onclick=invokeAllOn() value="Invoke All ON"/>
+
                 <input type="button" id = "btalloff" class="btn btn-large btn-primary" onclick=invokeAllOff() value="Invoke All OFF"/>
+                <input type="button" id = "btall50" class="btn btn-large btn-primary" onclick=invokeAll50() value="Invoke All 50%"/>
+                <input type="button" id = "btallon" class="btn btn-large btn-primary" onclick=invokeAllOn() value="Invoke All 100%"/>
                 <div id="active_scenes_holder" class="groups_row" ></div>
             </div>
         </div>

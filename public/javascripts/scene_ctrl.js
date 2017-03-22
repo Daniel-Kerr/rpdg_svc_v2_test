@@ -302,8 +302,13 @@ function constructSceneBox(currentdiv, scene, groupnum) {
     fixbox.appendChild(fixboxheader);
 
 
+    var buttonholder = document.createElement("div");
+    buttonholder.className = "actionbuttons";
+    fixboxheader.appendChild(buttonholder);
+
+
     var capturesettings = document.createElement("input");
-    capturesettings.className = "btn btn-large btn-primary";
+    capturesettings.className = "btn btn-xs btn-primary";
     capturesettings.type = "button";
     capturesettings.value = "capture settings";
     capturesettings.setAttribute('scene', scene.name);
@@ -321,12 +326,12 @@ function constructSceneBox(currentdiv, scene, groupnum) {
                 noty({text: 'Error saving config ' + retval.error, type: 'error'});
         });
     };
-    fixboxheader.appendChild(capturesettings);
+    buttonholder.appendChild(capturesettings);
 
 
 
     var btinvokescene = document.createElement("input");
-    btinvokescene.className = "btn btn-large btn-primary";
+    btinvokescene.className = "btn btn-xs btn-primary";
     btinvokescene.type = "button";
     btinvokescene.value = "invoke";
     btinvokescene.setAttribute('scene', scene.name);
@@ -343,7 +348,7 @@ function constructSceneBox(currentdiv, scene, groupnum) {
                 noty({text: 'Error invoking ' + retval.error, type: 'error'});
         });
     };
-    fixboxheader.appendChild(btinvokescene);
+    buttonholder.appendChild(btinvokescene);
 
 
 
@@ -460,6 +465,22 @@ function invokeAllOn()
             noty({text: 'Error invoking ' + retval.error, type: 'error'});
     });
 }
+
+
+function invokeAll50()
+{
+    var element = {};
+    element.name = "ALL_50";
+    invokescene(element,function (retval) {
+        if(retval != undefined)  // as of 1/24/17, added version.
+        {
+            cachedconfig = retval;
+        }
+        else if(retval.error != undefined)
+            noty({text: 'Error invoking ' + retval.error, type: 'error'});
+    });
+}
+
 
 
 function invokeAllOff() {

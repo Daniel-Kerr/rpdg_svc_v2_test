@@ -499,6 +499,11 @@ var service = module.exports =  {
             invokeAllToLevel(0,requesttype);
             return;
         }
+        if(name == "ALL_50")
+        {
+            invokeAllToLevel(50,requesttype);
+            return;
+        }
 
 
 
