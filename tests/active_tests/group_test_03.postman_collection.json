@@ -1,0 +1,1116 @@
+{
+	"variables": [],
+	"info": {
+		"name": "group_test_03",
+		"_postman_id": "27094e42-156e-5aac-da3f-d7341a914954",
+		"description": "Testing API to:\nCreate groups\nAdd fixtures to groups\nAdd duplicate fixture and check that it errors with a duplicate message.\nDelete fixtures from groups\nDelete groups",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_multifix",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setGlobalVariable(\"UID_1\", \"192_168_1_100_1\");",
+							"postman.setGlobalVariable(\"UID_2\", \"192_168_1_100_2\");",
+							"postman.setGlobalVariable(\"UID_3_4\", \"192_168_1_100_3_4\");",
+							"postman.setGlobalVariable(\"UID_5_6_7_8\", \"192_168_1_100_5_6_7_8\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_ON_OFF\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-21T23:05:19.094Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_DIM\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": false,\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"colortemp\": 3500,\n            \"brightness\": 100,\n            \"previouscolortemp\": 3500,\n            \"previousbrightness\": 100,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0\n        },\n        {\n            \"type\": \"rgbw\",\n            \"assignedname\": \"TEST_FIX_RGBW\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/rgbw_fixture.jpg\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"red\": 0,\n            \"green\": 0,\n            \"blue\": 0,\n            \"white\": 0,\n            \"previousred\": 0,\n            \"previousgreen\": 0,\n            \"previousblue\": 0,\n            \"previouswhite\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"daylightlevelvolts\": 0,\n    \"occupiedstate\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Brightness Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/savegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Brightness\",\n  \"type\": \"brightness\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create CCT Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/savegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"CCT\",\n  \"type\": \"ctemp\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Red Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/savegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Red\",\n  \"type\": \"red\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Green Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/savegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Green\",\n  \"type\": \"green\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Blue Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/savegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Blue\",\n  \"type\": \"blue\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create White Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/savegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"White\",\n  \"type\": \"white\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsongroups = jsonData.groups;",
+							"var firstgroup = jsongroups[0];",
+							"var secondgroup = jsongroups[1];",
+							"var thirdgroup = jsongroups[2];",
+							"var fourthgroup = jsongroups[3];",
+							"var fithgroup = jsongroups[4];",
+							"var sixthgroup = jsongroups[5];",
+							"tests[\"Check first groupname\"] = (firstgroup.name == \"Brightness\");",
+							"tests[\"Check first grouptype\"] = (firstgroup.type == \"brightness\");",
+							"tests[\"Check second groupname\"] = (secondgroup.name == \"CCT\");",
+							"tests[\"Check second grouptype\"] = (secondgroup.type == \"ctemp\");",
+							"tests[\"Check third groupname\"] = (thirdgroup.name == \"Red\");",
+							"tests[\"Check third grouptype\"] = (thirdgroup.type == \"red\");",
+							"tests[\"Check fourth groupname\"] = (fourthgroup.name == \"Green\");",
+							"tests[\"Check fourth grouptype\"] = (fourthgroup.type == \"green\");",
+							"tests[\"Check fith groupname\"] = (fithgroup.name == \"Blue\");",
+							"tests[\"Check fith grouptype\"] = (fithgroup.type == \"blue\");",
+							"tests[\"Check sixth groupname\"] = (sixthgroup.name == \"White\");",
+							"tests[\"Check sixth grouptype\"] = (sixthgroup.type == \"white\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Fixture to group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/addfixturetogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fixturename\": \"TEST_FIX_ON_OFF\",\n  \"groupname\": \"Brightness\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Fixture to group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/addfixturetogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fixturename\": \"TEST_FIX_DIM\",\n  \"groupname\": \"Brightness\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Fixture to group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/addfixturetogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fixturename\": \"TEST_FIX_CCT\",\n  \"groupname\": \"CCT\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Fixture to group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/addfixturetogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fixturename\": \"TEST_FIX_RGBW\",\n  \"groupname\": \"Red\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Fixture to group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/addfixturetogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fixturename\": \"TEST_FIX_RGBW\",\n  \"groupname\": \"Blue\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Fixture to group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/addfixturetogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fixturename\": \"TEST_FIX_RGBW\",\n  \"groupname\": \"Green\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Fixture to group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/addfixturetogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fixturename\": \"TEST_FIX_RGBW\",\n  \"groupname\": \"White\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Brightness Members",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsonfixtures = jsonData.fixtures;",
+							"var firstfixture = jsonfixtures[0];",
+							"var secondfixture = jsonfixtures[1];",
+							"tests[\"Check first fixture\"] = (firstfixture == \"TEST_FIX_ON_OFF\");",
+							"tests[\"Check second fixture\"] = (secondfixture == \"TEST_FIX_DIM\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getgroupmembers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Brightness\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get CCT Members",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsonfixtures = jsonData.fixtures;",
+							"var firstfixture = jsonfixtures[0];",
+							"tests[\"Check first fixture\"] = (firstfixture == \"TEST_FIX_CCT\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getgroupmembers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"CCT\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Red Members",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsonfixtures = jsonData.fixtures;",
+							"var firstfixture = jsonfixtures[0];",
+							"tests[\"Check first fixture\"] = (firstfixture == \"TEST_FIX_RGBW\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getgroupmembers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Red\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Green Members",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsonfixtures = jsonData.fixtures;",
+							"var firstfixture = jsonfixtures[0];",
+							"tests[\"Check first fixture\"] = (firstfixture == \"TEST_FIX_RGBW\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getgroupmembers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Green\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Blue Members",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsonfixtures = jsonData.fixtures;",
+							"var firstfixture = jsonfixtures[0];",
+							"tests[\"Check first fixture\"] = (firstfixture == \"TEST_FIX_RGBW\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getgroupmembers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Blue\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get White Members",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsonfixtures = jsonData.fixtures;",
+							"var firstfixture = jsonfixtures[0];",
+							"tests[\"Check first fixture\"] = (firstfixture == \"TEST_FIX_RGBW\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getgroupmembers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"White\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Fixture from Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/deletefixturefromgroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fixturename\": \"TEST_FIX_DIM\",\n  \"groupname\": \"Brightness\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Brightness Members",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsonfixtures = jsonData.fixtures;",
+							"var firstfixture = jsonfixtures[0];",
+							"var secondfixture = jsonfixtures[1];",
+							"tests[\"Check first fixture\"] = (firstfixture == \"TEST_FIX_ON_OFF\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getgroupmembers",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Brightness\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Brightness Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/deletegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Brightness\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsongroups = jsonData.groups;",
+							"var firstgroup = jsongroups[0];",
+							"var secondgroup = jsongroups[1];",
+							"var thirdgroup = jsongroups[2];",
+							"var fourthgroup = jsongroups[3];",
+							"var fithgroup = jsongroups[4];",
+							"tests[\"Check first groupname\"] = (firstgroup.name == \"CCT\");",
+							"tests[\"Check second groupname\"] = (secondgroup.name == \"Red\");",
+							"tests[\"Check third groupname\"] = (thirdgroup.name == \"Green\");",
+							"tests[\"Check fourth groupname\"] = (fourthgroup.name == \"Blue\");",
+							"tests[\"Check fith groupname\"] = (fithgroup.name == \"White\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete CCT Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/deletegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"CCT\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsongroups = jsonData.groups;",
+							"var firstgroup = jsongroups[0];",
+							"var secondgroup = jsongroups[1];",
+							"var thirdgroup = jsongroups[2];",
+							"var fourthgroup = jsongroups[3];",
+							"tests[\"Check first groupname\"] = (firstgroup.name == \"Red\");",
+							"tests[\"Check second groupname\"] = (secondgroup.name == \"Green\");",
+							"tests[\"Check third groupname\"] = (thirdgroup.name == \"Blue\");",
+							"tests[\"Check fourth groupname\"] = (fourthgroup.name == \"White\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Blue Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/deletegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Blue\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsongroups = jsonData.groups;",
+							"var firstgroup = jsongroups[0];",
+							"var secondgroup = jsongroups[1];",
+							"var thirdgroup = jsongroups[2];",
+							"tests[\"Check first groupname\"] = (firstgroup.name == \"Red\");",
+							"tests[\"Check second groupname\"] = (secondgroup.name == \"Green\");",
+							"tests[\"Check third groupname\"] = (thirdgroup.name == \"White\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Brightness Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/savegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Brightness\",\n  \"type\": \"brightness\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create CCT Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/savegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"CCT\",\n  \"type\": \"ctemp\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Blue Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/savegroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Blue\",\n  \"type\": \"blue\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check Groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var jsongroups = jsonData.groups;",
+							"var firstgroup = jsongroups[0];",
+							"var secondgroup = jsongroups[1];",
+							"var thirdgroup = jsongroups[2];",
+							"var fourthgroup = jsongroups[3];",
+							"var fithgroup = jsongroups[4];",
+							"var sixthgroup = jsongroups[5];",
+							"tests[\"Check first groupname\"] = (firstgroup.name == \"Red\");",
+							"tests[\"Check second groupname\"] = (secondgroup.name == \"Green\");",
+							"tests[\"Check third groupname\"] = (thirdgroup.name == \"White\");",
+							"tests[\"Check fourth groupname\"] = (fourthgroup.name == \"Brightness\");",
+							"tests[\"Check fith groupname\"] = (fithgroup.name == \"CCT\");",
+							"tests[\"Check sixth groupname\"] = (sixthgroup.name == \"Blue\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

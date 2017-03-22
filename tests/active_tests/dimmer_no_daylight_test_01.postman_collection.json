@@ -113,7 +113,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"dimmer\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"10\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 10\n}"
 				},
 				"description": ""
 			},
@@ -153,7 +153,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"dimmer\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"9\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 9\n}"
 				},
 				"description": ""
 			},
@@ -193,7 +193,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"dimmer\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"8.3\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 8.3\n}"
 				},
 				"description": ""
 			},
@@ -233,7 +233,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"dimmer\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"6.5\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 6.5\n}"
 				},
 				"description": ""
 			},
@@ -273,7 +273,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"dimmer\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"3.7\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 3.7\n}"
 				},
 				"description": ""
 			},
@@ -313,7 +313,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"dimmer\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"0.7\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 0.7\n}"
 				},
 				"description": ""
 			},
@@ -353,7 +353,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"dimmer\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"0.7\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 0\n}"
 				},
 				"description": ""
 			},

@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "SetConfig",
+			"name": "SetConfig_8_on_off",
 			"event": [
 				{
 					"listen": "test",
@@ -61,26 +61,6 @@
 		},
 		{
 			"name": "setDimmerLevel_5V",
-			"request": {
-				"url": "http://localhost:3000/tester/setinputlevel",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"Wallstation\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"5\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Check Status is 100%",
 			"event": [
 				{
 					"listen": "test",
@@ -102,10 +82,19 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"Wallstation\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"5\"\n}"
+				},
 				"description": ""
 			},
 			"response": []
@@ -132,26 +121,6 @@
 		},
 		{
 			"name": "setDimmerLevel_5V",
-			"request": {
-				"url": "http://localhost:3000/tester/setinputlevel",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"Wallstation\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"5\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Check Status is 0%",
 			"event": [
 				{
 					"listen": "test",
@@ -173,10 +142,19 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"Wallstation\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"5\"\n}"
+				},
 				"description": ""
 			},
 			"response": []

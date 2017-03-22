@@ -1,0 +1,325 @@
+{
+	"variables": [],
+	"info": {
+		"name": "group_test_01",
+		"_postman_id": "8818c855-ddd3-2636-6cdb-73bc03c4a1b3",
+		"description": "create 3 groups - All , odd, even with 8 fixtures and change intensity of them in an interweaved manner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_8dim_3groups",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setGlobalVariable(\"UID_1\", \"192_168_1_100_1\");",
+							"postman.setGlobalVariable(\"UID_2\", \"192_168_1_100_2\");",
+							"postman.setGlobalVariable(\"UID_3\", \"192_168_1_100_3\");",
+							"postman.setGlobalVariable(\"UID_4\", \"192_168_1_100_4\");",
+							"postman.setGlobalVariable(\"UID_5\", \"192_168_1_100_5\");",
+							"postman.setGlobalVariable(\"UID_6\", \"192_168_1_100_6\");",
+							"postman.setGlobalVariable(\"UID_7\", \"192_168_1_100_7\");",
+							"postman.setGlobalVariable(\"UID_8\", \"192_168_1_100_8\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_5\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_6\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"6\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_7\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"7\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_8\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"8\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-21T17:55:29.306Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-21T17:55:35.466Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-21T17:55:39.487Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-21T17:55:45.430Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [\n        {\n            \"name\": \"All\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_1\",\n                \"TEST_FIX_Dim_2\",\n                \"TEST_FIX_Dim_3\",\n                \"TEST_FIX_Dim_4\",\n                \"TEST_FIX_Dim_5\",\n                \"TEST_FIX_Dim_6\",\n                \"TEST_FIX_Dim_7\",\n                \"TEST_FIX_Dim_8\",\n                \"TEST_FIX_Plc_1\",\n                \"TEST_FIX_Plc_2\",\n                \"TEST_FIX_Plc_3\",\n                \"TEST_FIX_Plc_4\"\n            ]\n        },\n        {\n            \"name\": \"Odd\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_1\",\n                \"TEST_FIX_Dim_3\",\n                \"TEST_FIX_Dim_5\",\n                \"TEST_FIX_Dim_7\",\n                \"TEST_FIX_Plc_1\",\n                \"TEST_FIX_Plc_3\"\n            ]\n        },\n        {\n            \"name\": \"Even\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_2\",\n                \"TEST_FIX_Dim_4\",\n                \"TEST_FIX_Dim_6\",\n                \"TEST_FIX_Dim_8\",\n                \"TEST_FIX_Plc_2\",\n                \"TEST_FIX_Plc_4\"\n            ]\n        }\n    ],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"daylightlevelvolts\": 0,\n    \"occupiedstate\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setAllgroup to 44%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/groups/setgrouptolevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"name\": \"All\",\n   \"level\": \"44\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 44;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 44;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 44;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 44;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 44;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 44;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 44;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 44;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[11].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setOddGroup to 32%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/groups/setgrouptolevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Odd\",\n  \"level\": \"32\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 32;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 44;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 32;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 44;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 32;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 44;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 32;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 44;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[11].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setEvenGroup to 77%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/groups/setgrouptolevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Even\",\n  \"level\": \"77\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 32;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 77;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 32;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 77;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 32;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 77;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 32;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 77;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[11].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setAllgroup to 0%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/groups/setgrouptolevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"name\": \"All\",\n   \"level\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[11].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
