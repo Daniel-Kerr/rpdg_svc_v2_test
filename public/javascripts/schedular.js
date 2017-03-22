@@ -2,11 +2,6 @@
  * Created by Nick on 11/30/2016.
  */
 
-$(function(){
-    $("#includedContent").load("customtitlebar.html");
-});
-
-
 function show (elements, specifiedDisplay) {
     elements = elements.length ? elements : [elements];
     for (var index = 0; index < elements.length; index++) {

@@ -9,11 +9,6 @@ setInterval(function () {
 }, 5000);
 
 
-$(function () {
-    $("#titlebar").load("customtitlebar.html");
-});
-
-
 function initStatusHandler(config)
 {
     cachedconfig = config;

@@ -24,7 +24,7 @@ function refreshUpdatedConfig()
         return 0;
     })
     redrawSceneLists();
-    filterAvalibleFixtures();
+    filterAvalibleScenes();
     constructTrashCan();
 }
 
@@ -71,7 +71,7 @@ function openNewSceneListEditDlg()
 }
 
 
-function filterAvalibleFixtures()
+function filterAvalibleScenes()
 {
     var fixturebucketdiv = document.getElementById("fixholder");
     fixturebucketdiv.innerHTML = ""; // blank it out.

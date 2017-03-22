@@ -43,6 +43,13 @@
         .powerlevelvalue {
             margin: 10px;
         }
+
+        .right {
+            position: absolute;
+            right: 2px;
+            width: 150px;
+            padding: 0px;
+        }
     </style>
 
     <script>
@@ -59,6 +66,7 @@
 <body>
 
 
+
 <ul class="nav nav-tabs" >
     <li class="active"><a href="status" >Status</a></li>
     <li><a href="config" >Configuration</a></li>
@@ -66,13 +74,19 @@
     <li><a href="schedule" >Schedule</a></li>
     <li><a href="groups" >Groups</a></li>
     <li><a href="scenelist" >Scene Lists</a></li>
+    <li style="float: right;">
+        <div >
+            <a href="/status">
+                <img src="/images/RVLT_LOGO.png" style="width:180px;height:40px;">
+            </a>
+        </div>
+    </li>
 </ul>
+
+
 <div class="tab-content">
     <div class="tab-pane active" id="tab1">
         <p>
-
-        <div id="titlebar"></div>
-
         <div id="content" class="col-lg-8">
             <div class="container">
 

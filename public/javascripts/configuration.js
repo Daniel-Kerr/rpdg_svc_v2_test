@@ -12,10 +12,6 @@ var availibleinputs = [];
 var hostip = "";
 var cachedconfig = "";
 
-$(function(){
-    $("#titlebar").load("customtitlebar.html");
-});
-
 
 $(document).ready(function() {
 

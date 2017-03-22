@@ -175,14 +175,19 @@
     <li><a href="schedule" >Schedule</a></li>
     <li><a href="groups" >Groups</a></li>
     <li><a href="scenelist" >Scene Lists</a></li>
+    <li style="float: right;">
+        <div >
+            <a href="/status">
+                <img src="/images/RVLT_LOGO.png" style="width:180px;height:40px;">
+            </a>
+        </div>
+    </li>
 </ul>
 
 <div class="tab-content">
     <div class="tab-pane active" id="tab1">
         <p>
-        <div id="includedContent"></div>
-
-            <!--input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/-->
+        <!--input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/-->
         <div id="wizard" class="col-sm-11">
             <div class="col-lg-12">
                 <div class="box">
@@ -208,35 +213,30 @@
         </div>
 
 
+        <div class="availible_fix_holder">
 
-        <!--div class="background_main"-->
+            <input type="button" id = "btmakescene" class="btn btn-large btn-primary" onclick=createNewScene() value="NEW"/>
 
-            <!--div id="titlebar"></div-->
-
-            <div class="availible_fix_holder">
-
-                <input type="button" id = "btmakescene" class="btn btn-large btn-primary" onclick=createNewScene() value="NEW"/>
-
-                <input type="button" id = "btdelgroup" class="btn btn-large btn-primary" onclick=deleteSelScene() value="Delete"/>
-                <!--input type="button" id = "btsaveconfig" class="btn btn-large btn-primary" onclick=saveConfigSettings() value="SAVE"/-->
-                <div class="box-header" data-original-title>
-                    <h2><i class="fa fa-user"></i><span class="break"></span>Fixtures</h2>
-                </div>
-                <div class="box-content fill">
-                    <div id="fixholder" class="availiblefixturesholder"></div>
-                </div>
-                <!--div class="box">
-
-                </div-->
+            <input type="button" id = "btdelgroup" class="btn btn-large btn-primary" onclick=deleteSelScene() value="Delete"/>
+            <!--input type="button" id = "btsaveconfig" class="btn btn-large btn-primary" onclick=saveConfigSettings() value="SAVE"/-->
+            <div class="box-header" data-original-title>
+                <h2><i class="fa fa-user"></i><span class="break"></span>Fixtures</h2>
             </div>
-
-            <div class="scenemgt_holder">
-                <div class="col-lg-10">
-                    <input type="button" id = "btallon" class="btn btn-large btn-primary" onclick=invokeAllOn() value="Invoke All ON"/>
-                    <input type="button" id = "btalloff" class="btn btn-large btn-primary" onclick=invokeAllOff() value="Invoke All OFF"/>
-                    <div id="active_scenes_holder" class="groups_row" ></div>
-                </div>
+            <div class="box-content fill">
+                <div id="fixholder" class="availiblefixturesholder"></div>
             </div>
+            <!--div class="box">
+
+            </div-->
+        </div>
+
+        <div class="scenemgt_holder">
+            <div class="col-lg-10">
+                <input type="button" id = "btallon" class="btn btn-large btn-primary" onclick=invokeAllOn() value="Invoke All ON"/>
+                <input type="button" id = "btalloff" class="btn btn-large btn-primary" onclick=invokeAllOff() value="Invoke All OFF"/>
+                <div id="active_scenes_holder" class="groups_row" ></div>
+            </div>
+        </div>
 
 
         <!--/div-->

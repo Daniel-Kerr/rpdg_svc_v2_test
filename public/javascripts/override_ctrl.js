@@ -12,9 +12,6 @@ var selectedfixtureobj;
 var loading = false; // used for blocking plc controls from going to hw.
 var lastrgbcolor;
 
-$(function(){
-    $("#includedContent").load("customtitlebar.html");
-});
 
 $(document).ready(function() {
 
