@@ -193,8 +193,8 @@ function updateUIPageComponents(config)
 
 
     var fc = voltageToFC(cachedconfig.daylightlevelvolts);
-    var dllabel = cachedconfig.daylightlevelvolts.toFixed(2) + " V  -- " + fc;
-    document.getElementById("daylightlevel").innerHTML = dllabel;
+    //var dllabel = cachedconfig.daylightlevelvolts.toFixed(2) + " V  -- " + fc;
+   // document.getElementById("daylightlevel").innerHTML = dllabel;
 
     document.getElementById("occ_state").innerHTML = cachedconfig.occupiedstate;
 
@@ -253,7 +253,7 @@ function updateLevelInputsTable() {
     oCell3 = document.createElement("TD");
     oCell3.innerHTML = "Interface";
     oCell4 = document.createElement("TD");
-    oCell4.innerHTML = "Level (volts)";
+    oCell4.innerHTML = "Level";
 
     oRow.appendChild(oCell1);
     oRow.appendChild(oCell2);
@@ -262,16 +262,16 @@ function updateLevelInputsTable() {
     oTHead.appendChild(oRow);
 
     var coldef = document.createElement("col");
+    coldef.className = "col-md-3";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
     coldef.className = "col-md-2";
     oTColGrp.appendChild(coldef);
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
     coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
+    coldef.className = "col-md-2";
     oTColGrp.appendChild(coldef);
     oTable.appendChild(oTHead);
     oTable.appendChild(oTColGrp);
@@ -293,8 +293,21 @@ function updateLevelInputsTable() {
             var col3part = document.createElement("TD");
             col3part.innerHTML = levelinputlist[i].interface;
 
+            var units = "";
+            var val = "";
+            if(levelinputlist[i].interface == "rpdg") {
+                var fc = voltageToFC(levelinputlist[i].value);
+                val = levelinputlist[i].value  + " Volts  /  " + fc + " (FC)";
+            }
+            else if(levelinputlist[i].interface == "enocean") {
+                val = levelinputlist[i].value  + " LUX";
+            }
+
             var col4part = document.createElement("TD");
-            col4part.innerHTML = levelinputlist[i].value;
+            col4part.innerHTML = val;
+
+
+
             oRow.appendChild(col1part);
             oRow.appendChild(col2part);
             oRow.appendChild(col3part);

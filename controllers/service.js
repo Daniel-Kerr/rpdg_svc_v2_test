@@ -105,7 +105,8 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                     {
                         // this value will get polled via dl polling period timer,  and acted on within timer loop.
                         global.applogger.info(TAG, "(LEVEL INPUT) message handler found device ", "DAYLIGHT UPDATE");
-                        global.currentconfig.daylightlevelvolts = level.toFixed(2); //
+                        //global.currentconfig.daylightlevelvolts = level.toFixed(2); //
+
                     }
 
 
@@ -283,7 +284,7 @@ var service = module.exports =  {
 
         schedule_mgr.initManager();
         // test code
-       // module.exports.getEnoceanKnownContactInputs();
+        // module.exports.getEnoceanKnownContactInputs();
 
     },
 
@@ -338,40 +339,54 @@ var service = module.exports =  {
                 daylightpolcount = 0;
                 //global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
                 // get the dl sensor
-                var dlsensor = global.currentconfig.getDayLightSensor();
-                if (dlsensor != undefined) {
-                    var now = moment();
-                    var currenthour = now.hour();
-                    if (global.virtualbasetime != undefined) {
-                        var deltams = now - global.virtualtimeset;
-                        var virtualclocktime = global.virtualbasetime.add(deltams, 'ms');
-                        currenthour = virtualclocktime.hour();
-                    }
+                //var dlsensor = undefined; //global.currentconfig.getDayLightSensor();
 
-                    if (currenthour >= 8 && currenthour <= 17) {     // only run the daylight sensor between the hours of 8am and 5pm
+                // get each of the daylight sensors, in the config.
+                for(var levelidx = 0; levelidx < global.currentconfig.levelinputs.length; levelidx++ ) {
+                    var inputobj = global.currentconfig.levelinputs[levelidx];
+                    if (inputobj.type == "daylight") {
+                        //if (dlsensor != undefined) {
+                        var now = moment();
+                        var currenthour = now.hour();
+                        if (global.virtualbasetime != undefined) {
+                            var deltams = now - global.virtualtimeset;
+                            var virtualclocktime = global.virtualbasetime.add(deltams, 'ms');
+                            currenthour = virtualclocktime.hour();
+                        }
 
-                        // look through all fixtures connected to DL sensor.  and set to level (wallstation)
-                        for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
-                            var fixobj = global.currentconfig.fixtures[k];
-                            if (fixobj.isBoundToInput(dlsensor.assignedname)) {
-                                global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", "daylight update" + fixobj.assignedname);
-                                var reqobj = {};
-                                reqobj.requesttype = "daylight";
-                                if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
-                                    // the input level is 0 - 10, so mult by 10, and round to int,
-                                    var targetlevel = level * 10;
-                                    reqobj.level = targetlevel.toFixed(0);
-                                    fixobj.setLevel(reqobj, true);
-                                }
-                                if (fixobj instanceof CCTFixture) {
-                                    // create request here iwthout a change to color temp,  tell driver to use last known,
-                                    var targetlevel = level * 10;
-                                    reqobj.brightness = targetlevel.toFixed(0);
-                                    fixobj.setLevel(reqobj, true);
+                        if (currenthour >= 8 && currenthour <= 17) {     // only run the daylight sensor between the hours of 8am and 5pm
+
+                            var level = inputobj.value;
+                            // look through all fixtures connected to DL sensor.  and set to level (wallstation)
+                            for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
+                                var fixobj = global.currentconfig.fixtures[k];
+                                if (fixobj.isBoundToInput(inputobj.assignedname)) {
+                                    global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", "daylight update" + fixobj.assignedname);
+                                    var reqobj = {};
+                                    reqobj.requesttype = "daylight";
+                                    if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
+                                        // the input level is 0 - 10, so mult by 10, and round to int,
+                                        var targetlevel = level * 10;
+                                        reqobj.level = targetlevel.toFixed(0);
+                                        fixobj.setLevel(reqobj, true);
+                                    }
+                                    if (fixobj instanceof CCTFixture) {
+                                        // create request here iwthout a change to color temp,  tell driver to use last known,
+                                        var targetlevel = level * 10;
+                                        reqobj.brightness = targetlevel.toFixed(0);
+                                        fixobj.setLevel(reqobj, true);
+                                    }
+                                    if (fixobj instanceof RGBWFixture) {
+                                        // create request here iwthout a change to color temp,  tell driver to use last known,
+                                        var targetlevel = level * 10;
+                                        reqobj.white = targetlevel.toFixed(0);
+                                        fixobj.setLevel(reqobj, true);
+                                    }
                                 }
                             }
                         }
-                    }
+                        // }
+                    }  // end if daylight type.
                 }
             }
             // ****************************************END DL POLLING ******************************************
@@ -435,7 +450,7 @@ var service = module.exports =  {
                     var fixobj = global.currentconfig.getFixtureByName(fixname);
                     if (fixobj != undefined) {
                         // create a reqeuest obj, pass it in
-                         if (fixobj instanceof CCTFixture) {
+                        if (fixobj instanceof CCTFixture) {
                             var reqobj = {};
                             reqobj.name = fixobj.assignedname;
                             reqobj.colortemp = colortemp;
@@ -606,7 +621,7 @@ var service = module.exports =  {
 
             //var package = this.getStatus2();
             //var dataset = JSON.stringify(package, null, 2);
-           // return dataset;
+            // return dataset;
         } catch (err)
         {
             global.applogger.error("rpdg_driver.js ", "teachEnoceanDevice :",  err);
@@ -638,7 +653,7 @@ var service = module.exports =  {
     {
         var contactinputs = [];
         // refresh
-         enocean_known_sensors = require('../enocean_db/knownSensors.json');
+        enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
         for(var key in enocean_known_sensors)
         {

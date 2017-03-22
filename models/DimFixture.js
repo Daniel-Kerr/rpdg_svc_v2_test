@@ -53,14 +53,15 @@ var DimFixture = function(name, interface, outputid)
 
     this.setLevel = function(requestobj, apply){
 
-        var dlsensor = global.currentconfig.getDayLightSensor();
-
+        var dlsensor = this.getMyDaylightSensor(); //global.currentconfig.getDayLightSensor();
         var isdaylightbound = false;
-        if(dlsensor != undefined)
-            isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
-       // var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
+        var daylightvolts = 0;
+        if (dlsensor != undefined) {
+            isdaylightbound = true; //this.isBoundToInput(dlsensor.assignedname);
+            daylightvolts = dlsensor.value;
+        }
 
-        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound);
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound,daylightvolts);
         this.daylightlimited = returndataobj.isdaylightlimited;
 
         if(returndataobj.modifiedlevel > -1) {
@@ -93,7 +94,24 @@ var DimFixture = function(name, interface, outputid)
                 return true;
         }
         return false;
-    }
+    };
+    this.getMyDaylightSensor = function()
+    {
+        for(var i = 0; i < this.boundinputs.length; i++)
+        {
+            var inputname = this.boundinputs[i];
+            var inputobj = global.currentconfig.getLevelInputByName(inputname);
+            if(inputobj != undefined)
+            {
+                if(inputobj.type == "daylight")
+                {
+                    // this is out bound dl sensor,
+                    return inputobj;
+                }
+            }
+        }
+        return undefined
+    };
 };
 
 

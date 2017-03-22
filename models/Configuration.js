@@ -30,7 +30,7 @@ var Configuration = function(obj)
     this.scenes = [];
     this.enocean = [];
     this.scenelists = [];
-    this.daylightlevelvolts = 0;
+    //this.daylightlevelvolts = 0;
     this.occupiedstate = 0;
 
     for(var i = 0; i < obj.fixtures.length; i++)
@@ -151,6 +151,7 @@ var Configuration = function(obj)
         return undefined;
     }
 
+    /*
     this.getDayLightSensor = function()
     {
         for(var i = 0; i < this.levelinputs.length; i++)
@@ -163,6 +164,8 @@ var Configuration = function(obj)
         }
         return undefined;
     }
+    */
+
 
     this.initHWInterfaces = function(rpdg, enocean)
     {
@@ -194,6 +197,17 @@ var Configuration = function(obj)
         {
             if (name == this.groups[i].name) {
                 return this.groups[i];
+            }
+        }
+        return undefined;
+    }
+
+    this.getLevelInputByName = function(name)
+    {
+        for(var i = 0 ; i < this.levelinputs.length; i++)  //find the group.
+        {
+            if (name == this.levelinputs[i].assignedname) {
+                return this.levelinputs[i];
             }
         }
         return undefined;

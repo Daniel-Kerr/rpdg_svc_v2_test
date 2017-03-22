@@ -61,12 +61,16 @@ var OnOffFixture = function()
 
         var filterblocked = false;
         if(this.interfacename != "rpdg-plc") {
-            var dlsensor = global.currentconfig.getDayLightSensor();
-            var isdaylightbound = false;
-            if(dlsensor != undefined)
-                isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
 
-            var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound);
+            var dlsensor = this.getMyDaylightSensor();
+            var isdaylightbound = false;
+            var daylightvolts = 0;
+            if (dlsensor != undefined) {
+                isdaylightbound = true;
+                daylightvolts = dlsensor.value;
+            }
+
+            var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound,daylightvolts);
             this.daylightlimited = returndataobj.isdaylightlimited;
             if(returndataobj.modifiedlevel > -1) {
 
@@ -113,6 +117,24 @@ var OnOffFixture = function()
                 return true;
         }
         return false;
+    }
+
+    this.getMyDaylightSensor = function()
+    {
+        for(var i = 0; i < this.boundinputs.length; i++)
+        {
+            var inputname = this.boundinputs[i];
+            var inputobj = global.currentconfig.getLevelInputByName(inputname);
+            if(inputobj != undefined)
+            {
+                if(inputobj.type == "daylight")
+                {
+                    // this is out bound dl sensor,
+                    return inputobj;
+                }
+            }
+        }
+        return undefined
     }
 };
 

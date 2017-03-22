@@ -7,6 +7,8 @@ var path = require('path');
 var FixtureParameters = require('./FixtureParameters');
 var filter_utils = require('../utils/filter_utils.js');
 
+
+
 var CCTFixture = function(name, interface, outputid)
 {
     this.type = "cct"; //CCTFixture.name;
@@ -47,15 +49,15 @@ var CCTFixture = function(name, interface, outputid)
             this.boundinputs = obj.boundinputs;
     };
 
-    this.setLevel = function(requestobj, apply){
+    this.setLevel = function(requestobj, apply) {
 
-        var dlsensor = global.currentconfig.getDayLightSensor();
-
+        var dlsensor = this.getMyDaylightSensor();
         var isdaylightbound = false;
-        if(dlsensor != undefined)
-            isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
-
-       // var isdaylightbound = this.isBoundToInput(dlsensor.assignedname);
+        var daylightvolts = 0;
+        if (dlsensor != undefined) {
+            isdaylightbound = true;
+            daylightvolts = dlsensor.value;
+        }
 
         var brightness = this.brightness;   //use current by default
         if(requestobj.brightness != undefined)
@@ -66,7 +68,7 @@ var CCTFixture = function(name, interface, outputid)
             colortemp = requestobj.colortemp;
 
         // dl/light filter
-        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, brightness, this.parameters, isdaylightbound);
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, brightness, this.parameters, isdaylightbound,daylightvolts);
         this.daylightlimited = returndataobj.isdaylightlimited;
         if(returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
             var modpct = returndataobj.modifiedlevel;
@@ -108,7 +110,25 @@ var CCTFixture = function(name, interface, outputid)
                 return true;
         }
         return false;
-    }
+    };
+
+    this.getMyDaylightSensor = function()
+    {
+        for(var i = 0; i < this.boundinputs.length; i++)
+        {
+            var inputname = this.boundinputs[i];
+            var inputobj = global.currentconfig.getLevelInputByName(inputname);
+            if(inputobj != undefined)
+            {
+                if(inputobj.type == "daylight")
+                {
+                    // this is out bound dl sensor,
+                    return inputobj;
+                }
+            }
+        }
+        return undefined
+    };
 };
 
 

@@ -52,9 +52,9 @@ module.exports = {
      * @returns {number|*}  level in pct (0 - 100) ,  or -1 to ignore, (beyond limits)
      * @constructor
      */
-    LightLevelFilter: function  (RequestType,UserLevelRequestedPCT,fixtureparams, isDaylightSensitive) {
+    LightLevelFilter: function  (RequestType,UserLevelRequestedPCT,fixtureparams, isDaylightSensitive, DaylightZerotoTenValueVolts) {
 
-        var DaylightZerotoTenValueVolts = global.currentconfig.daylightlevelvolts;
+       // var DaylightZerotoTenValueVolts = global.currentconfig.daylightlevelvolts;
 
         if (RequestType == undefined)                  { global.applogger.error (TAG, "RequestType is undefined to LightLevelFilter", "");   }
         if (fixtureparams == undefined)                { global.applogger.error(TAG,"fixtureparams is undefined to LightLevelFilter", "");   }
