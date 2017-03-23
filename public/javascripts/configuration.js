@@ -253,6 +253,8 @@ function init()
     getConfig(processConfig);
     updateInputContactActionDropDowns();
     enableDisableInputActionDropDowns();
+
+    constructPWMOutputToggleTable();
 }
 
 
@@ -1291,3 +1293,125 @@ function deleteLevelInput()
 
     });
 }
+
+
+
+
+
+
+function constructPWMOutputToggleTable() {
+
+    var oTable = document.getElementById("pwmoutputtoggletable");
+    oTable.innerHTML = ""; //blank out table,
+
+    var oTHead = document.createElement("THEAD");
+    var oTColGrp = document.createElement("colgroup");
+    var oTBody = document.createElement("TBODY");
+    var oTFoot = document.createElement("TFOOT");
+    var oRow, oCell1, oCell2, oCell3, oCell4,
+        oCell5,oCell6,oCell7,oCell8, i,j;
+
+    oRow = document.createElement("TR");
+    oCell1 = document.createElement("TD");
+    oCell1.innerHTML = "Output";
+    oCell2 = document.createElement("TD");
+    oCell2.innerHTML = "Enable Blink";
+    oCell3 = document.createElement("TD");
+    oCell3.innerHTML = "Output State";
+
+    oRow.appendChild(oCell1);
+    oRow.appendChild(oCell2);
+    oRow.appendChild(oCell3);
+
+    oTHead.appendChild(oRow);
+
+    var coldef = document.createElement("col");
+    coldef.className = "col-md-2";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-1";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-1";
+    oTColGrp.appendChild(coldef);
+
+    oTable.appendChild(oTHead);
+    oTable.appendChild(oTColGrp);
+    oTable.appendChild(oTBody);
+
+    // Insert rows and cells into bodies.
+    for (i=1; i< 9; i++)   {
+        var oBody = oTBody;
+        oRow = document.createElement("TR");
+        oBody.appendChild(oRow);
+        var col1part = document.createElement("TD");
+        col1part.innerHTML = i;
+
+        var col2part = document.createElement("TD");
+        var enable = document.createElement("input");
+        enable.type = "checkbox";
+        enable.id = "pwm_toggle_enable"+i;
+        //enable.addEventListener("click", deleteInputContactItem);
+        col2part.appendChild(enable);
+
+        var col3part = document.createElement("TD");
+        col3part.innerHTML = "unknown";
+
+        oRow.appendChild(col1part);
+        oRow.appendChild(col2part);
+        oRow.appendChild(col3part);
+    }
+
+    $("#tableOutput").html(oTable);
+
+    pwmoutputtoggletablediv.appendChild(oTable);
+}
+
+
+var pwm_output_state_map = [0,0,0,0,0,0,0,0];
+
+// *  timer for output toggle test ,
+setInterval(function () {
+
+    var outputs = {};
+    var pwm = [];
+    var sendmessage = false;
+    for(var i = 1; i < 9; i++)
+    {
+        var checkbox = document.getElementById("pwm_toggle_enable"+i);
+        if(checkbox.checked)
+        {
+            sendmessage = true;
+            var element = {};
+            element.number = i;
+
+            var k = 0;
+            k = k  + 1;
+            var state = pwm_output_state_map[i-1];
+            if(state == 0)
+            {
+                pwm_output_state_map[i-1] = 1;
+                element.level = 100;
+            }
+            else {
+                pwm_output_state_map[i - 1] = 0;
+                element.level = 0;
+            }
+            pwm.push(element);
+        }
+    }
+
+    outputs.pwm = pwm;
+    if(sendmessage) {
+        setRPDGOutputs(outputs, function (retval) {
+            if (retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
+            {
+                // loadedconfig = retval;
+            }
+            else if (retval.error != undefined)
+                noty({text: 'Error saving config ' + retval.error, type: 'error'});
+        });
+    }
+
+}, 5000);
+

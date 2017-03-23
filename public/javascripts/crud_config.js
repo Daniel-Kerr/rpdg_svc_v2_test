@@ -47,6 +47,7 @@ var REST_SAVE_ENOCEAN = "/config/saveenocean";
 var REST_DELETE_ENOCEAN = "/config/deleteenocean";
 
 
+var REST_SET_OUTPUTS = "/config/setoutputs";
 
 // config get / set,
 function getConfig(callback)
@@ -359,3 +360,22 @@ function learnenocean(callback) {
 }
 
 
+
+
+function setRPDGOutputs(obj, callback) {
+
+    var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: REST_SET_OUTPUTS,
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}

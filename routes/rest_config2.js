@@ -782,6 +782,21 @@ router.post('/deletescenelist', function(req, res) {
 
 
 
+router.post('/setoutputs', function(req, res) {
+
+    var pwm = req.body.pwm;
+    for(var i = 0; i < pwm.length; i++)
+    {
+        var item = pwm[i];
+        service.setRPDGPWMOutput(item.number, item.level);
+    }
+    service.latchOutputValuesToHardware();
+
+    res.status(200).send(cfg);
+});
+
+
+
 
 
 

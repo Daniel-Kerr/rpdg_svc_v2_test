@@ -697,6 +697,10 @@ var service = module.exports =  {
         global.currentconfig = active_cfg;
         //setup the 0-10 v drive values for current config,
         module.exports.updateRPDGInputDrive();
+    },
+    setRPDGPWMOutput : function(output, level)
+    {
+        rpdg.setOutputToLevel(output, level,false, undefined);
     }
 
     //testZero2TenVoltDriver : function()
