@@ -48,6 +48,7 @@ var status = require('./routes/rest_status');
 var tester = require('./routes/rest_tester');
 var schedule = require('./routes/rest_schedule');
 var scenelist = require('./routes/rest_scenelist');
+var wallstation = require('./routes/rest_wallstation');
 
 var app = express();
 
@@ -75,6 +76,7 @@ app.use('/status', status);
 app.use('/tester', tester);
 app.use('/schedule', schedule);
 app.use('/scenelist', scenelist);
+app.use('/wallstation', wallstation);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -22,7 +22,9 @@ router.post('/setgrouptolevel', function(req, res) {
     var groupname = req.body.name;
     var level = req.body.level;
     var status = service.setGroupToBrightnessLevel(groupname,level);
-    res.send(status);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
+
 });
 
 
@@ -33,7 +35,9 @@ router.post('/setgrouptocolortemp', function(req, res) {
     var brightness = req.body.brightness;
 
     var status = service.setGroupToColorTemp(groupname,ctemp,brightness);
-    res.send(status);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
+
 });
 
 /*
