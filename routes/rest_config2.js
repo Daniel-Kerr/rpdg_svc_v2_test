@@ -785,13 +785,21 @@ router.post('/deletescenelist', function(req, res) {
 router.post('/setoutputs', function(req, res) {
 
     var pwm = req.body.pwm;
-    for(var i = 0; i < pwm.length; i++)
-    {
-        var item = pwm[i];
-        service.setRPDGPWMOutput(item.number, item.level);
+    var plc = req.body.plc;
+    if(pwm != undefined) {
+        for (var i = 0; i < pwm.length; i++) {
+            var item = pwm[i];
+            service.setRPDGPWMOutput(item.number, item.level);
+        }
+    }
+    if(plc != undefined) {
+        for (var i = 0; i < plc.length; i++) {
+            var item = plc[i];
+            service.setRPDGPLCOutput(item.number, item.level);
+        }
     }
     service.latchOutputValuesToHardware();
-
+    var cfg = JSON.stringify(global.currentconfig,null,2);
     res.status(200).send(cfg);
 });
 

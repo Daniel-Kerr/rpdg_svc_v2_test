@@ -702,6 +702,11 @@ var service = module.exports =  {
     {
         rpdg.setOutputToLevel(output, level,false, undefined);
     }
+    ,
+    setRPDGPLCOutput : function(output, level)
+    {
+        rpdg.setOutputToLevel(output, level,false, "plc");
+    }
 
     //testZero2TenVoltDriver : function()
     // {
