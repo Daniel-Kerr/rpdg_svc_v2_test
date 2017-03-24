@@ -3,14 +3,14 @@
  */
 // client code behind for wallstation support
 
-//global variables
 var fixtureImagePath, fixtureImagePathfound;
-//var scenedivIDList = ["SceneButtonArray"];
-//var groupdivIDList = ["GroupButtonArray"];
-//var fixturedivIDList = ["FixtureButtonArray"];
+
 var returnSceneList,returnGroupList;
 // this must be the same as the html that shows these
 var mainMenuOptionDivList = ["SceneButtonArray","GroupButtonArray","FixtureButtonArray","StatusButtonArray"];
+var selected_group = undefined;
+var selected_fixture = undefined;
+var top_menu_selection = undefined;
 
 function setglobalvariable(fixtureImagePathfound){
     console.log ("  here is the image path", fixtureImagePathfound);
@@ -53,35 +53,73 @@ function init() {
     getConfig(processConfig);
 }
 
-
 function processConfig(configobj) {
     cachedconfig = configobj;  // just so we can copy over groups on save.
+    top_menu_selection = "Scenes";
+    updateDynButtonBar();
 
-    constructSceneButtons();
-    constructGroupButtons();
-    constructFixtureButtons();
-    constructFixtureStatusBoxs();
-    updateLevelInputsTable();
+    hideDivID("occ_vac_switch");
+   // hideDivID("StatusPage");
+  //  hideDivID("levelinputsdiv");
+ //   showOnlyTheseButtons("Scenes");      // start here
+}
 
+
+function updateDynButtonBar()
+{
+    // clear the button bar.
+    var scenebuttonholder = document.getElementById("dynbuttonbar");
+    scenebuttonholder.innerHTML = "";
+
+    // clear content.
     hideDivID("BrightnessBar");
     hideDivID("CCTBar");
     hideDivID("ToggleButton");
-    hideDivID("occ_vac_switch");
-    hideDivID("StatusPage");
-    hideDivID("levelinputsdiv");
-    showOnlyTheseButtons("Scenes");      // start here
+    switch(top_menu_selection)
+    {
+        case "Scenes":
+            showDivID("controlscontent","block");
+            constructSceneButtons();
+
+            break;
+        case "Groups":
+            showDivID("controlscontent","block");
+            constructGroupButtons();
+            break;
+        case "Fixtures":
+            showDivID("controlscontent","block");
+            constructFixtureButtons();
+            break;
+        case "Status":
+
+            hideDivID("controlscontent");
+            constructFixtureStatusBoxs();
+            updateLevelInputsTable();
+            showDivID("StatusPage","inline");
+          //  showDivID("levelinputsdiv","block");
+
+            break;
+        default:
+            break;
+    }
+}
+
+function updateControlsContentRegion()
+{
+
 }
 
 
 function constructSceneButtons()
 {
-    var scenebuttonholder = document.getElementById("SceneButtonArray");
-    scenebuttonholder.style.display="inline";
+    var scenebuttonholder = document.getElementById("dynbuttonbar");
+    scenebuttonholder.innerHTML = "";
     for(var i = 0 ; i < cachedconfig.scenes.length; i++)
     {
         var sceneobj = cachedconfig.scenes[i];
         var buttonholder = document.createElement("div");
         scenebuttonholder.appendChild(buttonholder);
+
         var scenebutton = document.createElement("button");
         scenebutton.id = sceneobj.name;
         scenebutton.value = sceneobj.name;
@@ -131,14 +169,12 @@ function getFixtureByName(name)
     return undefined;
 }
 
-var selected_group = undefined;
-var selected_fixture = undefined;
-var top_menu_selection = undefined;
+
 
 function constructGroupButtons()
 {
-    var groupbuttonholder = document.getElementById("GroupButtonArray");
-    groupbuttonholder.style.display="inline";
+    var groupbuttonholder = document.getElementById("dynbuttonbar");
+    groupbuttonholder.innerHTML = "";
     for(var i = 0 ; i < cachedconfig.groups.length; i++)
     {
         var groupobj = cachedconfig.groups[i];
@@ -155,13 +191,13 @@ function constructGroupButtons()
             selected_group = getGroupByName(grpname);
             if(selected_group.type == "brightness")
             {
-                showDivID("BrightnessBar");
+                showDivID("BrightnessBar","block");
                 hideDivID("CCTBar");
             }
             else
             {
-                showDivID("BrightnessBar");
-                showDivID("CCTBar");
+                showDivID("BrightnessBar","block");
+                showDivID("CCTBar","block");
             }
         }
         buttonholder.appendChild(groupbutton);
@@ -176,7 +212,7 @@ function constructFixtureButtons()
 {
 
 
-    var groupbuttonholder = document.getElementById("FixtureButtonArray");
+    var groupbuttonholder = document.getElementById("dynbuttonbar");
     groupbuttonholder.innerHTML = "";
 
     groupbuttonholder.style.display="inline";
@@ -200,20 +236,20 @@ function constructFixtureButtons()
             switch(selected_fixture.type)
             {
                 case "on_off":
-                    showDivID("ToggleButton");
+                    showDivID("ToggleButton","block");
                     var toggleswitch = document.getElementById("ToggleObject");
                     toggleswitch.checked = (selected_fixture.level == 100)?true:false;
                     break;
                 case "dim":
-                    showDivID("BrightnessBar");
+                    showDivID("BrightnessBar","block");
                     //..
 
                     document.getElementById("brightnesssliderobject").value = selected_fixture.level;
                     break;
 
                 case "cct":
-                    showDivID("BrightnessBar");
-                    showDivID("CCTBar");
+                    showDivID("BrightnessBar","block");
+                    showDivID("CCTBar","block");
                     document.getElementById("brightnesssliderobject").value = selected_fixture.brightness;
                     var barval = ((Number(selected_fixture.colortemp) - 2000)*100) / 4500;
                     document.getElementById("CCTsliderobject").value = barval;
@@ -559,78 +595,21 @@ function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureImage,fix
 // START OLD CODE ***********************
 
 
-
-
-function toggleDivIDVisible(DivID)
-{
+function showDivID (DivID, how) {
     var elem=document.getElementById(DivID);
-    var hide = elem.style.display =="none";
-    if (hide) {
-        elem.style.display="inline";
-    }
-    else {
-        elem.style.display="none";
-    }
-}
-function showDivID (DivID) {
-    var elem=document.getElementById(DivID);
-    elem.style.display="inline";
+    elem.style.display=how;
 }
 function hideDivID (DivID) {
     var elem=document.getElementById(DivID);
     elem.style.display="none";
-    //   console.log("Hiding DIV", DivID);
 }
+
+
 
 function showOnlyTheseButtons (whichButtons) {
     // Hide all of them and then make visible the one chosen
     top_menu_selection = whichButtons;
-
-    hideDivID("BrightnessBar");
-    hideDivID("occ_vac_switch");
-    hideDivID("CCTBar");
-    hideDivID("ToggleButton");
-    hideDivID("StatusPage");
-    hideDivID("ConfigPage");
-    var x;
-    for(var i = 0; i < mainMenuOptionDivList.length; i++) {
-        x = document.getElementById(mainMenuOptionDivList[i]);
-        x.style.display = "none";
-        //   console.log ("which button was pressed: ",whichButtons, x);
-    }
-    switch (whichButtons){
-        case 'Scenes':
-            showDivID("SceneButtonArray");
-            break;
-        case 'Groups':
-            showDivID("GroupButtonArray");
-            break;
-        case 'Fixtures':
-            showDivID("FixtureButtonArray");
-            break;
-        case 'Status':
-            showDivID("StatusPage");
-            showDivID("levelinputsdiv");
-            break;
-        case 'Config':
-            //  showDivID("ConfigPage");
-            break;
-    }
-
-}
-
-function cleanUpList (passedID) {
-    var list = document.getElementById(passedID);
-    // If the element has any child nodes, remove its first child node until they are all gone.
-    while (list.hasChildNodes()) {
-        list.removeChild(list.childNodes[0]);
-    }
-}
-
-function beatifyText(InputText) {
-    var str = InputText;
-    var res = str.replace(/_/g, " ");
-    return res;
+    updateDynButtonBar();
 }
 
 

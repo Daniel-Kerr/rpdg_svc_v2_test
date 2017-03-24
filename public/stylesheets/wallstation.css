@@ -484,10 +484,13 @@ body {
 }
 
 .synScenes {
-    width: 50%;
+
+    width: 100%;
     border-top: 2px solid #444444;
     background-color: #000000;
+
 }
+
 
 .synScenes button{
     width: 10%;
@@ -501,6 +504,7 @@ body {
     box-shadow: 6px 9px #555555
 
 }
+
 
 .synScenes input{
     width: 10%;
@@ -641,6 +645,59 @@ body {
 
 .maincontentbox {
     background-color: red;
+    height: 500px;
+    width: 100%;
+}
+
+.controlscontentbox {
+    background-color: green;
+    height: 800px;
+    width: 100%;
+}
+
+
+.controlscontentbox div {
+    background-color: darkmagenta;
+    height: 100px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.buttonbar {
+    background-color: blue;
+    height: 100px;
+    width: 90%;
+}
+
+.buttonbar div {
+    display: inline-block;
+    width: 150px;
+    background-color: cyan;
+
+}
+.buttonbar button{
+    width: 90%;
+    height: 3em;
+    margin: 0.5em;
+    border-radius: 12px;
+    color: white;
+    font-size: 20px;
+    background: linear-gradient(#d86234,#632b15);
+    box-shadow: 6px 9px #555555
+}
+
+
+.buttonbar button:hover{
+    background: linear-gradient(#ff723a,#8f4021);
+}
+
+.buttonbar button:active{
+    box-shadow: 0 4px #333333;
+    transform: translateY(8px);
+}
+
+.statuscontainer {
+    background-color: lime;
     height: 100%;
     width: 100%;
 }
