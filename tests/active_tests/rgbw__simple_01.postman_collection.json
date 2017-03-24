@@ -1,0 +1,242 @@
+{
+	"variables": [],
+	"info": {
+		"name": "rgbw__simple_01",
+		"_postman_id": "bc94116c-52c8-1de9-5278-f5abee710ff2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_rgbw",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"rgbw\",\n            \"assignedname\": \"TEST_FIX_RGBW_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/rgbw_fixture.jpg\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"red\": 0,\n            \"green\": 0,\n            \"blue\": 0,\n            \"white\": 0,\n            \"previousred\": 0,\n            \"previousgreen\": 0,\n            \"previousblue\": 0,\n            \"previouswhite\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0\n        },\n        {\n            \"type\": \"rgbw\",\n            \"assignedname\": \"TEST_FIX_RGBW_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/rgbw_fixture.jpg\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"red\": 0,\n            \"green\": 0,\n            \"blue\": 0,\n            \"white\": 0,\n            \"previousred\": 0,\n            \"previousgreen\": 0,\n            \"previousblue\": 0,\n            \"previouswhite\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white == 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].red == 25;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].green == 25;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[1].blue == 25;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[1].white == 25;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"100\",\n\t\t\"green\": \"100\",\n\t\t\"blue\": \"100\",\n\t\t\"white\": \"100\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"25\",\n\t\t\"green\": \"25\",\n\t\t\"blue\": \"25\",\n\t\t\"white\": \"25\"\n   }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 30;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 40;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 50;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white == 60;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].red == 60;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].green == 50;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[1].blue == 40;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[1].white == 30;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"30\",\n\t\t\"green\": \"40\",\n\t\t\"blue\": \"50\",\n\t\t\"white\": \"60\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"60\",\n\t\t\"green\": \"50\",\n\t\t\"blue\": \"40\",\n\t\t\"white\": \"30\"\n   }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white == 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].red == 100;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].green == 100;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[1].blue == 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[1].white == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"0\",\n\t\t\"green\": \"0\",\n\t\t\"blue\": \"0\",\n\t\t\"white\": \"0\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"100\",\n\t\t\"green\": \"100\",\n\t\t\"blue\": \"100\",\n\t\t\"white\": \"100\"\n   }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 44;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 65;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 25;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white == 37;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].red == 62;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].green == 49;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[1].blue == 9;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[1].white == 86;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"44\",\n    \t\"green\": \"65\",\n    \t\"blue\": \"25\",\n    \t\"white\": \"37\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"62\",\n    \t\"green\": \"49\",\n    \t\"blue\": \"9\",\n    \t\"white\": \"86\"\n   }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white == 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].red == 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].green == 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[1].blue == 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[1].white == 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"0\",\n\t\t\"green\": \"0\",\n\t\t\"blue\": \"0\",\n\t\t\"white\": \"0\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"0\",\n\t\t\"green\": \"0\",\n\t\t\"blue\": \"0\",\n\t\t\"white\": \"0\"\n   }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

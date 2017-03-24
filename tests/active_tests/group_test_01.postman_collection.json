@@ -63,7 +63,20 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 44;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 44;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 44;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 44;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 44;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 44;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 44;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 44;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[11].level == 100;"
 						]
 					}
 				}
@@ -87,75 +100,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Status",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 44;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 44;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 44;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 44;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 44;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 44;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 44;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 44;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[8].level == 100;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[9].level == 100;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[10].level == 100;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[11].level == 100;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
 			"name": "setOddGroup to 32%",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"",
-							""
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/groups/setgrouptolevel",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"Odd\",\n  \"level\": \"32\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Get Status",
 			"event": [
 				{
 					"listen": "test",
@@ -181,28 +126,6 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "setEvenGroup to 77%",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
 				"url": "http://localhost:3000/groups/setgrouptolevel",
 				"method": "POST",
 				"header": [
@@ -214,14 +137,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Even\",\n  \"level\": \"77\"\n}"
+					"raw": "{\n  \"name\": \"Odd\",\n  \"level\": \"32\"\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "setEvenGroup to 77%",
 			"event": [
 				{
 					"listen": "test",
@@ -247,28 +170,6 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "setAllgroup to 0%",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
 				"url": "http://localhost:3000/groups/setgrouptolevel",
 				"method": "POST",
 				"header": [
@@ -280,14 +181,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"name\": \"All\",\n   \"level\": \"0\"\n}"
+					"raw": "{\n  \"name\": \"Even\",\n  \"level\": \"77\"\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "setAllgroup to 0%",
 			"event": [
 				{
 					"listen": "test",
@@ -313,10 +214,19 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"url": "http://localhost:3000/groups/setgrouptolevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"name\": \"All\",\n   \"level\": \"0\"\n}"
+				},
 				"description": ""
 			},
 			"response": []

@@ -49,8 +49,8 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 100;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 100;"
 						]
 					}
 				}
@@ -83,10 +83,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 100;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[1].hwwarm === 0;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[1].hwcool == 100;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool == 100;"
 						]
 					}
 				}
@@ -119,8 +119,8 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm == 39;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 11;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 39;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 11;"
 						]
 					}
 				}
@@ -153,10 +153,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm == 39;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 11;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[1].hwwarm == 44;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[1].hwcool == 6;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 39;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 11;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm == 44;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool == 6;"
 						]
 					}
 				}
@@ -189,8 +189,8 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm == 30;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 30;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 30;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 30;"
 						]
 					}
 				}
@@ -223,10 +223,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm == 30;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 30;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[1].hwwarm == 42;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[1].hwcool == 18;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 30;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 30;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm == 42;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool == 18;"
 						]
 					}
 				}
@@ -259,8 +259,8 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 50;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 50;"
 						]
 					}
 				}
@@ -293,10 +293,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 50;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[1].hwwarm == 25;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[1].hwcool == 25;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 50;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm == 25;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool == 25;"
 						]
 					}
 				}
@@ -329,8 +329,8 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm == 100;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool === 0;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool === 0;"
 						]
 					}
 				}
@@ -363,10 +363,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm == 100;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool === 0;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[1].hwwarm == 100;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[1].hwcool === 0;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool === 0;"
 						]
 					}
 				}
@@ -399,8 +399,8 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm == 44;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 36;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 44;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 36;"
 						]
 					}
 				}
@@ -433,10 +433,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm == 44;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool == 36;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[1].hwwarm == 52;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[1].hwcool == 28;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 44;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 36;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm == 52;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool == 28;"
 						]
 					}
 				}
@@ -469,8 +469,8 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool === 0;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool === 0;"
 						]
 					}
 				}
@@ -503,10 +503,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[0].hwcool === 0;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[1].hwwarm === 0;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[1].hwcool === 0;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool === 0;"
 						]
 					}
 				}

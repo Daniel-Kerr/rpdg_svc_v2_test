@@ -47,7 +47,14 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 44;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].hwwarm === 0;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[2].hwcool === 0;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[3].hwwarm === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[3].hwcool === 0;"
 						]
 					}
 				}
@@ -71,7 +78,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "setBrightnessGroup",
 			"event": [
 				{
 					"listen": "test",
@@ -81,33 +88,11 @@
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 44;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 80;",
 							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].hwwarm === 0;",
 							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[2].hwcool === 0;",
 							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[3].hwwarm === 0;",
 							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[3].hwcool === 0;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "setBrightnessGroup",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -131,7 +116,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "setBrightnessGroup",
 			"event": [
 				{
 					"listen": "test",
@@ -140,34 +125,12 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 80;",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
 							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].hwwarm === 0;",
 							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[2].hwcool === 0;",
 							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[3].hwwarm === 0;",
 							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[3].hwcool === 0;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "setBrightnessGroup",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -191,7 +154,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "set CCT Group Ctemp",
 			"event": [
 				{
 					"listen": "test",
@@ -202,32 +165,10 @@
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
 							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].hwwarm === 0;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[2].hwcool === 0;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[3].hwwarm === 0;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[3].hwcool === 0;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "set CCT Group Ctemp",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].hwwarm == 30;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[2].hwcool == 30;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[3].hwwarm == 42;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[3].hwcool == 18;"
 						]
 					}
 				}
@@ -251,7 +192,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "set CCT Group Ctemp",
 			"event": [
 				{
 					"listen": "test",
@@ -262,32 +203,10 @@
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
 							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].hwwarm == 30;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[2].hwcool == 30;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[3].hwwarm == 42;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[3].hwcool == 18;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "set CCT Group Ctemp",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].hwwarm === 0;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[2].hwcool == 50;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[3].hwwarm == 25;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[3].hwcool == 25;"
 						]
 					}
 				}
@@ -311,67 +230,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Status",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].hwwarm === 0;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[2].hwcool == 50;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[3].hwwarm == 25;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[3].hwcool == 25;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
 			"name": "set CCT Group Ctemp",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/groups/setgrouptocolortemp",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"CCT\",\n  \"ctemp\": \"6500\",\n  \"brightness\": \"0\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Get Status",
 			"event": [
 				{
 					"listen": "test",
@@ -391,10 +250,19 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"url": "http://localhost:3000/groups/setgrouptocolortemp",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"CCT\",\n  \"ctemp\": \"6500\",\n  \"brightness\": \"0\"\n}"
+				},
 				"description": ""
 			},
 			"response": []

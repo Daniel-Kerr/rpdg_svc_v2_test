@@ -1,0 +1,691 @@
+{
+	"variables": [],
+	"info": {
+		"name": "daylight__simple_02",
+		"_postman_id": "c434e718-7003-b853-50d4-ad9ec41fe960",
+		"description": "Similar to daylight_simple_01 but with daylight ceiling and floor being tested.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_8_dim_daylight_dimmer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"60\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"40\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Daylight\",\n                \"Dimmer\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"60\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"40\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n            \t\"Daylight\",\n                \"Dimmer\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"60\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"40\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n            \t\"Daylight\",\n                \"Dimmer\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"60\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"40\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n            \t\"Daylight\",\n                \"Dimmer\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_5\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"60\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"40\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n            \t\"Daylight\",\n                \"Dimmer\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_6\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"6\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"60\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"40\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n            \t\"Daylight\",\n                \"Dimmer\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_7\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"7\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"60\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"40\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n            \t\"Daylight\",\n                \"Dimmer\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_8\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"8\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"60\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"40\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n            \t\"Daylight\",\n                \"Dimmer\"\n            ]\n        }\n    ],\n    \"levelinputs\": [\n        {\n            \"type\": \"daylight\",\n            \"assignedname\": \"Daylight\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"1\",\n            \"drivelevel\": \"0\",\n            \"value\": \"0.00\",\n            \"previousvalue\": \"10.00\",\n            \"lastupdated\": \"2017-03-23T19:15:42.354Z\"\n        },\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Dimmer\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"2\",\n            \"drivelevel\": \"0\",\n            \"value\": \"10.00\",\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-23T19:15:44.991Z\"\n        }\n    ],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set DaylightInterval to 500 sec",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setdaylighttimerinterval",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"interval\": 500\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_10V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 10\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setMultipleFixtures_50%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 50;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 50;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 50;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 50;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 50;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_1\",\n\t\t\"level\": \"50\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_2\",\n\t\t\"level\": \"50\"\n\t}\n\t,\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_3\",\n\t\t\"level\": \"50\"\n\t}\n\t,\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_4\",\n\t\t\"level\": \"50\"\n\t}\n\t,\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_5\",\n\t\t\"level\": \"50\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_6\",\n\t\t\"level\": \"50\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_7\",\n\t\t\"level\": \"50\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_8\",\n\t\t\"level\": \"50\"\n\t}\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_9.3V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 9.3\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_10V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 60;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 60;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 60;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 60;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 60;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 60;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 60;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 60;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 10\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_2.3V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 2.3\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_10V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 40;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 40;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 40;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 40;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 40;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 40;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 40;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 40;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 10\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_8.5V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 8.5\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_10V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 60;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 60;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 60;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 60;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 60;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 60;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 60;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 60;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 10\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_7.2V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 7.2\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_10V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 50;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 50;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 50;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 50;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 50;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 10\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_5.7V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 5.7\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_10V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 40;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 40;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 40;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 40;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 40;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 40;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 40;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 40;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 10\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_6.1V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 6.1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_10V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 50;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 50;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 50;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 50;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 50;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 10\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_0V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_0V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 40;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 40;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 40;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 40;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 40;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 40;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 40;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 40;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setMultipleFixtures_ALL_OFF",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_1\",\n\t\t\"level\": \"0\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_2\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_3\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_4\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_5\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_6\",\n\t\t\"level\": \"0\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_7\",\n\t\t\"level\": \"0\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_8\",\n\t\t\"level\": \"0\"\n\t}\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
