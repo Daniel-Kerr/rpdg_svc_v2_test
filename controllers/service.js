@@ -302,7 +302,7 @@ var service = module.exports =  {
 
     startPolling : function() {
 
-        var BasePollingPeriod = 5000;        // Time interval in mSec that we do the most frequent checks.
+        var BasePollingPeriod = 1000;        // Time interval in mSec that we do the most frequent checks.
         periodictimer = setInterval(function () {
 
 
@@ -337,7 +337,7 @@ var service = module.exports =  {
             var DaylightPollingPeriod = Math.round ((daylightpollseconds * 1000) / BasePollingPeriod);
             if (DaylightPollingPeriod > 0 && daylightpolcount >= DaylightPollingPeriod) {
                 daylightpolcount = 0;
-                //global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
+                global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
                 // get the dl sensor
                 //var dlsensor = undefined; //global.currentconfig.getDayLightSensor();
 

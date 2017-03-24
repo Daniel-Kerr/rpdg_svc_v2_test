@@ -54,14 +54,13 @@ function init() {
 }
 
 
-
-
 function processConfig(configobj) {
     cachedconfig = configobj;  // just so we can copy over groups on save.
 
     constructSceneButtons();
     constructGroupButtons();
     constructFixtureButtons();
+    constructFixtureStatusBoxs();
     hideDivID("BrightnessBar");
     hideDivID("CCTBar");
     hideDivID("ToggleButton");
@@ -240,6 +239,7 @@ function onBrightnessSliderChange(value)
                         if (retval != undefined)
                         {
                             cachedconfig = retval;
+                            constructFixtureStatusBoxs();
                             // do update here.
                         }
                         // else if (retval.error != undefined)
@@ -258,6 +258,7 @@ function onBrightnessSliderChange(value)
                         if (retval != undefined)
                         {
                             cachedconfig = retval;
+                            constructFixtureStatusBoxs();
                             // do update here.
                         }
                         // else if (retval.error != undefined)
@@ -281,7 +282,13 @@ function onBrightnessSliderChange(value)
                     setFixtureLevel(element);
                     break;
                 case "cct":
-
+                    var element = {};
+                    element.requesttype = "override";
+                    element.name = selected_fixture.assignedname;
+                    element.brightness = value;
+                    var ctempslider = document.getElementById("CCTsliderobject");
+                    element.ctemp = ctempslider.value;;
+                    setFixtureLevel(element);
                     break;
                 case "rgbw":
                     break;
@@ -321,11 +328,17 @@ function onToggleButtonChange(value)
 
 
 
+function processUpdatedConfig()
+{
+    constructFixtureStatusBoxs();
+}
+
 
 function postSetFixtureHandler(config)
 {
     if (config != null) {
         cachedconfig = config;
+        constructFixtureStatusBoxs();
     }
 }
 
@@ -354,13 +367,13 @@ function onCCTSliderChange(value)
                     var bright = brightslider.value;
                     var element = {};
                     element.name = selected_group.name;
-                    element.ctemp = value;
+                    element.ctemp =  (2000 + (4500*value/100));;
                     element.brightness = bright;
                     setGroupToColorTemp(element, function (retval) {
                         if (retval != undefined)
                         {
                             cachedconfig = retval;
-                            // do update here.
+                            constructFixtureStatusBoxs();
                         }
                         // else if (retval.error != undefined)
                         //  noty({text: 'Error invoking ' + retval.error, type: 'error'});
@@ -368,11 +381,104 @@ function onCCTSliderChange(value)
                 }
             }
             break;
+        case "Fixtures":
+            switch(selected_fixture.type)
+            {
+                case "cct":
+                    var element = {};
+                    element.requesttype = "override";
+                    element.name = selected_fixture.assignedname;
+                    element.brightness = document.getElementById("brightnesssliderobject").value;;
+                    element.colortemp = (2000 + (4500*value/100));
+                    setFixtureLevel(element);
+                    break;
+                default:
+                    break;
+
+            }
+            break;
 
         default:
             break;
     }
 }
+
+
+
+
+function constructFixtureStatusBoxs()
+{
+
+    for(var k = 1; k <= 8; k++)
+    {
+        var div = document.getElementById("StatusBlock"+(k));
+        div.innerHTML = ""; // = 0;
+    }
+
+
+    for (var i = 0 ; i < cachedconfig.fixtures.length; i++) {
+        var fixobj = cachedconfig.fixtures[i];
+        var divID = "StatusBlock"+(i+1);
+
+        var level = undefined;
+        var colortemp = undefined;
+        switch(fixobj.type)
+        {
+            case "on_off":
+            case "dim":
+                level = fixobj.level;
+                break;
+            case "cct":
+                colortemp = fixobj.colortemp;
+                level = fixobj.brightness;
+                break;
+
+            case "rgbw":
+                break;
+
+            default:
+                break;
+        }
+
+        createFixtureStatusTable(divID,fixobj.assignedname,fixobj.type,fixobj.image,
+            fixobj.powerwatts,level,colortemp,fixobj.daylightlimited);
+
+    }  // end fixture for loop ,
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// **************************** END NEW CODE *********************************************
+
+
+// START OLD CODE ***********************
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 function getStatus () {
     showDivID("StatusPage");
@@ -510,413 +616,8 @@ function getStatus () {
 
     });
 }  // get status
+*/
 
-
-function createAllSceneButtons (divIDList) {
-    // This is broken into a loop of individual button creations so that if you want to put the buttons in differnet div's you can based on divIDList
-    // if all in one divIDList then it is an array with one element.  Otherwise restructure so divIDList elements are handed to button gen fx
-    //console.log ("sending back data is ",returnSceneList);
-    var divID = divIDList[0];
-    for(var i = 0; i < returnSceneList.length; i++) {
-        var sceneName = returnSceneList[i];
-        var buttonText = beatifyText(returnSceneList[i]);
-        if (sceneName != "----") {
-            createSceneButton (divID,sceneName,buttonText);
-            //console.log ("creating dynamic button ", buttonText, sceneName);
-        }
-    }
-
-}
-
-function createSceneButton (divID,sceneName,buttonText) {
-    var select = document.getElementById(divID);
-    var btn = document.createElement("button");
-    btn.value = buttonText;
-    btn.id = buttonText;
-    btn.onclick = function(){invokeScene(sceneName);}
-    btnText = document.createTextNode(buttonText);
-    btn.appendChild(btnText);
-    select.appendChild(btn);
-    // Uncomment the next 2 lines if you want a new line between the buttons
-    //var br = document.createElement("BR");
-    //select.appendChild(br);
-
-}
-
-
-function createAllGroupButtons (divIDList,GroupList) {
-    // groupList is array of records, each record has {"name","type","fixtures"}.  fixtures is an array of UID's
-    // create a toggle for Occ/Vac emulation/test
-    console.log ("groupList is ", GroupList);
-    var divID = divIDList[0];
-    for(var i = 0; i < GroupList.length; i++) {
-        var groupName = GroupList[i].name;
-        var groupType = GroupList[i].type;
-        var groupFixtures = GroupList[i].fixtures;
-        var buttonText = beatifyText(GroupList[i].name);
-        if (groupName != "") {
-            createGroupButton (divID,groupName,groupType,groupFixtures,buttonText);
-        }
-    }
-
-}
-
-function createGroupButton (divID,groupName,groupType,groupFixtures,buttonText) {
-    console.log ("creating group button ",groupName, buttonText);
-    var select = document.getElementById(divID);
-    var btn = document.createElement("button");
-    btn.value = buttonText;
-    btn.id = buttonText;
-    btn.name = groupName;
-    if (groupType == "ctemp") { btn.style.backgroundColor = "lightblue";}   // differentiate CCT groups
-    btn.onclick = function(){groupAction(groupName,groupType,groupFixtures);}
-    btnText = document.createTextNode(buttonText);
-    btn.appendChild(btnText);
-    select.appendChild(btn);
-
-}
-
-
-function groupAction (groupName,groupType,groupFixtures) {
-    console.log ("Got to the group action routine for group ", groupName, groupType, groupFixtures);
-    // present slider and then send group that level....
-    // "http://localhost:3000/groups/setgrouptolevel",  {    "name": "All",    "level": "44" }
-    showDivID("occ_vac_switch");    // available for all group types
-    if (groupType == "ctemp") {
-        showDivID ("CCTBar")
-        showDivID("BrightnessBar");
-        hideDivID("ToggleButton");
-    }
-    else if (groupType == "brightness")
-    {
-        hideDivID("CCTBar");
-        hideDivID("ToggleButton");
-        showDivID("BrightnessBar");
-
-    }   // todo else RGB/W  (do not have yet);  on_off are members of brightness group
-    var occ_vac = document.getElementById("OccVacObject");
-    var slide = document.getElementById('brightnesssliderobject');
-    var cctslide = document.getElementById("CCTsliderobject");
-
-
-    slide.onchange = function() {
-        //sliderDiv.innerHTML = this.value;
-        sliderValue = slide.value;
-        var element = {};
-        element.name = groupName;
-        element.level = sliderValue;
-
-        var dataset = JSON.stringify(element);
-        console.log ("Saw a change in slider value ", dataset);
-        $.ajax({
-            url: "/groups/setgrouptolevel",
-            type: 'post',
-            data: dataset,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (series) {
-
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-
-                alert ("ERROR: Unable to change level");
-            }
-        });
-
-        cctslide.onchange = function() {
-            //sliderDiv.innerHTML = this.value;
-            cctsliderValue = cctslide.value;
-            var element = {};
-            element.name = groupName;
-            element.ctemp ={};
-            var createcct = (2000 + (4500*cctsliderValue/100)); // todo - change to min/max 2500 - 6500
-            element.ctemp = createcct;
-            var dataset = JSON.stringify(element);
-            console.log ("Saw a change in slider value ", dataset);
-            $.ajax({
-                url: "/groups/setgrouptocolortemp",
-                type: 'post',
-                data: dataset,
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (series) {
-
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-
-                    alert ("ERROR: Unable to change level");
-                }
-            });
-        }
-
-        occ_vac.onchange = function() {
-            toggleValue = occ_vac.checked;
-            var element = {};
-            element.groupname = groupName;
-            var dataset = JSON.stringify(element);
-            if (toggleValue) {
-                console.log ("Saw an occupancy event to group ", groupName);
-                $.ajax({
-                    url: "/tester/sendoccupancytogroup",
-                    type: 'post',
-                    data: dataset,
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (series) {
-                        console.log ("Sent occ_vac message", urltouse, groupName);
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-
-                    }
-                });
-            }
-            else {
-                console.log ("Saw a vacancy event to group ", groupName);
-                $.ajax({
-                    url: "/tester/sendvacancytogroup",
-                    type: 'post',
-                    data: dataset,
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (series) {
-                        console.log ("Sent occ_vac message", urltouse, groupName);
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-
-                    }
-                });
-
-            }
-// {urltouse = "/tester/sendvacancytogroup"}
-        }
-
-    }
-
-
-
-
-}
-var FixtureList;
-function getFixtureList () {
-
-    $.get("/config/getconfig", function(data, status){
-        //var jsonData = JSON.parse(data);
-        FixtureList = data.fixtures;
-        var numberoffixtures = FixtureList.length;
-        //console.log ("There were ", numberoffixtures , " fixtures");
-        createAllFixtureButtons (fixturedivIDList,FixtureList);
-    });
-}
-
-function createAllFixtureButtons (divIDList,FixtureList) {
-    // groupList is array of records, each record has {"name","type","fixtures"}.  fixtures is an array of UID's
-    //console.log ("Fixture List  is ",FixtureList);
-    //console.log ("DivID is", divIDList);
-    /*
-     "fixtures": [    {
-     "assignment": [ 1   ],
-     "name": "TEST_FIX_DIM_A",
-     "uid": "192_168_1_100_1",
-     "type": "dim",
-     "globalgroups": 0,
-     "localgroups": "",
-     "status": 0,
-     "image": "/images/bulb_off.jpg"
-     "zero2teninputs": [],
-     "contactinputs": [],
-     "parameters": {
-     "dimoptions": "1",
-     "dimrate": "0",
-     "brightenrate": "0",
-     "resptoocc": "-1",
-     "resptovac": "0",
-     "resptodl50": "0",
-     "resptodl40": "10",
-     "resptodl30": "25",
-     "resptodl20": "50",
-     "resptodl10": "75",
-     "resptodl0": "100",
-     "daylightceiling": "100",
-     "manualceiling": "100",
-     "daylightfloor": "0",
-     "manualfloor": "0"
-     }*/
-    var divID = divIDList[0];
-    for(var i = 0; i < FixtureList.length; i++) {
-        var fixtureName = FixtureList[i].name;
-        var fixtureUID = FixtureList[i].uid;
-        var fixtureType = FixtureList[i].type;
-        var fixtureImage = FixtureList[i].image;
-        var buttonText = beatifyText (FixtureList[i].name);
-        if (fixtureName != "") {
-            createFixtureButton (divID,fixtureName,fixtureUID,fixtureType,fixtureImage,buttonText);
-        }
-    }
-
-}
-
-function createFixtureButton (divID,fixtureName,fixtureUID,fixtureType,fixtureImage,buttonText) {
-    console.log ("creating fixture button ",fixtureName, buttonText);
-    var select = document.getElementById(divID);
-    var btn = document.createElement("button");
-    var pictureframe = document.createElement('DIV');
-    var textframe = document.createElement('DIV');
-    var img = document.createElement('img');
-    //var scaledimage = resizeImg(fixtureImage, 20, 20);
-    img.src = fixtureImage;
-    img.style.width = "50px";
-    img.style.height = "50px";
-    img.style.paddingRight = "10px";
-    pictureframe.id = fixtureUID + "picture_cell";
-    pictureframe.appendChild(img);
-    btnText = document.createTextNode(buttonText);
-    //btnText.style.verticalAlign = "top";
-    pictureframe.appendChild(btnText);
-    btn.value = buttonText;
-    btn.id = fixtureUID;
-    btn.onclick = function(){fixtureAction(fixtureName,fixtureUID,fixtureType);}
-    btn.appendChild(pictureframe);
-    //btn.appendChild(btnText);
-    select.appendChild(btn);
-
-}
-function fixtureAction (fixtureName,fixtureUID,fixtureType) {
-    console.log ("Got to the fixture action routine ", fixtureName, fixtureUID, fixtureType);
-    var brightslide = document.getElementById('brightnesssliderobject');
-    var cctslide = document.getElementById("CCTsliderobject");
-    var toggleslide = document.getElementById("ToggleObject");
-    brightSliderValue = brightslide.value;
-    cctsliderValue = cctslide.value;
-    toggleValue = toggleslide.checked;
-    console.log ("The two slider values are ", brightSliderValue, cctsliderValue);
-    console.log ("The togglevalue is ", toggleValue);
-
-
-    if (fixtureType == "cct") {
-        showDivID ("CCTBar")
-        showDivID("BrightnessBar");
-        hideDivID("ToggleButton");
-    }
-    else  if (fixtureType == "on_off") {
-        showDivID ("ToggleButton");
-        hideDivID("CCTBar");
-        hideDivID("BrightnessBar");
-    }
-    else if (fixtureType == "dim")
-    {
-        hideDivID("CCTBar");
-        hideDivID("ToggleButton");
-        showDivID("BrightnessBar");
-
-    }   // else RGB/W (do not have yet)
-    /*  Format for a dim fixture set level
-     {
-     "requesttype": "override",
-     "uid": "192_168_1_100_1",
-     "dim": {   "levelpct": "50"  }
-     }
-     format for setting CCT fixture - NOTE you need BOTH intensity AND CCT values to be submitted.
-     {
-     "requesttype": "override",
-     "uid": "192_168_1_100_3",
-     "cct":
-     {
-     "levelpct": "50",
-     "ctemp": "3000"
-     }
-     {
-     "requesttype": "override",
-     "uid": "192_168_1_100_2",
-     "on_off": { "levelpct": "100"  }
-     },
-
-     */
-
-    brightslide.onchange = function() {
-        //sliderDiv.innerHTML = this.value;
-        brightSliderValue = brightslide.value;
-        cctsliderValue = cctslide.value;
-        var element = {};
-        element.requesttype = "wallstation";
-        element.uid = fixtureUID;
-        if (fixtureType == "cct") {   // cct fixtures require both intensity and CCT passed to it
-            element.cct ={};
-            element.cct.levelpct = brightSliderValue;
-            var createcct = (2000 + (4500*cctsliderValue/100)); // todo - change to min/max 2500 - 6500
-            element.cct.ctemp = createcct;
-        }
-        else  {
-            element.dim ={};
-            element.dim.levelpct = brightSliderValue;
-        }
-        var dataset = JSON.stringify(element);
-        console.log ("Saw a change in slider value ", dataset);
-        $.ajax({
-            url: "/setfixturelevel",
-            type: 'post',
-            data: dataset,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (series) {
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert ("ERROR: Unable to change level");
-            }
-        });
-    }
-
-    cctslide.onchange = function() {
-        //sliderDiv.innerHTML = this.value;
-        cctsliderValue = cctslide.value;
-        var element = {};
-        element.requesttype = "wallstation";
-        element.uid = fixtureUID;
-        element.cct ={};
-        element.cct.levelpct = brightSliderValue;
-        var createcct = (2000 + (4500*cctsliderValue/100)); // todo - change to min/max 2500 - 6500
-        element.cct.ctemp = createcct;
-        var dataset = JSON.stringify(element);
-        console.log ("Saw a change in slider value ", dataset);
-        $.ajax({
-            url: "/setfixturelevel",
-            type: 'post',
-            data: dataset,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (series) {
-
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-
-                alert ("ERROR: Unable to change level");
-            }
-        });
-    }
-
-    toggleslide.onchange = function() {
-        toggleValue = toggleslide.checked;
-        var element = {};
-        element.requesttype = "wallstation";
-        element.uid = fixtureUID;
-        element.on_off ={};
-        if (toggleValue) {element.on_off.levelpct = 100} else {element.on_off.levelpct = 0}
-        var dataset = JSON.stringify(element);
-        console.log ("Saw a change in toggle value ", dataset);
-        $.ajax({
-            url: "/setfixturelevel",
-            type: 'post',
-            data: dataset,
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (series) {
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert ("ERROR: Unable to change level");
-            }
-        });
-    }
-
-}
 function toggleDivIDVisible(DivID)
 {
     var elem=document.getElementById(DivID);
@@ -935,7 +636,7 @@ function showDivID (DivID) {
 function hideDivID (DivID) {
     var elem=document.getElementById(DivID);
     elem.style.display="none";
-    console.log("Hiding DIV", DivID);
+ //   console.log("Hiding DIV", DivID);
 }
 
 function showOnlyTheseButtons (whichButtons) {
@@ -966,13 +667,13 @@ function showOnlyTheseButtons (whichButtons) {
             break;
         case 'Status':
             showDivID("StatusPage");
-            for(var i = 0; i < 8; i++) {
-                cleanUpList("StatusBlock"+(i+1));
-            }
-            getStatus ();
+            //for(var i = 0; i < 8; i++) {
+            //    cleanUpList("StatusBlock"+(i+1));
+           // }
+          //  getStatus ();
             break;
         case 'Config':
-            showDivID("ConfigPage");
+          //  showDivID("ConfigPage");
             break;
     }
 
@@ -991,9 +692,8 @@ function beatifyText(InputText) {
     var res = str.replace(/_/g, " ");
     return res;
 }
-//  http://localhost:3000//config/getconfig
 
-function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureUID,fixtureImage,fixturePower,fixtureLevel,fixtureCCT, fixtureDLLimited) {
+function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureImage,fixturePower,fixtureLevel,fixtureCCT, fixtureDLLimited) {
     // Declare global variables and create the header, footer, and caption.
     console.log ("fixture image  is ", fixtureImage);
     var oTable = document.createElement("TABLE");
@@ -1023,7 +723,7 @@ function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureUID,fixtu
     img.style.height = "120px";
     //img.style.paddingRight = "10px";
     oTDpicture.appendChild(img);
-    oTDpicture.id = fixtureUID + "picture_cell";
+    oTDpicture.id = "pic_" + fixtureName;
 
     oTDdimlevel.innerHTML = "Level";
     oTDdimlevel.className = "dimleveldiv";
@@ -1033,7 +733,7 @@ function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureUID,fixtu
     else { var p = document.createTextNode("N/A");   }
     para.appendChild(p);
     oTDdimlevel.appendChild(para);
-    oTDdimlevel.id = fixtureUID + "dimlevel_cell";
+    oTDdimlevel.id = "level_" + fixtureName;
 
     //console.log ("fixtureType was ", fixtureType);
     oTDcctstatus.innerHTML = "CCT Level ";
@@ -1044,7 +744,7 @@ function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureUID,fixtu
     else { var p = document.createTextNode("N/A");  }
     para.appendChild(p);
     oTDcctstatus.appendChild(para);
-    oTDcctstatus.id = fixtureUID + "cctlevel_cell";
+    oTDcctstatus.id = "ctemp_" + fixtureName;
 
     oTDpowerlevel.innerHTML = "Power Level";
     var para = document.createElement("H1");                       // Create a <p> element
@@ -1053,7 +753,7 @@ function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureUID,fixtu
     oTDpowerlevel.appendChild(para);
     oTDpowerlevel.className = "powerleveldiv";
 
-    oTDpowerlevel.id = fixtureUID + "powerlevel_cell";
+    oTDpowerlevel.id = "power_" + fixtureName;
 
     oTDdaylight.innerHTML = "Daylight Limited";
     oTDdaylight.className = "daylightdiv";
@@ -1062,7 +762,7 @@ function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureUID,fixtu
         img.src = "images/sun40x40.jpg";
     } else {img.src = "/images/handtinytrans.gif"}
     oTDdaylight.appendChild(img);
-    oTDdaylight.id = fixtureUID + "daylight_cell";
+    oTDdaylight.id = "dl_" + fixtureName;
 
 //Build the table smallest element to biggest
     oRow1.appendChild(oTDpicture);
