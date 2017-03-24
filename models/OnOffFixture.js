@@ -60,7 +60,7 @@ var OnOffFixture = function()
     this.setLevel = function(requestobj, apply){
 
         var filterblocked = false;
-        if(this.interfacename != "rpdg-plc") {
+      //  if(this.interfacename != "rpdg-plc") {
 
             var dlsensor = this.getMyDaylightSensor();
             var isdaylightbound = false;
@@ -79,7 +79,7 @@ var OnOffFixture = function()
             }
             else
                 filterblocked = true;
-        }
+       // }
 
 
         if(filterblocked)
