@@ -1,270 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<META http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="bsmaster/assets/js/bootstrap.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="bsmaster/assets/js/custom.min.js"></script>
+    <script src="bsmaster/assets/js/core.min.js"></script>
+    <link href="stylesheets/wallstation.css" rel="stylesheet">
+    <script src="javascripts/crud_config.js"></script>
+    <script src="javascripts/crud_override.js"></script>
+    <script src="javascripts/crud_groups.js"></script>
+    <script src="javascripts/wallstation.js"></script>
+
+</head>
 
 <body onload='init()'>
-<script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
-<script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
-<script src="bsmaster/assets/js/bootstrap.min.js"></script>
-<script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
-<script src="bsmaster/assets/js/custom.min.js"></script>
-<script src="bsmaster/assets/js/core.min.js"></script>
-<link href="stylesheets/wallstation.css" rel="stylesheet">
-<script src="javascripts/crud_config.js"></script>
-<script src="javascripts/crud_override.js"></script>
-<script src="javascripts/crud_groups.js"></script>
-<script src="javascripts/wallstation.js"></script>
 
-<div>
-  <img src="/images/RVLT_LOGO.png" border="0" alt="Revolution Lighting Logo" onload="resizeImg(this, 50, 250);">
-
-  <div class="box">
-    <div class="box-header" data-original-title>
-      <h2>
-        <i class="fa fa-user"></i><span class="break"></span>Main Options
-      </h2>
+    <img src="/images/RVLT_LOGO.png" border="0" alt="Revolution Lighting Logo" onload="resizeImg(this, 50, 250);">
+    <div class="box">
+        <div class="box-header" data-original-title>
+            <h2>
+                <i class="fa fa-user"></i><span class="break"></span>Main Options
+            </h2>
+        </div>
+        <div class="box-content">  <!--  These redirect to another page with same background/style -->
+            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Scenes"); value="Scenes" />
+            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Groups"); value="Groups" />
+            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Fixtures"); value="Fixture Control" />
+            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Status"); value="Status" />
+            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Config"); value="Config" />
+        </div>
     </div>
-    <div class="box-content">  <!--  These redirect to another page with same background/style -->
-      <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Scenes"); value="Scenes" />
 
-      <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Groups"); value="Groups" />
+    <div id="maincontent" class="maincontentbox">
 
-      <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Fixtures"); value="Fixture Control" />
 
-      <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Status"); value="Status" />
 
-      <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Config"); value="Config" />
-
-    </div>
-  </div>
-  <hr>
-  <br><br><br>
-
-  <div id="SceneButtonArray" class="synScenes">   <br>   </div>
-
-  <div id="GroupButtonArray" class = "synScenes">   <br>   </div>
-  <div id="FixtureButtonArray" class = "synScenes">   <br>   </div>
-  <div id="StatusButtonArray" class = "statusbuttons">   <br>   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <div id="BrightnessBar" align="left"> 
-    <br>
-    <br>
     <hr>
     <br>
-    <table align="left" border=10 width=900 cellpadding=1>
-      <tr style="font-size:30px"  > 
-        <td colspan=3 style="text-align: center" bgcolor="#CCCCCC"> Brightness </td> 
-      </tr>
-      <tr>
-        <td width=100 bgcolor="#000000"> </td>
-        <td align="center" width=800>    <input id="brightnesssliderobject" type="range" oninput="onBrightnessSliderChange(this.value)" onchange="onBrightnessSliderChange(this.value)" class = "brightnessslider"/>   </td>
-        <td width=100 bgcolor="#000000"> </td>
-      </tr>    
-    </table>            
+    <div id="SceneButtonArray" class="synScenes">   <br>   </div>
+    <div id="GroupButtonArray" class = "synScenes">   <br>   </div>
+    <div id="FixtureButtonArray" class = "synScenes">   <br>   </div>
+    <div id="StatusButtonArray" class = "statusbuttons">   <br>   </div>
+
+
+    </div>
     <br>
     <br>
+    <div id="BrightnessBar" align="left">
+        <br>
+        <br>
+        <hr>
+        <br>
+        <table align="left" border=10 width=900 cellpadding=1>
+            <tr style="font-size:30px"  >
+                <td colspan=3 style="text-align: center" bgcolor="#CCCCCC"> Brightness </td>
+            </tr>
+            <tr>
+                <td width=100 bgcolor="#000000"> </td>
+                <td align="center" width=800>    <input id="brightnesssliderobject" type="range" oninput="onBrightnessSliderChange(this.value)" onchange="onBrightnessSliderChange(this.value)" class = "brightnessslider"/>   </td>
+                <td width=100 bgcolor="#000000"> </td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
     <br>
     <br>
+    <div id="CCTBar" align="left">
+        <br>
+        <br>
+        <br>
+        <hr>
+        <table align="left" border=10 width=900 cellpadding=1>
+            <tr style="font-size:30px"  >
+                <td colspan=3 style="text-align: center" bgcolor="#CCCCCC"> Color Temperature </td>
+            </tr>
+            <tr>
+                <td width=100 bgcolor="#FFAA00"> </td>
+                <td align="center" width=800>    <input id="CCTsliderobject" type="range" oninput="onCCTSliderChange(this.value)" onchange="onCCTSliderChange(this.value)" class = "cctslider" />   </td>
+                <td width=100 bgcolor="#0099FF"> </td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
     <br>
-  </div>
-  <br>  
-  <br>  
-  <div id="CCTBar" align="left"> 
     <br>
-    <br>
-    <br>
-    <hr>
-    <table align="left" border=10 width=900 cellpadding=1>
-      <tr style="font-size:30px"  > 
-        <td colspan=3 style="text-align: center" bgcolor="#CCCCCC"> Color Temperature </td> 
-      </tr>
-      <tr>
-        <td width=100 bgcolor="#FFAA00"> </td>
-        <td align="center" width=800>    <input id="CCTsliderobject" type="range" oninput="onCCTSliderChange(this.value)" onchange="onCCTSliderChange(this.value)" class = "cctslider" />   </td>
-        <td width=100 bgcolor="#0099FF"> </td>
-      </tr>   
-    </table>            
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-  </div>
-  <br>  
-  <br>  
-      <div id="ToggleButton" align="left" >
+    <div id="ToggleButton" align="left" >
         <br>
         <ul class="tg-list-item">
-          <h4 style="color:yellow">Light Switch</h4>
-          <input class="tgl tgl-skewed" id="ToggleObject" type="checkbox" oninput="onToggleButtonChange(this.checked)" onchange="onToggleButtonChange(this.checked)"/>
-          <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="ToggleObject"></label>
+            <h4 style="color:yellow">Light Switch</h4>
+            <input class="tgl tgl-skewed" id="ToggleObject" type="checkbox" oninput="onToggleButtonChange(this.checked)" onchange="onToggleButtonChange(this.checked)"/>
+            <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="ToggleObject"></label>
         </ul>
-    
+
         <br>
         <br>
-      </div>
-      <div id="occ_vac_switch" align="left" >
+    </div>
+    <div id="occ_vac_switch" align="left" >
         <hr>
         <br />
         <ul class="tg-list-item">
-          <h4 style="color:orange">Virtual Sensor</h4>
-          <input class="tgl tgl-skewed" id="OccVacObject" type="checkbox"/>
-          <label class="tgl-btn" data-tg-off="Vacant" data-tg-on="Occupied" for="OccVacObject"></label>
+            <h4 style="color:orange">Virtual Sensor</h4>
+            <input class="tgl tgl-skewed" id="OccVacObject" type="checkbox"/>
+            <label class="tgl-btn" data-tg-off="Vacant" data-tg-on="Occupied" for="OccVacObject"></label>
         </ul>
-    
+
         <br>
-      </div>
-  
-  <div id="StatusPage" >
-    <table align="center" >
-      <tr > 
-        <td><div id="StatusBlock1" >   </div> </td> 
-        <td><div id="StatusBlock2" >   </div> </td> 
-        <td><div id="StatusBlock3" >   </div> </td> 
-        <td><div id="StatusBlock4" >   </div> </td> 
-      </tr>
-      <tr>
-        <td><div id="StatusBlock5" >   </div> </td> 
-        <td><div id="StatusBlock6" >   </div> </td> 
-        <td><div id="StatusBlock7" >   </div> </td> 
-        <td><div id="StatusBlock8" >   </div> </td> 
-      </tr>   
-    </table>            
+    </div>
 
-      
+    <div id="StatusPage" >
+        <table align="center" >
+            <tr >
+                <td><div id="StatusBlock1" >   </div> </td>
+                <td><div id="StatusBlock2" >   </div> </td>
+                <td><div id="StatusBlock3" >   </div> </td>
+                <td><div id="StatusBlock4" >   </div> </td>
+            </tr>
+            <tr>
+                <td><div id="StatusBlock5" >   </div> </td>
+                <td><div id="StatusBlock6" >   </div> </td>
+                <td><div id="StatusBlock7" >   </div> </td>
+                <td><div id="StatusBlock8" >   </div> </td>
+            </tr>
+        </table>
+        </div>
 
+
+<!--
         <div class="BarTableVertical">
             <table align="center">
                 <caption class="iocaptions"; align="center"; >Input Levels</caption>
                 <tr>
-                    <td><div class="BarVerticalDaylight">  
-                          <div id="input1div" class="BarStatus">  </div>
-                          </div>
-                    </td>
-                    <td><div class="BarVertical"> 
-                          <div id="input2div" class="BarStatus">  </div>
-                          </div>
-                        </div>
+                    <td><div class="BarVerticalDaylight">
+                        <div id="input1div" class="BarStatus">  </div>
+                    </div>
                     </td>
                     <td><div class="BarVertical">
-                          <div id="input3div" class="BarStatus">  </div>              
-                        </div>
-                    </td>
-                    <td><div class="BarVertical">
-                          <div id="input4div" class="BarStatus">  </div>                  
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><div id="input1"; class="BarLabel">40FC</div></td>
-                    <td><div id="input2"; class="BarLabel">10%</div></td>
-                    <td><div id="input3"; class="BarLabel">45%</div></td>
-                    <td><div id="input4"; class="BarLabel">N/C</div></td>
-                </tr>
-                <tr>
-                    <td><div class="BarLabel">1</div></td>
-                    <td><div class="BarLabel">2</div></td>
-                    <td><div class="BarLabel">3</div></td>
-                    <td><div class="BarLabel">4</div></td>
-                </tr>
-                <tr > 
-                    <td colspan=4; id="DaylightLevelReading"; class="iocaptions"> </td>
-                </tr>    
-                <tr > 
-                    <td colspan=4; id="occ_state"; class="iocaptions"> </td>
-                </tr>    
-            </table>
-        
+                        <div id="input2div" class="BarStatus">  </div>
+                    </div>
+        </div>
+        </td>
+        <td><div class="BarVertical">
+            <div id="input3div" class="BarStatus">  </div>
+        </div>
+        </td>
+        <td><div class="BarVertical">
+            <div id="input4div" class="BarStatus">  </div>
+        </div>
+        </td>
+        </tr>
+        <tr>
+            <td><div id="input1"; class="BarLabel">40FC</div></td>
+            <td><div id="input2"; class="BarLabel">10%</div></td>
+            <td><div id="input3"; class="BarLabel">45%</div></td>
+            <td><div id="input4"; class="BarLabel">N/C</div></td>
+        </tr>
+        <tr>
+            <td><div class="BarLabel">1</div></td>
+            <td><div class="BarLabel">2</div></td>
+            <td><div class="BarLabel">3</div></td>
+            <td><div class="BarLabel">4</div></td>
+        </tr>
+        <tr >
+            <td colspan=4; id="DaylightLevelReading"; class="iocaptions"> </td>
+        </tr>
+        <tr >
+            <td colspan=4; id="occ_state"; class="iocaptions"> </td>
+        </tr>
+        </table>
+
         <div class="Outputs">
             <table align="center">
                 <caption align="center"; class="iocaptions" >Output Levels</caption>
                 <tr >
-                    <td><div class="Output">  
-                          </div>
-                    </td>
-                    <td><div class="Output"> 
-                          </div>
-                        </div>
+                    <td><div class="Output">
+                    </div>
                     </td>
                     <td><div class="Output">
-                        </div>
-                    </td>
-                    <td><div class="Output">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><div class="BarLabel">1</div></td>
-                    <td><div class="BarLabel">2</div></td>
-                    <td><div class="BarLabel">3</div></td>
-                    <td><div class="BarLabel">4</div></td>
-                </tr>
-                <tr>
-                    <td><div id="output1"; class="outputplc">ON</div></td>
-                    <td><div id="output2"; class="outputplc">OFF</div></td>
-                    <td><div id="output3"; class="outputplc">ON</div></td>
-                    <td><div id="output4"; class="outputplc">OFF</div></td>
-                </tr>
-            </table>
-        
+                    </div>
         </div>
-        
-        <div class="Outputs">
-            <table align="center">
-                <caption align="center"; class="iocaptions" >Contact Levels</caption>
-                <tr >
-                    <td><div class="Output">  
-                          </div>
-                    </td>
-                    <td><div class="Output"> 
-                          </div>
-                        </div>
-                    </td>
-                    <td><div class="Output">
-                        </div>
-                    </td>
-                    <td><div class="Output">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><div class="BarLabel">1</div></td>
-                    <td><div class="BarLabel">2</div></td>
-                    <td><div class="BarLabel">3</div></td>
-                    <td><div class="BarLabel">4</div></td>
-                </tr>
-                <tr>
-                    <td><div id="wdc1"; class="outputplc">ON</div></td>
-                    <td><div id="wdc2"; class="outputplc">OFF</div></td>
-                    <td><div id="wdc3"; class="outputplc">ON</div></td>
-                    <td><div id="wdc4"; class="outputplc">OFF</div></td>
-                </tr>
-            </table>
-        
+        </td>
+        <td><div class="Output">
         </div>
-  </div>  
-  </div><!--status page -->
-  <div id="ConfigPage" >
-      <ul>
+        </td>
+        <td><div class="Output">
+        </div>
+        </td>
+        </tr>
+        <tr>
+            <td><div class="BarLabel">1</div></td>
+            <td><div class="BarLabel">2</div></td>
+            <td><div class="BarLabel">3</div></td>
+            <td><div class="BarLabel">4</div></td>
+        </tr>
+        <tr>
+            <td><div id="output1"; class="outputplc">ON</div></td>
+            <td><div id="output2"; class="outputplc">OFF</div></td>
+            <td><div id="output3"; class="outputplc">ON</div></td>
+            <td><div id="output4"; class="outputplc">OFF</div></td>
+        </tr>
+        </table>
+
+    </div>
+
+    <div class="Outputs">
+        <table align="center">
+            <caption align="center"; class="iocaptions" >Contact Levels</caption>
+            <tr >
+                <td><div class="Output">
+                </div>
+                </td>
+                <td><div class="Output">
+                </div>
+    </div>
+    </td>
+    <td><div class="Output">
+    </div>
+    </td>
+    <td><div class="Output">
+    </div>
+    </td>
+    </tr>
+    <tr>
+        <td><div class="BarLabel">1</div></td>
+        <td><div class="BarLabel">2</div></td>
+        <td><div class="BarLabel">3</div></td>
+        <td><div class="BarLabel">4</div></td>
+    </tr>
+    <tr>
+        <td><div id="wdc1"; class="outputplc">ON</div></td>
+        <td><div id="wdc2"; class="outputplc">OFF</div></td>
+        <td><div id="wdc3"; class="outputplc">ON</div></td>
+        <td><div id="wdc4"; class="outputplc">OFF</div></td>
+    </tr>
+    </table>
+-->
+
+<div id="ConfigPage" >
+    <ul>
         <li class="configdropdown">
-          <a class="configdropbtn">Set Daylight Polling interval</a>
-          <div class="configdropdown-content">
-            <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('1');return false;">1 sec</a>
-            <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('15');return false;">15 sec</a>
-            <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('60');return false;">1 min</a>
-            <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('1800');return false;">30 min</a>
-            <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('3600');return false;">1 hour</a>
-            <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('7200');return false;">2 hours</a>
-          </div>
+            <a class="configdropbtn">Set Daylight Polling interval</a>
+            <div class="configdropdown-content">
+                <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('1');return false;">1 sec</a>
+                <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('15');return false;">15 sec</a>
+                <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('60');return false;">1 min</a>
+                <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('1800');return false;">30 min</a>
+                <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('3600');return false;">1 hour</a>
+                <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('7200');return false;">2 hours</a>
+            </div>
         </li>
-      </ul>
+    </ul>
 
-  </div>
+</div>
 
+
+<div id="levelinputsdiv">
+    <table id="levelinputstable" ></table>
+</div>
 </body>
 
 </html>

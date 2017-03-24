@@ -5,9 +5,9 @@
 
 //global variables
 var fixtureImagePath, fixtureImagePathfound;
-var scenedivIDList = ["SceneButtonArray"];
-var groupdivIDList = ["GroupButtonArray"];
-var fixturedivIDList = ["FixtureButtonArray"];
+//var scenedivIDList = ["SceneButtonArray"];
+//var groupdivIDList = ["GroupButtonArray"];
+//var fixturedivIDList = ["FixtureButtonArray"];
 var returnSceneList,returnGroupList;
 // this must be the same as the html that shows these
 var mainMenuOptionDivList = ["SceneButtonArray","GroupButtonArray","FixtureButtonArray","StatusButtonArray"];
@@ -61,12 +61,15 @@ function processConfig(configobj) {
     constructGroupButtons();
     constructFixtureButtons();
     constructFixtureStatusBoxs();
+    updateLevelInputsTable();
+
     hideDivID("BrightnessBar");
     hideDivID("CCTBar");
     hideDivID("ToggleButton");
     hideDivID("occ_vac_switch");
     hideDivID("StatusPage");
-    //showOnlyTheseButtons("Scenes");      // start here
+    hideDivID("levelinputsdiv");
+    showOnlyTheseButtons("Scenes");      // start here
 }
 
 
@@ -171,7 +174,11 @@ function constructGroupButtons()
 
 function constructFixtureButtons()
 {
+
+
     var groupbuttonholder = document.getElementById("FixtureButtonArray");
+    groupbuttonholder.innerHTML = "";
+
     groupbuttonholder.style.display="inline";
     for(var i = 0 ; i < cachedconfig.fixtures.length; i++)
     {
@@ -194,21 +201,28 @@ function constructFixtureButtons()
             {
                 case "on_off":
                     showDivID("ToggleButton");
+                    var toggleswitch = document.getElementById("ToggleObject");
+                    toggleswitch.checked = (selected_fixture.level == 100)?true:false;
                     break;
                 case "dim":
                     showDivID("BrightnessBar");
+                    //..
+
+                    document.getElementById("brightnesssliderobject").value = selected_fixture.level;
                     break;
+
                 case "cct":
                     showDivID("BrightnessBar");
                     showDivID("CCTBar");
+                    document.getElementById("brightnesssliderobject").value = selected_fixture.brightness;
+                    var barval = ((Number(selected_fixture.colortemp) - 2000)*100) / 4500;
+                    document.getElementById("CCTsliderobject").value = barval;
                     break;
                 case "rgbw":
                     break;
                 default:
                     break;
-
             }
-
         }
         buttonholder.appendChild(fixbutton);
         var btnText = document.createTextNode(fixtureobj.assignedname);
@@ -331,6 +345,7 @@ function onToggleButtonChange(value)
 function processUpdatedConfig()
 {
     constructFixtureStatusBoxs();
+  //  constructFixtureButtons();
 }
 
 
@@ -367,7 +382,7 @@ function onCCTSliderChange(value)
                     var bright = brightslider.value;
                     var element = {};
                     element.name = selected_group.name;
-                    element.ctemp =  (2000 + (4500*value/100));;
+                    element.ctemp =  (2000 + (4500*value/100));
                     element.brightness = bright;
                     setGroupToColorTemp(element, function (retval) {
                         if (retval != undefined)
@@ -448,254 +463,9 @@ function constructFixtureStatusBoxs()
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// **************************** END NEW CODE *********************************************
-
-
-// START OLD CODE ***********************
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-function getStatus () {
-    showDivID("StatusPage");
-    hideDivID("BrightnessBar");
-    hideDivID("CCTBar");
-    hideDivID("ToggleButton");
-    hideDivID("occ_vac_switch");
-    var nameArray = [];
-    var typeArray =[];
-    var uidArray =[];
-    var powerArray = [];
-    var pctlevelArray = [];
-    var daylightlimitArray = [];
-    var cctlevelArray =[];
-    var i=0;
-    //var fixtureImagePath = "images/suspended_linear120x120.jpg";    // set default in case none assigned
-
-    $.get("/status/getstatus", function(data, status){
-        console.log ("Got the status bonehead ", data);
-        var statusdata = JSON.parse(data);
-        //console.log ("JSON is ", statusdata);
-        var fixlist = statusdata.fixtures;
-        var fixarray = Object.keys(fixlist);
-        //console.log ("this is the fixtures object ", fixlist);
-        //console.log ("this is the fixtures array ", fixarray);
-        for (var key in statusdata.fixtures) {
-            var fixobj = statusdata.fixtures[key];
-            //console.log ("This is the fixobj ", fixobj);
-            nameArray[i] = fixobj.fixture.name;
-            typeArray[i] = fixobj.fixture.type;
-            uidArray[i] = fixobj.fixture.uid;
-            powerArray[i] = (fixobj.status.current * 24).toFixed(1);
-            pctlevelArray[i] = fixobj.status.currentlevels.levelpct;
-            if (typeArray[i] == "cct") {
-                cctlevelArray[i] = fixobj.status.currentlevels.ctemp;
-                //pctlevelArray[i] = fixobj.status.lastuserintensity;
-                //cctlevelArray[i] = fixobj.status.lastusercolortemp;
-            } else { cctlevelArray[i] = "N/A";  }
-
-            daylightlimitArray[i] = fixobj.status.isdaylightlimited;
-            var divID = "StatusBlock"+(i+1);
-            $.get("/config/getconfig", function(data, status){
-                //console.log ("CONFIG JSON is ", data);
-                for(var j=0; j < data.fixtures.length; j++) {
-                    //console.log( " here are the two ", data.fixtures[j].uid, fixobj.fixture.uid);
-                    if (data.fixtures[j].uid == fixobj.fixture.uid) {
-                        console.log ("Ding ding ding found a match", data.fixtures[j].image);
-                        var fixtureImagePathfound = data.fixtures[j].image;
-                    }
-                }
-                setglobalvariable(fixtureImagePathfound);
-            });
-            //var fixtureImagePath = "/images/suspended_linear.jpg";   //default
-            switch (typeArray[i]){
-                case 'cct':
-                    fixtureImagePath = "/images/2x2_flat_panel.jpg";
-                    break;
-                case 'dim':
-                    fixtureImagePath = "/images/suspended_linear.jpg";
-                    break;
-                case 'on_off':
-                    fixtureImagePath = "/images/ceiling_spotlight.jpg";
-                    break;
-                case 'rgbw':
-                    fixtureImagePath = "/images/rgbw_fixture.jpg";
-                    break;
-                default:
-                    fixtureImagePath = "/images/bulb_on.jpg";
-
-            }
-            createFixtureStatusTable(divID,nameArray[i],typeArray[i],uidArray[i],fixtureImagePath,
-                powerArray[i],pctlevelArray[i],cctlevelArray[i],daylightlimitArray[i]);
-            i=i+1;
-        }
-
-        var input = 0;
-        for (var key in statusdata.zero2ten) {
-            var val = ((statusdata.zero2ten[key]*10).toFixed(0)) + " %";
-            var numval = ((statusdata.zero2ten[key]*10).toFixed(0));
-            var label = document.getElementById("input" + (input + 1));
-            var labeldiv = document.getElementById("input" + (input + 1) +"div");
-
-            console.log ("numval is ", numval);
-            label.innerHTML = val;
-            //document.getElementById("input1div").style.height = (175-(175*numval)) +"px";
-            labeldiv.style.height = (175-(175*(numval/100))) +"px";
-            console.log ("labeldiv is ",labeldiv);
-            input++;
-        }
-
-        if(statusdata.plcoutput != undefined) {
-            for (var input = 0; input < statusdata.plcoutput.length; input++) {
-                var label = document.getElementById("output" + (input + 1));
-                var level = statusdata.plcoutput[input];
-                if (level == "ON") {label.style.background = "green";}
-                else {label.style.background = "red";}
-
-                label.innerHTML = level;
-            }
-        }
-
-        if(statusdata.daylightlevelvolts != undefined)
-        {
-            var fc = voltageToFC(statusdata.daylightlevelvolts);
-            //var dllabel = statusdata.daylightlevelvolts.toFixed(2) + " V  -- " + fc;
-            document.getElementById("DaylightLevelReading").style.background = "yellow";
-            document.getElementById("DaylightLevelReading").style.color = "black";
-            document.getElementById("DaylightLevelReading").innerHTML = "Current light meter: " + fc+" FC";
-        }
-
-        if(statusdata.wetdrycontacts != undefined)
-        {
-            input = 0;
-            for (var key in statusdata.wetdrycontacts) {
-                var level = statusdata.wetdrycontacts[key];
-                var name = "wdc"+ (input+1);
-                var label = document.getElementById(name);
-                if (level == "1") {label.style.background = "green";}
-                else {label.style.background = "red";}
-                label.innerHTML = level;
-                input++;
-            }
-        }
-
-        var occ_or_vac =  statusdata.occupancy;
-        var occlabel;
-        if (occ_or_vac = "Occupied") {occlabel = "Occupied";}
-        else {occlabel = "Vacant";}
-        console.log ("  Currently it is ", occ_or_vac);
-        document.getElementById("occ_state").style.background = "orange";
-        document.getElementById("occ_state").style.color = "black";
-        document.getElementById("occ_state").style.textAlign = "center";;
-        document.getElementById("occ_state").innerHTML = occlabel;
-
-
-    });
-}  // get status
-*/
-
-function toggleDivIDVisible(DivID)
-{
-    var elem=document.getElementById(DivID);
-    var hide = elem.style.display =="none";
-    if (hide) {
-        elem.style.display="inline";
-    }
-    else {
-        elem.style.display="none";
-    }
-}
-function showDivID (DivID) {
-    var elem=document.getElementById(DivID);
-    elem.style.display="inline";
-}
-function hideDivID (DivID) {
-    var elem=document.getElementById(DivID);
-    elem.style.display="none";
- //   console.log("Hiding DIV", DivID);
-}
-
-function showOnlyTheseButtons (whichButtons) {
-    // Hide all of them and then make visible the one chosen
-    top_menu_selection = whichButtons;
-
-    hideDivID("BrightnessBar");
-    hideDivID("occ_vac_switch");
-    hideDivID("CCTBar");
-    hideDivID("ToggleButton");
-    hideDivID("StatusPage");
-    hideDivID("ConfigPage");
-    var x;
-    for(var i = 0; i < mainMenuOptionDivList.length; i++) {
-        x = document.getElementById(mainMenuOptionDivList[i]);
-        x.style.display = "none";
-        console.log ("which button was pressed: ",whichButtons, x);
-    }
-    switch (whichButtons){
-        case 'Scenes':
-            showDivID("SceneButtonArray");
-            break;
-        case 'Groups':
-            showDivID("GroupButtonArray");
-            break;
-        case 'Fixtures':
-            showDivID("FixtureButtonArray");
-            break;
-        case 'Status':
-            showDivID("StatusPage");
-            //for(var i = 0; i < 8; i++) {
-            //    cleanUpList("StatusBlock"+(i+1));
-           // }
-          //  getStatus ();
-            break;
-        case 'Config':
-          //  showDivID("ConfigPage");
-            break;
-    }
-
-}
-
-function cleanUpList (passedID) {
-    var list = document.getElementById(passedID);
-    // If the element has any child nodes, remove its first child node until they are all gone.
-    while (list.hasChildNodes()) {
-        list.removeChild(list.childNodes[0]);
-    }
-}
-
-function beatifyText(InputText) {
-    var str = InputText;
-    var res = str.replace(/_/g, " ");
-    return res;
-}
-
 function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureImage,fixturePower,fixtureLevel,fixtureCCT, fixtureDLLimited) {
     // Declare global variables and create the header, footer, and caption.
-    console.log ("fixture image  is ", fixtureImage);
+   // console.log ("fixture image  is ", fixtureImage);
     var oTable = document.createElement("TABLE");
     var oTHead = document.createElement("TH");
     var oRow1 = document.createElement("TR");
@@ -783,6 +553,87 @@ function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureImage,fix
 
 }
 
+// **************************** END NEW CODE *********************************************
+
+
+// START OLD CODE ***********************
+
+
+
+
+function toggleDivIDVisible(DivID)
+{
+    var elem=document.getElementById(DivID);
+    var hide = elem.style.display =="none";
+    if (hide) {
+        elem.style.display="inline";
+    }
+    else {
+        elem.style.display="none";
+    }
+}
+function showDivID (DivID) {
+    var elem=document.getElementById(DivID);
+    elem.style.display="inline";
+}
+function hideDivID (DivID) {
+    var elem=document.getElementById(DivID);
+    elem.style.display="none";
+    //   console.log("Hiding DIV", DivID);
+}
+
+function showOnlyTheseButtons (whichButtons) {
+    // Hide all of them and then make visible the one chosen
+    top_menu_selection = whichButtons;
+
+    hideDivID("BrightnessBar");
+    hideDivID("occ_vac_switch");
+    hideDivID("CCTBar");
+    hideDivID("ToggleButton");
+    hideDivID("StatusPage");
+    hideDivID("ConfigPage");
+    var x;
+    for(var i = 0; i < mainMenuOptionDivList.length; i++) {
+        x = document.getElementById(mainMenuOptionDivList[i]);
+        x.style.display = "none";
+        //   console.log ("which button was pressed: ",whichButtons, x);
+    }
+    switch (whichButtons){
+        case 'Scenes':
+            showDivID("SceneButtonArray");
+            break;
+        case 'Groups':
+            showDivID("GroupButtonArray");
+            break;
+        case 'Fixtures':
+            showDivID("FixtureButtonArray");
+            break;
+        case 'Status':
+            showDivID("StatusPage");
+            showDivID("levelinputsdiv");
+            break;
+        case 'Config':
+            //  showDivID("ConfigPage");
+            break;
+    }
+
+}
+
+function cleanUpList (passedID) {
+    var list = document.getElementById(passedID);
+    // If the element has any child nodes, remove its first child node until they are all gone.
+    while (list.hasChildNodes()) {
+        list.removeChild(list.childNodes[0]);
+    }
+}
+
+function beatifyText(InputText) {
+    var str = InputText;
+    var res = str.replace(/_/g, " ");
+    return res;
+}
+
+
 function SetDaylightPolling (seconds2wait) {
     console.log ("seconds are: ", seconds2wait);
     var element = {};
@@ -803,3 +654,97 @@ function SetDaylightPolling (seconds2wait) {
         }
     });
 }
+
+
+
+
+function updateLevelInputsTable() {
+
+    var levelinputlist = cachedconfig.levelinputs;
+
+    var oTable = document.getElementById("levelinputstable");
+    oTable.innerHTML = ""; //blank out table,
+
+    var oTHead = document.createElement("THEAD");
+    var oTColGrp = document.createElement("colgroup");
+    var oTBody = document.createElement("TBODY");
+    var oTFoot = document.createElement("TFOOT");
+    var oRow, oCell1, oCell2, oCell3, oCell4, i;
+
+    oTHead.style.backgroundColor = "darkgrey";
+    oTBody.style.backgroundColor = "white";
+
+    oRow = document.createElement("TR");
+    oCell1 = document.createElement("TD");
+    oCell1.innerHTML = "Name";
+    oCell2 = document.createElement("TD");
+    oCell2.innerHTML = "Type";
+    oCell3 = document.createElement("TD");
+    oCell3.innerHTML = "Interface";
+    oCell4 = document.createElement("TD");
+    oCell4.innerHTML = "Level";
+
+    oRow.appendChild(oCell1);
+    oRow.appendChild(oCell2);
+    oRow.appendChild(oCell3);
+    oRow.appendChild(oCell4);
+    oTHead.appendChild(oRow);
+
+    var coldef = document.createElement("col");
+    coldef.className = "col-md-3";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-2";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-1";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-2";
+    oTColGrp.appendChild(coldef);
+    oTable.appendChild(oTHead);
+    oTable.appendChild(oTColGrp);
+    oTable.appendChild(oTBody);
+
+    // Insert rows and cells into bodies.
+    if(levelinputlist != undefined) {
+        for (i = 0; i < levelinputlist.length; i++) {
+            var oBody = oTBody;
+            oRow = document.createElement("TR");
+            oBody.appendChild(oRow);
+
+            var col1part = document.createElement("TD");
+            col1part.innerHTML = levelinputlist[i].assignedname;
+
+            var col2part = document.createElement("TD");
+            col2part.innerHTML = levelinputlist[i].type;
+
+            var col3part = document.createElement("TD");
+            col3part.innerHTML = levelinputlist[i].interface;
+
+            var units = "";
+            var val = "";
+            if(levelinputlist[i].interface == "rpdg") {
+                var fc = voltageToFC(levelinputlist[i].value);
+                val = levelinputlist[i].value  + " Volts  /  " + fc + " (FC)";
+            }
+            else if(levelinputlist[i].interface == "enocean") {
+                val = levelinputlist[i].value  + " LUX";
+            }
+
+            var col4part = document.createElement("TD");
+            col4part.innerHTML = val;
+
+
+
+            oRow.appendChild(col1part);
+            oRow.appendChild(col2part);
+            oRow.appendChild(col3part);
+            oRow.appendChild(col4part);
+        }
+    }
+
+   // $("#tableOutput").html(oTable);
+     document.getElementById("levelinputsdiv").appendChild(oTable);
+}
+

@@ -638,3 +638,9 @@ body {
     border: 0;
     background-image: linear-gradient(to bottom, #529de1 0, #245e8f 100%); /* W3C */
 }
+
+.maincontentbox {
+    background-color: red;
+    height: 100%;
+    width: 100%;
+}
