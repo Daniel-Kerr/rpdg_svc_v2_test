@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "SetConfig_8dim_1group",
+			"name": "SetConfig_8dim_4plc_1group",
 			"event": [
 				{
 					"listen": "test",
@@ -47,20 +47,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 20;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 20;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 20;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 20;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 20;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 20;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 20;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 20;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[8].level == 100;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[9].level == 100;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[10].level == 100;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[11].level == 100;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -135,20 +122,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 20;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 20;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 20;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 20;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 20;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 20;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 20;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 20;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[8].level == 100;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[9].level == 100;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[10].level == 100;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[11].level == 100;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -223,20 +197,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level === 0;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level === 0;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[8].level === 0;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[9].level === 0;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[10].level === 0;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[11].level === 0;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
