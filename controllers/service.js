@@ -46,6 +46,10 @@ var schedulepollcount = 0;
 
 var currentschedule_event = undefined;
 var reinit_schedule_countdown = -1;
+
+
+
+//
 /***
  * this is where the messages from rpdg driver or the enocean hw come in ,  like (occ, vac...polling changes..etc),
  * @param interface  rpdg, / enocean
@@ -129,7 +133,7 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                     if((dev.type == "momentary" && dev.value == 1)|| dev.type == "maintained" )
                     {
                         contactSwitchHandler(dev);
-                       // break; //done,  3/28  removed , allow multiple actions per input. (stacked).
+                        // break; //done,  3/28  removed , allow multiple actions per input. (stacked).
                     }
                 }
             }
@@ -197,16 +201,34 @@ function contactSwitchHandler(contactdef)
         switch (parts[0]) {
 
             case "msg":
-                if (parts.length == 3) {
+                if (parts.length == 4) {
                     var msgtype = parts[1];
                     var groupname = parts[2];
+                    var delaymin = parts[3];
+
                     if (msgtype.includes("Occ")) {
-                        global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending occ to: " +groupname);
+
+                        global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending occ to: " +groupname + " and cleared pending vacancy calls");
                         module.exports.sendOccupancyMessageToGroup(groupname);
+                        contactdef.active_pending_vancancy = undefined;  //clear any pending,  may need to clear others?, ask joe,
+                        contactdef.inactive_pending_vancancy = undefined;
                     }
                     else {
-                        global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending vac to: " +groupname);
-                        module.exports.sendVacancyMessageToGroup(groupname);
+                        if(Number(delaymin) <= 0) {
+                            global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending vac to: " + groupname);
+                            module.exports.sendVacancyMessageToGroup(groupname);
+                        }
+                        else
+                        {
+                            global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   vacancy future message registered **************************" );
+
+                            var future = new moment();
+                            future.add(Number(delaymin),'minutes');
+                            if(value == 1)
+                                contactdef.active_pending_vancancy = future;
+                            else
+                                contactdef.inactive_pending_vancancy = future;
+                        }
                     }
                 }
                 break;
@@ -251,26 +273,7 @@ function contactSwitchHandler(contactdef)
                 break;
 
         }
-        // }
 
-        /* }
-         else if (value == 0 && contactdef.inactive_action != undefined && contactdef.inactive_action != "action_none") {  // INACTIVE STATE
-         if (contactdef.inactive_action.includes("scene_")) {
-         var scenename = contactdef.inactive_action.substring(6);
-         global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   invoke scene: " +scenename);
-         module.exports.invokeScene(scenename, "wetdrycontact");
-         }
-         else if (contactdef.inactive_action.includes("occ_msg_")) {  // send occ message.
-         var groupname = contactdef.inactive_action.substring(11);
-         global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending occ to group: " +groupname);
-         module.exports.sendOccupancyMessageToGroup(groupname);
-         }
-         else if (contactdef.inactive_action.includes("vac_msg_")) {  // send vac message.
-         var groupname = contactdef.inactive_action.substring(11);
-         global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending vac to group: " +groupname);
-         module.exports.sendVacancyMessageToGroup(groupname);
-         }
-         }*/
     }
     catch(err)
     {
@@ -391,7 +394,7 @@ var service = module.exports =  {
             var DaylightPollingPeriod = Math.round ((daylightpollseconds * 1000) / BasePollingPeriod);
             if (DaylightPollingPeriod > 0 && daylightpolcount >= DaylightPollingPeriod) {
                 daylightpolcount = 0;
-                global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
+              //  global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
                 // get the dl sensor
                 //var dlsensor = undefined; //global.currentconfig.getDayLightSensor();
 
@@ -476,6 +479,51 @@ var service = module.exports =  {
 
             // ******************************************** END SCHEDULE POLLING ***************************************
             // *********************************************************************************************************
+
+
+            // 3/28/17  Polling of future vacancy messages
+            var contactinputs = global.currentconfig.contactinputs;
+            for (var i = 0; i < contactinputs.length; i++) {
+
+
+                var dev = contactinputs[i];
+                if(dev.active_pending_vancancy != undefined)
+                {
+                    // compare the time, if after thta time , trigger.
+                    var now = new moment();
+                   // global.applogger.info(TAG, "time compare ", dev.active_pending_vancancy + "   " + now, "");
+                    if(now.isAfter(dev.active_pending_vancancy))
+                    {
+                        dev.active_pending_vancancy = undefined;
+                        var parts = dev.active_action.split("_@@_");
+                        if(parts.length == 4)
+                        {
+                            var groupname = parts[2];
+                            global.applogger.info(TAG, "Delayed Vacancy Message ", "   sending vac to: " + groupname);
+                            module.exports.sendVacancyMessageToGroup(groupname);
+                        }
+                    }
+                }
+
+                if(dev.inactive_pending_vancancy != undefined)
+                {
+                    // compare the time, if after thta time , trigger.
+                    if(now.isAfter(dev.inactive_pending_vancancy))
+                    {
+                        dev.inactive_pending_vancancy = undefined;
+                        var parts = dev.inactive_action.split("_@@_");
+                        if(parts.length == 4)
+                        {
+                            var groupname = parts[2];
+                            global.applogger.info(TAG, "Delayed Vacancy Message ", "   sending vac to: " + groupname);
+                            module.exports.sendVacancyMessageToGroup(groupname);
+                        }
+                    }
+                }
+
+            }
+
+            // end poll.
 
 
 

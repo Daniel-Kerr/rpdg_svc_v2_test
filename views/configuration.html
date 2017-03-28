@@ -41,18 +41,23 @@
 
         }
         .aa_part1 {
-            width: 30%;
+            width: 20%;
             display: inline-block;
 
         }
         .aa_part2 {
-            width: 30%;
+            width: 20%;
             display: inline-block;
 
         }
 
         .aa_part3 {
-            width: 30%;
+            width: 20%;
+            display: inline-block;
+
+        }
+        .aa_part4 {
+            width: 20%;
             display: inline-block;
 
         }
@@ -62,18 +67,23 @@
 
         }
         .ina_part1 {
-            width: 30%;
+            width: 20%;
             display: inline-block;
 
         }
         .ina_part2 {
-            width: 30%;
+            width: 20%;
             display: inline-block;
 
         }
 
         .ina_part3 {
-            width: 30%;
+            width: 20%;
+            display: inline-block;
+
+        }
+        .ina_part4 {
+            width: 20%;
             display: inline-block;
 
         }
@@ -261,12 +271,26 @@
                         &nbsp;
                         &nbsp;<div id = "aa_part2" class = "aa_part2" >
                             <label id="active_action_label_part_2" for="active_action_sel_part2"> Message: </label>
-                            <select id="active_action_sel_part2" class="btn btn-large btn-primary"></select>
+                            <select id="active_action_sel_part2" class="btn btn-large btn-primary" onchange="on_aa_part2_change()"></select>
                          </div>
 
                         <div id = "aa_part3" class="aa_part3">
                             <label id="active_action_label_part_3" for="active_action_sel_part3"> Destination: </label>
                             <select id="active_action_sel_part3" class="btn btn-large btn-primary"></select>
+                        </div>
+
+                        <div id = "aa_part4" class="aa_part4">
+                            <label id="active_action_label_part_4" for="active_action_sel_part4"> Delay(min): </label>
+                            <select id="active_action_sel_part4" class="btn btn-large btn-primary">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="60">60</option>
+                            </select>
                         </div>
 
                     </div>
@@ -285,7 +309,7 @@
                         &nbsp;
                         &nbsp;<div id = "ina_part2" class = "ina_part2" >
                         <label id="inactive_action_label_part_2" for="inactive_action_sel_part2"> Message: </label>
-                        <select id="inactive_action_sel_part2" class="btn btn-large btn-primary"></select>
+                        <select id="inactive_action_sel_part2" class="btn btn-large btn-primary" onchange="on_ina_part2_change()"></select>
                     </div>
 
                         <div id = "ina_part3" class="ina_part3">
@@ -293,15 +317,23 @@
                             <select id="inactive_action_sel_part3" class="btn btn-large btn-primary"></select>
                         </div>
 
+                        <div id = "ina_part4" class="ina_part4">
+                            <label id="inactive_action_label_part_4" for="inactive_action_sel_part4"> Delay(min): </label>
+                            <select id="inactive_action_sel_part4" class="btn btn-large btn-primary" >
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="60">60</option>
+                            </select>
+                        </div>
+
                     </div>
 
-                    <!--label> On Inactive Edge Do</label>
-                    <select id="inactive_action_sel" class="btn btn-large btn-primary"></select>
 
-                    &nbsp;
-                    &nbsp;
-                    <label id = "inactive_target"> To Group: </label>
-                    <select id="inactive_action_target" class="btn btn-large btn-primary"></select-->
 
                     <br>
                     <br>

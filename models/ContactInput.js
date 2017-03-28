@@ -16,6 +16,9 @@ var ContactInput = function()
     this.previousvalue = 0;
     this.lastupdated = new moment();
 
+    this.active_pending_vancancy = undefined; // 3/28/17,
+    this.inactive_pending_vancancy = undefined; // 3/28/17,
+
     ContactInput.prototype.fromJson = function(obj)
     {
         for (var prop in obj) {
