@@ -6,7 +6,7 @@ var CCTSetting = function()
 {
     this.name = "";
     this.type = "cct";
-    this.colottemp = "3500";
+    this.colortemp = "3500";
     this.brightness = "100";
 
     CCTSetting.prototype.fromJson = function(obj)
@@ -19,7 +19,7 @@ var CCTSetting = function()
     CCTSetting.prototype.create = function(name, colortemp, brightness)
     {
         this.name = name;
-        this.colottemp = colortemp;
+        this.colortemp = colortemp;
         this.brightness = brightness;
     }
 };
