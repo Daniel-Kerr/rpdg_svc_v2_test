@@ -146,9 +146,11 @@ $(document).ready(function() {
 
                     $("#contact_inputnum").val(ic.inputid).change();
 
-                    updateInputContactActionDropDowns();
+                   // updateInputContactActionDropDowns();
+                    updateInputContactActionDropDowns(ic);
                     enableDisableInputActionDropDowns();
 
+                    /*
                     if(ic.active_action != undefined)
                     {
                         var aa = ic.active_action;
@@ -193,6 +195,7 @@ $(document).ready(function() {
                             $("#inactive_action_sel").val(aa).change();
                         }
                     }
+                    */
 
 
                 }
@@ -253,6 +256,9 @@ function init()
     getConfig(processConfig);
     updateInputContactActionDropDowns();
     enableDisableInputActionDropDowns();
+    on_aa_part1_change();
+    on_inactive_part1_change();
+
 
     constructPWMOutputToggleTable();
     constructPLCOutputToggleTable();
@@ -300,7 +306,7 @@ function processConfig(configobj)
     }
 
 
-    initgroupsel();
+    //  initgroupsel();
 
 
     getInterfaceOutputs(function (retval) {
@@ -514,11 +520,11 @@ function saveNewFixture() {
 
     var selstart = startout.options[startout.selectedIndex].value;
     var seltype = type.options[type.selectedIndex].value;
-  //  var assignment = buildassignment(Number(selstart), seltype);
-  //  fixture.assignment = assignment;
+    //  var assignment = buildassignment(Number(selstart), seltype);
+    //  fixture.assignment = assignment;
 
     // convert assignemtn array to numbers with _ between them,
-   // var custom = assignment.join("_");
+    // var custom = assignment.join("_");
     fixture.assignedname = document.getElementById("fixturename").value;
     // var uidbase = hostip.split(".").join("_");
     // fixture.uid = uidbase + "_" + custom;
@@ -721,13 +727,15 @@ function setDropDownDataArray(dropdown, elementarray)
 
 function enableDisableInputActionDropDowns()
 {
-    var subtype = $('input[name=contactsubtype]:checked', '#myForm').val();
-    if(subtype == "momentary") {
-        $("#inactive_action_sel").val("noaction").change();
-        $('#inactive_action_sel').prop('disabled', true);
+    var type = $('input[name=contacttype]:checked', '#myForm').val();
+    if(type == "momentary") {
+        $("#inactive_action_sel_part1").val("action_none").change();
+        $('#inactive_action_sel_part1').prop('disabled', true);
+
+        on_inactive_part1_change();
     }
     else
-        $('#inactive_action_sel').prop('disabled', false);
+        $('#inactive_action_sel_part1').prop('disabled', false);
 
 }
 
@@ -738,32 +746,6 @@ function cacheAndProcessSceneNames(namelist)
     loadedscenenames = namelist;
     loadedscenenames.splice(0,1); //remove the "----" item.
 }
-
-
-function initgroupsel()
-{
-
-    var acttarget = document.getElementById('active_action_target');
-    var inacttarget = document.getElementById('inactive_action_target');
-
-    for (var i = 0 ; i < loadedgroupnames.length; i += 1) {
-        var opt = document.createElement('option');
-        opt.setAttribute('value', loadedgroupnames[i]);
-        opt.appendChild(document.createTextNode(loadedgroupnames[i]));
-        acttarget.appendChild(opt);
-
-        var opt1 = document.createElement('option');
-        opt1.setAttribute('value', loadedgroupnames[i]);
-        opt1.appendChild(document.createTextNode(loadedgroupnames[i]));
-        inacttarget.appendChild(opt1);
-    }
-
-}
-
-
-
-
-
 
 
 function updateAvalibleStartingOutputNumbers()
@@ -845,19 +827,17 @@ function updateWetDryContactTable() {
     oCell1 = document.createElement("TD");
     oCell1.innerHTML = "Name";
     oCell2 = document.createElement("TD");
-    oCell2.innerHTML = "Type";
+    oCell2.innerHTML = "Interface";
     oCell3 = document.createElement("TD");
-    oCell3.innerHTML = "Interface";
+    oCell3.innerHTML = "Input Number";
     oCell4 = document.createElement("TD");
-    oCell4.innerHTML = "Sub Type";
+    oCell4.innerHTML = "Type";
     oCell5 = document.createElement("TD");
-    oCell5.innerHTML = "input number";
+    oCell5.innerHTML = "Active Action";
     oCell6 = document.createElement("TD");
-    oCell6.innerHTML = "active edge";
+    oCell6.innerHTML = "Inactive Action";
     oCell7 = document.createElement("TD");
-    oCell7.innerHTML = "inactive edge";
-    oCell8 = document.createElement("TD");
-    oCell8.innerHTML = "Delete";
+    oCell7.innerHTML = "Delete";
 
     oRow.appendChild(oCell1);
     oRow.appendChild(oCell2);
@@ -866,14 +846,10 @@ function updateWetDryContactTable() {
     oRow.appendChild(oCell5);
     oRow.appendChild(oCell6);
     oRow.appendChild(oCell7);
-    oRow.appendChild(oCell8);
     oTHead.appendChild(oRow);
 
     var coldef = document.createElement("col");
     coldef.className = "col-md-2";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
@@ -908,33 +884,32 @@ function updateWetDryContactTable() {
             col1part.innerHTML = wetdrycontactlist[i].assignedname;
 
             var col2part = document.createElement("TD");
-            col2part.innerHTML = wetdrycontactlist[i].type;
+            col2part.innerHTML = wetdrycontactlist[i].interface;
 
             var col3part = document.createElement("TD");
-            col3part.innerHTML = wetdrycontactlist[i].interface;
+            col3part.innerHTML = wetdrycontactlist[i].inputid;
 
 
             var col4part = document.createElement("TD");
-            col4part.innerHTML = wetdrycontactlist[i].subtype;
+            col4part.innerHTML = wetdrycontactlist[i].type;
 
             var col5part = document.createElement("TD");
-            col5part.innerHTML = wetdrycontactlist[i].inputid;
+            col5part.innerHTML = wetdrycontactlist[i].active_action;
 
             var col6part = document.createElement("TD");
-            col6part.innerHTML = wetdrycontactlist[i].active_action;
+            col6part.innerHTML = wetdrycontactlist[i].inactive_action;
+
+            //  var col7part = document.createElement("TD");
+            // col7part.innerHTML = wetdrycontactlist[i].inactive_action;
+
 
             var col7part = document.createElement("TD");
-            col7part.innerHTML = wetdrycontactlist[i].inactive_action;
-
-
-            var col8part = document.createElement("TD");
             var delbutton = document.createElement("input");
             delbutton.value = "X";
             delbutton.setAttribute("index", i);
             delbutton.addEventListener("click", deleteInputContactItem);
             delbutton.className = "btn btn-xs btn-danger";
-            col8part.appendChild(delbutton);
-
+            col7part.appendChild(delbutton);
 
             oRow.appendChild(col1part);
             oRow.appendChild(col2part);
@@ -943,7 +918,6 @@ function updateWetDryContactTable() {
             oRow.appendChild(col5part);
             oRow.appendChild(col6part);
             oRow.appendChild(col7part);
-            oRow.appendChild(col8part);
         }
     }
 
@@ -953,118 +927,74 @@ function updateWetDryContactTable() {
 }
 
 
-
-function updateInputContactActionDropDowns()
-{
-    var select = document.getElementById("active_action_sel");
-    while (select.options.length > 0) {
-        select.remove(0);
-    }
-
-    select = document.getElementById("inactive_action_sel");
-    while (select.options.length > 0) {
-        select.remove(0);
-    }
-
-    var radios = document.getElementsByName('contacttype');
-    for (var i = 0, length = radios.length; i < length; i++) {
-        if (radios[i].checked) {
-            var value = radios[i].value;
-
-            var sel = document.getElementById('active_action_sel');
-            var inactsel = document.getElementById('inactive_action_sel');
-
-            var opt = document.createElement('option');
-            opt.setAttribute('value', "noaction");
-            opt.appendChild(document.createTextNode("no action"));
-            sel.appendChild(opt);
-
-            var opt1 = document.createElement('option');
-            opt1.setAttribute('value', "noaction");
-            opt1.appendChild(document.createTextNode("no action"));
-            inactsel.appendChild(opt1);
-
-            if(value == "dry")
-            {
-                $('#active_action_target').prop('disabled', true);
-                $('#inactive_action_target').prop('disabled', true);
-
-                for (var i = 0 ; i < loadedscenenames.length; i += 1) {
-                    var opt = document.createElement('option');
-                    opt.setAttribute('value', "scene_"+loadedscenenames[i]);
-                    opt.appendChild(document.createTextNode("scene: " +loadedscenenames[i]));
-                    sel.appendChild(opt);
-
-                    var opt1 = document.createElement('option');
-                    opt1.setAttribute('value', "scene_"+loadedscenenames[i]);
-                    opt1.appendChild(document.createTextNode("scene: "+loadedscenenames[i]));
-                    inactsel.appendChild(opt1);
-                }
-            }
-            else
-            {
-                $('#active_action_target').prop('disabled', false);
-                $('#inactive_action_target').prop('disabled', false);
-
-                var opt = document.createElement('option');
-                opt.setAttribute('value', "occ_msg");
-                opt.appendChild(document.createTextNode("send occupancy message"));
-                sel.appendChild(opt);
-
-                var opt1 = document.createElement('option');
-                opt1.setAttribute('value', "vac_msg");
-                opt1.appendChild(document.createTextNode("send vacancy message"));
-                sel.appendChild(opt1);
-
-                var opt = document.createElement('option');
-                opt.setAttribute('value', "occ_msg");
-                opt.appendChild(document.createTextNode("send occupancy message"));
-                inactsel.appendChild(opt);
-
-                var opt1 = document.createElement('option');
-                opt1.setAttribute('value', "vac_msg");
-                opt1.appendChild(document.createTextNode("send vacancy message"));
-                inactsel.appendChild(opt1);
-
-            }
-            break;
-        }
-    }
-}
-
-
-
 function saveNewContactInputObj() {
 
     var contactinput = {};
     contactinput.assignedname = document.getElementById("contactname").value;
 
-    var type = $('input[name=contacttype]:checked', '#myForm').val();
-    contactinput.type = type;
-
     contactinput.interface = $("#contactinputinterface").val();
-
-    var subtype = $('input[name=contactsubtype]:checked', '#myForm').val();
-    contactinput.subtype = subtype;
 
     var inputnum = document.getElementById("contact_inputnum");
     var selinputnum = inputnum.options[inputnum.selectedIndex].value;
     contactinput.inputid = selinputnum;
 
-    contactinput.active_action = $("#active_action_sel").val();
-    if(type == "wet" && contactinput.active_action != "noaction") {
-        contactinput.active_action += ("_@@_" + $("#active_action_target").val());
+    var type = $('input[name=contacttype]:checked', '#myForm').val();
+    contactinput.type = type;
+    var active_action = "";
+
+    var aa_p1 = $('#active_action_sel_part1').val();
+    var aa_p2 = $('#active_action_sel_part2').val();
+    var aa_p3 = $('#active_action_sel_part3').val();
+    switch(aa_p1)
+    {
+        case "action_none":
+            active_action = "action_none";
+            break;
+        case "action_message":
+            active_action += "msg_@@_"+ aa_p2 + "_@@_"+aa_p3;
+            break;
+        case "action_scene":
+            active_action += "scene_@@_"+ aa_p2;
+            break;
+        case "action_scene_list":
+            active_action += "scenelist_@@_"+ aa_p2 + "_@@_"+aa_p3;
+            break;
+        default:
+            break;
     }
 
-    if(subtype == "maintained") {
-        contactinput.inactive_action = $("#inactive_action_sel").val();
+    contactinput.active_action = active_action;
 
-        if(type == "wet" && contactinput.inactive_action != "noaction") {
-            contactinput.inactive_action += ("_@@_" + $("#inactive_action_target").val());
+    if(type == "maintained")
+    {
+        var inactive_action = "";
+        var ina_p1 = $('#inactive_action_sel_part1').val();
+        var ina_p2 = $('#inactive_action_sel_part2').val();
+        var ina_p3 = $('#inactive_action_sel_part3').val();
+        switch(ina_p1)
+        {
+            case "action_none":
+                inactive_action = "action_none";
+                break;
+
+            case "action_message":
+                inactive_action += "msg_@@_"+ ina_p2 + "_@@_"+ina_p3;
+                break;
+            case "action_scene":
+                inactive_action += "scene_@@_"+ ina_p2;
+                break;
+            case "action_scene_list":
+                inactive_action += "scenelist_@@_"+ ina_p2 + "_@@_"+ina_p3;
+                break;
+            default:
+                break;
         }
+
+        contactinput.inactive_action = inactive_action;
     }
     else
-        contactinput.inactive_action = "noaction";
+        contactinput.inactive_action = "action_none";
+
 
     saveConfigObject("contactinput",contactinput ,function(retval) {
         cachedconfig = retval;
@@ -1089,6 +1019,8 @@ function deleteInputContactItem()
     });
 
 }
+
+
 
 function updateContactInputs_InputSel()
 {
@@ -1519,3 +1451,244 @@ setInterval(function () {
 
 }, 5000);
 
+
+
+function updateInputContactActionDropDowns(inputcontactobj) {
+
+    if(inputcontactobj == undefined)
+        return;
+
+    if(inputcontactobj.active_action != undefined) {
+        var aa = inputcontactobj.active_action;
+        if (aa.includes("_@@_")) {
+            var parts = aa.split("_@@_");
+
+            switch (parts[0]) {
+
+                case "msg":
+                    $('#active_action_sel_part1').val("action_message");
+                    on_aa_part1_change();
+                    if(parts.length == 3) {
+                        $('#active_action_sel_part2').val(parts[1]);
+                        $('#active_action_sel_part3').val(parts[2]);
+                    }
+                    break;
+
+                case "scene":
+
+                    $('#active_action_sel_part1').val("action_scene");
+                    on_aa_part1_change();
+                    if(parts.length == 2) {
+                        $('#active_action_sel_part2').val(parts[1]);
+                    }
+                    break;
+
+                case "scenelist":
+
+                    $('#active_action_sel_part1').val("action_scenelist");
+                    on_aa_part1_change();
+                    if(parts.length == 3) {
+                        $('#active_action_sel_part2').val(parts[1]);
+                        $('#active_action_sel_part3').val(parts[2]);
+                    }
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        }
+    }
+
+    if(inputcontactobj.inactive_action != undefined) {
+        var aa = inputcontactobj.inactive_action;
+        if (aa.includes("_@@_")) {
+            var parts = aa.split("_@@_");
+
+            switch (parts[0]) {
+
+                case "msg":
+                    $('#inactive_action_sel_part1').val("action_message");
+                    on_inactive_part1_change();
+                    if(parts.length == 3) {
+                        $('#inactive_action_sel_part2').val(parts[1]);
+                        $('#inactive_action_sel_part3').val(parts[2]);
+                    }
+                    break;
+
+                case "scene":
+
+                    $('#inactive_action_sel_part1').val("action_scene");
+                    on_inactive_part1_change();
+                    if(parts.length == 2) {
+                        $('#inactive_action_sel_part2').val(parts[1]);
+                    }
+                    break;
+
+                case "scenelist":
+
+                    $('#inactive_action_sel_part1').val("action_scenelist");
+                    on_inactive_part1_change();
+                    if(parts.length == 3) {
+                        $('#inactive_action_sel_part2').val(parts[1]);
+                        $('#inactive_action_sel_part3').val(parts[2]);
+                    }
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        }
+    }
+
+
+}
+
+
+function getGroupNameList()
+{
+    var names = [];
+    for(var i = 0; i < cachedconfig.groups.length; i++)
+    {
+        names.push(cachedconfig.groups[i].name);
+    }
+    return names;
+}
+
+
+
+function getSceneNameList2()
+{
+    var names = [];
+    for(var i = 0; i < cachedconfig.scenes.length; i++)
+    {
+        names.push(cachedconfig.scenes[i].name);
+    }
+    return names;
+}
+
+
+function getSceneListsNames()
+{
+    var names = [];
+    for(var i = 0; i < cachedconfig.scenelists.length; i++)
+    {
+        names.push(cachedconfig.scenelists[i].name);
+    }
+    return names;
+}
+
+
+function on_aa_part1_change()
+{
+    var aa_p1 = $('#active_action_sel_part1').val();
+
+    switch(aa_p1)
+    {
+        case "action_none":
+            $('#aa_part2').hide();
+            $('#aa_part3').hide();
+            break;
+
+        case "action_message":
+            $('#active_action_label_part_2').text("Message");
+            populateDropDown("active_action_sel_part2", ["Occupancy","Vacancy"]);
+
+            $('#active_action_label_part_3').text("Group");
+            populateDropDown("active_action_sel_part3", getGroupNameList());
+
+            $('#aa_part2').show();
+            $('#aa_part3').show();
+            break;
+        case "action_scene":
+            $('#active_action_label_part_2').text("Scene");
+            populateDropDown("active_action_sel_part2", getSceneNameList2());
+
+            $('#aa_part2').show();
+            $('#aa_part3').hide();
+
+            break;
+        case "action_scene_list":
+            $('#active_action_label_part_2').text("Scene List");
+            populateDropDown("active_action_sel_part2", getSceneListsNames());
+
+            $('#active_action_label_part_3').text("Direction");
+            populateDropDown("active_action_sel_part3", ["up","down"]);
+
+            $('#aa_part2').show();
+            $('#aa_part3').show();
+            break;
+        default:
+            break;
+    }
+
+}
+
+
+
+function on_inactive_part1_change()
+{
+    var aa_p1 = $('#inactive_action_sel_part1').val();
+
+    switch(aa_p1)
+    {
+        case "action_none":
+            $('#ina_part2').hide();
+            $('#ina_part2').hide();
+            $('#ina_part3').hide();
+            $('#ina_part3').hide();
+            break;
+
+        case "action_message":
+            $('#inactive_action_label_part_2').text("Message");
+            populateDropDown("inactive_action_sel_part2", ["Occupancy","Vacancy"]);
+
+            $('#inactive_action_label_part_3').text("Group");
+            populateDropDown("inactive_action_sel_part3", getGroupNameList());
+
+            $('#ina_part2').show();
+            $('#ina_part3').show();
+            break;
+        case "action_scene":
+            $('#inactive_action_label_part_2').text("Scene");
+            populateDropDown("inactive_action_sel_part2", getSceneNameList2());
+
+
+            $('#ina_part2').show();
+            $('#ina_part3').hide();
+
+            break;
+        case "action_scene_list":
+            $('#inactive_action_label_part_2').text("Scene List");
+            populateDropDown("inactive_action_sel_part2", getSceneListsNames());
+
+            $('#inactive_action_label_part_3').text("Direction");
+            populateDropDown("inactive_action_sel_part3", ["up","down"]);
+            $('#ina_part2').show();
+            $('#ina_part3').show();
+            break;
+        default:
+            break;
+    }
+
+}
+
+
+function populateDropDown(dropdown, optionslist)
+{
+    var sel = document.getElementById(dropdown);
+    while (sel.options.length > 0) {
+        sel.remove(0);
+    }
+
+    for (var i = 0 ; i < optionslist.length; i += 1) {
+        var opt = document.createElement('option');
+        opt.setAttribute('value', optionslist[i]);
+        opt.appendChild(document.createTextNode(optionslist[i]));
+        sel.appendChild(opt);
+    }
+
+}

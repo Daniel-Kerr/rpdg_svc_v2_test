@@ -126,10 +126,10 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                     global.applogger.info(TAG, "(CONTACT INPUT) message handler found device ", dev.interface + " : " + dev.assignedname + " : at level: " + level);
                     dev.setvalue(level);
                     // if type is momentary and == "active",  or maintained,  act on it,
-                    if((dev.subtype == "momentary" && dev.value == 1)|| dev.subtype == "maintained" )
+                    if((dev.type == "momentary" && dev.value == 1)|| dev.type == "maintained" )
                     {
                         contactSwitchHandler(dev);
-                        break; //done,
+                       // break; //done,  3/28  removed , allow multiple actions per input. (stacked).
                     }
                 }
             }
@@ -180,43 +180,97 @@ function contactSwitchHandler(contactdef)
 {
     // this is really for maintained.......hold state,
     var value = contactdef.value;
-    try {
+    var action = "";
 
+    if(value == 1)
+        action = contactdef.active_action;
+    else
+        action = contactdef.inactive_action;
+
+    if(action == undefined || action == "action_none")
+        return;
+
+    try {
         // ACTIVE STATE
-        if (value == 1 && contactdef.active_action != undefined && contactdef.active_action != "noaction") {
-            if (contactdef.active_action.includes("scene_")) {
-                var scenename = contactdef.active_action.substring(6);
-                global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   invoke scene: " +scenename);
-                module.exports.invokeScene(scenename, "wetdrycontact");
-            }
-            else if (contactdef.active_action.includes("occ_msg_")) {  // send occ message.
-                var groupname = contactdef.active_action.substring(11);
-                global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending occ to group: " +groupname);
-                module.exports.sendOccupancyMessageToGroup(groupname);
-            }
-            else if (contactdef.active_action.includes("vac_msg_")) {  // send vac message.
-                var groupname = contactdef.active_action.substring(11);
-                global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending vac to group: " +groupname);
-                module.exports.sendVacancyMessageToGroup(groupname);
-            }
+        //if (value == 1 && contactdef.active_action != undefined && contactdef.active_action != "action_none") {
+        var parts = action.split("_@@_");
+        switch (parts[0]) {
+
+            case "msg":
+                if (parts.length == 3) {
+                    var msgtype = parts[1];
+                    var groupname = parts[2];
+                    if (msgtype.includes("Occ")) {
+                        global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending occ to: " +groupname);
+                        module.exports.sendOccupancyMessageToGroup(groupname);
+                    }
+                    else {
+                        global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending vac to: " +groupname);
+                        module.exports.sendVacancyMessageToGroup(groupname);
+                    }
+                }
+                break;
+
+            case "scene":
+                if (parts.length == 2) {
+                    var scenename = part[1];
+                    global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  invoking scene: " +scenename);
+                    module.exports.invokeScene(scenename, "wetdrycontact");
+                }
+                break;
+
+            case "scenelist":
+                if (parts.length == 3) {
+                    var list = parts[1];
+                    var dir = parts[2];
+                    // get the list, inc the pointer ,get invoke name and invoke,
+                    var sl = global.currentconfig.getSceneListByName(list);
+                    if (sl != undefined) {
+                        if (dir.includes("down")) {
+                            global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  inc scene list: " +list);
+                            sl.incrementActiveIndex();
+
+                        }
+                        else {
+                            global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  dec scene list: " +list);
+                            sl.decrementActiveIndex();
+                        }
+
+                        var targetscene = sl.getActiveSceneName();
+                        if(targetscene != undefined)
+                        {
+                            global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  invoking scene from list: " +targetscene);
+                            module.exports.invokeScene(targetscene, "wetdrycontact");
+                        }
+                    }
+                }
+
+                break;
+
+            default:
+                break;
+
         }
-        else if (value == 0 && contactdef.inactive_action != undefined && contactdef.inactive_action != "noaction") {  // INACTIVE STATE
-            if (contactdef.inactive_action.includes("scene_")) {
-                var scenename = contactdef.inactive_action.substring(6);
-                global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   invoke scene: " +scenename);
-                module.exports.invokeScene(scenename, "wetdrycontact");
-            }
-            else if (contactdef.inactive_action.includes("occ_msg_")) {  // send occ message.
-                var groupname = contactdef.inactive_action.substring(11);
-                global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending occ to group: " +groupname);
-                module.exports.sendOccupancyMessageToGroup(groupname);
-            }
-            else if (contactdef.inactive_action.includes("vac_msg_")) {  // send vac message.
-                var groupname = contactdef.inactive_action.substring(11);
-                global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending vac to group: " +groupname);
-                module.exports.sendVacancyMessageToGroup(groupname);
-            }
-        }
+        // }
+
+        /* }
+         else if (value == 0 && contactdef.inactive_action != undefined && contactdef.inactive_action != "action_none") {  // INACTIVE STATE
+         if (contactdef.inactive_action.includes("scene_")) {
+         var scenename = contactdef.inactive_action.substring(6);
+         global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   invoke scene: " +scenename);
+         module.exports.invokeScene(scenename, "wetdrycontact");
+         }
+         else if (contactdef.inactive_action.includes("occ_msg_")) {  // send occ message.
+         var groupname = contactdef.inactive_action.substring(11);
+         global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending occ to group: " +groupname);
+         module.exports.sendOccupancyMessageToGroup(groupname);
+         }
+         else if (contactdef.inactive_action.includes("vac_msg_")) {  // send vac message.
+         var groupname = contactdef.inactive_action.substring(11);
+         global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   sending vac to group: " +groupname);
+         module.exports.sendVacancyMessageToGroup(groupname);
+         }
+         }*/
     }
     catch(err)
     {

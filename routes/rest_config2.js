@@ -290,30 +290,22 @@ router.post('/savecontactinput', function(req, res) {
         // validate here,
         // make sure fix params exists if not add them in, blank, (default),
         // check if name already exists,  if so update,
-        var exists = false;
+
         for(var i = 0; i < global.currentconfig.contactinputs.length; i++)
         {
             var fix = global.currentconfig.contactinputs[i];
             if(fix.assignedname == req.body.assignedname)
             {
                 // update it,
-                exists = true;
-                global.currentconfig.contactinputs[i] = req.body;
+                global.currentconfig.contactinputs.splice(i,1);
                 break;
             }
         }
 
-        if(!exists) {
-            // switch (req.body.type) {
-            //     case "dry":
-            var ci = new ContactInput();
-            ci.fromJson(req.body);
-            global.currentconfig.contactinputs.push(ci);
-            //         break;
-            //     default:
-            //         break;
-            // }
-        }
+        var ci = new ContactInput();
+        ci.fromJson(req.body);
+        global.currentconfig.contactinputs.push(ci);
+
     }
 
     var cfg = JSON.stringify(global.currentconfig,null,2);

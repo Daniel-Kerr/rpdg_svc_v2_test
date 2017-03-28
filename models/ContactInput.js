@@ -7,12 +7,10 @@ var ContactInput = function()
 {
     this.assignedname = "";
     this.type = "";
-    this.subtype = "";
     this.interface = "";
     this.inputid = "";
     this.active_action = "";
     this.inactive_action = "";
-
     // status.
     this.value = 0;
     this.previousvalue = 0;
@@ -47,6 +45,9 @@ var ContactInput = function()
     this.getlastupdated=function() {
         return this.lastupdated;
     };
+
+
+
 
 };
 

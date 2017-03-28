@@ -212,6 +212,17 @@ var Configuration = function(obj)
         }
         return undefined;
     }
+
+    this.getSceneListByName = function(name)
+    {
+        for(var i = 0 ; i < this.scenelists.length; i++)  //find the group.
+        {
+            if (name == this.scenelists[i].name) {
+                return this.scenelists[i];
+            }
+        }
+        return undefined;
+    }
 };
 
 module.exports = Configuration;
