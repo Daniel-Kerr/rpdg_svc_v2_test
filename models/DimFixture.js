@@ -53,11 +53,11 @@ var DimFixture = function(name, interface, outputid)
 
     this.setLevel = function(requestobj, apply){
 
-        var dlsensor = this.getMyDaylightSensor(); //global.currentconfig.getDayLightSensor();
+        var dlsensor = this.getMyDaylightSensor();
         var isdaylightbound = false;
         var daylightvolts = 0;
         if (dlsensor != undefined) {
-            isdaylightbound = true; //this.isBoundToInput(dlsensor.assignedname);
+            isdaylightbound = true;
             daylightvolts = dlsensor.value;
         }
 
@@ -73,7 +73,6 @@ var DimFixture = function(name, interface, outputid)
             this.lastupdated = moment();
             this.interface.setOutputToLevel(this.outputid, this.level, apply);
         }
-
     };
 
     this.getLevel=function(){
@@ -112,7 +111,64 @@ var DimFixture = function(name, interface, outputid)
         }
         return undefined
     };
+
+
+    // pseuod code for dim/bright rate,
+    // if param is > 0,  then
+    //on given level request, start timeer and calc increment,
 };
+
+
+// **************************************************** auto dim/bright under dev ******* bug 48
+
+
+var adjusttimer = undefined;
+function startAdjustTimer() {
+
+    if(adjusttimer == undefined)
+        adjusttimer = setInterval(autoLevelAdjust, 1000);
+
+}
+
+function stopAdjustTimer() {
+    if (adjusttimer) {
+        clearInterval(adjusttimer);
+        adjusttimer = undefined;
+    }
+}
+
+var autoadjustrequesttype = undefined;
+var autoadjustdelta = undefined;  // +/- amount for each tick...
+
+
+function autoLevelAdjust()
+{
+
+
+        var dlsensor = this.getMyDaylightSensor();
+        var isdaylightbound = false;
+        var daylightvolts = 0;
+        if (dlsensor != undefined) {
+            isdaylightbound = true;
+            daylightvolts = dlsensor.value;
+        }
+
+
+        var requestlevel = this.level+autoadjustdelta;  // make adjustment,
+
+        var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel, this.parameters, isdaylightbound,daylightvolts);
+        this.daylightlimited = returndataobj.isdaylightlimited;
+
+        if(returndataobj.modifiedlevel > -1) {
+
+            var modpct = returndataobj.modifiedlevel;
+            this.previousvalue = Number(this.value);  // record this value for next time around.
+            this.level = Number(modpct);
+            this.lastupdated = moment();
+            this.interface.setOutputToLevel(this.outputid, this.level, true);
+        }
+
+}
 
 
 module.exports = DimFixture;
