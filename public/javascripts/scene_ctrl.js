@@ -467,6 +467,22 @@ function invokeAllOn()
 }
 
 
+
+function invokeAll10()
+{
+    var element = {};
+    element.name = "ALL_10";
+    invokescene(element,function (retval) {
+        if(retval != undefined)  // as of 1/24/17, added version.
+        {
+            cachedconfig = retval;
+        }
+        else if(retval.error != undefined)
+            noty({text: 'Error invoking ' + retval.error, type: 'error'});
+    });
+}
+
+
 function invokeAll50()
 {
     var element = {};

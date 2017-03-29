@@ -621,6 +621,11 @@ var service = module.exports =  {
             invokeAllToLevel(50,requesttype);
             return;
         }
+        if(name == "ALL_10")
+        {
+            invokeAllToLevel(10,requesttype);
+            return;
+        }
 
 
 
