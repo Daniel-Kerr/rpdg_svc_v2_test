@@ -75,16 +75,20 @@
                 eventColor: '#9ec3ff',
                 events: '/schedule/getschedule',
                 select: function(start, end, allDay) {
-                    // $('#eventStart').datepicker("setDate", new Date(start));
-                    // $('#eventEnd').datepicker("setDate", new Date(end));
-                    // var startd = end._d.toString();
+
                     var t = moment(end._d);
-                    //t.hours(0);
-                    // var bla = t.format('YYYY-MM-DD');
+                    var eventstarttime = moment(start._d);
+
+                    var blax = eventstarttime.utc().format('HH:mm');
+
                     var bla2 = t.format('MM/DD/YYYY');
-                    //  console.log(bla);
+
                     $( "#eventdate").datepicker( "setDate", bla2 );
-                    // dateselector.select_date(bla);
+
+
+                    $('#eventtime').timepicker('setTime', blax);
+
+
                     selectedevent = undefined;
                     document.getElementById("btdelete").disabled = true;
 
