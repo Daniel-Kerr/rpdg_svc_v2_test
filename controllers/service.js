@@ -237,7 +237,7 @@ function contactSwitchHandler(contactdef)
 
             case "scene":
                 if (parts.length == 2) {
-                    var scenename = part[1];
+                    var scenename = parts[1];
                     global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  invoking scene: " +scenename);
                     module.exports.invokeScene(scenename, "wetdrycontact");
                 }
