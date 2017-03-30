@@ -43,12 +43,18 @@ $(document).ready(function() {
                 {
                     if(fixture.type == "cct")
                     {
-                        document.getElementById("candledim").disabled = false;
+                        showCCTOptions(true);
+                       // document.getElementById("candledim").disabled = false;
                         document.getElementById("candledim").checked = fixture.candledim;
+
+                        document.getElementById("minctemp").value = fixture.min;
+                        document.getElementById("maxctemp").value = fixture.max;
+
                     }
                     else {
-                        document.getElementById("candledim").checked = false;
-                        document.getElementById("candledim").disabled = true;
+                        showCCTOptions(false);
+                        // document.getElementById("candledim").checked = false;
+                       // document.getElementById("candledim").disabled = true;
                     }
 
 
@@ -264,6 +270,8 @@ function init()
 
     constructPWMOutputToggleTable();
     constructPLCOutputToggleTable();
+
+    showCCTOptions(false);
 }
 
 
@@ -545,6 +553,12 @@ function saveNewFixture() {
 
         fixture.image = "/images/ceiling_spotlight.jpg";
         fixture.candledim = document.getElementById("candledim").checked;
+
+
+
+        fixture.min = document.getElementById("minctemp").value;
+        fixture.max =  document.getElementById("maxctemp").value;
+
     }
     else if(seltype == "rgbw")
         fixture.image = "/images/rgbw_fixture.jpg";
@@ -755,9 +769,10 @@ function updateAvalibleStartingOutputNumbers()
     var type = document.getElementById("fixturetype");
     var seltype = type.options[type.selectedIndex].value;
     if(seltype == "cct")
-        document.getElementById("candledim").disabled = false;
+        showCCTOptions(true);   //document.getElementById("candledim").disabled = false;
     else {
-        document.getElementById("candledim").checked = false;
+        showCCTOptions(false);
+       // document.getElementById("candledim").checked = false;
         document.getElementById("candledim").disabled = true;
     }
 
@@ -1759,4 +1774,22 @@ function populateDropDown(dropdown, optionslist)
         sel.appendChild(opt);
     }
 
+}
+
+
+
+
+
+function showCCTOptions(show)
+{
+    if(show) {
+        $('#fixopts1_5').show();
+        $('#fixopts1_6').show();
+        $('#fixopts1_7').show();
+    }
+    else {
+        $('#fixopts1_5').hide();
+        $('#fixopts1_6').hide();
+        $('#fixopts1_7').hide();
+    }
 }

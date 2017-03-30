@@ -18,6 +18,8 @@ var CCTFixture = function(name, interface, outputid)
     this.outputid = "";
     this.image = "";
     this.candledim = false;
+    this.min = 2000;
+    this.max = 6500;
     this.boundinputs = [];
     this.parameters = new FixtureParameters();
 
@@ -76,7 +78,7 @@ var CCTFixture = function(name, interface, outputid)
         }
 
         // color temp calculation
-        var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(2000, 6500, colortemp, brightness, this.candledim);
+        var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(this.min, this.max, colortemp, brightness, this.candledim);
 
         this.previouscolortemp = this.colortemp;
         this.colortemp = colortemp;

@@ -159,8 +159,9 @@ $(document).ready(function() {
                 ctempslider.attr('id', selectedfixtureobj.assignedname + "_CTEMP");
                 ctempslider.attr('data-slider-id', sliderUnique);
                 ctempslider.attr('type', 'text');
-                ctempslider.attr('data-slider-min', '2500');
-                ctempslider.attr('data-slider-max', '6500');
+
+                ctempslider.attr('data-slider-min', selectedfixtureobj.min);
+                ctempslider.attr('data-slider-max', selectedfixtureobj.max);
                 ctempslider.attr('data-slider-step', '100');
                 ctempslider.attr('data-slider-value', current_ctemp);  // note var.
                 ctempslider.bootstrapSlider({tooltip: 'show'});

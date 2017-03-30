@@ -35,6 +35,46 @@
 
     <style>
 
+        .row_7_holder {
+            width: 90%;
+        }
+        .row_7part1 {
+            width: 15%;
+            display: inline-block;
+        }
+        .row_7part2 {
+            width: 10%;
+            display: inline-block;
+        }
+        .row_7part3 {
+            width: 10%;
+            display: inline-block;
+        }
+        .row_7part4 {
+            width: 10%;
+            display: inline-block;
+        }
+        .row_7part5 {
+            width: 10%;
+            display: inline-block;
+        }
+        .row_7part6 {
+            width: 5%;
+            display: inline-block;
+        }
+        .row_7part7 {
+            width: 5%;
+            display: inline-block;
+        }
+
+        .row_7gap {
+            width: 5%;
+            display: inline-block;
+        }
+
+
+
+
 
         .aa_holder {
             width: 100%;
@@ -173,31 +213,54 @@
                             <br>
                             <br>
 
-                            <label>Name: </label><input id="fixturename" type="text" />
 
-                            <label>Type: </label>
-                            <select id="fixturetype" class="btn btn-large btn-primary" onchange="updateAvalibleStartingOutputNumbers()">
-                                <option value="on_off">ON/OFF</option>
-                                <option value="cct">CCT</option>
-                                <option value="rgbw">RGBW</option>
-                                <option value="dim">DIMMABLE</option>
-                            </select>
+                            <div id="fixotpsrow1" class="row_7_holder">
 
-                            <label> Interface</label>
-                            <select id="interface" class="btn btn-large btn-primary">
-                                <option value="rpdg-pwm">RPDG-PWM</option>
-                                <option value="rpdg-plc">RPDG-PLC</option>
-                                <option value="enocean">Enocean</option>
-                                <option value="synapse">Synapse</option>
-                            </select>
+                                <div id="fixopts1_1" class="row_7part1">
+                                    <label>Name: </label><input id="fixturename" type="text" />
+                                </div>
 
-                            <label> Starting Output Number</label>
-                            <select id="starting_output" class="btn btn-large btn-primary">
-                            </select>
+                                <div id="fixopts1_2" class="row_7part2">
+                                    <label>Type: </label>
+                                    <select id="fixturetype" class="btn btn-large btn-primary" onchange="updateAvalibleStartingOutputNumbers()">
+                                        <option value="on_off">ON/OFF</option>
+                                        <option value="cct">CCT</option>
+                                        <option value="rgbw">RGBW</option>
+                                        <option value="dim">DIMMABLE</option>
+                                    </select>
+                                </div>
 
-                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                            <label>Candle Dim</label>
-                            <input type="checkbox"  id="candledim"  >
+                                <div id="fixopts1_3" class="row_7part3">
+                                    <label> Interface</label>
+                                    <select id="interface" class="btn btn-large btn-primary">
+                                        <option value="rpdg-pwm">RPDG-PWM</option>
+                                        <option value="rpdg-plc">RPDG-PLC</option>
+                                        <option value="enocean">Enocean</option>
+                                        <option value="synapse">Synapse</option>
+                                    </select>
+                                </div>
+
+                                <div id="fixopts1_4" class="row_7part4">
+                                    <label> Starting Output Number</label>
+                                    <select id="starting_output" class="btn btn-large btn-primary">
+                                    </select>
+
+                                </div>
+
+                                <div id="fixopts1_5" class="row_7part5">
+                                    <label>Candle Dim</label>
+                                    <input type="checkbox"  id="candledim"  >
+                                </div>
+
+                                <div id="fixopts1_6" class="row_7part6">
+                                    <label>Min: </label><input id="minctemp" type="text" />
+                                </div>
+                                <div id="gap" class="row_7gap"></div>
+
+                                <div id="fixopts1_7" class="row_7part7">
+                                    <label>Max: </label><input id="maxctemp" type="text" />
+                                </div>
+                            </div>
 
                             <br>
                             <div id="inputsheader">
@@ -270,9 +333,9 @@
                         </div>
                         &nbsp;
                         &nbsp;<div id = "aa_part2" class = "aa_part2" >
-                            <label id="active_action_label_part_2" for="active_action_sel_part2"> Message: </label>
-                            <select id="active_action_sel_part2" class="btn btn-large btn-primary" onchange="on_aa_part2_change()"></select>
-                         </div>
+                        <label id="active_action_label_part_2" for="active_action_sel_part2"> Message: </label>
+                        <select id="active_action_sel_part2" class="btn btn-large btn-primary" onchange="on_aa_part2_change()"></select>
+                    </div>
 
                         <div id = "aa_part3" class="aa_part3">
                             <label id="active_action_label_part_3" for="active_action_sel_part3"> Destination: </label>
