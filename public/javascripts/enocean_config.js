@@ -250,4 +250,3 @@ function updateInputDeviceMapTable() {
     inputdevtablediv.appendChild(oTable);
 }
 
-}
