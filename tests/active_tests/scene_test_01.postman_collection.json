@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "SetConfig_8dim_4plc",
+			"name": "SetConfig_8dim_4plc_8scene",
 			"event": [
 				{
 					"listen": "test",
