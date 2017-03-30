@@ -40,6 +40,26 @@
 			"response": []
 		},
 		{
+			"name": "Disable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"false\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Set DaylightInterval to 500 sec",
 			"event": [
 				{
@@ -664,6 +684,26 @@
 				"body": {
 					"mode": "raw",
 					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_1\",\n\t\t\"level\": \"0\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_2\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_3\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_4\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_5\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_6\",\n\t\t\"level\": \"0\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_7\",\n\t\t\"level\": \"0\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_8\",\n\t\t\"level\": \"0\"\n\t}\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Enable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"true\"\n}"
 				},
 				"description": ""
 			},

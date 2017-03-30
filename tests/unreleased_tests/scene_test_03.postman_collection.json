@@ -1,0 +1,214 @@
+{
+	"variables": [],
+	"info": {
+		"name": "scene_test_03",
+		"_postman_id": "39ba94af-3664-3193-6cf5-7f540af9aba7",
+		"description": "Scene test for RGBW, CCT, and CCT with Candel Dim.\nRGBW on pwm outputs 1-4, CCT on pwm outputs 5 & 6, and CCT with candle dim on pwm outputs 7 & 8.\nTest will create 4 different scenes testing the 3 fixtures at different levels to verify it responds correctly.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_1rgbw_2cct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setGlobalVariable(\"UID_1_2_3_4\", \"192_168_1_100_1_2_3_4\");",
+							"postman.setGlobalVariable(\"UID_5_6\", \"192_168_1_100_5_6\");",
+							"postman.setGlobalVariable(\"UID_7_8\", \"192_168_1_100_7_8\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"rgbw\",\n            \"assignedname\": \"TEST_FIX_RGBW\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/rgbw_fixture.jpg\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"red\": 0,\n            \"green\": 0,\n            \"blue\": 0,\n            \"white\": 0,\n            \"previousred\": 0,\n            \"previousgreen\": 0,\n            \"previousblue\": 0,\n            \"previouswhite\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": false,\n            \"min\": \"2000\",\n            \"max\": \"6500\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": 3500,\n            \"brightness\": 100,\n            \"previouscolortemp\": 3500,\n            \"previousbrightness\": 100,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT_CD\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"7\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": true,\n            \"min\": \"2000\",\n            \"max\": \"6500\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": 3500,\n            \"brightness\": 100,\n            \"previouscolortemp\": 3500,\n            \"previousbrightness\": 100,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [\n        {\n            \"name\": \"ALL_ON\",\n            \"fixtures\": [\n                {\n                    \"name\": \"TEST_FIX_RGBW\",\n                    \"type\": \"rgbw\",\n                    \"red\": \"100\",\n                    \"green\": \"100\",\n                    \"blue\": \"100\",\n                    \"white\": \"100\"\n                },\n                {\n                    \"name\": \"TEST_FIX_CCT\",\n                    \"type\": \"cct\",\n                    \"colortemp\": \"6500\",\n                    \"brightness\": \"100\"\n                },\n                {\n                    \"name\": \"TEST_FIX_CCT_CD\",\n                    \"type\": \"cct\",\n                    \"colortemp\": \"6500\",\n                    \"brightness\": \"100\"\n                }\n            ],\n            \"desc\": \"All Fixtures to 100%.\"\n        },\n        {\n            \"name\": \"ALL_OFF\",\n            \"fixtures\": [\n                {\n                    \"name\": \"TEST_FIX_RGBW\",\n                    \"type\": \"rgbw\",\n                    \"red\": \"0\",\n                    \"green\": \"0\",\n                    \"blue\": \"0\",\n                    \"white\": \"0\"\n                },\n                {\n                    \"name\": \"TEST_FIX_CCT\",\n                    \"type\": \"cct\",\n                    \"colortemp\": \"2000\",\n                    \"brightness\": \"0\"\n                },\n                {\n                    \"name\": \"TEST_FIX_CCT_CD\",\n                    \"type\": \"cct\",\n                    \"colortemp\": \"2000\",\n                    \"brightness\": \"0\"\n                }\n            ],\n            \"desc\": \"All Fixtures to 0%.\"\n        },\n        {\n            \"name\": \"scene_MIXED_1\",\n            \"fixtures\": [\n                {\n                    \"name\": \"TEST_FIX_RGBW\",\n                    \"type\": \"rgbw\",\n                    \"red\": \"22\",\n                    \"green\": \"35\",\n                    \"blue\": \"40\",\n                    \"white\": \"60\"\n                },\n                {\n                    \"name\": \"TEST_FIX_CCT\",\n                    \"type\": \"cct\",\n                    \"colortemp\": \"4250\",\n                    \"brightness\": \"50\"\n                },\n                {\n                    \"name\": \"TEST_FIX_CCT_CD\",\n                    \"type\": \"cct\",\n                    \"colortemp\": \"6000\",\n                    \"brightness\": \"50\"\n                }\n            ]\n        },\n        {\n            \"name\": \"scene_MIXED_2\",\n            \"fixtures\": [\n                {\n                    \"name\": \"TEST_FIX_RGBW\",\n                    \"type\": \"rgbw\",\n                    \"red\": \"44\",\n                    \"green\": \"33\",\n                    \"blue\": \"66\",\n                    \"white\": \"99\"\n                },\n                {\n                    \"name\": \"TEST_FIX_CCT\",\n                    \"type\": \"cct\",\n                    \"colortemp\": \"4000\",\n                    \"brightness\": \"20\"\n                },\n                {\n                    \"name\": \"TEST_FIX_CCT_CD\",\n                    \"type\": \"cct\",\n                    \"colortemp\": \"2500\",\n                    \"brightness\": \"20\"\n                }\n            ]\n        }\n    ],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_scene_All_ON",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white == 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].hwwarm == 100;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].hwcool == 100;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[2].hwwarm == 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[2].hwcool == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/invokescene",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"ALL_ON\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_scene_MIXED_1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 22;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 35;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 40;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white == 60;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].hwwarm == 25;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].hwcool == 25;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[2].hwwarm == 22;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[2].hwcool == 28;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/invokescene",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"scene_MIXED_1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_scene_MIXED_2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 44;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 33;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 66;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white == 99;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].hwwarm == 11;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].hwcool == 9;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[2].hwwarm == 20;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[2].hwcool === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/invokescene",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"scene_MIXED_2\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_scene_All_OFF",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].hwcool === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[2].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[2].hwcool === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/invokescene",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"ALL_OFF\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

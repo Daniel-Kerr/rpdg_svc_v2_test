@@ -40,6 +40,26 @@
 			"response": []
 		},
 		{
+			"name": "Disable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"false\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "setMultipleFixtures_0%",
 			"event": [
 				{
@@ -416,6 +436,26 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Enable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"true\"\n}"
 				},
 				"description": ""
 			},

@@ -38,7 +38,7 @@ for testname in $listoftests
 		touch $logdir/$testname.log;
 		cat /dev/null > $logdir/$testname.log;
 		printf "_________________________________________________\n" | tee -a $logdir/$testname.log;
-		printf "Begin $testname\n" | tee -a $logdir/regression_summary.log;
+		printf "Logging $testname\n" | tee -a $logdir/regression_summary.log;
 		printf "Begin $testname\n" | tee -a $logdir/$testname.log;
 			newman run --delay-request 200 ./active_tests/$testname.postman_collection.json | tee -a $logdir/$testname.log;
 		printf "End $testname\n" | tee -a $logdir/$testname.log;

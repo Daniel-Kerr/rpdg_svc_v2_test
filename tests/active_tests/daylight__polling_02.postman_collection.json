@@ -1,0 +1,669 @@
+{
+	"variables": [],
+	"info": {
+		"name": "daylight__polling_02",
+		"_postman_id": "7f61e064-05a5-ab21-9e88-3e10f0356cab",
+		"description": "Sets basic setup of daylight on input 1 and Occupancy directly to the group. If room is vacant daylight should not effect light levels and pwm. If room is occupied daylight should effect light levels and pwm.\n\nResponse set for fc messages are:\nFC message  % level\n50      0\n40      10\n30      25\n20      50\n10      75\n0      100\n\nThese correspond to the 0-10V readings on input 1 (daylight) of \n        [0.0,50],\n        [1.5,50],\n        [2.3,50],\n        [3.1,40],\n        [4.9,40],\n        [5.7,30],\n        [6.1,20],\n        [7.2,20],\n        [8.5,10],\n        [9.3,10]\nthat are defined in the FCLookup method in the rpdg_utils.js file\n\nAny changes to this table will break the test !!!",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_1dim_1plc_1group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"100\"\n            },\n            \"level\": 75,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-03-27T21:40:13.867Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": true,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Daylight\",\n                \"Occupancy\"\n            ]\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"boundinputs\": [\n                \"Daylight\",\n                \"Occupancy\"\n            ],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"100\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-27T21:40:14.114Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0\n        }\n    ],\n    \"levelinputs\": [\n        {\n            \"type\": \"daylight\",\n            \"assignedname\": \"Daylight\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"1\",\n            \"drivelevel\": \"0\",\n            \"value\": \"8.70\",\n            \"previousvalue\": \"7.00\",\n            \"lastupdated\": \"2017-03-27T21:38:47.171Z\"\n        }\n    ],\n    \"contactinputs\": [\n        {\n            \"assignedname\": \"Occupancy\",\n            \"type\": \"wet\",\n            \"subtype\": \"maintained\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"2\",\n            \"active_action\": \"occ_msg_@@_Occupancy\",\n            \"inactive_action\": \"vac_msg_@@_Occupancy\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-27T19:41:36.401Z\"\n        }\n    ],\n    \"groups\": [\n        {\n            \"name\": \"Occupancy\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_1\",\n                \"TEST_FIX_Plc_1\"\n            ]\n        }\n    ],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Disable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"false\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set DaylightInterval to 500 sec",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setdaylighttimerinterval",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"interval\": 500\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "send Occupancy to Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[1].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/sendoccupancytogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"groupname\": \"Occupancy\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "send Vacancy to Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[1].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/sendvacancytogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"groupname\": \"Occupancy\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_7V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 7\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set DL Interval to 1 sec & wait 1.5sec",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 1500);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setdaylighttimerinterval",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"interval\": 1\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[1].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "send Occupancy to Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[1].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/sendoccupancytogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"groupname\": \"Occupancy\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_8.7V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 8.7\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set DL Interval to 1 sec & wait 1.5sec",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 1500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setdaylighttimerinterval",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"interval\": 1\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 75;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[1].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_7V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 7\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set DL Interval to 1 sec & wait 1.5sec",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 1500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setdaylighttimerinterval",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"interval\": 1\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[1].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "send Vacancy to Group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[1].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/sendvacancytogroup",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"groupname\": \"Occupancy\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_8.7V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 8.7\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set DL Interval to 1 sec & wait 1.5sec",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 1500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setdaylighttimerinterval",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"interval\": 1\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[1].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set DaylightInterval to 500 sec",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setdaylighttimerinterval",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"interval\": 500\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDaylightLevel_0V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Enable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"true\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

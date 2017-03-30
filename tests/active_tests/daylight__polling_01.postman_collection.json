@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "daylight__polling_01",
-		"_postman_id": "7299e230-b36c-b651-4995-6f69fbdfcbd4",
+		"_postman_id": "121e1e83-e698-0b68-481a-3856ebf42195",
 		"description": "Similar to Daylight Simple series but here we OVERRIDE the fixtures to specific levels, test that value and then wait more than the daylight period and check back to see if the light was asjusted down.\nNOTE:  DAYLIGHT POLLING is ONLY valid during the hours of 8am and 5pm because the daylight polling engine will time check and only adjust daylight during those hours",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -34,6 +34,26 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Daylight\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Dimmer\"\n            ]\n        }\n    ],\n    \"levelinputs\": [\n        {\n            \"type\": \"daylight\",\n            \"assignedname\": \"Daylight\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"1\",\n            \"drivelevel\": \"0\",\n            \"value\": \"0.00\",\n            \"previousvalue\": \"10.00\",\n            \"lastupdated\": \"2017-03-23T19:15:42.354Z\"\n        },\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Dimmer\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"2\",\n            \"drivelevel\": \"0\",\n            \"value\": \"10.00\",\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-23T19:15:44.991Z\"\n        }\n    ],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Disable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"false\"\n}"
 				},
 				"description": ""
 			},
@@ -253,7 +273,10 @@
 				"url": "http://localhost:3000/config/getconfig",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -404,7 +427,10 @@
 				"url": "http://localhost:3000/config/getconfig",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -592,7 +618,10 @@
 				"url": "http://localhost:3000/config/getconfig",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -780,7 +809,10 @@
 				"url": "http://localhost:3000/config/getconfig",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -968,7 +1000,10 @@
 				"url": "http://localhost:3000/config/getconfig",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -1065,6 +1100,26 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Enable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"true\"\n}"
 				},
 				"description": ""
 			},
