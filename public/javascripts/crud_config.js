@@ -49,6 +49,8 @@ var REST_DELETE_ENOCEAN = "/config/deleteenocean";
 
 var REST_SET_OUTPUTS = "/config/setoutputs";
 
+var REST_SAVE_SITEINFO = "/config/siteinfo";
+
 // config get / set,
 function getConfig(callback)
 {
@@ -96,6 +98,9 @@ function saveConfigObject(objtype, obj, callback) {
             break;
         case "scenelist":
             target = REST_SAVE_SCENELIST;
+            break;
+        case "siteinfo":
+            target = REST_SAVE_SITEINFO;
             break;
         default:
             return;

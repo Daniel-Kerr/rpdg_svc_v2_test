@@ -33,6 +33,11 @@ var Configuration = function(obj)
     //this.daylightlevelvolts = 0;
     this.occupiedstate = 0;
 
+
+    this.sitezip = 97219;
+    this.sitelatt = 45.4736058;
+    this.sitelong = -122.7349017;
+
     for(var i = 0; i < obj.fixtures.length; i++)
     {
         var fix = obj.fixtures[i];

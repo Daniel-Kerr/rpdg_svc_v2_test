@@ -328,6 +328,11 @@ function processConfig(configobj)
         updateContactInputs_InputSel();
     });
 
+
+    // site info:
+    document.getElementById("sitezip").value = cachedconfig.sitezip;
+    document.getElementById("sitelatt").value = cachedconfig.sitelatt;
+    document.getElementById("sitelong").value = cachedconfig.sitelong;
 }
 
 
@@ -1792,4 +1797,18 @@ function showCCTOptions(show)
         $('#fixopts1_6').hide();
         $('#fixopts1_7').hide();
     }
+}
+
+
+function saveSiteInfo()
+{
+    var element = {};
+    element.zip = document.getElementById("sitezip").value;
+    element.latt = document.getElementById("sitelatt").value;
+    element.long = document.getElementById("sitelong").value;
+
+    saveConfigObject("siteinfo",element,function (retval) {
+        cachedconfig = retval;
+
+    });
 }

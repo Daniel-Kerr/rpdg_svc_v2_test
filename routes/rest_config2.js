@@ -799,5 +799,20 @@ router.post('/setoutputs', function(req, res) {
 
 
 
+router.post('/siteinfo', function(req, res) {
+
+    var zip = req.body.zip;
+    var latt = req.body.latt;
+    var long = req.body.long;
+    global.currentconfig.sitezip = Number(zip);
+    global.currentconfig.sitelatt = Number(latt);
+    global.currentconfig.sitelong = Number(long);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+});
+
+
+
 
 module.exports = router;
