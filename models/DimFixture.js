@@ -4,6 +4,7 @@
 var moment = require('moment');
 var pad = require('pad');
 var path = require('path');
+var TAG = pad(path.basename(__filename),15);
 var FixtureParameters = require('./FixtureParameters');
 var filter_utils = require('../utils/filter_utils.js');
 var DimFixture = function(name, interface, outputid)
@@ -53,26 +54,39 @@ var DimFixture = function(name, interface, outputid)
 
     this.setLevel = function(requestobj, apply){
 
-        var dlsensor = this.getMyDaylightSensor();
-        var isdaylightbound = false;
-        var daylightvolts = 0;
-        if (dlsensor != undefined) {
-            isdaylightbound = true;
-            daylightvolts = dlsensor.value;
+        stopAutoAdjustTimer();
+        if(requestobj.level > this.level && this.parameters.brightenrate > 0)
+        {
+            startAutoAdjustTimer(this, requestobj.level, requestobj.requesttype);
+        }
+        else if(requestobj.level < this.level && this.parameters.dimrate > 0)
+        {
+            startAutoAdjustTimer(this, requestobj.level, requestobj.requesttype);
+        }
+        else {
+
+            var dlsensor = this.getMyDaylightSensor();
+            var isdaylightbound = false;
+            var daylightvolts = 0;
+            if (dlsensor != undefined) {
+                isdaylightbound = true;
+                daylightvolts = dlsensor.value;
+            }
+
+            var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound, daylightvolts);
+            this.daylightlimited = returndataobj.isdaylightlimited;
+
+            if (returndataobj.modifiedlevel > -1) {
+
+                var modpct = returndataobj.modifiedlevel;
+                requestobj.level = modpct;
+                this.previousvalue = Number(this.value);
+                this.level = Number(requestobj.level);
+                this.lastupdated = moment();
+                this.interface.setOutputToLevel(this.outputid, this.level, apply);
+            }
         }
 
-        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound,daylightvolts);
-        this.daylightlimited = returndataobj.isdaylightlimited;
-
-        if(returndataobj.modifiedlevel > -1) {
-
-            var modpct = returndataobj.modifiedlevel;
-            requestobj.level = modpct;
-            this.previousvalue = Number(this.value);
-            this.level = Number(requestobj.level);
-            this.lastupdated = moment();
-            this.interface.setOutputToLevel(this.outputid, this.level, apply);
-        }
     };
 
     this.getLevel=function(){
@@ -112,62 +126,94 @@ var DimFixture = function(name, interface, outputid)
         return undefined
     };
 
-
-    // pseuod code for dim/bright rate,
-    // if param is > 0,  then
-    //on given level request, start timeer and calc increment,
 };
 
 
-// **************************************************** auto dim/bright under dev ******* bug 48
+var autoadjusttimer = undefined;
+var autoadjusttargetlevel = 0;
+var autoadjuststartlevel = 0;
+var autoadjustrequesttype = "";
 
+function startAutoAdjustTimer(fixture, targetlevel, requesttype)
+{
+    autoadjustrequesttype = requesttype;
+    autoadjuststartlevel = fixture.level;
+    autoadjusttargetlevel = targetlevel;
 
-var adjusttimer = undefined;
-function startAdjustTimer() {
-
-    if(adjusttimer == undefined)
-        adjusttimer = setInterval(autoLevelAdjust, 1000);
-
-}
-
-function stopAdjustTimer() {
-    if (adjusttimer) {
-        clearInterval(adjusttimer);
-        adjusttimer = undefined;
+    if(autoadjusttimer == undefined)
+    {
+        autoadjusttimer = setInterval(autoAdjustLevel,1000, fixture);
+        global.applogger.info(TAG, "Auto Adjust Timer Started" , "");
     }
 }
 
-var autoadjustrequesttype = undefined;
-var autoadjustdelta = undefined;  // +/- amount for each tick...
-
-
-function autoLevelAdjust()
+function stopAutoAdjustTimer()
 {
+    if(autoadjusttimer != undefined)
+    {
+        clearInterval(autoadjusttimer);
+        autoadjusttimer = undefined;
+        autoadjusttargetlevel = 0;
+        autoadjuststartlevel = 0;
+        autoadjustrequesttype = "";
+        global.applogger.info(TAG, "Auto Adjust Timer STopped" , "");
+    }
+}
 
 
-        var dlsensor = this.getMyDaylightSensor();
-        var isdaylightbound = false;
-        var daylightvolts = 0;
-        if (dlsensor != undefined) {
-            isdaylightbound = true;
-            daylightvolts = dlsensor.value;
+function autoAdjustLevel(fixobj)
+{
+    global.applogger.info(TAG, "Auto Adjust Timer called" , "");
+    var stepsize = 0;
+    var requestlevel = 0;
+
+    var canceltimer = false;
+
+    var delta = autoadjusttargetlevel - autoadjuststartlevel;
+    if(delta > 0) {
+        stepsize = delta / fixobj.parameters.brightenrate;
+        requestlevel = fixobj.level + stepsize;
+        if(requestlevel >= autoadjusttargetlevel) {
+            requestlevel = autoadjusttargetlevel;
+            canceltimer = true;
         }
 
-
-        var requestlevel = this.level+autoadjustdelta;  // make adjustment,
-
-        var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel, this.parameters, isdaylightbound,daylightvolts);
-        this.daylightlimited = returndataobj.isdaylightlimited;
-
-        if(returndataobj.modifiedlevel > -1) {
-
-            var modpct = returndataobj.modifiedlevel;
-            this.previousvalue = Number(this.value);  // record this value for next time around.
-            this.level = Number(modpct);
-            this.lastupdated = moment();
-            this.interface.setOutputToLevel(this.outputid, this.level, true);
+    }
+    else if(delta < 0) {
+        stepsize = delta / fixobj.parameters.dimrate;
+        requestlevel = fixobj.level + stepsize;
+        if(requestlevel <= autoadjusttargetlevel) {
+            requestlevel = autoadjusttargetlevel;
+            canceltimer = true;
         }
+    }
 
+
+    var dlsensor = fixobj.getMyDaylightSensor();
+
+
+    var isdaylightbound = false;
+    var daylightvolts = 0;
+    if (dlsensor != undefined) {
+        isdaylightbound = true;
+        daylightvolts = dlsensor.value;
+    }
+
+    var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel, fixobj.parameters, isdaylightbound, daylightvolts);
+    this.daylightlimited = returndataobj.isdaylightlimited;
+
+    if (returndataobj.modifiedlevel > -1) {
+
+        var modpct = returndataobj.modifiedlevel;
+        requestlevel = modpct;
+        fixobj.previousvalue = Number(fixobj.value);
+        fixobj.level = Number(requestlevel);
+        fixobj.lastupdated = moment();
+        fixobj.interface.setOutputToLevel(fixobj.outputid, fixobj.level, true);
+    }
+
+    if(canceltimer)
+       stopAutoAdjustTimer();
 }
 
 

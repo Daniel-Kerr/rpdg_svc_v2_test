@@ -49,6 +49,8 @@ var reinit_schedule_countdown = -1;
 
 
 
+var dim_bright_request_map = {};
+
 //
 /***
  * this is where the messages from rpdg driver or the enocean hw come in ,  like (occ, vac...polling changes..etc),
@@ -525,6 +527,10 @@ var service = module.exports =  {
 
             // end poll. for delayed vacancy. ************************************************************************
             // *******************************************************************************************************
+
+
+
+            // ************************** Dim / Bright Rate Map,
 
 
 
