@@ -38,11 +38,11 @@ router.post('/addevent', function(req, res) {
 
 
   var target_file;
-  if(event.rdaily)
+  if(event.repeat == "daily")
     target_file = 'datastore/schedule/daily.json';
-  else if(event.rweekly)
+  else if(event.repeat == "weekly")
     target_file = 'datastore/schedule/weekly.json';
-  else if(event.rdayofmonth != undefined)
+  else if(event.repeat == "dayofmonth")
   {
     target_file = 'datastore/schedule/monthly.json';
   }
@@ -78,14 +78,14 @@ router.post('/addevent', function(req, res) {
 router.post('/delevent', function(req, res) {
 
   var event = req.body;
-  var start = event.start;
+  //var start = event.start;
 
   var target_file;
-  if(event.rdaily)
+  if(event.repeat == "daily")
     target_file = 'datastore/schedule/daily.json';
-  else if(event.rweekly)
+  else if(event.repeat == "weekly")
     target_file = 'datastore/schedule/weekly.json';
-  else if(event.rdayofmonth != undefined)
+  else if(event.repeat == "dayofmonth")
   {
     target_file = 'datastore/schedule/monthly.json';
   }
@@ -190,6 +190,7 @@ router.get('/getschedule', function(req, res) {
           tmpevent.end = endtime.format('YYYY-MM-DD HH:mm');
           tmpevent.title = event.title;
           tmpevent.type = event.type;
+          tmpevent.repeat = "daily";
           events.push(tmpevent);
           runningtime.add(1, 'day');
         }
@@ -226,7 +227,7 @@ router.get('/getschedule', function(req, res) {
           tmpevent.end = endtime.format('YYYY-MM-DD HH:mm');
           tmpevent.title = event.title;
           tmpevent.type = event.type;
-          tmpevent.rweekly = true;
+          tmpevent.repeat = "weekly";
           events.push(tmpevent);
           runningtime.add(7, 'day');
         }
@@ -267,6 +268,7 @@ router.get('/getschedule', function(req, res) {
           tmpevent.end = endtime.format('YYYY-MM-DD HH:mm');
           tmpevent.title = event.title;
           tmpevent.type = event.type;
+          tmpevent.repeat = "dayofmonth";
           events.push(tmpevent);
 
           runningtime.add(1, 'month');

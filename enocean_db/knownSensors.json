@@ -12,7 +12,7 @@
                 "type": "PIR Status",
                 "unit": "",
                 "value": "on",
-                "lastModified": "2017-03-30T19:31:05.562Z"
+                "lastModified": "2017-03-31T15:27:33.286Z"
             },
             {
                 "type": "Supply voltage",
@@ -22,8 +22,8 @@
             {
                 "type": "Voltage",
                 "unit": "V",
-                "value": 3.74,
-                "lastModified": "2017-03-30T18:52:15.133Z"
+                "value": 3.52,
+                "lastModified": "2017-03-31T15:06:51.093Z"
             }
         ]
     },
@@ -67,14 +67,14 @@
             {
                 "type": "illumination",
                 "unit": "lux",
-                "value": 112,
-                "lastModified": "2017-03-30T19:12:53.530Z"
+                "value": 52,
+                "lastModified": "2017-03-31T15:30:27.019Z"
             },
             {
                 "type": "voltage",
                 "unit": "V",
-                "value": 3.4599999999999995,
-                "lastModified": "2017-03-30T19:12:53.530Z"
+                "value": 3.5199999999999996,
+                "lastModified": "2017-03-31T15:30:27.019Z"
             }
         ]
     },

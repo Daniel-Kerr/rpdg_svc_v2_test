@@ -36,6 +36,8 @@ var schedule_mgr = require('./schedule_mgr.js');
 
 var enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
+var SunCalc = require('suncalc');
+
 var daylightpollseconds = 5;     // global variable (can be set via api).
 var daylightpolcount = 0;   // used for tracking of dl upddates. interval.
 
@@ -396,7 +398,7 @@ var service = module.exports =  {
             var DaylightPollingPeriod = Math.round ((daylightpollseconds * 1000) / BasePollingPeriod);
             if (DaylightPollingPeriod > 0 && daylightpolcount >= DaylightPollingPeriod) {
                 daylightpolcount = 0;
-              //  global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
+                //  global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
                 // get the dl sensor
                 //var dlsensor = undefined; //global.currentconfig.getDayLightSensor();
 
@@ -471,7 +473,7 @@ var service = module.exports =  {
                 schedulepollcount = 0;
                 var event = schedule_mgr.getCurrentEvent();
                 if (event != undefined) {
-                    if (currentschedule_event == undefined || event.title != currentschedule_event.title) {
+                    if (currentschedule_event == undefined || event.id != currentschedule_event.id) {
                         global.applogger.info(TAG, "Sched Event INVOKE -- : ", event.type + "   " + event.title + "   " + event.start);
                         currentschedule_event = event;
                         module.exports.invokeScene(event.title, "wallstation");
@@ -493,7 +495,7 @@ var service = module.exports =  {
                 {
                     // compare the time, if after thta time , trigger.
                     var now = new moment();
-                   // global.applogger.info(TAG, "time compare ", dev.active_pending_vancancy + "   " + now, "");
+                    // global.applogger.info(TAG, "time compare ", dev.active_pending_vancancy + "   " + now, "");
                     if(now.isAfter(dev.active_pending_vancancy))
                     {
                         dev.active_pending_vancancy = undefined;
@@ -530,10 +532,13 @@ var service = module.exports =  {
 
 
 
-            // ************************** Dim / Bright Rate Map,
+            // ******************* SUN RISE *** SET CALC *****
 
-
-
+          //  var times = SunCalc.getTimes(new Date(), Number(global.currentconfig.sitelatt), Number(global.currentconfig.sitelong));
+          //  var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
+          //  var duskstr = times.sunsetStart.getHours() + ':' + times.sunsetStart.getMinutes();
+          //  global.applogger.info(TAG, "SunRise Time: " , sunriseStr + "  ---> " + duskstr);
+          // end calc,
 
 
         }, BasePollingPeriod);

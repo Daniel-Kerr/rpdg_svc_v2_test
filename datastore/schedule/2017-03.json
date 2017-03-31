@@ -1,16 +1,42 @@
 [
     {
-        "start": "2017-03-15T09:00:00-07:00",
-        "title": "sceneA",
-        "id": 1490025574857,
-        "type": "scene",
+        "start": "2017-03-21T07:00:00.000Z",
+        "title": "scene",
+        "timebase": "absolute",
+        "id": 1490913303483,
+        "type": "none",
         "values": []
     },
     {
-        "start": "2017-03-24T23:00:00-07:00",
-        "title": "sceneA",
-        "id": 1490025593872,
-        "type": "scene",
+        "start": "2017-03-23T07:00:00.000Z",
+        "title": "stop_ignore: mynewinput",
+        "timebase": "absolute",
+        "id": 1490913607000,
+        "type": "none",
         "values": []
+    },
+    {
+        "start": "2017-03-08T08:00:00.000Z",
+        "title": "stop_ignore: mynewinput",
+        "timebase": "absolute",
+        "id": 1490913678463,
+        "type": "none",
+        "values": []
+    },
+    {
+        "start": "2017-03-14T01:00:00.000Z",
+        "title": "scene: bla",
+        "timebase": "absolute",
+        "id": 1490914545330,
+        "type": "scene",
+        "repeat": "daily"
+    },
+    {
+        "start": "2017-03-14T19:45:00.000Z",
+        "title": "scene: bla",
+        "timebase": "absolute",
+        "id": 1490914566969,
+        "type": "scene",
+        "repeat": "daily"
     }
 ]
