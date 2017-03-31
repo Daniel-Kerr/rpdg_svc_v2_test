@@ -304,7 +304,7 @@ function invokeAllToLevel(level, requesttype)
                 var reqobj = {};
                 reqobj.name = fixobj.assignedname;
                 reqobj.brightness = level;
-                reqobj.colortemp = 3500;
+                //reqobj.colortemp = 3500;
                 reqobj.requesttype = requesttype;
                 module.exports.setFixtureLevels(reqobj,true);
             }
