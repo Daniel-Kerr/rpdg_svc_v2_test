@@ -778,7 +778,7 @@ function updateAvalibleStartingOutputNumbers()
     else {
         showCCTOptions(false);
        // document.getElementById("candledim").checked = false;
-        document.getElementById("candledim").disabled = true;
+      //  document.getElementById("candledim").disabled = true;
     }
 
     var sel = document.getElementById('starting_output');

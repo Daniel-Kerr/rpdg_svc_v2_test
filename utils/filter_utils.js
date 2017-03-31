@@ -248,20 +248,22 @@ module.exports = {
      * @constructor
      */
     CalculateCCTAndDimLevels: function  (min, max, DesiredColorTemp,DesiredIntensityPCT,CandleDim) {
-        var DesiredColorTemp;		// DCT is 3000 to 5000 K with any integer inbetween.
-        var DesiredIntensityNum = DesiredIntensityPCT*0.01; 		//Desired intensity is 0.0-100.0% 0.01 because desired intensity is passed as percent
+        //var DesiredColorTemp;		// DCT is 3000 to 5000 K with any integer inbetween.
+        var DesiredIntensityNum = Number(DesiredIntensityPCT*0.01); 		//Desired intensity is 0.0-100.0% 0.01 because desired intensity is passed as percent
         var DimToWarm;	// True/False
-        var WarmestCCT = min; //3000;		// this may be 2700 - depends on hardware
-        var CoolestCCT = max  //5000;		// This may be 6000 - depends on hardware
-        var Multiplier = 100/(CoolestCCT-WarmestCCT);	// Divides the spread into 100 segments.
-        var WarmToDimFactor;
-        var ModifiedDesiredColorTemp = DesiredColorTemp;
-        var IntensityScale = Math.round(DesiredIntensityPCT/10);
+        var WarmestCCT = Number(min); //3000;		// this may be 2700 - depends on hardware
+        var CoolestCCT = Number(max); //5000;		// This may be 6000 - depends on hardware
+        var Multiplier = Number(100/(CoolestCCT-WarmestCCT));	// Divides the spread into 100 segments.
+        //var WarmToDimFactor;
+        var ModifiedDesiredColorTemp = Number(DesiredColorTemp);
+        //var IntensityScale = Number(Math.round(DesiredIntensityPCT/10));
+
+
         if (CandleDim) {
-            ModifiedDesiredColorTemp = WarmestCCT + ( DesiredIntensityNum * (DesiredColorTemp - WarmestCCT));
+            ModifiedDesiredColorTemp = Number( Number(WarmestCCT) + Number(DesiredIntensityNum*(DesiredColorTemp - WarmestCCT)));
         }
-        var CoolWhiteLevel = Math.round ( DesiredIntensityNum  * Multiplier *  (ModifiedDesiredColorTemp-WarmestCCT) );
-        var WarmWhiteLevel = Math.round ( DesiredIntensityNum  * Multiplier *  (CoolestCCT - ModifiedDesiredColorTemp) );
+        var CoolWhiteLevel = Math.round (DesiredIntensityNum * Multiplier * (ModifiedDesiredColorTemp-WarmestCCT) );
+        var WarmWhiteLevel = Math.round (DesiredIntensityNum * Multiplier * (CoolestCCT - ModifiedDesiredColorTemp) );
 
         if(global.loghw.colortemp) {
             global.applogger.info("filter_utils.js ", "CalculateCCTAndDimLevels ", "INPUT:  min: "+ min + " max: " + max + "  desiredctemp: " + DesiredColorTemp + "  desiredIntensity: " + DesiredIntensityPCT + " cdmin: " + CandleDim);
