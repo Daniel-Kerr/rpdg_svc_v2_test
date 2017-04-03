@@ -831,10 +831,23 @@ var service = module.exports =  {
     incrementSceneList : function(scenelistname)
     {
         // get eh scl object,
-        var sl = global.currentconfig.getSceneListByName(list);
+        var sl = global.currentconfig.getSceneListByName(scenelistname);
         if(sl != undefined) {
             sl.incrementActiveIndex();
 
+            var targetscene = sl.getActiveSceneName();
+            if (targetscene != undefined) {
+                global.applogger.info(TAG, "Override", "  invoking scene from list: " + targetscene);
+                module.exports.invokeScene(targetscene, "wallstation");
+            }
+        }
+    },
+    decrementSceneList : function(scenelistname)
+    {
+        // get eh scl object,
+        var sl = global.currentconfig.getSceneListByName(scenelistname);
+        if(sl != undefined) {
+            sl.decrementActiveIndex();
             var targetscene = sl.getActiveSceneName();
             if (targetscene != undefined) {
                 global.applogger.info(TAG, "Override", "  invoking scene from list: " + targetscene);

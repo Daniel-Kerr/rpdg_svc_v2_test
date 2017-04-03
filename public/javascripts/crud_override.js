@@ -70,3 +70,22 @@ function incrementscenelist(element, callback)
 }
 
 
+function decrementscenelist(element, callback)
+{
+    var dataset = JSON.stringify(element);
+    $.ajax({
+        url: REST_DEC_SCENE_LIST,
+        type: 'post',
+        data: dataset,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}
+
+

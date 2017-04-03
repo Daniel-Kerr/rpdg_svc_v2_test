@@ -542,6 +542,25 @@ router.post('/deletescene', function(req, res) {
     }
 
 
+    // remove scene from any scene lists
+
+    for(var i = 0; i < global.currentconfig.scenelists.length; i++)
+    {
+        var scenelist = global.currentconfig.scenelists[i];
+
+        for(var j = 0; j < scenelist.scenes.length; j++)
+        {
+            var name = scenelist.scenes[j];
+            if(name == scenename)
+            {
+                scenelist.scenes.splice(j,1);
+                scenelist.activeindex = 0;
+            }
+
+        }
+    }
+
+
     var cfg = JSON.stringify(global.currentconfig,null,2);
     data_utils.writeConfigToFile();
     res.status(200).send(cfg);

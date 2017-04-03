@@ -104,6 +104,13 @@ function filterAvalibleScenes()
     debug_label.innerHTML  = "ALL_50";
     fixdiv.appendChild(debug_label);
 
+    var fixdiv = document.createElement("div");
+    fixdiv.className = "availiblescene";
+    fixturebucketdiv.appendChild(fixdiv);
+    var debug_label = document.createElement("label");
+    debug_label.innerHTML  = "ALL_10";
+    fixdiv.appendChild(debug_label);
+
 
 
     for(var i = 0; i < cachedconfig.scenes.length; i++) {
@@ -208,88 +215,101 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     fixboxheader.className = "box-header";
     fixbox.appendChild(fixboxheader);
 
-
     // scene list name,
     var header = document.createElement("h2");
     header.innerHTML = scenelist.name;
     fixboxheader.appendChild(header);
 
-
     var buttonholder = document.createElement("div");
     buttonholder.className = "actionbuttons";
     fixboxheader.appendChild(buttonholder);
 
-
-    var btnwalk = document.createElement("input");
-    btnwalk.className = "btn btn-xs btn-primary";
-    btnwalk.type = "button";
-    btnwalk.value = "Walk";
-    btnwalk.setAttribute('scenelist', scenelist.name);
-    btnwalk.onclick = function () {
-
+    var btn_down = document.createElement("input");
+    btn_down.className = "btn btn-xs btn-primary";
+    btn_down.type = "button";
+    btn_down.value = "down";
+    btn_down.setAttribute('scenelist', scenelist.name);
+    btn_down.onclick = function () {
         var scenelistname = this.getAttribute('scenelist');
         var scenelistobj = getSceneListByName(scenelistname);
         if (scenelistobj.scenes.length > 0) {
-
             var targetscene = undefined;
-            if (current_sel_scene_map[scenelistname].selection == undefined) {
-                // get first item , and highlight it, and invoke it,
-                current_sel_scene_map[scenelistname].selection = 0;
-                targetscene = scenelistobj.scenes[current_sel_scene_map[scenelistname].selection];
-                console.log("todo: invoke: " + targetscene);
-                var ctrl = current_sel_scene_map[scenelistname].controls[0];
-                $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
-
-
-
-            }
-            else {
                 //switch curr back to unsel,
-                var ctrl = current_sel_scene_map[scenelistname].controls[current_sel_scene_map[scenelistname].selection];
+                var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
                 $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
+                //if (scenelistobj.activeindex < scenelistobj.scenes.length -1) {
 
-                if (current_sel_scene_map[scenelistname].selection < scenelistobj.scenes.length -1) {
-
-                  //  incrementscenelist to finish, ...when I get back,
-                    current_sel_scene_map[scenelistname].selection++;
-
-
-                }
-                else
-                {
-
-                    current_sel_scene_map[scenelistname].selection = 0;
-                }
-
-                var ctrl = current_sel_scene_map[scenelistname].controls[current_sel_scene_map[scenelistname].selection];
-                $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
-
-                targetscene = scenelistobj.scenes[current_sel_scene_map[scenelistname].selection];
-                console.log("todo: invoke: " + targetscene);
-            }
+                    var element = {};
+                    element.name = scenelistname;
+                    incrementscenelist(element, function (retval) {
+                        if (retval != undefined)  // as of 1/24/17, added version.
+                        {
+                            cachedconfig = retval;
+                            var scenelistobj = getSceneListByName(scenelistname);
 
 
+                            var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
+                            $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
+
+                            targetscene = scenelistobj.scenes[scenelistobj.activeindex];
+                            console.log("todo: invoke: " + targetscene);
+
+                        }
+                        else if (retval.error != undefined)
+                            noty({text: 'Error invoking ' + retval.error, type: 'error'});
+                    });
+
+             //   }
+
+        }
+
+    };
+    buttonholder.appendChild(btn_down);
 
 
-
-            if(targetscene != undefined) {
+    var btn_up = document.createElement("input");
+    btn_up.className = "btn btn-xs btn-primary";
+    btn_up.type = "button";
+    btn_up.value = "up";
+    btn_up.setAttribute('scenelist', scenelist.name);
+    btn_up.onclick = function () {
+        var scenelistname = this.getAttribute('scenelist');
+        var scenelistobj = getSceneListByName(scenelistname);
+        if (scenelistobj.scenes.length > 0) {
+            var targetscene = undefined;
+            //switch curr back to unsel,
+            var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
+            $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
+           // if (scenelistobj.activeindex < scenelistobj.scenes.length -1) {
                 var element = {};
-                element.name = targetscene;
-                invokescene(element, function (retval) {
+                element.name = scenelistname;
+                decrementscenelist(element, function (retval) {
                     if (retval != undefined)  // as of 1/24/17, added version.
                     {
                         cachedconfig = retval;
+                        var scenelistobj = getSceneListByName(scenelistname);
+
+
+                        var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
+                        $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
+
+                        targetscene = scenelistobj.scenes[scenelistobj.activeindex];
+                        console.log("todo: invoke: " + targetscene);
+
                     }
                     else if (retval.error != undefined)
                         noty({text: 'Error invoking ' + retval.error, type: 'error'});
                 });
-            }
+
+          //  }
         }
 
     };
-    buttonholder.appendChild(btnwalk);
+    buttonholder.appendChild(btn_up);
 
 
+
+/*
     var btnreset = document.createElement("input");
     btnreset.className = "btn btn-xs btn-warn";
     btnreset.type = "button";
@@ -313,6 +333,7 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
     };
     buttonholder.appendChild(btnreset);
+    */
 
     var btndelete = document.createElement("input");
     btndelete.className = "btn btn-xs btn-danger";
@@ -446,7 +467,7 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
 
     current_sel_scene_map[scenelist.name] = {};
-    current_sel_scene_map[scenelist.name].selection = undefined;
+  //  current_sel_scene_map[scenelist.name].selection = undefined;
     current_sel_scene_map[scenelist.name].controls = [];
     // now add in the existing fixutres:
     for(var i = 0; i < scenelist.scenes.length; i++)
