@@ -827,6 +827,20 @@ var service = module.exports =  {
     setRPDGPLCOutput : function(output, level)
     {
         rpdg.setOutputToLevel(output, level,false, "plc");
+    },
+    incrementSceneList : function(scenelistname)
+    {
+        // get eh scl object,
+        var sl = global.currentconfig.getSceneListByName(list);
+        if(sl != undefined) {
+            sl.incrementActiveIndex();
+
+            var targetscene = sl.getActiveSceneName();
+            if (targetscene != undefined) {
+                global.applogger.info(TAG, "Override", "  invoking scene from list: " + targetscene);
+                module.exports.invokeScene(targetscene, "wallstation");
+            }
+        }
     }
 
     //testZero2TenVoltDriver : function()

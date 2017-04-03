@@ -37,6 +37,10 @@ function redrawSceneLists()
         var scenelist = cachedconfig.scenelists[i];
         constructSceneListBox(groups_div, scenelist,i);
     }
+
+
+
+
 }
 
 function openNewSceneListEditDlg()
@@ -75,6 +79,33 @@ function filterAvalibleScenes()
 {
     var fixturebucketdiv = document.getElementById("fixholder");
     fixturebucketdiv.innerHTML = ""; // blank it out.
+
+
+    // 4/3/17,  add default "built in scenes",
+    // var sceneobj = cachedconfig.scenes[i];
+    var fixdiv = document.createElement("div");
+    fixdiv.className = "availiblescene";
+    fixturebucketdiv.appendChild(fixdiv);
+    var debug_label = document.createElement("label");
+    debug_label.innerHTML  = "ALL_ON";
+    fixdiv.appendChild(debug_label);
+
+    var fixdiv = document.createElement("div");
+    fixdiv.className = "availiblescene";
+    fixturebucketdiv.appendChild(fixdiv);
+    var debug_label = document.createElement("label");
+    debug_label.innerHTML  = "ALL_OFF";
+    fixdiv.appendChild(debug_label);
+
+    var fixdiv = document.createElement("div");
+    fixdiv.className = "availiblescene";
+    fixturebucketdiv.appendChild(fixdiv);
+    var debug_label = document.createElement("label");
+    debug_label.innerHTML  = "ALL_50";
+    fixdiv.appendChild(debug_label);
+
+
+
     for(var i = 0; i < cachedconfig.scenes.length; i++) {
 
         var sceneobj = cachedconfig.scenes[i];
@@ -86,6 +117,11 @@ function filterAvalibleScenes()
         fixdiv.appendChild(debug_label);
 
     }
+
+
+
+
+
 
     $('.availiblescene').draggable({
         appendTo: 'body',
@@ -213,10 +249,15 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
                 $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
 
                 if (current_sel_scene_map[scenelistname].selection < scenelistobj.scenes.length -1) {
+
+                  //  incrementscenelist to finish, ...when I get back,
                     current_sel_scene_map[scenelistname].selection++;
+
+
                 }
                 else
                 {
+
                     current_sel_scene_map[scenelistname].selection = 0;
                 }
 
@@ -226,6 +267,10 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
                 targetscene = scenelistobj.scenes[current_sel_scene_map[scenelistname].selection];
                 console.log("todo: invoke: " + targetscene);
             }
+
+
+
+
 
             if(targetscene != undefined) {
                 var element = {};

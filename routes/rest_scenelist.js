@@ -22,4 +22,23 @@ router.get('/', function(req, res, next) {
 
 
 
+
+
+router.post('/incrementscenelist', function(req, res) {
+
+    var name = req.body.name;
+    var code = 400;
+    if(name != undefined)
+    {
+        // bug 49,
+        if(global.currentconfig.getSceneListByName(name) != undefined)
+        {
+            service.incrementSceneList(name);
+            code = 200;
+        }
+    }
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(code).send(cfg);
+});
+
 module.exports = router;
