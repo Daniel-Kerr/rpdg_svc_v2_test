@@ -367,14 +367,43 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     buttonholder.appendChild(btndelete);
 
 
+/*
+    var btnrollover = document.createElement("input");
+    btnrollover.className = "btn btn-xs btn-danger";
+    btnrollover.type = "checkbox";
+    btnrollover.value = "rollover";
+    btnrollover.setAttribute('scenelist', scenelist.name);
+    btnrollover.onclick = function () {
+
+        if (name != undefined) {
+            var scenelist = getSceneListByName(droppedOn[0].id);
+            if(scenelist != undefined) {
+                scenelist.rollover = this.checked();
+                saveConfigObject("scenelist", scenelist, function (retval) {
+                    if (retval != undefined)  // as of 1/24/17, added version.
+                    {
+                        cachedconfig = retval;
+                        refreshUpdatedConfig();
+
+                    }
+                    else
+                        noty({text: 'Error creating scene ', type: 'error'});
+                });
+            }
+        }
+
+
+
+
+    };
+    buttonholder.appendChild(btnrollover);
+    */
 
 
 
     var fixcontent = document.createElement("div");
     fixcontent.className = "box-content";
     fixbox.appendChild(fixcontent);
-
-
 
 
     var dropzonediv = document.createElement("div");

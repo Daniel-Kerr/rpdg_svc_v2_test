@@ -58,7 +58,14 @@ router.post('/invokescene', function(req, res) {
     if(name != undefined)
     {
          // bug 49,
+
+
         if(global.currentconfig.getSceneByName(name) != undefined)
+        {
+            service.invokeScene(name, "wallstation");
+            code = 200;
+        }
+        else if(name == "ALL_ON" || name == "ALL_50" || name == "ALL_10" || name == "ALL_OFF")
         {
             service.invokeScene(name, "wallstation");
             code = 200;

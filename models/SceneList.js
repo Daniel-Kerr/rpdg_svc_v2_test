@@ -22,27 +22,31 @@ var SceneList = function()
         this.name = name;
     }
 
-    this.incrementActiveIndex = function()
+    this.incrementActiveIndex = function(rollover)
     {
-        this.activeindex++;
-        if(this.activeindex > this.scenes.length-1)
-        {
-            this.activeindex = 0;
+        if(this.scenes.length > 0) {
+            this.activeindex++;
+            if (this.activeindex > this.scenes.length - 1) {
+                if (rollover)
+                    this.activeindex = 0;
+                else
+                    this.activeindex = this.scenes.length - 1;
+            }
         }
 
     }
 
-    this.decrementActiveIndex = function()
+    this.decrementActiveIndex = function(rollover)
     {
-        this.activeindex--;
-        if(this.activeindex < 0)
-        {
-            if(this.scenes.length > 0)
-                this.activeindex = this.scenes.length-1;
-            else
-                this.activeindex = 0;
+        if(this.scenes.length > 0) {
+            this.activeindex--;
+            if (this.activeindex < 0) {
+                if (this.scenes.length > 0 && rollover)
+                    this.activeindex = this.scenes.length - 1;
+                else
+                    this.activeindex = 0;
+            }
         }
-
     }
 
     this.getActiveSceneName = function()

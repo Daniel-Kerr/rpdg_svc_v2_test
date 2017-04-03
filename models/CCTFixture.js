@@ -252,42 +252,10 @@ function autoAdjustLevel(fixobj)
     fixobj.interface.setOutputToLevel(bchannel, warmcoolvals[1], true);
     fixobj.lastupdated = moment();
 
-    /*  from dim fix,
-
-    var dlsensor = fixobj.getMyDaylightSensor();
-
-
-    var isdaylightbound = false;
-    var daylightvolts = 0;
-    if (dlsensor != undefined) {
-        isdaylightbound = true;
-        daylightvolts = dlsensor.value;
-    }
-
-    var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel, fixobj.parameters, isdaylightbound, daylightvolts);
-    this.daylightlimited = returndataobj.isdaylightlimited;
-
-    if (returndataobj.modifiedlevel > -1) {
-
-        var modpct = returndataobj.modifiedlevel;
-        requestlevel = modpct;
-        fixobj.previousvalue = Number(fixobj.value);
-        fixobj.level = Number(requestlevel);
-        fixobj.lastupdated = moment();
-        fixobj.interface.setOutputToLevel(fixobj.outputid, fixobj.level, true);
-    }
-     */
-
-
 
     if(canceltimer)
         stopAutoAdjustTimer();
 }
-
-
-
-
-
 
 
 module.exports = CCTFixture;

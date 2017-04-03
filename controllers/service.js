@@ -246,20 +246,22 @@ function contactSwitchHandler(contactdef)
                 break;
 
             case "scenelist":
-                if (parts.length == 3) {
+                if (parts.length == 4) {
                     var list = parts[1];
                     var dir = parts[2];
+                    var rollover = (parts[3] == "yes")?true:false;
+
                     // get the list, inc the pointer ,get invoke name and invoke,
                     var sl = global.currentconfig.getSceneListByName(list);
                     if (sl != undefined) {
                         if (dir.includes("down")) {
                             global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  inc scene list: " +list);
-                            sl.incrementActiveIndex();
+                            sl.incrementActiveIndex(rollover);
 
                         }
                         else {
                             global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  dec scene list: " +list);
-                            sl.decrementActiveIndex();
+                            sl.decrementActiveIndex(rollover);
                         }
 
                         var targetscene = sl.getActiveSceneName();
@@ -833,7 +835,7 @@ var service = module.exports =  {
         // get eh scl object,
         var sl = global.currentconfig.getSceneListByName(scenelistname);
         if(sl != undefined) {
-            sl.incrementActiveIndex();
+            sl.incrementActiveIndex(true);
 
             var targetscene = sl.getActiveSceneName();
             if (targetscene != undefined) {
@@ -847,7 +849,7 @@ var service = module.exports =  {
         // get eh scl object,
         var sl = global.currentconfig.getSceneListByName(scenelistname);
         if(sl != undefined) {
-            sl.decrementActiveIndex();
+            sl.decrementActiveIndex(true);
             var targetscene = sl.getActiveSceneName();
             if (targetscene != undefined) {
                 global.applogger.info(TAG, "Override", "  invoking scene from list: " + targetscene);

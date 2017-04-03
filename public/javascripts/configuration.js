@@ -968,8 +968,8 @@ function saveNewContactInputObj() {
     var aa_p2 = $('#active_action_sel_part2').val();
     var aa_p3 = $('#active_action_sel_part3').val();
     var aa_p4 = $('#active_action_sel_part4').val();
-    if(aa_p2 != "Vacancy")
-        aa_p4 = "0";
+   // if(aa_p2 != "Vacancy")
+     //   aa_p4 = "0";
 
     switch(aa_p1)
     {
@@ -977,13 +977,15 @@ function saveNewContactInputObj() {
             active_action = "action_none";
             break;
         case "action_message":
+             if(aa_p2 != "Vacancy")
+               aa_p4 = "0";
             active_action += "msg_@@_"+ aa_p2 + "_@@_"+aa_p3 + "_@@_"+aa_p4;
             break;
         case "action_scene":
             active_action += "scene_@@_"+ aa_p2;
             break;
         case "action_scene_list":
-            active_action += "scenelist_@@_"+ aa_p2 + "_@@_"+aa_p3;
+            active_action += "scenelist_@@_"+ aa_p2 + "_@@_"+ aa_p3 + "_@@_"+aa_p4;
             break;
         default:
             break;
@@ -998,8 +1000,8 @@ function saveNewContactInputObj() {
         var ina_p2 = $('#inactive_action_sel_part2').val();
         var ina_p3 = $('#inactive_action_sel_part3').val();
         var ina_p4 = $('#inactive_action_sel_part4').val();
-        if(ina_p2 != "Vacancy")
-            ina_p4 = "0";
+       // if(ina_p2 != "Vacancy")
+       //     ina_p4 = "0";
 
         switch(ina_p1)
         {
@@ -1008,8 +1010,8 @@ function saveNewContactInputObj() {
                 break;
 
             case "action_message":
-
-
+                if(ina_p2 != "Vacancy")
+                    ina_p4 = "0";
 
                 inactive_action += "msg_@@_"+ ina_p2 + "_@@_"+ina_p3 + "_@@_"+ina_p4;
                 break;
@@ -1017,7 +1019,7 @@ function saveNewContactInputObj() {
                 inactive_action += "scene_@@_"+ ina_p2;
                 break;
             case "action_scene_list":
-                inactive_action += "scenelist_@@_"+ ina_p2 + "_@@_"+ina_p3;
+                inactive_action += "scenelist_@@_"+ ina_p2 + "_@@_"+ina_p3 + "_@@_"+ina_p4;
                 break;
             default:
                 break;
@@ -1523,14 +1525,18 @@ function updateInputContactActionDropDowns(inputcontactobj) {
 
                 case "scenelist":
 
-                    $('#active_action_sel_part1').val("action_scenelist");
+                    $('#active_action_sel_part1').val("action_scene_list");
                     on_aa_part1_change();
 
-                    if(parts.length == 3) {
+                    if(parts.length == 4) {
                         $('#active_action_sel_part2').val(parts[1]);
                         $('#active_action_sel_part3').val(parts[2]);
+                        $('#active_action_sel_part4').val(parts[3]);
                     }
                     on_aa_part2_change();
+
+
+
                     break;
 
                 default:
@@ -1573,12 +1579,13 @@ function updateInputContactActionDropDowns(inputcontactobj) {
 
                 case "scenelist":
 
-                    $('#inactive_action_sel_part1').val("action_scenelist");
+                    $('#inactive_action_sel_part1').val("action_scene_list");
                     on_inactive_part1_change();
 
-                    if(parts.length == 3) {
+                    if(parts.length == 4) {
                         $('#inactive_action_sel_part2').val(parts[1]);
                         $('#inactive_action_sel_part3').val(parts[2]);
+                        $('#inactive_action_sel_part4').val(parts[3]);
                     }
                     on_ina_part2_change();
                     break;
@@ -1648,6 +1655,10 @@ function on_aa_part1_change()
             $('#active_action_label_part_3').text("Group");
             populateDropDown("active_action_sel_part3", getGroupNameList());
 
+
+            $('#active_action_label_part_4').text("Delay(s)");
+            populateDropDown("active_action_sel_part4", ["0","1","5","10","15","20","30","60"]);
+
             $('#aa_part2').show();
             $('#aa_part3').show();
             $('#aa_part4').show();
@@ -1668,9 +1679,13 @@ function on_aa_part1_change()
             $('#active_action_label_part_3').text("Direction");
             populateDropDown("active_action_sel_part3", ["up","down"]);
 
+
+            $('#active_action_label_part_4').text("Rollover");
+            populateDropDown("active_action_sel_part4", ["yes","no"]);
+
             $('#aa_part2').show();
             $('#aa_part3').show();
-            $('#aa_part4').hide();
+            $('#aa_part4').show();
             break;
         default:
             break;
@@ -1701,8 +1716,12 @@ function on_inactive_part1_change()
             $('#inactive_action_label_part_3').text("Group");
             populateDropDown("inactive_action_sel_part3", getGroupNameList());
 
+            $('#inactive_action_label_part_4').text("Delay(s)");
+            populateDropDown("inactive_action_sel_part4", ["0","1","5","10","15","20","30","60"]);
+
             $('#ina_part2').show();
             $('#ina_part3').show();
+            $('#ina_part4').show();
             break;
         case "action_scene":
             $('#inactive_action_label_part_2').text("Scene");
@@ -1719,8 +1738,15 @@ function on_inactive_part1_change()
 
             $('#inactive_action_label_part_3').text("Direction");
             populateDropDown("inactive_action_sel_part3", ["up","down"]);
+
+            $('#inactive_action_label_part_4').text("Rollover");
+            populateDropDown("inactive_action_sel_part4", ["yes","no"]);
+
+
             $('#ina_part2').show();
             $('#ina_part3').show();
+            $('#ina_part4').show();
+
             break;
         default:
             break;
@@ -1735,9 +1761,10 @@ function on_inactive_part1_change()
 
 function on_aa_part2_change()
 {
+    var aa_p1 = $('#active_action_sel_part1').val();
     var aa_p2 = $('#active_action_sel_part2').val();
 
-    if(aa_p2 == "Vacancy") {
+    if(aa_p2 == "Vacancy" || aa_p1 == "action_scene_list") {
         $('#aa_part4').show();
     }
     else {
@@ -1749,8 +1776,9 @@ function on_aa_part2_change()
 function on_ina_part2_change()
 {
     var aa_p2 = $('#inactive_action_sel_part2').val();
+    var aa_p1 = $('#inactive_action_sel_part1').val();
 
-    if(aa_p2 == "Vacancy") {
+    if(aa_p2 == "Vacancy" || aa_p1 == "action_scene_list") {
         $('#ina_part4').show();
     }
     else {
