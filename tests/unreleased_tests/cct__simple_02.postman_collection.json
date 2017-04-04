@@ -1,9 +1,9 @@
 {
 	"variables": [],
 	"info": {
-		"name": "cct__simple_01",
-		"_postman_id": "9ed5e72c-4710-9bb2-c87b-e26a24a6aa9c",
-		"description": "Test designed to use Setmultiplefixturelevels.\nSet levelpct and ctemp values.\nCheck status of pwmzonelevelspct[1] and pwmzonelevelspct[2] for standard CCT.\nCheck status of pwmzonelevelspct[3] and pwmzonelevelspct[4] for candle dim enabled CCT.",
+		"name": "cct__simple_02",
+		"_postman_id": "cf030449-1f48-aadc-31d2-1ae0ac9711a5",
+		"description": "Same as cct__simple_01 except we are testing the min/max settings for ctemp.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
@@ -33,7 +33,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": false,\n            \"min\": \"2000\",\n            \"max\": \"6500\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": 3500,\n            \"brightness\": 100,\n            \"previouscolortemp\": 3500,\n            \"previousbrightness\": 100,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT_CD\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": true,\n            \"min\": \"2000\",\n            \"max\": \"6500\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": 3500,\n            \"brightness\": 100,\n            \"previouscolortemp\": 3500,\n            \"previousbrightness\": 100,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0\n}"
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": false,\n            \"min\": \"4000\",\n            \"max\": \"5000\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": 3500,\n            \"brightness\": 100,\n            \"previouscolortemp\": 3500,\n            \"previousbrightness\": 100,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT_CD\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": true,\n            \"min\": \"5000\",\n            \"max\": \"5500\",\n            \"boundinputs\": [],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": 3500,\n            \"brightness\": 100,\n            \"previouscolortemp\": 3500,\n            \"previousbrightness\": 100,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}"
 				},
 				"description": ""
 			},
@@ -85,10 +85,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 39;",
-							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 11;",
-							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm == 44;",
-							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool == 6;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 50;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm == 50;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool === 0;"
 						]
 					}
 				}
@@ -121,10 +121,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 30;",
-							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 30;",
-							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm == 42;",
-							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool == 18;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].hwwarm == 45;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].hwcool == 15;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[1].hwwarm == 60;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[1].hwcool === 8;"
 						]
 					}
 				}
