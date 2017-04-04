@@ -489,6 +489,7 @@ var service = module.exports =  {
 
             // 3/28/17  Polling of future vacancy messages
             var contactinputs = global.currentconfig.contactinputs;
+            var now = new moment();
             for (var i = 0; i < contactinputs.length; i++) {
 
 
@@ -496,7 +497,7 @@ var service = module.exports =  {
                 if(dev.active_pending_vancancy != undefined)
                 {
                     // compare the time, if after thta time , trigger.
-                    var now = new moment();
+
                     // global.applogger.info(TAG, "time compare ", dev.active_pending_vancancy + "   " + now, "");
                     if(now.isAfter(dev.active_pending_vancancy))
                     {
