@@ -22,7 +22,8 @@ var last_start_req;
 var last_end_req;
 
 
-
+var HTML_SR_COLOR = '#ffff99';
+var HTML_SS_COLOR = '#ffcc66';
 
 
 function generateEventObjectAtTimeFromObj(time, obj, color)
@@ -59,6 +60,24 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
   eventobj.color = color;
 
 
+  eventobj.relhour = obj.relhour;
+  eventobj.relmin = obj.relmin;
+
+  if( eventobj.timebase == "before_ss" || eventobj.timebase == "after_ss" ||
+      eventobj.timebase == "before_sr" || eventobj.timebase == "before_sr")
+  {
+    if(eventobj.timebase == "before_sr" || eventobj.timebase == "before_sr")
+      eventobj.color = HTML_SR_COLOR;
+    else
+      eventobj.color = HTML_SS_COLOR;
+
+    //calc ss for this day,  and then set time accordingly.
+    var k = calculateCalendarTimeFromSunTime(eventobj);
+    eventobj.start_date = k.toString("MM/dd/yyyy HH:mm");
+    var end = new Date(k);
+    end.setHours(end.getHours()+2);
+    eventobj.end_date = end.toString("MM/dd/yyyy HH:mm");
+  }
   return eventobj;
 }
 
@@ -67,28 +86,57 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
 
 function calculateCalendarTimeFromSunTime(event)
 {
-    var times = SunCalc.getTimes(new Date(event.start_date), Number(global.currentconfig.sitelatt), Number(global.currentconfig.sitelong));
+  var times = SunCalc.getTimes(new Date(event.start_date), Number(global.currentconfig.sitelatt), Number(global.currentconfig.sitelong));
 
-     if(event.timebase == "before_ss")
-     {
+  var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
+  var duskstr = times.sunsetStart.getHours() + ':' + times.sunsetStart.getMinutes();
+  global.applogger.info(TAG, "SunRise Time: " + event.start_date  , "   " + sunriseStr + "  ---> " + duskstr);
 
-       var hour = times.sunsetStart.getHours();
-       hour -= event.relhour;
+  var updatedstart = new Date(event.start_date);
+  var sshour = times.sunsetStart.getHours();
+  var ssmin = times.sunsetStart.getMinutes();
 
-       var min = times.sunsetStart.getMinutes();
-       min -= event.relmin;
+  var srhour = times.sunrise.getHours();
+  var srmin = times.sunrise.getMinutes();
 
-       var updatedstart = new Date(event.start_date);
-       updatedstart.setHours(hour);
-       updatedstart.setMinutes(min);
-       return updatedstart;
-     }
+  if(event.timebase == "before_ss")
+  {
+    sshour -= Number(event.relhour);
+    ssmin -= Number(event.relmin);
+    updatedstart.setHours(sshour);
+    updatedstart.setMinutes(ssmin);
+    return updatedstart;
+  }
+  else if(event.timebase == "after_ss")
+  {
+    sshour += Number(event.relhour);
+    ssmin += Number(event.relmin);
+    updatedstart.setHours(sshour);
+    updatedstart.setMinutes(ssmin);
+    return updatedstart;
+  }
+  else if(event.timebase == "before_sr")
+  {
+    srhour -= Number(event.relhour);
+    srmin -= Number(event.relmin);
+    updatedstart.setHours(srhour);
+    updatedstart.setMinutes(srmin);
+    return updatedstart;
+  }
+  else if(event.timebase == "after_sr")
+  {
+    srhour += Number(event.relhour);
+    srmin += Number(event.relmin);
+    updatedstart.setHours(srhour);
+    updatedstart.setMinutes(srmin);
+    return updatedstart;
+  }
 
 
-   return times;
-   // var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
-   // var duskstr = times.sunsetStart.getHours() + ':' + times.sunsetStart.getMinutes();
-   // global.applogger.info(TAG, "SunRise Time: " , sunriseStr + "  ---> " + duskstr);
+  return undefined;
+  // var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
+  // var duskstr = times.sunsetStart.getHours() + ':' + times.sunsetStart.getMinutes();
+  // global.applogger.info(TAG, "SunRise Time: " , sunriseStr + "  ---> " + duskstr);
   // end calc,
 }
 // NOTE:  all storage is in 24 hr format,
@@ -105,26 +153,21 @@ function getEventForTimeSpan(start_ref, end_ref)
     var enddate = new Date(fileevents[i].end_date);
     if(startdate.getTime() >= start_ref.getTime() && startdate.getTime() <= end_ref.getTime())
     {
-      fileevents[i].color = "red";
-
-
-       //if( fileevents[i].timebase == "before_ss")
-      // {
-         //calc ss for this day,  and then set time accordingly.
-      //   var k = calculateCalendarTimeFromSunTime(fileevents[i]);
-       //  var j = 0;
-
-      // }
-
-      /*if(user_pref_format == 12)
+      //fileevents[i].color = "red";
+      if( fileevents[i].timebase == "before_ss" || fileevents[i].timebase == "after_ss" ||
+          fileevents[i].timebase == "before_sr" || fileevents[i].timebase == "before_sr")
       {
-        var temps = moment(startdate);
-        fileevents[i].start_date = temps.format('hh:mm A');
-        var tempe = moment(enddate);
-        fileevents[i].end_date = tempe.format('hh:mm A');
-        // reformat.
-      }*/
-
+        if(fileevents[i].timebase == "before_sr" || fileevents[i].timebase == "before_sr")
+          fileevents[i].color = HTML_SR_COLOR;
+        else
+          fileevents[i].color = HTML_SS_COLOR;
+        //calc ss for this day,  and then set time accordingly.
+        var k = calculateCalendarTimeFromSunTime(fileevents[i]);
+        fileevents[i].start_date = k.toString("MM/dd/yyyy HH:mm");
+        var end = new Date(k);
+        end.setHours(end.getHours()+2);
+        fileevents[i].end_date = end.toString("MM/dd/yyyy HH:mm");
+      }
       events.push(fileevents[i]);
     }
   }
@@ -142,14 +185,9 @@ function getEventForTimeSpan(start_ref, end_ref)
       events.push(tempevent);
       currdt.addHours(24);
     }
-
-
   }
 
-
   var fileevents = getEventListFromFile('datastore/schedule/weekly.json');
-
-
 
   for(var i = 0 ; i < fileevents.length; i++) {
     var weeklyevent = fileevents[i];
@@ -167,9 +205,7 @@ function getEventForTimeSpan(start_ref, end_ref)
         break;
 
       currdt.addHours(24);
-
     }
-
 
     while(1)
     {
@@ -180,10 +216,7 @@ function getEventForTimeSpan(start_ref, end_ref)
       events.push(tempevent);
       currdt.addHours(24*7);
     }
-
   }
-
-
   return events;
 }
 

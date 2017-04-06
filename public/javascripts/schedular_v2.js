@@ -91,10 +91,22 @@ function processConfig(configobj) {
 
                 html("eventaction").value = ev.action;
                 onEventCatagoryChange();
-                html("eventname").value = ev.text;
+
+                // remove prefix. and set ..
+                var parts = ev.text.split(':');
+                if(parts.length == 2) {
+
+                    html("eventname").value = parts[1].trim(); //ev.text;
+                }
 
                 html("eventtimebasesel").value = ev.timebase;
 
+
+                if(ev.timebase != "absolute")
+                {
+                    html("eventtimehour").value = ev.relhour;
+                    html("eventtimemin").value = ev.relmin;
+                }
             }
             else
             {
@@ -194,9 +206,15 @@ function save_form() {
     }
 
     ev.action = html("eventaction").value;
-    ev.text = html("eventname").value;
-  //  ev.repeat = html("eventrepeat").value;
-  //  ev.timebase = html("eventtimebasesel").value;
+
+    var prefix = ev.action + ": "
+   // if(ev.action == "scene")
+    //    prefix = 'scene: ';
+   //if(ev.action == "ignore")
+    //    prefix = 'ignore: ';
+
+    ev.text = prefix + html("eventname").value;
+
 
     if(ev.action == "scene")
        ev.resource_id = "Scene"
@@ -224,12 +242,13 @@ function save_form() {
             ev.start_date = tempstart;
         }
     }
-    if(ev.timebase == "before_ss")
+    if(ev.timebase == "before_ss" || ev.timebase == "after_ss" || ev.timebase == "before_sr" || ev.timebase == "after_sr")
     {
         var hour = html("eventtimehour").value;
         var min = html("eventtimemin").value;
         ev.relhour = hour;
         ev.relmin = min;
+
     }
 
 
@@ -238,7 +257,7 @@ function save_form() {
     ev.end_date = end;
     scheduler.endLightbox(true, html("my_form"));
 
-    if(ev.repeat != "none") {
+    if(ev.repeat != "none" || ev.timebase == "before_ss" || ev.timebase == "after_ss" || ev.timebase == "before_sr" || ev.timebase == "after_sr") {
         scheduler.clearAll();
         scheduler.load("schedule/getschedule2", "json", function () {
 
