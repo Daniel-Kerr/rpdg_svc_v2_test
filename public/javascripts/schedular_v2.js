@@ -224,6 +224,14 @@ function save_form() {
             ev.start_date = tempstart;
         }
     }
+    if(ev.timebase == "before_ss")
+    {
+        var hour = html("eventtimehour").value;
+        var min = html("eventtimemin").value;
+        ev.relhour = hour;
+        ev.relmin = min;
+    }
+
 
     var end = new Date(ev.start_date);
     end.setHours(end.getHours()+2);

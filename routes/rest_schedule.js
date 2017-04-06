@@ -7,7 +7,7 @@ var app = express();
 var os = require( 'os' );
 var pad = require('pad');
 var TAG = pad(path.basename(__filename),15);
-
+var SunCalc = require('suncalc');
 require('datejs');
 var service = require('../controllers/service');
 
@@ -62,8 +62,35 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
   return eventobj;
 }
 
-var user_pref_format = 24;
+//var user_pref_format = 24;
 
+
+function calculateCalendarTimeFromSunTime(event)
+{
+    var times = SunCalc.getTimes(new Date(event.start_date), Number(global.currentconfig.sitelatt), Number(global.currentconfig.sitelong));
+
+     if(event.timebase == "before_ss")
+     {
+
+       var hour = times.sunsetStart.getHours();
+       hour -= event.relhour;
+
+       var min = times.sunsetStart.getMinutes();
+       min -= event.relmin;
+
+       var updatedstart = new Date(event.start_date);
+       updatedstart.setHours(hour);
+       updatedstart.setMinutes(min);
+       return updatedstart;
+     }
+
+
+   return times;
+   // var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
+   // var duskstr = times.sunsetStart.getHours() + ':' + times.sunsetStart.getMinutes();
+   // global.applogger.info(TAG, "SunRise Time: " , sunriseStr + "  ---> " + duskstr);
+  // end calc,
+}
 // NOTE:  all storage is in 24 hr format,
 function getEventForTimeSpan(start_ref, end_ref)
 {
@@ -80,14 +107,23 @@ function getEventForTimeSpan(start_ref, end_ref)
     {
       fileevents[i].color = "red";
 
-      if(user_pref_format == 12)
+
+       //if( fileevents[i].timebase == "before_ss")
+      // {
+         //calc ss for this day,  and then set time accordingly.
+      //   var k = calculateCalendarTimeFromSunTime(fileevents[i]);
+       //  var j = 0;
+
+      // }
+
+      /*if(user_pref_format == 12)
       {
         var temps = moment(startdate);
         fileevents[i].start_date = temps.format('hh:mm A');
         var tempe = moment(enddate);
         fileevents[i].end_date = tempe.format('hh:mm A');
         // reformat.
-      }
+      }*/
 
       events.push(fileevents[i]);
     }
@@ -179,6 +215,9 @@ function createEventObject(body)
   eventobj.repeat = body[id +"_repeat"];
 
   eventobj.base_id = body[id +"_base_id"];
+
+  eventobj.relhour = body[id +"_relhour"];
+  eventobj.relmin = body[id +"_relmin"];
   return eventobj;
 }
 

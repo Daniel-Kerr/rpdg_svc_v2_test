@@ -9,5 +9,15 @@
         "timebase": "absolute",
         "repeat": "daily",
         "base_id": "1491499351699"
+    },
+    {
+        "id": 1491501531695,
+        "text": "testA",
+        "start_date": "04/06/2017 04:00",
+        "end_date": "04/06/2017 06:00",
+        "resource_id": "Scene",
+        "action": "scene",
+        "timebase": "absolute",
+        "repeat": "daily"
     }
 ]
