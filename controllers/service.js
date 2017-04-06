@@ -368,6 +368,21 @@ var service = module.exports =  {
         var BasePollingPeriod = 1000;        // Time interval in mSec that we do the most frequent checks.
         periodictimer = setInterval(function () {
 
+            // moved here so others can use virtual time.
+            var now = moment();  // single "now " var.
+            // ********************* VIRTUAL TIME ********FOR TESTING ONLY *************
+            var currenthour = now.hour();
+
+            if (global.virtualbasetime != undefined) {
+                var deltams = now - global.virtualtimeset;
+                global.applogger.info(TAG, "time check", deltams);
+                var bla = global.virtualbasetime.clone();
+                now = bla.add(deltams, 'ms');  // < ----- set now to virtual time,
+                currenthour = now.hour();
+            }
+              //global.applogger.info(TAG, "time check", now.toISOString()  + "   vbt: " + global.virtualbasetime);
+
+            // END VIRTUAL TIME *********************************************************
 
             // *********************************************RPDG PWM CURRENT DRAW POLLING*********************************
             // poll for pwm output power.(RPDG PWM ONLY)
@@ -393,6 +408,8 @@ var service = module.exports =  {
 
             // **************************************************** END PWM POLLING**********************************
 
+
+
             // DAYLIGHT POLLING******************************************************************************************
             // poll check the current daylight sensor input,
             // ********************************************************************************************************
@@ -408,14 +425,12 @@ var service = module.exports =  {
                 for(var levelidx = 0; levelidx < global.currentconfig.levelinputs.length; levelidx++ ) {
                     var inputobj = global.currentconfig.levelinputs[levelidx];
                     if (inputobj.type == "daylight") {
-                        //if (dlsensor != undefined) {
-                        var now = moment();
-                        var currenthour = now.hour();
-                        if (global.virtualbasetime != undefined) {
-                            var deltams = now - global.virtualtimeset;
-                            var virtualclocktime = global.virtualbasetime.add(deltams, 'ms');
-                            currenthour = virtualclocktime.hour();
-                        }
+                       // var currenthour = now.hour();
+                        //if (global.virtualbasetime != undefined) {
+                        //    var deltams = now - global.virtualtimeset;
+                        //    var virtualclocktime = global.virtualbasetime.add(deltams, 'ms');
+                        //    currenthour = virtualclocktime.hour();
+                       // }
 
                         if (currenthour >= 8 && currenthour <= 17) {     // only run the daylight sensor between the hours of 8am and 5pm
 
@@ -489,9 +504,7 @@ var service = module.exports =  {
 
             // 3/28/17  Polling of future vacancy messages
             var contactinputs = global.currentconfig.contactinputs;
-            var now = new moment();
             for (var i = 0; i < contactinputs.length; i++) {
-
 
                 var dev = contactinputs[i];
                 if(dev.active_pending_vancancy != undefined)
