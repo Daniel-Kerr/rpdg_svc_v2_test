@@ -1,1 +1,13 @@
-[]
+[
+    {
+        "id": 1491500433716,
+        "text": "testB",
+        "start_date": "02/08/2017 13:00",
+        "end_date": "02/08/2017 15:00",
+        "resource_id": "Scene",
+        "action": "scene",
+        "timebase": "absolute",
+        "repeat": "daily",
+        "base_id": "1491499351699"
+    }
+]

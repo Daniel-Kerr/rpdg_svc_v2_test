@@ -16,6 +16,12 @@ router.get('/enoceanconfig', function(req, res) {
     res.sendFile(path.join( app.get('views') +'/enocean_config.html'));
 });
 
+
+
+router.get('/testschedule', function(req, res) {
+    res.sendFile(path.join( app.get('views') +'/scheduler2.html'));
+});
+
 var params = {};
 params.platformid = 0;
 module.exports = router;

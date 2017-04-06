@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1491498803757,
+        "text": "testA",
+        "start_date": "04/30/2017 02:00",
+        "end_date": "04/30/2017 04:00",
+        "resource_id": "Scene",
+        "action": "scene",
+        "timebase": "absolute",
+        "repeat": "none"
+    },
+    {
+        "id": 1491498803773,
+        "text": "testA",
+        "start_date": "04/08/2018 16:00",
+        "end_date": "04/08/2018 18:00",
+        "resource_id": "Scene",
+        "action": "scene",
+        "timebase": "absolute",
+        "repeat": "none"
+    },
+    {
+        "id": 1491499351698,
+        "text": "testA",
+        "start_date": "02/07/2017 00:00",
+        "end_date": "02/07/2017 02:00",
+        "resource_id": "Scene",
+        "action": "scene",
+        "timebase": "absolute",
+        "repeat": "none"
+    }
+]

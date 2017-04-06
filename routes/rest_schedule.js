@@ -8,18 +8,284 @@ var os = require( 'os' );
 var pad = require('pad');
 var TAG = pad(path.basename(__filename),15);
 
+require('datejs');
 var service = require('../controllers/service');
 
 var file_schedule = 'datastore/schedule.json';
 /* GET */
 router.get('/', function(req, res, next) {
-  res.sendFile(path.join( app.get('views') +'/scheduler.html'));
+  res.sendFile(path.join( app.get('views') +'/scheduler2.html'));
 });
 
-//router.get('/scheduler', function(req, res) {
 
-//  res.sendFile(path.join( app.get('views') +'/scheduler.html'));
-//});
+var last_start_req;
+var last_end_req;
+
+
+
+
+
+function generateEventObjectAtTimeFromObj(time, obj, color)
+{
+  var month = time.getMonth()*1000000; // + time.getDay()*1000+ time.getYear();
+  var day = time.getDate()*10000;
+  var year = time.getFullYear();
+  var uniqueid= month+day+year;
+
+  var eventobj = {};
+  eventobj.base_id =obj.id;
+  eventobj.id =obj.id+uniqueid;
+  eventobj.text = obj.text;
+
+  //create a date obj, that ocntains the mm dd year of time,  but the hh min of the org obj.
+  var orgobj_statetime = new Date(obj.start_date);
+  var starttime = new Date(time);
+  starttime.setHours(orgobj_statetime.getHours());
+  starttime.setMinutes(orgobj_statetime.getMinutes());
+
+
+  eventobj.start_date = starttime.toString("MM/dd/yyyy HH:mm");
+  var end = new Date(starttime);
+  end.setHours(end.getHours()+2);
+
+
+
+  eventobj.end_date = end.toString("MM/dd/yyyy HH:mm");
+
+  eventobj.resource_id = obj.resource_id;
+  eventobj.action = obj.action;
+  eventobj.timebase = obj.timebase;
+  eventobj.repeat = obj.repeat;
+  eventobj.color = color;
+
+
+  return eventobj;
+}
+
+var user_pref_format = 24;
+
+// NOTE:  all storage is in 24 hr format,
+function getEventForTimeSpan(start_ref, end_ref)
+{
+
+  var events = [];
+  // one time events.
+  var fileevents = getEventListFromFile('datastore/schedule/onetime.json');
+
+  for(var i = 0 ; i < fileevents.length; i++) {
+
+    var startdate = new Date(fileevents[i].start_date);
+    var enddate = new Date(fileevents[i].end_date);
+    if(startdate.getTime() >= start_ref.getTime() && startdate.getTime() <= end_ref.getTime())
+    {
+      fileevents[i].color = "red";
+
+      if(user_pref_format == 12)
+      {
+        var temps = moment(startdate);
+        fileevents[i].start_date = temps.format('hh:mm A');
+        var tempe = moment(enddate);
+        fileevents[i].end_date = tempe.format('hh:mm A');
+        // reformat.
+      }
+
+      events.push(fileevents[i]);
+    }
+  }
+
+  var fileevents = getEventListFromFile('datastore/schedule/daily.json');
+  for(var i = 0 ; i < fileevents.length; i++) {
+    var dailyevent = fileevents[i];
+    var currdt = new Date(start_ref);
+    while(1)
+    {
+      if(currdt.getTime() > end_ref.getTime())
+        break;
+
+      var tempevent = generateEventObjectAtTimeFromObj(currdt, dailyevent, "#55DD44");
+      events.push(tempevent);
+      currdt.addHours(24);
+    }
+
+
+  }
+
+
+  var fileevents = getEventListFromFile('datastore/schedule/weekly.json');
+
+
+
+  for(var i = 0 ; i < fileevents.length; i++) {
+    var weeklyevent = fileevents[i];
+    var currdt = new Date(start_ref);
+
+    // now find the first day, that mataches the events day.
+    // and start there.
+    var k = new Date(weeklyevent.start_date);
+    var dayofweek = k.getDay();  // sunday = 0,
+
+    while(1)
+    {
+      var test = currdt.getDay();
+      if(test == dayofweek)
+        break;
+
+      currdt.addHours(24);
+
+    }
+
+
+    while(1)
+    {
+      if(currdt.getTime() > end_ref.getTime())
+        break;
+
+      var tempevent = generateEventObjectAtTimeFromObj(currdt, weeklyevent,"#667722");
+      events.push(tempevent);
+      currdt.addHours(24*7);
+    }
+
+  }
+
+
+  return events;
+}
+
+// for new schedular.
+router.get('/getschedule2', function(req, res) {
+
+  // query string from ,  to.
+  var start = new Date(req.query.from);
+  var end = new Date(req.query.to);
+  last_start_req = start;
+  last_end_req = end;
+  var events = getEventForTimeSpan(start,end);
+  res.status(200).send(events);
+});
+
+
+
+function createEventObject(body)
+{
+  var eventobj = {};
+  var id = body.ids;
+  eventobj.id = Number(id);
+  eventobj.text = body[id +"_text"];
+  eventobj.start_date = body[id +"_start_date"];
+  eventobj.end_date = body[id +"_end_date"];
+  eventobj.resource_id = body[id +"_resource_id"];
+  eventobj.action = body[id +"_action"];
+  eventobj.timebase = body[id +"_timebase"];
+  eventobj.repeat = body[id +"_repeat"];
+
+  eventobj.base_id = body[id +"_base_id"];
+  return eventobj;
+}
+
+
+
+// handler for delete, update..(crud).
+router.post('/getschedule2', function(req, res) {
+
+  if(req.query.editing) {
+
+    if (req.body != undefined) {
+      var eventobj = createEventObject(req.body);
+      var id = req.body.ids;
+      var crudaction = req.body[id + "_!nativeeditor_status"];
+      if (crudaction == "inserted")  //----> CREATE
+      {
+        var target_file;
+        if (eventobj.repeat == "daily")
+          target_file = 'datastore/schedule/daily.json';
+        else if (eventobj.repeat == "weekly")
+          target_file = 'datastore/schedule/weekly.json';
+        else if (eventobj.repeat == "dayofmonth")
+          target_file = 'datastore/schedule/monthly.json';
+        else
+          target_file = 'datastore/schedule/onetime.json';
+
+        var eventlist = getEventListFromFile(target_file);
+
+
+        eventlist.push(eventobj);
+        writeEventListToFile(eventlist, target_file);
+      }
+      else if (crudaction == "deleted")  //----> DELETE
+      {
+        var target_file;
+        if (eventobj.repeat == "daily")
+          target_file = 'datastore/schedule/daily.json';
+        else if (eventobj.repeat == "weekly")
+          target_file = 'datastore/schedule/weekly.json';
+        else if (eventobj.repeat == "dayofmonth")
+          target_file = 'datastore/schedule/monthly.json';
+        else
+          target_file = 'datastore/schedule/onetime.json';
+
+        var eventlist = getEventListFromFile(target_file);
+
+        var edit = false;
+
+        var ref_id = eventobj.id;
+        if (eventobj.repeat == "daily" || eventobj.repeat == "weekly")
+          ref_id = eventobj.base_id;
+
+        for (var i = 0; i < eventlist.length; i++) {
+          if (eventlist[i].id == ref_id) {
+            edit = true;
+            eventlist.splice(i, 1); // remove
+            break;
+          }
+        }
+        if(edit)
+          writeEventListToFile(eventlist, target_file);
+      }
+      if (crudaction == "updated")  //----> UPDATED
+      {
+        var target_file;
+        var matchobj = eventobj.id;  // default,
+
+
+        if (eventobj.repeat == "daily") {
+          target_file = 'datastore/schedule/daily.json';
+          matchobj = eventobj.base_id; // use base id for daily obj.
+        }
+        else if (eventobj.repeat == "weekly") {
+          target_file = 'datastore/schedule/weekly.json';
+          matchobj = eventobj.base_id;
+        }
+        else if (eventobj.repeat == "dayofmonth") {
+          target_file = 'datastore/schedule/monthly.json';
+        }
+        else {
+          target_file = 'datastore/schedule/onetime.json';
+        }
+
+        var eventlist = getEventListFromFile(target_file);
+
+        var edit = false;
+
+
+        for (var i = 0; i < eventlist.length; i++) {
+          if (eventlist[i].id == matchobj) {
+            edit = true;
+            eventlist[i] = eventobj;
+            break;
+          }
+        }
+
+        if(edit)
+          writeEventListToFile(eventlist, target_file);
+      }
+    }
+  }
+
+  var events_updated = getEventForTimeSpan(last_start_req, last_end_req);
+  res.status(200).send(events_updated);
+
+
+});
 
 router.post('/addevent', function(req, res) {
 
@@ -27,14 +293,14 @@ router.post('/addevent', function(req, res) {
   var start = event.start;
 
 
- // var bla = moment.utc(event.start);
+  // var bla = moment.utc(event.start);
   //var localTime = moment.utc(event.start).local().format();
 
   //event.start = moment.utc(event.start).local().format();
 
   //var offset = moment().utcOffset();
   //global.applogger.info(TAG, "--------------Server tz Offset-------------: " +offset, "");
- // event.start = moment.utc(event.start).utcOffset(offset).format();
+  // event.start = moment.utc(event.start).utcOffset(offset).format();
 
 
   var target_file;
@@ -70,7 +336,7 @@ router.post('/addevent', function(req, res) {
 
 
   writeEventListToFile(eventlist,target_file);
- // res.send(200);
+  // res.send(200);
   res.status(200).send("OK");
 });
 
@@ -105,7 +371,7 @@ router.post('/delevent', function(req, res) {
     }
   }
   writeEventListToFile(eventlist,target_file);
- // res.send(200);
+  // res.send(200);
   res.status(200).send("OK");
 });
 
