@@ -1,68 +1,46 @@
 [
     {
-        "id": 1491517013394,
-        "text": "scene: testA",
-        "start_date": "04/12/2017 00:00",
-        "end_date": "04/12/2017 02:00",
+        "id": 1491599823397,
+        "text": "scene: sceneA",
+        "start_date": "04/05/2017 13:00",
+        "end_date": "04/05/2017 15:00",
         "resource_id": "Scene",
         "action": "scene",
         "timebase": "absolute",
         "repeat": "none"
     },
     {
-        "id": 1491517013395,
-        "text": "scene: testB",
-        "start_date": "04/13/2017 00:00",
-        "end_date": "04/13/2017 02:00",
-        "resource_id": "Scene",
-        "action": "scene",
-        "timebase": "absolute",
-        "repeat": "none"
-    },
-    {
-        "id": 1491517013396,
-        "text": "stop_ignore: testboogykjkk",
-        "start_date": "04/14/2017 00:00",
-        "end_date": "04/14/2017 02:00",
-        "resource_id": "Input",
-        "action": "stop_ignore",
-        "timebase": "absolute",
-        "repeat": "none"
-    },
-    {
-        "id": 1491517550684,
-        "text": "scene: testA",
-        "start_date": "04/20/2017 00:00",
-        "end_date": "04/20/2017 02:00",
-        "resource_id": "Scene",
-        "action": "scene",
-        "timebase": "before_ss",
-        "repeat": "none",
-        "relhour": "0",
-        "relmin": "0"
-    },
-    {
-        "id": 1491517550686,
-        "text": "scene: testA",
-        "start_date": "04/27/2017 00:00",
-        "end_date": "04/27/2017 02:00",
-        "resource_id": "Scene",
-        "action": "scene",
-        "timebase": "before_ss",
-        "repeat": "none",
-        "relhour": "0",
-        "relmin": "0"
-    },
-    {
-        "id": 1491517550687,
-        "text": "scene: testA",
+        "id": 1491599823398,
+        "text": "scene: sceneB",
         "start_date": "04/07/2017 00:00",
         "end_date": "04/07/2017 02:00",
+        "resource_id": "Scene",
+        "action": "scene",
+        "timebase": "before_ss",
+        "repeat": "none",
+        "relhour": "1",
+        "relmin": "2"
+    },
+    {
+        "id": 1491599823399,
+        "text": "scene: sceneA",
+        "start_date": "04/04/2017 00:00",
+        "end_date": "04/04/2017 02:00",
         "resource_id": "Scene",
         "action": "scene",
         "timebase": "before_sr",
         "repeat": "none",
         "relhour": "0",
-        "relmin": "0"
+        "relmin": "9"
+    },
+    {
+        "id": 1491601360372,
+        "text": "ignore: enocean_rocker",
+        "start_date": "04/05/2017 13:00",
+        "end_date": "04/05/2017 15:00",
+        "resource_id": "Input",
+        "action": "ignore",
+        "timebase": "absolute",
+        "repeat": "none"
     }
 ]

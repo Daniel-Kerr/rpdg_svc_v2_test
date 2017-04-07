@@ -46,7 +46,7 @@ var schedulepollcount = 0;
 
 
 
-var currentschedule_event = undefined;
+var currentschedule_eventbundle = undefined;
 var reinit_schedule_countdown = -1;
 
 
@@ -479,21 +479,37 @@ var service = module.exports =  {
                 {
                     global.applogger.info(TAG, "---- Schedule Re init----", "");
                     schedule_mgr.initManager();
-                    currentschedule_event = undefined;
+                    currentschedule_eventbundle = undefined;
                 }
             }
 
 
             schedulepollcount++;
             var schedulepollperiod = Math.round ((schedulepollseconds * 1000) / BasePollingPeriod);
-            if (schedulepollcount >= schedulepollperiod || currentschedule_event == undefined) {  // periodic or , at start
+            if (schedulepollcount >= schedulepollperiod || currentschedule_eventbundle == undefined) {  // periodic or , at start
                 schedulepollcount = 0;
-                var event = schedule_mgr.getCurrentEvent();
-                if (event != undefined) {
-                    if (currentschedule_event == undefined || event.id != currentschedule_event.id) {
-                        global.applogger.info(TAG, "Sched Event INVOKE -- : ", event.type + "   " + event.title + "   " + event.start);
-                        currentschedule_event = event;
-                        module.exports.invokeScene(event.title, "wallstation");
+                var eventbundle = schedule_mgr.getCurrentEvent(now);
+                if (eventbundle != undefined) {
+                    if (currentschedule_eventbundle == undefined || eventbundle.date_time.diff(currentschedule_eventbundle.date_time) != 0) {
+
+                        global.applogger.info(TAG, "Sched Event Bunlde INVOKE Start -- : ", "", "");
+                        currentschedule_eventbundle = eventbundle; // store it,
+
+                        for(var i = 0; i < eventbundle.events.length; i++)
+                        {
+                            var event = eventbundle.events[i];
+                            var parts = event.text.split(":");
+                            if(event.action == "scene")
+                            {
+                                if(parts.length == 2)
+                                {
+                                    var scenename = parts[1].trim();
+                                    global.applogger.info(TAG, "Sched Event INVOKE -- : ", scenename , "");
+                                    module.exports.invokeScene(scenename, "wallstation");
+                                }
+                            }
+
+                        }
                     }
                 }
             }
