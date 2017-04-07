@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "id": 1491604782405,
+        "text": "disable: switch1",
+        "start_date": "04/19/2017 00:00",
+        "end_date": "04/19/2017 02:00",
+        "resource_id": "Input",
+        "action": "disable",
+        "timebase": "absolute",
+        "repeat": "daily"
+    }
+]

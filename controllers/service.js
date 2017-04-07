@@ -136,8 +136,11 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                     // if type is momentary and == "active",  or maintained,  act on it,
                     if((dev.type == "momentary" && dev.value == 1)|| dev.type == "maintained" )
                     {
-                        contactSwitchHandler(dev);
-                        // break; //done,  3/28  removed , allow multiple actions per input. (stacked).
+                        // added enabled check, 4/7/17,   to test.
+                        if(dev.enabled) {
+                            contactSwitchHandler(dev);
+                        }
+
                     }
                 }
             }
@@ -507,6 +510,13 @@ var service = module.exports =  {
                                     global.applogger.info(TAG, "Sched Event INVOKE -- : ", scenename , "");
                                     module.exports.invokeScene(scenename, "wallstation");
                                 }
+                            }
+
+                            // for inputs, we set/ get the enabled bit on the input.
+                            //for contact inputs the only type is contactinput type.
+                            if(event.action == "disable")
+                            {
+
                             }
 
                         }

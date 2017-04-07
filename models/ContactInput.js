@@ -19,6 +19,8 @@ var ContactInput = function()
     this.active_pending_vancancy = undefined; // 3/28/17,
     this.inactive_pending_vancancy = undefined; // 3/28/17,
 
+    this.enabled = true; // 4/7/17,  GUI first.
+
     ContactInput.prototype.fromJson = function(obj)
     {
         for (var prop in obj) {
