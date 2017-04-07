@@ -28,8 +28,18 @@ $(document).ready(function() {
     getConfig(processConfig);
 
 
+
 });
 
+
+
+$(function() {
+    $('#schedenable').change(function() {
+        var k = 0;
+        k = k  +1;
+        // $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+    })
+})
 
 var user_pref_format = 12;
 

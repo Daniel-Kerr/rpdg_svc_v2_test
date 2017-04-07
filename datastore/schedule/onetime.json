@@ -62,5 +62,25 @@
         "action": "enable",
         "timebase": "absolute",
         "repeat": "none"
+    },
+    {
+        "id": 1491604782406,
+        "text": "disable: switch1",
+        "start_date": "04/07/2017 04:30",
+        "end_date": "04/07/2017 06:30",
+        "resource_id": "Input",
+        "action": "disable",
+        "timebase": "absolute",
+        "repeat": "none"
+    },
+    {
+        "id": 1491604782407,
+        "text": "enable: switch1",
+        "start_date": "04/07/2017 09:30",
+        "end_date": "04/07/2017 11:30",
+        "resource_id": "Input",
+        "action": "enable",
+        "timebase": "absolute",
+        "repeat": "none"
     }
 ]

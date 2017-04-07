@@ -516,6 +516,10 @@ var service = module.exports =  {
                             //for contact inputs the only type is contactinput type.
                             if(event.action == "disable")
                             {
+                                // to do , get input name, and set / clear flag.
+                            }
+                            else if (event.action == "enable")
+                            {
 
                             }
 
