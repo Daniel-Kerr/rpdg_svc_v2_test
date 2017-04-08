@@ -206,7 +206,7 @@
 							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level === 0;",
 							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level == 100;",
 							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level === 0;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level === 0;"
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level == 100;"
 						]
 					}
 				}
