@@ -47,7 +47,7 @@ var schedulepollcount = 0;
 
 
 var currentschedule_eventbundle = undefined;
-var reinit_schedule_countdown = -1;
+//var reinit_schedule_countdown = -1;
 
 
 
@@ -499,16 +499,19 @@ var service = module.exports =  {
 
             // 3/17/17/    Schedule manage polling,*******************************************************************
             //********************************************************************************************************
-            if(reinit_schedule_countdown >= 0)
-            {
-                reinit_schedule_countdown--;
-                if(reinit_schedule_countdown < 0)
-                {
-                    global.applogger.info(TAG, "---- Schedule Re init----", "");
-                    schedule_mgr.initManager();
-                    currentschedule_eventbundle = undefined;
-                }
-            }
+            if(schedule_mgr.scheduleCacheReset())
+                currentschedule_eventbundle = undefined;
+
+            //if(reinit_schedule_countdown >= 0)
+            //{
+             //   reinit_schedule_countdown--;
+             //   if(reinit_schedule_countdown < 0)
+             //   {
+              //      global.applogger.info(TAG, "---- Schedule Re init----", "");
+              //      schedule_mgr.initManager();
+              //      currentschedule_eventbundle = undefined;
+              //  }
+           //}
 
 
             schedulepollcount++;
@@ -516,7 +519,7 @@ var service = module.exports =  {
             if (schedulepollcount >= schedulepollperiod || currentschedule_eventbundle == undefined) {  // periodic or , at start
                 schedulepollcount = 0;
                 var eventbundle = schedule_mgr.getCurrentEvent(now);
-                if (eventbundle != undefined) {
+                if (eventbundle != undefined && eventbundle.events.length > 0) {
                     if (currentschedule_eventbundle == undefined || eventbundle.date_time.diff(currentschedule_eventbundle.date_time) != 0) {
 
                         global.applogger.info(TAG, "Sched Event Bunlde INVOKE Start -- : ", "", "");
@@ -793,11 +796,13 @@ var service = module.exports =  {
         daylightpollseconds = intervalsec;
         daylightpolcount = 0;
     },
-    reinitScheduleMgr : function()
-    {
-        reinit_schedule_countdown = 2;
-
-    },
+   // ,
+   // reinitScheduleMgr : function()
+   // {
+   //     reinit_schedule_countdown = 2;
+   //     s
+//
+   // },
     enableRPDGHardwarePolling : function(enable)
     {
         global.applogger.error("rpdg_driver.js ", "enable rpdg polling : " + enable,  "");

@@ -10,6 +10,7 @@ var TAG = pad(path.basename(__filename),15);
 var SunCalc = require('suncalc');
 require('datejs');
 var service = require('../controllers/service');
+var schedule_mgr = require('../controllers/schedule_mgr.js');
 
 var file_schedule = 'datastore/schedule.json';
 /* GET */
@@ -25,7 +26,7 @@ var last_end_req;
 var HTML_SR_COLOR = '#ffff99';
 var HTML_SS_COLOR = '#ffcc66';
 
-
+/*
 function generateEventObjectAtTimeFromObj(time, obj, color)
 {
   var month = time.getMonth()*1000000; // + time.getDay()*1000+ time.getYear();
@@ -80,10 +81,10 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
   }
   return eventobj;
 }
-
+*/
 //var user_pref_format = 24;
 
-
+/*
 function calculateCalendarTimeFromSunTime(event)
 {
   var times = SunCalc.getTimes(new Date(event.start_date), Number(global.currentconfig.sitelatt), Number(global.currentconfig.sitelong));
@@ -139,7 +140,9 @@ function calculateCalendarTimeFromSunTime(event)
   // global.applogger.info(TAG, "SunRise Time: " , sunriseStr + "  ---> " + duskstr);
   // end calc,
 }
+*/
 // NOTE:  all storage is in 24 hr format,
+/*
 function getEventForTimeSpan(start_ref, end_ref)
 {
 
@@ -219,7 +222,7 @@ function getEventForTimeSpan(start_ref, end_ref)
   }
   return events;
 }
-
+*/
 // for new schedular.
 router.get('/getschedule2', function(req, res) {
 
@@ -228,7 +231,7 @@ router.get('/getschedule2', function(req, res) {
   var end = new Date(req.query.to);
   last_start_req = start;
   last_end_req = end;
-  var events = getEventForTimeSpan(start,end);
+  var events = schedule_mgr.getEventsinTimeSpan(start,end);
   res.status(200).send(events);
 });
 
@@ -246,9 +249,7 @@ function createEventObject(body)
   eventobj.action = body[id +"_action"];
   eventobj.timebase = body[id +"_timebase"];
   eventobj.repeat = body[id +"_repeat"];
-
   eventobj.base_id = body[id +"_base_id"];
-
   eventobj.relhour = body[id +"_relhour"];
   eventobj.relmin = body[id +"_relmin"];
   return eventobj;
@@ -267,222 +268,25 @@ router.post('/getschedule2', function(req, res) {
       var crudaction = req.body[id + "_!nativeeditor_status"];
       if (crudaction == "inserted")  //----> CREATE
       {
-        var target_file;
-        if (eventobj.repeat == "daily")
-          target_file = 'datastore/schedule/daily.json';
-        else if (eventobj.repeat == "weekly")
-          target_file = 'datastore/schedule/weekly.json';
-        else if (eventobj.repeat == "dayofmonth")
-          target_file = 'datastore/schedule/monthly.json';
-        else
-          target_file = 'datastore/schedule/onetime.json';
-
-        var eventlist = getEventListFromFile(target_file);
-
-
-        eventlist.push(eventobj);
-        writeEventListToFile(eventlist, target_file);
+        schedule_mgr.createEvent(eventobj);
       }
       else if (crudaction == "deleted")  //----> DELETE
       {
-        var target_file;
-        if (eventobj.repeat == "daily")
-          target_file = 'datastore/schedule/daily.json';
-        else if (eventobj.repeat == "weekly")
-          target_file = 'datastore/schedule/weekly.json';
-        else if (eventobj.repeat == "dayofmonth")
-          target_file = 'datastore/schedule/monthly.json';
-        else
-          target_file = 'datastore/schedule/onetime.json';
-
-        var eventlist = getEventListFromFile(target_file);
-
-        var edit = false;
-
-        var ref_id = eventobj.id;
-        if (eventobj.repeat == "daily" || eventobj.repeat == "weekly")
-          ref_id = eventobj.base_id;
-
-        for (var i = 0; i < eventlist.length; i++) {
-          if (eventlist[i].id == ref_id) {
-            edit = true;
-            eventlist.splice(i, 1); // remove
-            break;
-          }
-        }
-        if(edit)
-          writeEventListToFile(eventlist, target_file);
+        schedule_mgr.deleteEvent(eventobj);
       }
       if (crudaction == "updated")  //----> UPDATED
       {
-        var target_file;
-        var matchobj = eventobj.id;  // default,
-
-
-        if (eventobj.repeat == "daily") {
-          target_file = 'datastore/schedule/daily.json';
-          matchobj = eventobj.base_id; // use base id for daily obj.
-        }
-        else if (eventobj.repeat == "weekly") {
-          target_file = 'datastore/schedule/weekly.json';
-          matchobj = eventobj.base_id;
-        }
-        else if (eventobj.repeat == "dayofmonth") {
-          target_file = 'datastore/schedule/monthly.json';
-        }
-        else {
-          target_file = 'datastore/schedule/onetime.json';
-        }
-
-        var eventlist = getEventListFromFile(target_file);
-
-        var edit = false;
-
-
-        for (var i = 0; i < eventlist.length; i++) {
-          if (eventlist[i].id == matchobj) {
-            edit = true;
-            eventlist[i] = eventobj;
-            break;
-          }
-        }
-
-        if(edit)
-          writeEventListToFile(eventlist, target_file);
+          schedule_mgr.updateEvent(eventobj);
       }
     }
   }
 
-  var events_updated = getEventForTimeSpan(last_start_req, last_end_req);
+  var events_updated = schedule_mgr.getEventsinTimeSpan(last_start_req, last_end_req);
   res.status(200).send(events_updated);
 
 
 });
 
-router.post('/addevent', function(req, res) {
-
-  var event = req.body;
-  var start = event.start;
-
-
-  // var bla = moment.utc(event.start);
-  //var localTime = moment.utc(event.start).local().format();
-
-  //event.start = moment.utc(event.start).local().format();
-
-  //var offset = moment().utcOffset();
-  //global.applogger.info(TAG, "--------------Server tz Offset-------------: " +offset, "");
-  // event.start = moment.utc(event.start).utcOffset(offset).format();
-
-
-  var target_file;
-  if(event.repeat == "daily")
-    target_file = 'datastore/schedule/daily.json';
-  else if(event.repeat == "weekly")
-    target_file = 'datastore/schedule/weekly.json';
-  else if(event.repeat == "dayofmonth")
-  {
-    target_file = 'datastore/schedule/monthly.json';
-  }
-  else {
-    var startd = start.substring(0,7);
-    target_file = 'datastore/schedule/' + startd + '.json';
-  }
-  var eventlist = getEventListFromFile(target_file);
-
-  // check if we are overwriting it or not.
-  var edit =false;
-  for(var i = 0; i < eventlist.length; i++)
-  {
-    if(eventlist[i].id == event.id)
-    {
-      // ediit,  it,
-      edit = true;
-      eventlist.splice(i,1); // remove this one,
-      break;
-    }
-  }
-
-  eventlist.push(req.body);
-
-
-
-  writeEventListToFile(eventlist,target_file);
-  // res.send(200);
-  res.status(200).send("OK");
-});
-
-
-router.post('/delevent', function(req, res) {
-
-  var event = req.body;
-  //var start = event.start;
-
-  var target_file;
-  if(event.repeat == "daily")
-    target_file = 'datastore/schedule/daily.json';
-  else if(event.repeat == "weekly")
-    target_file = 'datastore/schedule/weekly.json';
-  else if(event.repeat == "dayofmonth")
-  {
-    target_file = 'datastore/schedule/monthly.json';
-  }
-  else {
-    var startd = start.substring(0,7);
-    target_file = 'datastore/schedule/' + startd + '.json';
-  }
-  var eventlist = getEventListFromFile(target_file);
-
-  for(var i = 0; i < eventlist.length; i++)
-  {
-    if(eventlist[i].id == event.id)
-    {
-      // remove it, ..
-      eventlist.splice(i,1);
-      break;
-    }
-  }
-  writeEventListToFile(eventlist,target_file);
-  // res.send(200);
-  res.status(200).send("OK");
-});
-
-function getEventListFromFile(schedfile)
-{
-  var target = path.resolve(schedfile);
-  var listupdated = false;
-  try {
-    var stats = fs.statSync(target);
-    if (stats.isFile()) {
-      var contents = fs.readFileSync(target, 'utf8');
-      if (contents.length > 0) {
-        var mastercenelist = JSON.parse(contents);
-        return mastercenelist;
-      }
-    }
-  }
-  catch (err)
-  {
-  }
-  var blank = [];
-  return blank;
-}
-
-function writeEventListToFile(eventlist, schedfile)
-{
-  var target = path.resolve(schedfile);
-
-  var output = JSON.stringify(eventlist, null, 4);
-  fs.writeFile(target, output, function (err) {
-    if (err) {
-      console.log(err);
-    }
-    else {
-      //console.log("The file was saved!");
-    }
-    service.reinitScheduleMgr();
-  });
-}
 
 router.get('/getschedule', function(req, res) {
 
@@ -671,3 +475,96 @@ router.get('/getschedule', function(req, res) {
   res.send(events);
 });
 module.exports = router;
+
+
+
+/*
+ router.post('/addevent', function(req, res) {
+
+ var event = req.body;
+ var start = event.start;
+
+
+ // var bla = moment.utc(event.start);
+ //var localTime = moment.utc(event.start).local().format();
+
+ //event.start = moment.utc(event.start).local().format();
+
+ //var offset = moment().utcOffset();
+ //global.applogger.info(TAG, "--------------Server tz Offset-------------: " +offset, "");
+ // event.start = moment.utc(event.start).utcOffset(offset).format();
+
+
+ var target_file;
+ if(event.repeat == "daily")
+ target_file = 'datastore/schedule/daily.json';
+ else if(event.repeat == "weekly")
+ target_file = 'datastore/schedule/weekly.json';
+ else if(event.repeat == "dayofmonth")
+ {
+ target_file = 'datastore/schedule/monthly.json';
+ }
+ else {
+ var startd = start.substring(0,7);
+ target_file = 'datastore/schedule/' + startd + '.json';
+ }
+ var eventlist = getEventListFromFile(target_file);
+
+ // check if we are overwriting it or not.
+ var edit =false;
+ for(var i = 0; i < eventlist.length; i++)
+ {
+ if(eventlist[i].id == event.id)
+ {
+ // ediit,  it,
+ edit = true;
+ eventlist.splice(i,1); // remove this one,
+ break;
+ }
+ }
+
+ eventlist.push(req.body);
+
+
+
+ writeEventListToFile(eventlist,target_file);
+ // res.send(200);
+ res.status(200).send("OK");
+ });
+ */
+
+/*
+ router.post('/delevent', function(req, res) {
+
+ var event = req.body;
+ //var start = event.start;
+
+ var target_file;
+ if(event.repeat == "daily")
+ target_file = 'datastore/schedule/daily.json';
+ else if(event.repeat == "weekly")
+ target_file = 'datastore/schedule/weekly.json';
+ else if(event.repeat == "dayofmonth")
+ {
+ target_file = 'datastore/schedule/monthly.json';
+ }
+ else {
+ var startd = start.substring(0,7);
+ target_file = 'datastore/schedule/' + startd + '.json';
+ }
+ var eventlist = getEventListFromFile(target_file);
+
+ for(var i = 0; i < eventlist.length; i++)
+ {
+ if(eventlist[i].id == event.id)
+ {
+ // remove it, ..
+ eventlist.splice(i,1);
+ break;
+ }
+ }
+ writeEventListToFile(eventlist,target_file);
+ // res.send(200);
+ res.status(200).send("OK");
+ });
+ */

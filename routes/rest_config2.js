@@ -56,6 +56,9 @@ var file_paramoptions = 'datastore/paramoptions.json';
 
 var service = require('../controllers/service');
 
+var schedule_mgr = require('../controllers/schedule_mgr.js');
+
+
 router.get('/getconfig', function(req, res) {
 
     var cfg = JSON.stringify(global.currentconfig,null,2);
@@ -559,6 +562,16 @@ router.post('/deletescene', function(req, res) {
 
         }
     }
+
+    // 4/10/17 remove any sched events that use this scene.
+
+    schedule_mgr.removeSceneFromSchedule(scenename);
+
+
+
+
+
+
 
 
     var cfg = JSON.stringify(global.currentconfig,null,2);
