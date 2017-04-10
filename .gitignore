@@ -5,6 +5,4 @@
 /tests/logs/
 crossplatform_modules/rpi/
 crossplatform_modules/windows/
-/datastore/schedule/daily.json
-/datastore/schedule/onetime.json
-/datastore/schedule/weekly.json
+/datastore/schedule/
