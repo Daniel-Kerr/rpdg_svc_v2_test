@@ -50,11 +50,15 @@ function requireUncached(module){
 
 function printpendingevents()
 {
-
+    global.applogger.info(TAG, "*************** Schedule Event List" ,new Date().toDateString() + "**********************");
     for(var i = 0 ; i < pending_events.length; i++)
     {
         var event = pending_events[i];
-        console.log("EVENT: " + event.start_date + " : " + event.text);
+        var id = event.id;
+        if(event.repeat != 'none')
+            id = event.base_id;
+
+        global.applogger.info(TAG, "EVENT: " + id + "    " + event.start_date + " :title " + event.text + "   repeate: " + event.repeat);
     }
 }
 
@@ -317,7 +321,7 @@ var mgr = module.exports = {
         return false;
     },
     requestScheduleCacheReset: function() {
-        dirtyschedulecountdown = 2;
+        dirtyschedulecountdown = 5;  // this is in seconds.
     },
     initManager: function() {
 
@@ -361,6 +365,75 @@ var mgr = module.exports = {
             pending_events.push(eventobj);
         }
 
+
+
+        //  daily, *******************************************************
+        // for this we will generate an event for the last 2 days.
+        var target = path.resolve(SCHEDULE_FILE_DAILY);
+       var stopdate = new Date();
+        stopdate.setDate(stopdate.getDate()+1);
+        var file_contents = requireUncached(target);
+        for (var idx = 0; idx < file_contents.length; idx++) {
+
+            var dailyevent = file_contents[idx];
+            var currdt = new Date();
+            currdt.setDate(currdt.getDate()-2);    // today minus 2 days,
+
+            while(1) {
+
+                if(currdt.getTime() > stopdate.getTime())
+                    break;
+
+                var eventobj = generateEventObjectAtTimeFromObj(currdt, dailyevent, "#55DD44");  // this calls sr ss
+                pending_events.push(eventobj);
+                currdt.addHours(24);
+            }
+        }
+
+
+        // weekly *****************************************
+
+        // for this we will generate an event for the last +/- weeks
+        var target = path.resolve(SCHEDULE_FILE_WEEKLY);
+        var stopdate = new Date();
+        stopdate.setDate(stopdate.getDate()+12);
+        var file_contents = requireUncached(target);
+        for (var idx = 0; idx < file_contents.length; idx++) {
+
+            var weeklyevent = file_contents[idx];
+
+            var currdt = new Date();
+            currdt.addHours(-24*12);  // start 12 days
+
+           // currdt.setDate(currdt.getDate()-2);    // today minus 2 days,
+            var k = new Date(weeklyevent.start_date);
+            var dayofweek = k.getDay();  // sunday = 0,
+
+            while(1)
+            {
+                var test = currdt.getDay();
+                if(test == dayofweek)
+                    break;
+
+                currdt.addHours(24);
+            }
+
+            while(1)
+            {
+                if(currdt.getTime() > stopdate.getTime())
+                    break;
+
+                var eventobj = generateEventObjectAtTimeFromObj(currdt, weeklyevent,"#667722");
+                pending_events.push(eventobj);
+                currdt.addHours(24*7);  //advance 1 week,
+            }
+        }
+
+
+
+
+
+        // SORT EVENTS
         pending_events.sort(function(a, b) {
             var dateA = new Date(a.start_date), dateB = new Date(b.start_date);
             return dateA - dateB;
