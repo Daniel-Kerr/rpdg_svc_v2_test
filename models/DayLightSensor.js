@@ -16,6 +16,7 @@ var DayLightSensor = function()
     this.previousvalue = 0;
     this.lastupdated = undefined;
 
+    this.enabled = true; // 4/7/17,  GUI first.
 
     DayLightSensor.prototype.fromJson = function(obj)
     {

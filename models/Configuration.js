@@ -223,6 +223,36 @@ var Configuration = function()
         return undefined;
     };
 
+    this.getContactInputByName = function(name)
+    {
+        for(var i = 0 ; i < this.contactinputs.length; i++)  //find the group.
+        {
+            if (name == this.contactinputs[i].assignedname) {
+                return this.contactinputs[i];
+            }
+        }
+        return undefined;
+    };
+
+    this.getInputByName = function(name)
+    {
+        for(var i = 0 ; i < this.contactinputs.length; i++)  //find the group.
+        {
+            if (name == this.contactinputs[i].assignedname) {
+                return this.contactinputs[i];
+            }
+        }
+
+        for(var i = 0 ; i < this.levelinputs.length; i++)  //find the group.
+        {
+            if (name == this.levelinputs[i].assignedname) {
+                return this.levelinputs[i];
+            }
+        }
+
+        return undefined;
+    };
+
     this.getSceneListByName = function(name)
     {
         for(var i = 0 ; i < this.scenelists.length; i++)  //find the group.

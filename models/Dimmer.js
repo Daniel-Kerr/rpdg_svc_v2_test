@@ -16,6 +16,7 @@ var Dimmer = function()
     this.previousvalue = 0;
     this.lastupdated = undefined;
 
+    this.enabled = true; // 4/7/17,  GUI first.
 
     Dimmer.prototype.fromJson = function(obj)
     {

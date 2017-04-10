@@ -81,43 +81,43 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                     // store value of the input device for reference.
                     dev.setvalue(level.toFixed(2));
 
-                    if(dev.type == "dimmer")  // dimmer == wallstation.
+                    if(!dev.enabled)
                     {
-                        // look through all devices conntect and set to level (wallstation)
-                        for(var k = 0; k < global.currentconfig.fixtures.length; k++)
+                        global.applogger.info(TAG, "(LEVEL INPUT) " , dev.assignedname , "device is disabled, changed ignored ##########");
+                        continue;
+                    }
+                    else {
+
+                        if (dev.type == "dimmer")  // dimmer == wallstation.
                         {
-                            var fixobj = global.currentconfig.fixtures[k];
-                            if(fixobj.isBoundToInput(dev.assignedname))
-                            {
-                                global.applogger.info(TAG, "(LEVEL INPUT) bound to this input", "wall station update" + fixobj.assignedname);
-                                var reqobj = {};
-                                reqobj.requesttype = "wallstation";
-                                if(fixobj instanceof OnOffFixture || fixobj instanceof DimFixture)
-                                {
-                                    // the input level is 0 - 10, so mult by 10, and round to int,
-                                    var targetlevel = level * 10;
-                                    reqobj.level = targetlevel.toFixed(0);
-                                    fixobj.setLevel(reqobj,true);
-                                }
-                                if(fixobj instanceof CCTFixture)
-                                {
-                                    // create request here iwthout a change to color temp,  tell driver to use last known,
-                                    var targetlevel = level * 10;
-                                    reqobj.brightness = targetlevel.toFixed(0);
-                                    fixobj.setLevel(reqobj,true);
+                            // look through all devices conntect and set to level (wallstation)
+                            for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
+                                var fixobj = global.currentconfig.fixtures[k];
+                                if (fixobj.isBoundToInput(dev.assignedname)) {
+                                    global.applogger.info(TAG, "(LEVEL INPUT) bound to this input", "wall station update" + fixobj.assignedname);
+                                    var reqobj = {};
+                                    reqobj.requesttype = "wallstation";
+                                    if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
+                                        // the input level is 0 - 10, so mult by 10, and round to int,
+                                        var targetlevel = level * 10;
+                                        reqobj.level = targetlevel.toFixed(0);
+                                        fixobj.setLevel(reqobj, true);
+                                    }
+                                    if (fixobj instanceof CCTFixture) {
+                                        // create request here iwthout a change to color temp,  tell driver to use last known,
+                                        var targetlevel = level * 10;
+                                        reqobj.brightness = targetlevel.toFixed(0);
+                                        fixobj.setLevel(reqobj, true);
+                                    }
                                 }
                             }
                         }
+                        else if (dev.type == "daylight")  // check if input is a daylight sensor, and apply it, to global.
+                        {
+                            // this value will get polled via dl polling period timer,  and acted on within timer loop.
+                            global.applogger.info(TAG, "(LEVEL INPUT) message handler found device ", "DAYLIGHT LEVEL CHANGED");
+                        }
                     }
-                    else if(dev.type == "daylight")  // check if input is a daylight sensor, and apply it, to global.
-                    {
-                        // this value will get polled via dl polling period timer,  and acted on within timer loop.
-                        global.applogger.info(TAG, "(LEVEL INPUT) message handler found device ", "DAYLIGHT UPDATE");
-                        //global.currentconfig.daylightlevelvolts = level.toFixed(2); //
-
-                    }
-
-
                 }
             }
         }
@@ -136,11 +136,13 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                     // if type is momentary and == "active",  or maintained,  act on it,
                     if((dev.type == "momentary" && dev.value == 1)|| dev.type == "maintained" )
                     {
-                        // added enabled check, 4/7/17,   to test.
-                        if(dev.enabled) {
-                            contactSwitchHandler(dev);
+                        if(!dev.enabled)
+                        {
+                            global.applogger.info(TAG, "(CONTACT INPUT) " , dev.assignedname , "device is disabled, changed ignored");
+                            continue;
                         }
-
+                        else
+                            contactSwitchHandler(dev);
                     }
                 }
             }
@@ -502,17 +504,6 @@ var service = module.exports =  {
             if(schedule_mgr.scheduleCacheReset())
                 currentschedule_eventbundle = undefined;
 
-            //if(reinit_schedule_countdown >= 0)
-            //{
-             //   reinit_schedule_countdown--;
-             //   if(reinit_schedule_countdown < 0)
-             //   {
-              //      global.applogger.info(TAG, "---- Schedule Re init----", "");
-              //      schedule_mgr.initManager();
-              //      currentschedule_eventbundle = undefined;
-              //  }
-           //}
-
 
             schedulepollcount++;
             var schedulepollperiod = Math.round ((schedulepollseconds * 1000) / BasePollingPeriod);
@@ -543,11 +534,28 @@ var service = module.exports =  {
                             //for contact inputs the only type is contactinput type.
                             if(event.action == "disable")
                             {
+                                if(parts.length == 2) {
+                                    var inputname = parts[1].trim();
+                                    global.applogger.info(TAG, "Sched Event --- INPUT DISABLE -- : ", inputname , "");
+
+                                    var inputobj = global.currentconfig.getInputByName(inputname);
+                                    if(inputobj != undefined)
+                                        inputobj.enabled = false;
+
+
+                                }
                                 // to do , get input name, and set / clear flag.
                             }
                             else if (event.action == "enable")
                             {
+                                if(parts.length == 2) {
+                                    var inputname = parts[1].trim();
+                                    global.applogger.info(TAG, "Sched Event ---- INPUT ENABLE -- : ", inputname , "");
 
+                                    var inputobj = global.currentconfig.getInputByName(inputname);
+                                    if(inputobj != undefined)
+                                        inputobj.enabled = true;
+                                }
                             }
 
                         }

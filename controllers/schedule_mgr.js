@@ -232,6 +232,9 @@ var mgr = module.exports = {
 
     getCurrentEvent: function (now) {
 
+        if(dirtyschedulecountdown > 0)
+            return undefined;  // do not return anything if pending changes...
+
         // NOTE: this function has to handle the case where there is more than one event
         // at a specific time point , (hour/min,) so it need to return multiple events. ,
         // along with marker, ?<
@@ -259,7 +262,6 @@ var mgr = module.exports = {
                 return_element.date_time = matchtime;
 
                 i--;
-                // eventlist.push(pending_events[i-1])
                 while(i >= 0)
                 {
                     var temp = new moment(new Date(pending_events[i].start_date));
@@ -275,6 +277,27 @@ var mgr = module.exports = {
                 break; //break out of for loop,
             }
         }
+
+        if(eventlist.length == 0 && pending_events.length > 0)  // there are no events in the future,  so just use the last one in the master list
+        {
+            var matchtime =  new moment(new Date(pending_events[pending_events.length-1].start_date));  //record prev events start time,
+            return_element.date_time = matchtime;
+
+            var i = pending_events.length-1;
+            // eventlist.push(pending_events[i-1])
+            while(i >= 0)
+            {
+                var temp = new moment(new Date(pending_events[i].start_date));
+                if(temp.diff(matchtime) == 0)
+                    eventlist.push(pending_events[i]);
+
+                if(temp.isBefore(matchtime))
+                    break;
+
+                i--;
+            }
+        }
+
 
         return_element.events = eventlist;
         return return_element;

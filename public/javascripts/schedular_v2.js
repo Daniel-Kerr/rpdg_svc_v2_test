@@ -244,7 +244,7 @@ function save_form() {
             var min = Number(parts[1].substr(0,3));
             if(abstime.includes("AM") && hour >= 12)
                 hour -= 12;
-            else if(abstime.includes("PM"))
+            else if(abstime.includes("PM") && hour < 12)  // add 12 if hour < 12,
                 hour += 12;
 
             tempstart.setHours(hour);
@@ -390,6 +390,12 @@ function onEventCatagoryChange()
 function getSceneNames()
 {
     var names = [];
+
+    names.push("ALL_OFF");
+    names.push("ALL_10");
+    names.push("ALL_50");
+    names.push("ALL_ON");
+
     for(var i = 0; i < cachedconfig.scenes.length; i++)
     {
         names.push( cachedconfig.scenes[i].name);
