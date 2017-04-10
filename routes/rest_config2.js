@@ -42,8 +42,8 @@ var DimFixture = require('../models/DimFixture.js');
 var CCTFixture = require('../models/CCTFixture.js');
 var RGBWFixture = require('../models/RGBWFixture.js');
 
-var OccSensor = require('../models/OccSensor.js');
-var MotionSensor = require('../models/MotionSensor.js');
+//var OccSensor = require('../models/OccSensor.js');
+//var MotionSensor = require('../models/MotionSensor.js');
 var Dimmer = require('../models/Dimmer.js');
 var DayLightSensor = require('../models/DayLightSensor.js');
 

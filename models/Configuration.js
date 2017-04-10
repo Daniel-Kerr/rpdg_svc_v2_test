@@ -8,8 +8,8 @@ var DimFixture = require('./DimFixture.js');
 var CCTFixture = require('./CCTFixture.js');
 var RGBWFixture = require('./RGBWFixture.js');
 // inputs(sensors..etc)
-var MotionSensor = require('./MotionSensor.js');
-var OccSensor = require('./OccSensor.js');
+//var MotionSensor = require('./MotionSensor.js');
+//var OccSensor = require('./OccSensor.js');
 var Dimmer = require('./Dimmer.js');
 var DayLightSensor = require('./DayLightSensor.js');
 
