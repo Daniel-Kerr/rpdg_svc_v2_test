@@ -329,6 +329,8 @@ function invokeAllToLevel(level, requesttype)
 }
 
 
+
+
 var service = module.exports =  {
 
 
@@ -339,13 +341,35 @@ var service = module.exports =  {
         rpdg.init(incommingHWChangeHandler);
 
         var cfg = data_utils.getConfigFromFile();
-        var active_cfg = new Configuration(cfg);
+        var active_cfg = undefined;
+        var created = false;
+        //if(cfg == undefined)
+       // {
+        active_cfg = new Configuration();
+        if(cfg != undefined)
+        {
+            active_cfg.fromJson(cfg); // load from file,
+        }
+        else
+            created = true;
+
+
 
         active_cfg.initHWInterfaces(rpdg,enocean);
         global.currentconfig = active_cfg;
 
+        if(created)
+            data_utils.writeConfigToFile();
+
+
         //setup the 0-10 v drive values for current config,
         module.exports.updateRPDGInputDrive();
+
+
+
+
+
+
 
 
         schedule_mgr.initManager();

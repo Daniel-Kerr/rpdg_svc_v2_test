@@ -20,7 +20,7 @@ var Group = require('./Group.js');
 var Scene = require('./Scene.js');
 var SceneList = require('./SceneList');
 
-var Configuration = function(obj)
+var Configuration = function()
 {
     this.type = Configuration.name;
     this.fixtures = [];
@@ -38,110 +38,112 @@ var Configuration = function(obj)
     this.sitelatt = 45.4736058;
     this.sitelong = -122.7349017;
 
-    for(var i = 0; i < obj.fixtures.length; i++)
-    {
-        var fix = obj.fixtures[i];
-        switch(fix.type)
-        {
-            case "on_off":
-                var f = new OnOffFixture();
-                f.fromJson(fix);
-                this.fixtures.push(f);
-                break;
+    Configuration.prototype.fromJson = function(obj) {
 
-            case "dim":
-                var f = new DimFixture(fix);
-                f.fromJson(fix);
-                this.fixtures.push(f);
-                break;
 
-            case "cct":
-                var f = new CCTFixture(fix);
-                f.fromJson(fix);
-                this.fixtures.push(f);
-                break;
+        for (var i = 0; i < obj.fixtures.length; i++) {
+            var fix = obj.fixtures[i];
+            switch (fix.type) {
+                case "on_off":
+                    var f = new OnOffFixture();
+                    f.fromJson(fix);
+                    this.fixtures.push(f);
+                    break;
 
-            case "rgbw":
-                var f = new RGBWFixture(fix);
-                f.fromJson(fix);
-                this.fixtures.push(f);
-                break;
-            default:
-                break;
+                case "dim":
+                    var f = new DimFixture(fix);
+                    f.fromJson(fix);
+                    this.fixtures.push(f);
+                    break;
+
+                case "cct":
+                    var f = new CCTFixture(fix);
+                    f.fromJson(fix);
+                    this.fixtures.push(f);
+                    break;
+
+                case "rgbw":
+                    var f = new RGBWFixture(fix);
+                    f.fromJson(fix);
+                    this.fixtures.push(f);
+                    break;
+                default:
+                    break;
+            }
         }
-    }
 
-    for(var i = 0; i < obj.levelinputs.length; i++)
-    {
-        var input = obj.levelinputs[i];
-        switch(input.type)
-        {
+        for (var i = 0; i < obj.levelinputs.length; i++) {
+            var input = obj.levelinputs[i];
+            switch (input.type) {
 
-            case "dimmer":
-                var f = new Dimmer();
+                case "dimmer":
+                    var f = new Dimmer();
+                    f.fromJson(input);
+                    this.levelinputs.push(f);
+                    break;
+
+                case "daylight":
+                    var f = new DayLightSensor();
+                    f.fromJson(input);
+                    this.levelinputs.push(f);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        if (obj.contactinputs != undefined) {
+            for (var i = 0; i < obj.contactinputs.length; i++) {
+                var input = obj.contactinputs[i];
+
+                var f = new ContactInput();
                 f.fromJson(input);
-                this.levelinputs.push(f);
-                break;
-
-            case "daylight":
-                var f = new DayLightSensor();
-                f.fromJson(input);
-                this.levelinputs.push(f);
-                break;
-            default:
-                break;
+                this.contactinputs.push(f);
+            }
         }
-    }
 
 
-    if(obj.contactinputs != undefined) {
-        for (var i = 0; i < obj.contactinputs.length; i++) {
-            var input = obj.contactinputs[i];
+        if (obj.groups != undefined) {
+            for (var i = 0; i < obj.groups.length; i++) {
+                var group = obj.groups[i];
+                var f = new Group();
 
-            var f = new ContactInput();
-            f.fromJson(input);
-            this.contactinputs.push(f);
+                f.fromJson(group);
+                this.groups.push(f);
+            }
         }
-    }
+
+        if (obj.scenes != undefined) {
+            for (var i = 0; i < obj.scenes.length; i++) {
+                var scene = obj.scenes[i];
+                var f = new Scene();
 
 
-    if(obj.groups != undefined) {
-        for (var i = 0; i < obj.groups.length; i++) {
-            var group = obj.groups[i];
-            var f = new Group();
-
-            f.fromJson(group);
-            this.groups.push(f);
+                f.fromJson(scene);
+                this.scenes.push(f);
+            }
         }
-    }
 
-    if(obj.scenes != undefined) {
-        for (var i = 0; i < obj.scenes.length; i++) {
-            var scene = obj.scenes[i];
-            var f = new Scene();
-
-
-            f.fromJson(scene);
-            this.scenes.push(f);
+        if (obj.scenelists != undefined) {
+            for (var i = 0; i < obj.scenelists.length; i++) {
+                var scene = obj.scenelists[i];
+                var f = new SceneList();
+                f.fromJson(scene);
+                this.scenelists.push(f);
+            }
         }
-    }
 
-    if(obj.scenelists != undefined) {
-        for (var i = 0; i < obj.scenelists.length; i++) {
-            var scene = obj.scenelists[i];
-            var f = new SceneList();
-            f.fromJson(scene);
-            this.scenelists.push(f);
+        if (obj.enocean != undefined) {
+            for (var i = 0; i < obj.enocean.length; i++) {
+                this.enocean.push(obj.enocean[i]);
+                // f.fromJson(scene);
+                // this.scenes.push(f);
+            }
         }
-    }
 
-    if(obj.enocean != undefined) {
-        for (var i = 0; i < obj.enocean.length; i++) {
-            this.enocean.push(obj.enocean[i]);
-           // f.fromJson(scene);
-           // this.scenes.push(f);
-        }
-    }
+    };
+
 
     this.getFixtureByName = function(name)
     {
@@ -154,22 +156,25 @@ var Configuration = function(obj)
             }
         }
         return undefined;
-    }
+    };
 
     /*
-    this.getDayLightSensor = function()
-    {
-        for(var i = 0; i < this.levelinputs.length; i++)
-        {
-            var input = this.levelinputs[i];
-            if(input.type == "daylight")
-            {
-                return input;
-            }
-        }
-        return undefined;
-    }
-    */
+     this.getDayLightSensor = function()
+     {
+     for(var i = 0; i < this.levelinputs.length; i++)
+     {
+     var input = this.levelinputs[i];
+     if(input.type == "daylight")
+     {
+     return input;
+     }
+     }
+     return undefined;
+     }
+     */
+
+
+
 
 
     this.initHWInterfaces = function(rpdg, enocean)
@@ -182,7 +187,7 @@ var Configuration = function(obj)
             else
                 fix.interface = enocean;
         }
-    }
+    };
 
     this.getSceneByName = function(name)
     {
@@ -194,7 +199,7 @@ var Configuration = function(obj)
             }
         }
         return undefined;
-    }
+    };
 
     this.getGroupByName = function(name)
     {
@@ -205,7 +210,7 @@ var Configuration = function(obj)
             }
         }
         return undefined;
-    }
+    };
 
     this.getLevelInputByName = function(name)
     {
@@ -216,7 +221,7 @@ var Configuration = function(obj)
             }
         }
         return undefined;
-    }
+    };
 
     this.getSceneListByName = function(name)
     {
@@ -227,7 +232,7 @@ var Configuration = function(obj)
             }
         }
         return undefined;
-    }
+    };
 };
 
 module.exports = Configuration;

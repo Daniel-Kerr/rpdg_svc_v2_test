@@ -32,7 +32,12 @@ var data_utils = require('../utils/data_utils.js');
 var filter_utils = require('./../utils/filter_utils.js');
 var SunCalc = require('suncalc');
 
+var fs = require('fs');
+
 var pending_events = [];
+var SCHEDULE_FILE_ONETIME = 'datastore/schedule/onetime.json';
+var SCHEDULE_FILE_DAILY = 'datastore/schedule/daily.json';
+var SCHEDULE_FILE_WEEKLY = 'datastore/schedule/weekly.json';
 
 
 function requireUncached(module){
@@ -49,6 +54,15 @@ function printpendingevents()
         var event = pending_events[i];
         console.log("EVENT: " + event.start_date + " : " + event.text);
     }
+}
+
+
+function createBlankFile(schedfile)
+{
+    var target = path.resolve(schedfile);
+    var blank = [];
+    var output = JSON.stringify(blank, null, 4);
+    fs.writeFileSync(target, output);
 }
 var service = module.exports = {
 
@@ -104,9 +118,29 @@ var service = module.exports = {
     },
     initManager: function() {
 
+
+        if (!fs.existsSync(SCHEDULE_FILE_ONETIME)) {
+            createBlankFile(SCHEDULE_FILE_ONETIME);
+        }
+
+        if (!fs.existsSync(SCHEDULE_FILE_DAILY)) {
+            createBlankFile(SCHEDULE_FILE_DAILY);
+        }
+
+        if (!fs.existsSync(SCHEDULE_FILE_WEEKLY)) {
+            createBlankFile(SCHEDULE_FILE_WEEKLY);
+        }
+
+
+
+
+
         // build a memory cached list of the next 10 events.
         pending_events = []; //clear it,
-        var file_contents = requireUncached('../datastore/schedule/onetime.json');
+       // var file_contents = requireUncached('../datastore/schedule/onetime.json');
+
+        var target = path.resolve(SCHEDULE_FILE_ONETIME);
+        var file_contents = requireUncached(target);
         for (var idx = 0; idx < file_contents.length; idx++) {
 
             var eventobj = file_contents[idx];
