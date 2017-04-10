@@ -896,7 +896,10 @@ var service = module.exports =  {
     },
     testmode_SetConfig : function(cfg)
     {
-        var active_cfg = new Configuration(cfg);
+
+        var active_cfg = new Configuration();
+        active_cfg.fromJson(cfg);
+
         active_cfg.initHWInterfaces(rpdg,enocean);
         global.currentconfig = active_cfg;
         //setup the 0-10 v drive values for current config,
