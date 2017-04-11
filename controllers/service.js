@@ -707,6 +707,11 @@ var service = module.exports =  {
             for(var i = 0; i < fixturesetlist.length; i++)
             {
                 var fixturelevelsetobj = fixturesetlist[i];
+
+                if(fixturelevelsetobj.requesttype == undefined)
+                {
+                    fixturelevelsetobj.requesttype = 'override';
+                }
                 this.setFixtureLevels(fixturelevelsetobj,false);
                 updatehw = true;
             }
