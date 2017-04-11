@@ -416,7 +416,7 @@ var service = module.exports =  {
             }
 
             rpdg_service_moment = now.clone();
-            global.applogger.info(TAG, "time check", now.toISOString()  + "   vbt: " + global.virtualbasetime);
+            //global.applogger.info(TAG, "time check", now.toISOString()  + "   vbt: " + global.virtualbasetime);
 
             // END VIRTUAL TIME *********************************************************
 
