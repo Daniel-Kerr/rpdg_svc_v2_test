@@ -15,80 +15,84 @@
     <script src="javascripts/crud_groups.js"></script>
     <script src="javascripts/wallstation.js"></script>
 
+
+
 </head>
 
 <body onload='init()'>
 
-    <img src="/images/RVLT_LOGO.png" border="0" alt="Revolution Lighting Logo" onload="resizeImg(this, 50, 250);">
-    <div class="box">
-        <div class="box-header" data-original-title>
-            <h2>
-                <i class="fa fa-user"></i><span class="break"></span>Main Options
-            </h2>
+<img src="/images/RVLT_LOGO.png" border="0" alt="Revolution Lighting Logo" onload="resizeImg(this, 50, 250);">
+<div class="box">
+    <div class="box-header" data-original-title>
+        <h2>
+            <i class="fa fa-user"></i><span class="break"></span>Main Options
+        </h2>
+    </div>
+    <div class="box-content">  <!--  These redirect to another page with same background/style -->
+        <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Scenes"); value="Scenes" />
+        <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Groups"); value="Groups" />
+        <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Fixtures"); value="Fixture Control" />
+        <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Status"); value="Status" />
+        <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Config"); value="Config" />
+    </div>
+</div>
+
+<div id="maincontent" class="maincontentbox">
+
+    <div id="dynbuttonbar" class="buttonbar">
+
+    </div>
+    <div id="controlscontent" class="controlscontentbox">
+
+        <div id="BrightnessBar" >
+            <table align="left" border=5 width=900 cellpadding=1>
+                <tr style="font-size:30px"  >
+                    <td colspan=3 style="text-align: center" bgcolor="#CCCCCC"> Brightness </td>
+                </tr>
+                <tr>
+                    <td width=100 bgcolor="#000000"> </td>
+                    <td align="center" width=800>    <input id="brightnesssliderobject" type="range" oninput="onBrightnessSliderChange(this.value)" onchange="onBrightnessSliderChange(this.value)" class = "brightnessslider"/>   </td>
+                    <td width=100 bgcolor="#000000"> </td>
+                </tr>
+            </table>
         </div>
-        <div class="box-content">  <!--  These redirect to another page with same background/style -->
-            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Scenes"); value="Scenes" />
-            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Groups"); value="Groups" />
-            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Fixtures"); value="Fixture Control" />
-            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Status"); value="Status" />
-            <input type="button" class="headerbutton" onclick=showOnlyTheseButtons("Config"); value="Config" />
+
+        <div id="CCTBar">
+            <table align="left" border=5 width=900 cellpadding=1>
+                <tr style="font-size:30px"  >
+                    <td colspan=3 style="text-align: center" bgcolor="#CCCCCC"> Color Temperature </td>
+                </tr>
+                <tr>
+                    <td width=100 bgcolor="#FFAA00"> </td>
+                    <td align="center" width=800>    <input id="CCTsliderobject" type="range" oninput="onCCTSliderChange(this.value)" onchange="onCCTSliderChange(this.value)" class = "cctslider" />   </td>
+                    <td width=100 bgcolor="#0099FF"> </td>
+                </tr>
+            </table>
+        </div>
+        <div id="ToggleButton">
+            <ul class="tg-list-item">
+                <h4 style="color:yellow">Light Switch</h4>
+                <input class="tgl tgl-skewed" id="ToggleObject" type="checkbox" oninput="onToggleButtonChange(this.checked)" onchange="onToggleButtonChange(this.checked)"/>
+                <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="ToggleObject"></label>
+            </ul>
         </div>
     </div>
 
-    <div id="maincontent" class="maincontentbox">
+    <!--div id="occ_vac_switch" align="left" >
+        <hr>
+        <br />
+        <ul class="tg-list-item">
+            <h4 style="color:orange">Virtual Sensor</h4>
+            <input class="tgl tgl-skewed" id="OccVacObject" type="checkbox"/>
+            <label class="tgl-btn" data-tg-off="Vacant" data-tg-on="Occupied" for="OccVacObject"></label>
+        </ul>
 
-        <div id="dynbuttonbar" class="buttonbar">
+        <br>
+    </div-->
 
-        </div>
-        <div id="controlscontent" class="controlscontentbox">
+    <div id="StatusPage" class="statuscontainer">
 
-            <div id="BrightnessBar" >
-                <table align="left" border=5 width=900 cellpadding=1>
-                    <tr style="font-size:30px"  >
-                        <td colspan=3 style="text-align: center" bgcolor="#CCCCCC"> Brightness </td>
-                    </tr>
-                    <tr>
-                        <td width=100 bgcolor="#000000"> </td>
-                        <td align="center" width=800>    <input id="brightnesssliderobject" type="range" oninput="onBrightnessSliderChange(this.value)" onchange="onBrightnessSliderChange(this.value)" class = "brightnessslider"/>   </td>
-                        <td width=100 bgcolor="#000000"> </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div id="CCTBar">
-                <table align="left" border=5 width=900 cellpadding=1>
-                    <tr style="font-size:30px"  >
-                        <td colspan=3 style="text-align: center" bgcolor="#CCCCCC"> Color Temperature </td>
-                    </tr>
-                    <tr>
-                        <td width=100 bgcolor="#FFAA00"> </td>
-                        <td align="center" width=800>    <input id="CCTsliderobject" type="range" oninput="onCCTSliderChange(this.value)" onchange="onCCTSliderChange(this.value)" class = "cctslider" />   </td>
-                        <td width=100 bgcolor="#0099FF"> </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="ToggleButton">
-                <ul class="tg-list-item">
-                    <h4 style="color:yellow">Light Switch</h4>
-                    <input class="tgl tgl-skewed" id="ToggleObject" type="checkbox" oninput="onToggleButtonChange(this.checked)" onchange="onToggleButtonChange(this.checked)"/>
-                    <label class="tgl-btn" data-tg-off="OFF" data-tg-on="ON" for="ToggleObject"></label>
-                </ul>
-            </div>
-        </div>
-
-        <!--div id="occ_vac_switch" align="left" >
-            <hr>
-            <br />
-            <ul class="tg-list-item">
-                <h4 style="color:orange">Virtual Sensor</h4>
-                <input class="tgl tgl-skewed" id="OccVacObject" type="checkbox"/>
-                <label class="tgl-btn" data-tg-off="Vacant" data-tg-on="Occupied" for="OccVacObject"></label>
-            </ul>
-
-            <br>
-        </div-->
-
-        <div id="StatusPage" class="statuscontainer">
+        <div id="outputsdiv" width="100%">
             <table align="center" >
                 <tr >
                     <td><div id="StatusBlock1" >   </div> </td>
@@ -103,34 +107,44 @@
                     <td><div id="StatusBlock8" >   </div> </td>
                 </tr>
             </table>
-
-
-            <div id="levelinputsdiv">
-                <table id="levelinputstable" ></table>
-            </div>
         </div>
 
 
 
+
+        <div id="statusspace" class="status_gap">
+
+            <label > Inputs Status</label>
+        </div>
+
+        <div id="inputsdiv" class="inputstatus">
+
+            <div id="levelinputsdiv"  >
+                <label color="white"> Level</label>
+
+                <table id="levelinputstable" ></table>
+            </div>
+
+
+            <div id="holder1"></div>
+            <div id="contactinputsdiv"  >
+                <label > Contact</label>
+                <table id="contactinputstable" ></table>
+            </div>
+        </div>
+
     </div>
 
 
-    <!--div id="ConfigPage" >
-        <ul>
-            <li class="configdropdown">
-                <a class="configdropbtn">Set Daylight Polling interval</a>
-                <div class="configdropdown-content">
-                    <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('1');return false;">1 sec</a>
-                    <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('15');return false;">15 sec</a>
-                    <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('60');return false;">1 min</a>
-                    <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('1800');return false;">30 min</a>
-                    <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('3600');return false;">1 hour</a>
-                    <a id="DaylightPollingDiv" href="#" onclick="SetDaylightPolling('7200');return false;">2 hours</a>
-                </div>
-            </li>
-        </ul>
+    <div id="ConfigPage" class="configcontainer" >
 
-    </div-->
+        <label>DayLight Polling Period </label>
+        <select id="daylightpoll"  class="config_dlp" onchange="SetDaylightPolling()">
+            <option value="1">1</option>
+            <option value="15">15</option>
+        </select>
+    </div>
+</div>
 </body>
 </html>
 

@@ -644,13 +644,13 @@ body {
 }
 
 .maincontentbox {
-    background-color: red;
+    background-color: black;
     height: 500px;
     width: 100%;
 }
 
 .controlscontentbox {
-    background-color: green;
+
     height: 800px;
     width: 100%;
 }
@@ -664,7 +664,7 @@ body {
 }
 
 .buttonbar {
-    background-color: blue;
+    background-color: black;
     height: 100px;
     width: 90%;
 }
@@ -672,7 +672,7 @@ body {
 .buttonbar div {
     display: inline-block;
     width: 150px;
-    background-color: cyan;
+    background-color: black;
 
 }
 .buttonbar button{
@@ -701,3 +701,53 @@ body {
     height: 100%;
     width: 100%;
 }
+
+.inputstatus {
+    background-color: black;
+    height: 100%;
+    width: 70%;
+    margin:0 auto;
+}
+
+.inputstatus table {
+    color: black;
+    font-size: 20px;
+}
+
+.inputstatus label {
+    color: white;
+    font-size: 20px;
+}
+
+.inputstatus div {
+    width: 30%;
+    display: inline-block;
+    background-color: black;
+}
+
+.status_gap {
+    background-color: black;
+    height: 5%;
+    width: 100%;
+    color:white;
+    font-size: 24px;
+    text-align: center;
+
+}
+
+
+.configcontainer {
+    color:white;
+    font-size: 24px;
+    background-color: black;
+    height: 100%;
+    width: 100%;
+}
+
+
+.config_dlp {
+    color:white;
+    font-size: 24px;
+    background-color: black;
+}
+

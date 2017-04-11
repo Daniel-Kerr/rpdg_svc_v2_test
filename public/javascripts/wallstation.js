@@ -3,19 +3,19 @@
  */
 // client code behind for wallstation support
 
-var fixtureImagePath, fixtureImagePathfound;
+//var fixtureImagePath, fixtureImagePathfound;
 
-var returnSceneList,returnGroupList;
+//var returnSceneList,returnGroupList;
 // this must be the same as the html that shows these
-var mainMenuOptionDivList = ["SceneButtonArray","GroupButtonArray","FixtureButtonArray","StatusButtonArray"];
+///var mainMenuOptionDivList = ["SceneButtonArray","GroupButtonArray","FixtureButtonArray","StatusButtonArray"];
 var selected_group = undefined;
 var selected_fixture = undefined;
 var top_menu_selection = undefined;
 
-function setglobalvariable(fixtureImagePathfound){
-    console.log ("  here is the image path", fixtureImagePathfound);
-    fixtureImagePath = fixtureImagePathfound;
-};
+//function setglobalvariable(fixtureImagePathfound){
+ //   console.log ("  here is the image path", fixtureImagePathfound);
+ //   fixtureImagePath = fixtureImagePathfound;
+//};
 
 function resizeImg(img, height, width) {
     img.height = height;
@@ -57,11 +57,10 @@ function processConfig(configobj) {
     cachedconfig = configobj;  // just so we can copy over groups on save.
     top_menu_selection = "Scenes";
     updateDynButtonBar();
+  //  hideDivID("occ_vac_switch");   todo,
 
-    hideDivID("occ_vac_switch");
-   // hideDivID("StatusPage");
-  //  hideDivID("levelinputsdiv");
- //   showOnlyTheseButtons("Scenes");      // start here
+
+
 }
 
 
@@ -75,12 +74,14 @@ function updateDynButtonBar()
     hideDivID("BrightnessBar");
     hideDivID("CCTBar");
     hideDivID("ToggleButton");
+    hideDivID("StatusPage");
+    //hideDivID("ConfigPage");
+
     switch(top_menu_selection)
     {
         case "Scenes":
             showDivID("controlscontent","block");
             constructSceneButtons();
-
             break;
         case "Groups":
             showDivID("controlscontent","block");
@@ -95,9 +96,16 @@ function updateDynButtonBar()
             hideDivID("controlscontent");
             constructFixtureStatusBoxs();
             updateLevelInputsTable();
+            updateContactInputsTable();
             showDivID("StatusPage","inline");
           //  showDivID("levelinputsdiv","block");
 
+            break;
+        case "Config":
+            //hideDivID("StatusPage");
+            hideDivID("controlscontent");
+            constructConfigItemsDiv();
+            showDivID("ConfigPage","inline");
             break;
         default:
             break;
@@ -106,9 +114,14 @@ function updateDynButtonBar()
 
 function updateControlsContentRegion()
 {
-
+    showDivID("StatusPage","inline");
 }
 
+
+function constructConfigItemsDiv()
+{
+
+}
 
 function constructSceneButtons()
 {
@@ -613,12 +626,14 @@ function showOnlyTheseButtons (whichButtons) {
 }
 
 
-function SetDaylightPolling (seconds2wait) {
-    console.log ("seconds are: ", seconds2wait);
+function SetDaylightPolling () {
+
+    var selection = $('#daylightpoll').val();
+   // console.log ("seconds are: ", selection);
     var element = {};
-    element.interval = seconds2wait;
+    element.interval = selection;
     var dataset = JSON.stringify(element);
-    console.log ("Sending daylight polling request", dataset);
+    //console.log ("Sending daylight polling request", dataset);
     $.ajax({
         url: "/tester/setdaylighttimerinterval",
         type: 'post',
@@ -626,10 +641,8 @@ function SetDaylightPolling (seconds2wait) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (series) {
-
         },
         error: function (xhr, ajaxOptions, thrownError) {
-
         }
     });
 }
@@ -727,3 +740,85 @@ function updateLevelInputsTable() {
      document.getElementById("levelinputsdiv").appendChild(oTable);
 }
 
+
+
+
+function updateContactInputsTable() {
+
+    var contactinputlist = cachedconfig.contactinputs;
+
+    var oTable = document.getElementById("contactinputstable");
+    oTable.innerHTML = ""; //blank out table,
+
+    var oTHead = document.createElement("THEAD");
+    var oTColGrp = document.createElement("colgroup");
+    var oTBody = document.createElement("TBODY");
+    var oTFoot = document.createElement("TFOOT");
+    var oRow, oCell1, oCell2, oCell3, oCell4, i;
+
+    oTHead.style.backgroundColor = "darkgrey";
+    oTBody.style.backgroundColor = "white";
+
+    oRow = document.createElement("TR");
+    oCell1 = document.createElement("TD");
+    oCell1.innerHTML = "Name";
+    oCell2 = document.createElement("TD");
+    oCell2.innerHTML = "Type";
+    oCell3 = document.createElement("TD");
+    oCell3.innerHTML = "Interface";
+    oCell4 = document.createElement("TD");
+    oCell4.innerHTML = "Level";
+
+    oRow.appendChild(oCell1);
+    oRow.appendChild(oCell2);
+    oRow.appendChild(oCell3);
+    oRow.appendChild(oCell4);
+    oTHead.appendChild(oRow);
+
+    var coldef = document.createElement("col");
+    coldef.className = "col-md-3";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-2";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-1";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-2";
+    oTColGrp.appendChild(coldef);
+    oTable.appendChild(oTHead);
+    oTable.appendChild(oTColGrp);
+    oTable.appendChild(oTBody);
+
+    // Insert rows and cells into bodies.
+    if(contactinputlist != undefined) {
+        for (i = 0; i < contactinputlist.length; i++) {
+            var oBody = oTBody;
+            oRow = document.createElement("TR");
+            oBody.appendChild(oRow);
+
+            var col1part = document.createElement("TD");
+            col1part.innerHTML = contactinputlist[i].assignedname;
+
+            var col2part = document.createElement("TD");
+            col2part.innerHTML = contactinputlist[i].type;
+
+            var col3part = document.createElement("TD");
+            col3part.innerHTML = contactinputlist[i].interface;
+
+            var val = "";
+            val = contactinputlist[i].value;
+
+            var col4part = document.createElement("TD");
+            col4part.innerHTML = val;
+
+            oRow.appendChild(col1part);
+            oRow.appendChild(col2part);
+            oRow.appendChild(col3part);
+            oRow.appendChild(col4part);
+        }
+    }
+
+    document.getElementById("contactinputsdiv").appendChild(oTable);
+}
