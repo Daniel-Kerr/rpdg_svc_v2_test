@@ -54,7 +54,9 @@ exports.setOutputToLevel = function(outputid, level, apply, options) {
         } else {
             plc_output_switch[0] &= ~mask;
         }
-        global.applogger.info(TAG, "set output ", outputid + "  to  " + level + "   applied " + apply + "  opts  " + options);
+        if(global.loghw.pwmlevels)
+            global.applogger.info(TAG, "set output ", outputid + "  to  " + level + "   applied " + apply + "  opts  " + options);
+
         if (apply)
             setHW_PLC();
     }
@@ -64,7 +66,9 @@ exports.setOutputToLevel = function(outputid, level, apply, options) {
         var outindex = Number(outputid)
         pmw_outputs_pct[outindex - 1] = level;
 
-        global.applogger.info(TAG, "set output ", outputid + "  to  " + level + "   applied " + apply + "  opts  " + options);
+        if(global.loghw.pwmlevels)
+            global.applogger.info(TAG, "set output ", outputid + "  to  " + level + "   applied " + apply + "  opts  " + options);
+
         if (apply)
             setHW_PWMLevels();
     }
@@ -187,7 +191,7 @@ function setHW_PLC()
 
 function setHW_PWMLevels()
 {
-    global.applogger.error(TAG, "trying to set pwm levels in hw", "");
+    // global.applogger.error(TAG, "trying to set pwm levels in hw", "");
     try {
         var zone_levels = new Uint8Array(16);  // convert pct to level values (16 bit).
         var zoneidx = 0;
@@ -221,9 +225,9 @@ function setHW_PWMLevels()
                     global.applogger.error(TAG, "setHW_PWMLevels:",  err);
             });
         }
-        else {
-            global.applogger.info(TAG, "setHW_PWMLevels:",  "no i2c wire");
-        }
+        // else {
+        //     global.applogger.info(TAG, "setHW_PWMLevels:",  "no i2c wire");
+        // }
     } catch (err)
     {
         global.applogger.error(TAG, "setHW_PWMLevels:",  err);
@@ -268,7 +272,7 @@ function readHW_CurrentCounts()
                         pwm_current_amps[index] = amps;  //12/30/16, chnaged to current, stuff,
                         index++;
                     }
-                     printCurrentCounts();
+                    printCurrentCounts();
                 }
                 if (err != null)
                     global.applogger.error(TAG, "readHW_CurrentCounts",  err);

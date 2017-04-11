@@ -729,7 +729,7 @@ var service = module.exports =  {
             if(requestobj.name != undefined) {
                 var fix = global.currentconfig.getFixtureByName(requestobj.name);
                 if(fix != undefined) {
-                    global.applogger.info(TAG, "found fixture wil ltry  to set level", "");
+                   // global.applogger.info(TAG, "found fixture wil ltry  to set level", "");
                     fix.setLevel(requestobj, applytohw);
                 }
             }

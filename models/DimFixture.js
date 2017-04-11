@@ -55,14 +55,14 @@ var DimFixture = function(name, interface, outputid)
 
     this.setLevel = function(requestobj, apply){
 
-        stopAutoAdjustTimer();
+        this.stopAutoAdjustTimer(this.assignedname);
         if(requestobj.level > this.level && this.parameters.brightenrate > 0)
         {
-            startAutoAdjustTimer(this, requestobj.level, requestobj.requesttype);
+            this.startAutoAdjustTimer(this, requestobj.level, requestobj.requesttype);
         }
         else if(requestobj.level < this.level && this.parameters.dimrate > 0)
         {
-            startAutoAdjustTimer(this, requestobj.level, requestobj.requesttype);
+            this.startAutoAdjustTimer(this, requestobj.level, requestobj.requesttype);
         }
         else {
 
@@ -133,100 +133,111 @@ var DimFixture = function(name, interface, outputid)
         return undefined
     };
 
+    // ********************************************* START MOVE *************************
+
+
+
+
+    var autoadjusttimer = undefined;
+    var autoadjusttargetlevel = 0;
+    var autoadjuststartlevel = 0;
+    var autoadjustrequesttype = "";
+
+    this.startAutoAdjustTimer = function(fixture, targetlevel, requesttype)
+    {
+        autoadjustrequesttype = requesttype;
+        autoadjuststartlevel = fixture.level;
+        autoadjusttargetlevel = targetlevel;
+
+        if(autoadjusttimer == undefined)
+        {
+            autoadjusttimer = setInterval(this.autoAdjustLevel,1000, fixture);
+            global.applogger.info(TAG, "Auto Adjust Timer Started:  " , fixture.assignedname);
+        }
+    };
+
+    this.stopAutoAdjustTimer = function(name)
+    {
+        if(autoadjusttimer != undefined)
+        {
+            clearInterval(autoadjusttimer);
+            autoadjusttimer = undefined;
+            autoadjusttargetlevel = 0;
+            autoadjuststartlevel = 0;
+            autoadjustrequesttype = "";
+            global.applogger.info(TAG, "Auto Adjust Timer **STOPPED**:  " , name);
+        }
+    };
+
+
+    this.autoAdjustLevel = function(fixobj)
+    {
+     //   global.applogger.info(TAG, "Auto Adjust Timer called: fix: -- " , fixobj.assignedname);
+        var stepsize = 0;
+        var requestlevel = 0;
+
+        var canceltimer = false;
+
+        var delta = autoadjusttargetlevel - autoadjuststartlevel;
+        if(delta > 0) {
+            stepsize = delta / fixobj.parameters.brightenrate;
+            requestlevel = fixobj.level + stepsize;
+            if(requestlevel >= autoadjusttargetlevel) {
+                requestlevel = autoadjusttargetlevel;
+                canceltimer = true;
+            }
+
+        }
+        else if(delta < 0) {
+            stepsize = delta / fixobj.parameters.dimrate;
+            requestlevel = fixobj.level + stepsize;
+            if(requestlevel <= autoadjusttargetlevel) {
+                requestlevel = autoadjusttargetlevel;
+                canceltimer = true;
+            }
+        }
+
+
+        var dlsensor = fixobj.getMyDaylightSensor();
+
+
+        var isdaylightbound = false;
+        var daylightvolts = 0;
+        if (dlsensor != undefined) {
+            isdaylightbound = true;
+            daylightvolts = dlsensor.value;
+        }
+
+        var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel, fixobj.parameters, isdaylightbound, daylightvolts);
+        this.daylightlimited = returndataobj.isdaylightlimited;
+
+        if (returndataobj.modifiedlevel > -1) {
+
+            var modpct = returndataobj.modifiedlevel;
+            requestlevel = modpct;
+            fixobj.previousvalue = Number(fixobj.value);
+            fixobj.level = Number(requestlevel);
+            fixobj.lastupdated = moment();
+            fixobj.interface.setOutputToLevel(fixobj.outputid, fixobj.level, true);
+
+            var logobj = {};
+            logobj.date = new moment().unix();
+            logobj.level = fixobj.level.toFixed();
+            data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
+        }
+
+        if(canceltimer)
+            fixobj.stopAutoAdjustTimer(fixobj.assignedname);
+    };
+
+    // *********************** END MOVE **************
+
+
+
+
 };
 
 
-var autoadjusttimer = undefined;
-var autoadjusttargetlevel = 0;
-var autoadjuststartlevel = 0;
-var autoadjustrequesttype = "";
-
-function startAutoAdjustTimer(fixture, targetlevel, requesttype)
-{
-    autoadjustrequesttype = requesttype;
-    autoadjuststartlevel = fixture.level;
-    autoadjusttargetlevel = targetlevel;
-
-    if(autoadjusttimer == undefined)
-    {
-        autoadjusttimer = setInterval(autoAdjustLevel,1000, fixture);
-        global.applogger.info(TAG, "Auto Adjust Timer Started" , "");
-    }
-}
-
-function stopAutoAdjustTimer()
-{
-    if(autoadjusttimer != undefined)
-    {
-        clearInterval(autoadjusttimer);
-        autoadjusttimer = undefined;
-        autoadjusttargetlevel = 0;
-        autoadjuststartlevel = 0;
-        autoadjustrequesttype = "";
-        global.applogger.info(TAG, "Auto Adjust Timer STopped" , "");
-    }
-}
-
-
-function autoAdjustLevel(fixobj)
-{
-    global.applogger.info(TAG, "Auto Adjust Timer called" , "");
-    var stepsize = 0;
-    var requestlevel = 0;
-
-    var canceltimer = false;
-
-    var delta = autoadjusttargetlevel - autoadjuststartlevel;
-    if(delta > 0) {
-        stepsize = delta / fixobj.parameters.brightenrate;
-        requestlevel = fixobj.level + stepsize;
-        if(requestlevel >= autoadjusttargetlevel) {
-            requestlevel = autoadjusttargetlevel;
-            canceltimer = true;
-        }
-
-    }
-    else if(delta < 0) {
-        stepsize = delta / fixobj.parameters.dimrate;
-        requestlevel = fixobj.level + stepsize;
-        if(requestlevel <= autoadjusttargetlevel) {
-            requestlevel = autoadjusttargetlevel;
-            canceltimer = true;
-        }
-    }
-
-
-    var dlsensor = fixobj.getMyDaylightSensor();
-
-
-    var isdaylightbound = false;
-    var daylightvolts = 0;
-    if (dlsensor != undefined) {
-        isdaylightbound = true;
-        daylightvolts = dlsensor.value;
-    }
-
-    var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel, fixobj.parameters, isdaylightbound, daylightvolts);
-    this.daylightlimited = returndataobj.isdaylightlimited;
-
-    if (returndataobj.modifiedlevel > -1) {
-
-        var modpct = returndataobj.modifiedlevel;
-        requestlevel = modpct;
-        fixobj.previousvalue = Number(fixobj.value);
-        fixobj.level = Number(requestlevel);
-        fixobj.lastupdated = moment();
-        fixobj.interface.setOutputToLevel(fixobj.outputid, fixobj.level, true);
-
-        var logobj = {};
-        logobj.date = new moment().unix();
-        logobj.level = fixobj.level.toFixed();
-        data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
-    }
-
-    if(canceltimer)
-       stopAutoAdjustTimer();
-}
 
 
 module.exports = DimFixture;

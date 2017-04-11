@@ -27,11 +27,11 @@ log.info(TAG, " log started", "");
 
 //2/21/17  application debug globals.
 global.loghw = {};
-global.loghw.pwmlevels = true;  //ouput levels in pct.
+global.loghw.pwmlevels = false;  //ouput levels in pct.
 global.loghw.pwmcurrent=false;  //pwm current/power levels.
 global.loghw.zero2teninput=false;
 global.loghw.wetdrycontacts=false;
-global.loghw.plcoutputlevels=true;
+global.loghw.plcoutputlevels=false;
 //global.loghw.zero2teninputchanged=true;
 //global.loghw.wetdrycontactchanged=true;
 

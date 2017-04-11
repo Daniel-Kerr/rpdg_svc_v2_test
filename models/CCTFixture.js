@@ -55,14 +55,14 @@ var CCTFixture = function(name, interface, outputid)
 
     this.setLevel = function(requestobj, apply) {
 
-        stopAutoAdjustTimer();
+        this.stopAutoAdjustTimer(this.assignedname);
         if(requestobj.brightness > this.brightness && this.parameters.brightenrate > 0)
         {
-            startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
+            this.startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
         }
         else if(requestobj.brightness < this.brightness && this.parameters.dimrate > 0)
         {
-            startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
+            this.startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
         }
         else {
 
@@ -152,123 +152,130 @@ var CCTFixture = function(name, interface, outputid)
         }
         return undefined
     };
+
+
+
+
+    var autoadjusttimer = undefined;
+    var autoadjusttargetlevel = 0;
+    var autoadjuststartlevel = 0;
+    var autoadjustrequesttype = "";
+
+    this.startAutoAdjustTimer = function(fixture, targetlevel, requesttype)
+    {
+        autoadjustrequesttype = requesttype;
+        autoadjuststartlevel = fixture.brightness;
+        autoadjusttargetlevel = targetlevel;
+
+        if(autoadjusttimer == undefined)
+        {
+            autoadjusttimer = setInterval(this.autoAdjustLevel,1000, fixture);
+            global.applogger.info(TAG, "Auto Adjust Timer Started:  " , fixture.assignedname);
+        }
+    };
+
+    this.stopAutoAdjustTimer = function(name)
+    {
+        if(autoadjusttimer != undefined)
+        {
+            clearInterval(autoadjusttimer);
+            autoadjusttimer = undefined;
+            autoadjusttargetlevel = 0;
+            autoadjuststartlevel = 0;
+            autoadjustrequesttype = "";
+            global.applogger.info(TAG, "Auto Adjust Timer STopped: " , name);
+        }
+    };
+
+
+    this.autoAdjustLevel = function(fixobj)
+    {
+       // global.applogger.info(TAG, "Auto Adjust Timer called fix: -- " , fixobj.assignedname);
+        var stepsize = 0;
+        var requestlevel = 0;
+
+        var canceltimer = false;
+
+        var delta = autoadjusttargetlevel - autoadjuststartlevel;
+        if(delta > 0) {
+            stepsize = delta / fixobj.parameters.brightenrate;
+            requestlevel = Number(fixobj.brightness) + stepsize;
+            if(requestlevel >= autoadjusttargetlevel) {
+                requestlevel = autoadjusttargetlevel;
+                canceltimer = true;
+            }
+
+        }
+        else if(delta < 0) {
+            stepsize = delta / fixobj.parameters.dimrate;
+            requestlevel = Number(fixobj.brightness) + stepsize;
+            if(requestlevel <= autoadjusttargetlevel) {
+                requestlevel = autoadjusttargetlevel;
+                canceltimer = true;
+            }
+        }
+
+
+
+
+        var dlsensor = fixobj.getMyDaylightSensor();
+        var isdaylightbound = false;
+        var daylightvolts = 0;
+        if (dlsensor != undefined) {
+            isdaylightbound = true;
+            daylightvolts = dlsensor.value;
+        }
+
+        // var brightness = fixobj.brightness;   //use current by default
+        // if (requestobj.brightness != undefined)
+        //     brightness = requestobj.brightness;   //use requested if present,
+
+        var colortemp = fixobj.colortemp;  // no color temp change
+        // if (requestobj.colortemp != undefined)
+        //    colortemp = requestobj.colortemp;
+
+        // dl/light filter
+        var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel,  fixobj.parameters, isdaylightbound, daylightvolts);
+        this.daylightlimited = returndataobj.isdaylightlimited;
+        if (returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
+            var modpct = returndataobj.modifiedlevel;
+            requestlevel = modpct;  // modify the req obj.
+        }
+
+        // color temp calculation
+        var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(fixobj.min, fixobj.max, colortemp, requestlevel, fixobj.candledim);
+
+        fixobj.previouscolortemp = fixobj.colortemp;
+        fixobj.colortemp = colortemp;
+        fixobj.interface.setOutputToLevel(Number(fixobj.outputid), warmcoolvals[0], true);
+
+        fixobj.previousbrightness = fixobj.brightness;
+        fixobj.brightness = requestlevel;
+        var bchannel = Number(fixobj.outputid) + 1;
+        fixobj.hwwarm = warmcoolvals[0];
+        fixobj.hwcool = warmcoolvals[1];
+        fixobj.interface.setOutputToLevel(bchannel, warmcoolvals[1], true);
+        fixobj.lastupdated = moment();
+
+
+        var logobj = {};
+        logobj.date = new moment().unix();
+        logobj.brightness = Number(fixobj.brightness).toFixed();
+        logobj.colortemp = fixobj.colortemp;
+        data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
+
+        if(canceltimer)
+            fixobj.stopAutoAdjustTimer(fixobj.assignedname);
+    };
+
+
+
+
 };
 
 
 // auto dim   4/3/17,
 
-
-var autoadjusttimer = undefined;
-var autoadjusttargetlevel = 0;
-var autoadjuststartlevel = 0;
-var autoadjustrequesttype = "";
-
-function startAutoAdjustTimer(fixture, targetlevel, requesttype)
-{
-    autoadjustrequesttype = requesttype;
-    autoadjuststartlevel = fixture.brightness;
-    autoadjusttargetlevel = targetlevel;
-
-    if(autoadjusttimer == undefined)
-    {
-        autoadjusttimer = setInterval(autoAdjustLevel,1000, fixture);
-        global.applogger.info(TAG, "Auto Adjust Timer Started" , "");
-    }
-}
-
-function stopAutoAdjustTimer()
-{
-    if(autoadjusttimer != undefined)
-    {
-        clearInterval(autoadjusttimer);
-        autoadjusttimer = undefined;
-        autoadjusttargetlevel = 0;
-        autoadjuststartlevel = 0;
-        autoadjustrequesttype = "";
-        global.applogger.info(TAG, "Auto Adjust Timer STopped" , "");
-    }
-}
-
-
-function autoAdjustLevel(fixobj)
-{
-    global.applogger.info(TAG, "Auto Adjust Timer called" , "");
-    var stepsize = 0;
-    var requestlevel = 0;
-
-    var canceltimer = false;
-
-    var delta = autoadjusttargetlevel - autoadjuststartlevel;
-    if(delta > 0) {
-        stepsize = delta / fixobj.parameters.brightenrate;
-        requestlevel = Number(fixobj.brightness) + stepsize;
-        if(requestlevel >= autoadjusttargetlevel) {
-            requestlevel = autoadjusttargetlevel;
-            canceltimer = true;
-        }
-
-    }
-    else if(delta < 0) {
-        stepsize = delta / fixobj.parameters.dimrate;
-        requestlevel = Number(fixobj.brightness) + stepsize;
-        if(requestlevel <= autoadjusttargetlevel) {
-            requestlevel = autoadjusttargetlevel;
-            canceltimer = true;
-        }
-    }
-
-
-
-
-    var dlsensor = fixobj.getMyDaylightSensor();
-    var isdaylightbound = false;
-    var daylightvolts = 0;
-    if (dlsensor != undefined) {
-        isdaylightbound = true;
-        daylightvolts = dlsensor.value;
-    }
-
-   // var brightness = fixobj.brightness;   //use current by default
-   // if (requestobj.brightness != undefined)
-   //     brightness = requestobj.brightness;   //use requested if present,
-
-    var colortemp = fixobj.colortemp;  // no color temp change
-   // if (requestobj.colortemp != undefined)
-    //    colortemp = requestobj.colortemp;
-
-    // dl/light filter
-    var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel,  fixobj.parameters, isdaylightbound, daylightvolts);
-    this.daylightlimited = returndataobj.isdaylightlimited;
-    if (returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
-        var modpct = returndataobj.modifiedlevel;
-        requestlevel = modpct;  // modify the req obj.
-    }
-
-    // color temp calculation
-    var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(fixobj.min, fixobj.max, colortemp, requestlevel, fixobj.candledim);
-
-    fixobj.previouscolortemp = fixobj.colortemp;
-    fixobj.colortemp = colortemp;
-    fixobj.interface.setOutputToLevel(Number(fixobj.outputid), warmcoolvals[0], true);
-
-    fixobj.previousbrightness = fixobj.brightness;
-    fixobj.brightness = requestlevel;
-    var bchannel = Number(fixobj.outputid) + 1;
-    fixobj.hwwarm = warmcoolvals[0];
-    fixobj.hwcool = warmcoolvals[1];
-    fixobj.interface.setOutputToLevel(bchannel, warmcoolvals[1], true);
-    fixobj.lastupdated = moment();
-
-
-    var logobj = {};
-    logobj.date = new moment().unix();
-    logobj.brightness = Number(fixobj.brightness).toFixed();
-    logobj.colortemp = fixobj.colortemp;
-    data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
-
-    if(canceltimer)
-        stopAutoAdjustTimer();
-}
 
 
 module.exports = CCTFixture;
