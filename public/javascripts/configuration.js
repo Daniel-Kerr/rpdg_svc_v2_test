@@ -1656,7 +1656,7 @@ function on_aa_part1_change()
             populateDropDown("active_action_sel_part3", getGroupNameList());
 
 
-            $('#active_action_label_part_4').text("Delay(s)");
+            $('#active_action_label_part_4').text("Delay(min)");
             populateDropDown("active_action_sel_part4", ["0","1","5","10","15","20","30","60"]);
 
             $('#aa_part2').show();
@@ -1716,7 +1716,7 @@ function on_inactive_part1_change()
             $('#inactive_action_label_part_3').text("Group");
             populateDropDown("inactive_action_sel_part3", getGroupNameList());
 
-            $('#inactive_action_label_part_4').text("Delay(s)");
+            $('#inactive_action_label_part_4').text("Delay(min)");
             populateDropDown("inactive_action_sel_part4", ["0","1","5","10","15","20","30","60"]);
 
             $('#ina_part2').show();
