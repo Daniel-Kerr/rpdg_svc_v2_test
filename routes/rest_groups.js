@@ -19,43 +19,58 @@ router.get('/', function(req, res, next) {
 
 router.post('/setgrouptolevel', function(req, res) {
 
+    var code = 400;
     var groupname = req.body.name;
     var level = req.body.level;
-    var status = service.setGroupToBrightnessLevel(groupname,level);
+    if(groupname != undefined && level != undefined)
+    {
+        var groupobj = global.currentconfig.getGroupByName(groupname);
+        if(groupobj != undefined)
+        {
+            service.setGroupToBrightnessLevel(groupname,level);
+            code = 200;
+        }
+    }
     var cfg = JSON.stringify(global.currentconfig,null,2);
-    res.status(200).send(cfg);
+    res.status(code).send(cfg);
 
 });
 
 
 router.post('/setgrouptocolortemp', function(req, res) {
 
+    var code = 400;
     var groupname = req.body.name;
     var ctemp = req.body.ctemp;
     var brightness = req.body.brightness;
 
-    var status = service.setGroupToColorTemp(groupname,ctemp,brightness);
+    if(groupname != undefined && ctemp != undefined && brightness != undefined) {
+        var groupobj = global.currentconfig.getGroupByName(groupname);
+        if (groupobj != undefined) {
+            service.setGroupToColorTemp(groupname,ctemp,brightness);
+            code = 200;
+        }
+    }
     var cfg = JSON.stringify(global.currentconfig,null,2);
-    res.status(200).send(cfg);
-
+    res.status(code).send(cfg);
 });
 
 /*
-function bumpConfigVersionAndUpdate()
-{
-    if(!global.test_mode) {
-        global.currentconfig.version++; // bump version
-        data_utils.writeConfigToFile();
-        service.updateConfigData();
-        return global.currentconfig;  //return updated
-    }
-    else
-    {
-        service.updateConfigData();
-        return "OK";
-    }
-}
-*/
+ function bumpConfigVersionAndUpdate()
+ {
+ if(!global.test_mode) {
+ global.currentconfig.version++; // bump version
+ data_utils.writeConfigToFile();
+ service.updateConfigData();
+ return global.currentconfig;  //return updated
+ }
+ else
+ {
+ service.updateConfigData();
+ return "OK";
+ }
+ }
+ */
 
 router.post('/getgroupmembers', function(req, res) {
 

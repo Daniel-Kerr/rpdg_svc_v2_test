@@ -657,7 +657,7 @@ body {
 
 
 .controlscontentbox div {
-    background-color: darkmagenta;
+    background-color: black;
     height: 100px;
     margin-bottom: 20px;
     width: 100%;
@@ -751,3 +751,9 @@ body {
     background-color: black;
 }
 
+
+.vac_occ_div {
+    background-color: red;
+    height: 100%;
+    width: 100%;
+}

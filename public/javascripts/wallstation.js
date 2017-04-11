@@ -57,10 +57,6 @@ function processConfig(configobj) {
     cachedconfig = configobj;  // just so we can copy over groups on save.
     top_menu_selection = "Scenes";
     updateDynButtonBar();
-  //  hideDivID("occ_vac_switch");   todo,
-
-
-
 }
 
 
@@ -75,7 +71,7 @@ function updateDynButtonBar()
     hideDivID("CCTBar");
     hideDivID("ToggleButton");
     hideDivID("StatusPage");
-    //hideDivID("ConfigPage");
+    hideDivID("occ_vac_holder");
 
     switch(top_menu_selection)
     {
@@ -85,6 +81,7 @@ function updateDynButtonBar()
             break;
         case "Groups":
             showDivID("controlscontent","block");
+
             constructGroupButtons();
             break;
         case "Fixtures":
@@ -117,6 +114,42 @@ function updateControlsContentRegion()
     showDivID("StatusPage","inline");
 }
 
+
+function onVacancy()
+{
+    var element = {};
+    element.groupname = selected_group.name;
+    var dataset = JSON.stringify(element);
+    $.ajax({
+        url: "/tester/sendvacancytogroup",
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (series) {
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+        }
+    });
+}
+
+function onOccupancy()
+{
+    var element = {};
+    element.groupname = selected_group.name;
+    var dataset = JSON.stringify(element);
+    $.ajax({
+        url: "/tester/sendoccupancytogroup",
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (series) {
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+        }
+    });
+}
 
 function constructConfigItemsDiv()
 {
@@ -212,12 +245,19 @@ function constructGroupButtons()
                 showDivID("BrightnessBar","block");
                 showDivID("CCTBar","block");
             }
+
+            showDivID("occ_vac_holder","block");
+
         }
         buttonholder.appendChild(groupbutton);
         var btnText = document.createTextNode(groupobj.name);
         groupbutton.appendChild(btnText);
     }
+
 }
+
+
+
 
 
 
