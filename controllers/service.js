@@ -53,6 +53,10 @@ var currentschedule_eventbundle = undefined;
 
 var dim_bright_request_map = {};
 
+var rpdg_service_moment = undefined; // used as time reference for vairous functions 4/11/17,
+// can be either real time or virtual time,  for test.
+
+
 //
 /***
  * this is where the messages from rpdg driver or the enocean hw come in ,  like (occ, vac...polling changes..etc),
@@ -231,12 +235,13 @@ function contactSwitchHandler(contactdef)
                         {
                             global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   vacancy future message registered **************************" );
 
-                            var future = new moment();
-                            future.add(Number(delaymin),'minutes');
+                           // var future = new moment();
+                           // future.add(Number(delaymin),'minutes');
+                            rpdg_service_moment.add(Number(delaymin),'minutes');
                             if(value == 1)
-                                contactdef.active_pending_vancancy = future;
+                                contactdef.active_pending_vancancy = rpdg_service_moment.clone(); //future;
                             else
-                                contactdef.inactive_pending_vancancy = future;
+                                contactdef.inactive_pending_vancancy = rpdg_service_moment.clone(); //future;
                         }
                     }
                 }
@@ -346,7 +351,7 @@ var service = module.exports =  {
         var active_cfg = undefined;
         var created = false;
         //if(cfg == undefined)
-       // {
+        // {
         active_cfg = new Configuration();
         if(cfg != undefined)
         {
@@ -409,7 +414,9 @@ var service = module.exports =  {
                 now = bla.add(deltams, 'ms');  // < ----- set now to virtual time,
                 currenthour = now.hour();
             }
-              //global.applogger.info(TAG, "time check", now.toISOString()  + "   vbt: " + global.virtualbasetime);
+
+            rpdg_service_moment = now.clone();
+            global.applogger.info(TAG, "time check", now.toISOString()  + "   vbt: " + global.virtualbasetime);
 
             // END VIRTUAL TIME *********************************************************
 
@@ -454,12 +461,12 @@ var service = module.exports =  {
                 for(var levelidx = 0; levelidx < global.currentconfig.levelinputs.length; levelidx++ ) {
                     var inputobj = global.currentconfig.levelinputs[levelidx];
                     if (inputobj.type == "daylight") {
-                       // var currenthour = now.hour();
+                        // var currenthour = now.hour();
                         //if (global.virtualbasetime != undefined) {
                         //    var deltams = now - global.virtualtimeset;
                         //    var virtualclocktime = global.virtualbasetime.add(deltams, 'ms');
                         //    currenthour = virtualclocktime.hour();
-                       // }
+                        // }
 
                         if (currenthour >= 8 && currenthour <= 17) {     // only run the daylight sensor between the hours of 8am and 5pm
 
@@ -615,11 +622,11 @@ var service = module.exports =  {
 
             // ******************* SUN RISE *** SET CALC *****
 
-          //  var times = SunCalc.getTimes(new Date(), Number(global.currentconfig.sitelatt), Number(global.currentconfig.sitelong));
-          //  var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
-          //  var duskstr = times.sunsetStart.getHours() + ':' + times.sunsetStart.getMinutes();
-          //  global.applogger.info(TAG, "SunRise Time: " , sunriseStr + "  ---> " + duskstr);
-          // end calc,
+            //  var times = SunCalc.getTimes(new Date(), Number(global.currentconfig.sitelatt), Number(global.currentconfig.sitelong));
+            //  var sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
+            //  var duskstr = times.sunsetStart.getHours() + ':' + times.sunsetStart.getMinutes();
+            //  global.applogger.info(TAG, "SunRise Time: " , sunriseStr + "  ---> " + duskstr);
+            // end calc,
 
 
         }, BasePollingPeriod);
@@ -804,13 +811,13 @@ var service = module.exports =  {
         daylightpollseconds = intervalsec;
         daylightpolcount = 0;
     },
-   // ,
-   // reinitScheduleMgr : function()
-   // {
-   //     reinit_schedule_countdown = 2;
-   //     s
+    // ,
+    // reinitScheduleMgr : function()
+    // {
+    //     reinit_schedule_countdown = 2;
+    //     s
 //
-   // },
+    // },
     enableRPDGHardwarePolling : function(enable)
     {
         global.applogger.error("rpdg_driver.js ", "enable rpdg polling : " + enable,  "");

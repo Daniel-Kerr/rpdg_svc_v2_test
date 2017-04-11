@@ -251,7 +251,7 @@ var mgr = module.exports = {
             return_element.events = eventlist;
             return return_element;
         }
-        // var now = new moment();
+
         for(var i = 0 ; i < pending_events.length; i++)
         {
             var event = pending_events[i];
