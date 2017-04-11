@@ -8,7 +8,7 @@ var SceneList = function()
     this.scenes = []; // name list,
 
     //status:
-    this.activeindex = 0;
+    this.activeindex = -1;
 
     SceneList.prototype.fromJson = function(obj)
     {
