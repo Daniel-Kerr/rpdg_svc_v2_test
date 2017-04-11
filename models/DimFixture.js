@@ -7,6 +7,7 @@ var path = require('path');
 var TAG = pad(path.basename(__filename),15);
 var FixtureParameters = require('./FixtureParameters');
 var filter_utils = require('../utils/filter_utils.js');
+var data_utils = require('../utils/data_utils.js');
 var DimFixture = function(name, interface, outputid)
 {
     //model.
@@ -84,6 +85,12 @@ var DimFixture = function(name, interface, outputid)
                 this.level = Number(requestobj.level);
                 this.lastupdated = moment();
                 this.interface.setOutputToLevel(this.outputid, this.level, apply);
+
+
+                var logobj = {};
+                logobj.date = new moment().unix();
+                logobj.level = this.level.toFixed();
+                data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
             }
         }
 
@@ -210,6 +217,11 @@ function autoAdjustLevel(fixobj)
         fixobj.level = Number(requestlevel);
         fixobj.lastupdated = moment();
         fixobj.interface.setOutputToLevel(fixobj.outputid, fixobj.level, true);
+
+        var logobj = {};
+        logobj.date = new moment().unix();
+        logobj.level = fixobj.level.toFixed();
+        data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
     }
 
     if(canceltimer)

@@ -2,6 +2,7 @@
  * Created by Nick on 3/6/2017.
  */
 var moment = require('moment');
+var data_utils = require('../utils/data_utils.js');
 
 var ContactInput = function()
 {
@@ -39,6 +40,11 @@ var ContactInput = function()
         this.previousvalue= this.value;
         this.value = val;
         this.lastupdated = moment();
+
+        var logobj = {};
+        logobj.date = new moment().unix();
+        logobj.value = this.value;
+        data_utils.appendInputObjectLogFile(this.assignedname, logobj);
     };
 
     this.getvalue=function(){

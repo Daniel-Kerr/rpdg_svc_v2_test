@@ -12,6 +12,15 @@ var Ajv = require('ajv');
 var file_scenes = 'datastore/scenes.json'; // scenes file
 var file_config = 'datastore/config.json';
 
+
+function createBlankFile(filepath)
+{
+    var target = path.resolve(filepath);
+    var blank = [];
+    var output = JSON.stringify(blank, null, 4);
+    fs.writeFileSync(target, output);
+}
+
 module.exports = {
 
     intToByteArray: function ( n ) {
@@ -43,6 +52,52 @@ module.exports = {
             }
         }
         return false;
+    },
+    appendInputObjectLogFile: function(objectname, datanew)
+    {
+        try {
+            var objectpath = 'datastore/object_logs/input/'+ objectname + '.json';
+            var target = path.resolve(objectpath);
+            var output = JSON.stringify(datanew)+'\n';
+            fs.appendFileSync(target, output, 'utf-8');
+        }catch (ex1)
+        {
+            global.applogger.info(TAG, " error writing file " + ex1, "");
+        }
+    }
+    ,
+    appendOutputObjectLogFile: function(objectname, datanew)
+    {
+        try {
+            var objectpath = 'datastore/object_logs/output/'+ objectname + '.json';
+            var target = path.resolve(objectpath);
+            var output = JSON.stringify(datanew)+'\n';
+            fs.appendFileSync(target, output, 'utf-8');
+        }catch (ex1)
+        {
+            global.applogger.info(TAG, " error writing file " + ex1, "");
+        }
+    },
+    testReadObjectLogFile: function(objectname)
+    {
+        try {
+            var objectpath = 'datastore/object_logs/'+ objectname + '.json';
+            var target = path.resolve(objectpath);
+            if (fs.existsSync(target)) {
+
+                var lineReader = require('readline').createInterface({
+                    input: require('fs').createReadStream(target)
+                });
+
+                lineReader.on('line', function (line) {
+                    console.log('Line from file:', line);
+                    var testobj = JSON.parse(line);
+                });
+            }
+        }catch (ex1)
+        {
+            global.applogger.info(TAG, " error reading file " + ex1, "");
+        }
     },
 
     getSceneNamesFromObjList: function(list)

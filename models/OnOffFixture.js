@@ -8,7 +8,8 @@ var FixtureParameters = require('./FixtureParameters');
 var TAG = pad(path.basename(__filename),15);
 
 var filter_utils = require('../utils/filter_utils.js');
-//var OnOffFixture = function(name, interface, outputid)
+var data_utils = require('../utils/data_utils.js');
+
 var OnOffFixture = function()
 {
     //model.
@@ -97,6 +98,11 @@ var OnOffFixture = function()
         var options = (this.interfacename.includes("plc"))?"plc":undefined;
         this.interface.setOutputToLevel(this.outputid, this.level, apply, options);
 
+
+        var logobj = {};
+        logobj.date = new moment().unix();
+        logobj.level = this.level.toFixed();
+        data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
     };
 
     this.getLevel=function(){
@@ -137,6 +143,7 @@ var OnOffFixture = function()
         return undefined
     }
 };
+
 
 
 module.exports = OnOffFixture;

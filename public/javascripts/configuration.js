@@ -44,7 +44,7 @@ $(document).ready(function() {
                     if(fixture.type == "cct")
                     {
                         showCCTOptions(true);
-                       // document.getElementById("candledim").disabled = false;
+                        // document.getElementById("candledim").disabled = false;
                         document.getElementById("candledim").checked = fixture.candledim;
 
                         document.getElementById("minctemp").value = fixture.min;
@@ -54,7 +54,7 @@ $(document).ready(function() {
                     else {
                         showCCTOptions(false);
                         // document.getElementById("candledim").checked = false;
-                       // document.getElementById("candledim").disabled = true;
+                        // document.getElementById("candledim").disabled = true;
                     }
 
 
@@ -152,56 +152,56 @@ $(document).ready(function() {
 
                     $("#contact_inputnum").val(ic.inputid).change();
 
-                   // updateInputContactActionDropDowns();
+                    // updateInputContactActionDropDowns();
                     updateInputContactActionDropDowns(ic);
                     enableDisableInputActionDropDowns();
 
                     /*
-                    if(ic.active_action != undefined)
-                    {
-                        var aa = ic.active_action;
-                        if(aa.includes("_@@_"))
-                        {
-                            var parts = aa.split("_@@_");
-                            if(parts.length == 2)
-                            {
-                                $("#active_action_sel").val(parts[0]).change();
-                                $("#active_action_target").val(parts[1]).change();
-                            }
-                        }
-                        else if(aa.includes("scene_"))
-                        {
-                            //var part = aa.substring(6);
-                            $("#active_action_sel").val(aa).change();
-                        }
-                        else
-                        {
-                            $("#active_action_sel").val(aa).change();
-                        }
-                    }
+                     if(ic.active_action != undefined)
+                     {
+                     var aa = ic.active_action;
+                     if(aa.includes("_@@_"))
+                     {
+                     var parts = aa.split("_@@_");
+                     if(parts.length == 2)
+                     {
+                     $("#active_action_sel").val(parts[0]).change();
+                     $("#active_action_target").val(parts[1]).change();
+                     }
+                     }
+                     else if(aa.includes("scene_"))
+                     {
+                     //var part = aa.substring(6);
+                     $("#active_action_sel").val(aa).change();
+                     }
+                     else
+                     {
+                     $("#active_action_sel").val(aa).change();
+                     }
+                     }
 
-                    if(ic.inactive_action != undefined)
-                    {
-                        var aa = ic.inactive_action;
-                        if(aa.includes("_@@_"))
-                        {
-                            var parts = aa.split("_@@_");
-                            if(parts.length == 2)
-                            {
-                                $("#inactive_action_sel").val(parts[0]).change();
-                                $("#inactive_action_target").val(parts[1]).change();
-                            }
-                        }
-                        else if(aa.includes("scene_"))
-                        {
-                            $("#inactive_action_sel").val(aa).change();
-                        }
-                        else
-                        {
-                            $("#inactive_action_sel").val(aa).change();
-                        }
-                    }
-                    */
+                     if(ic.inactive_action != undefined)
+                     {
+                     var aa = ic.inactive_action;
+                     if(aa.includes("_@@_"))
+                     {
+                     var parts = aa.split("_@@_");
+                     if(parts.length == 2)
+                     {
+                     $("#inactive_action_sel").val(parts[0]).change();
+                     $("#inactive_action_target").val(parts[1]).change();
+                     }
+                     }
+                     else if(aa.includes("scene_"))
+                     {
+                     $("#inactive_action_sel").val(aa).change();
+                     }
+                     else
+                     {
+                     $("#inactive_action_sel").val(aa).change();
+                     }
+                     }
+                     */
 
 
                 }
@@ -773,12 +773,17 @@ function updateAvalibleStartingOutputNumbers()
 {
     var type = document.getElementById("fixturetype");
     var seltype = type.options[type.selectedIndex].value;
-    if(seltype == "cct")
+    if(seltype == "cct") {
         showCCTOptions(true);   //document.getElementById("candledim").disabled = false;
+
+        document.getElementById("minctemp").value = "2000";
+        document.getElementById("maxctemp").value = "6500";
+
+    }
     else {
         showCCTOptions(false);
-       // document.getElementById("candledim").checked = false;
-      //  document.getElementById("candledim").disabled = true;
+        // document.getElementById("candledim").checked = false;
+        //  document.getElementById("candledim").disabled = true;
     }
 
     var sel = document.getElementById('starting_output');
@@ -968,8 +973,8 @@ function saveNewContactInputObj() {
     var aa_p2 = $('#active_action_sel_part2').val();
     var aa_p3 = $('#active_action_sel_part3').val();
     var aa_p4 = $('#active_action_sel_part4').val();
-   // if(aa_p2 != "Vacancy")
-     //   aa_p4 = "0";
+    // if(aa_p2 != "Vacancy")
+    //   aa_p4 = "0";
 
     switch(aa_p1)
     {
@@ -977,8 +982,8 @@ function saveNewContactInputObj() {
             active_action = "action_none";
             break;
         case "action_message":
-             if(aa_p2 != "Vacancy")
-               aa_p4 = "0";
+            if(aa_p2 != "Vacancy")
+                aa_p4 = "0";
             active_action += "msg_@@_"+ aa_p2 + "_@@_"+aa_p3 + "_@@_"+aa_p4;
             break;
         case "action_scene":
@@ -1000,8 +1005,8 @@ function saveNewContactInputObj() {
         var ina_p2 = $('#inactive_action_sel_part2').val();
         var ina_p3 = $('#inactive_action_sel_part3').val();
         var ina_p4 = $('#inactive_action_sel_part4').val();
-       // if(ina_p2 != "Vacancy")
-       //     ina_p4 = "0";
+        // if(ina_p2 != "Vacancy")
+        //     ina_p4 = "0";
 
         switch(ina_p1)
         {

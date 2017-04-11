@@ -44,7 +44,7 @@ var daylightpolcount = 0;   // used for tracking of dl upddates. interval.
 var schedulepollseconds = 60;
 var schedulepollcount = 0;
 
-
+var fs = require('fs');
 
 var currentschedule_eventbundle = undefined;
 //var reinit_schedule_countdown = -1;
@@ -336,12 +336,50 @@ function invokeAllToLevel(level, requesttype)
 }
 
 
+// build out any misc directories,  that maybe missing,
+function constructMiscDirs()
+{
+    if (!fs.existsSync('datastore/object_logs/')) {
+        try {
+            fs.mkdirSync('datastore/object_logs/')
+        } catch (err) {
+            if (err.code !== 'EEXIST') throw err
+        }
+    }
+
+    if (!fs.existsSync('datastore/object_logs/input/')) {
+        try {
+            fs.mkdirSync('datastore/object_logs/input/')
+        } catch (err) {
+            if (err.code !== 'EEXIST') throw err
+        }
+    }
+
+    if (!fs.existsSync('datastore/object_logs/output/')) {
+        try {
+            fs.mkdirSync('datastore/object_logs/output/')
+        } catch (err) {
+            if (err.code !== 'EEXIST') throw err
+        }
+    }
+
+    if (!fs.existsSync('datastore/schedule/')) {
+        try {
+            fs.mkdirSync('datastore/schedule/')
+        } catch (err) {
+            if (err.code !== 'EEXIST') throw err
+        }
+    }
+}
+
 
 
 var service = module.exports =  {
 
 
     initService : function () {
+
+        constructMiscDirs();
 
         global.applogger.info(TAG, " --init---", "");
         enocean.init(incommingHWChangeHandler);
@@ -360,8 +398,6 @@ var service = module.exports =  {
         else
             created = true;
 
-
-
         active_cfg.initHWInterfaces(rpdg,enocean);
         global.currentconfig = active_cfg;
 
@@ -371,13 +407,6 @@ var service = module.exports =  {
 
         //setup the 0-10 v drive values for current config,
         module.exports.updateRPDGInputDrive();
-
-
-
-
-
-
-
 
         schedule_mgr.initManager();
         // test code

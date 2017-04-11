@@ -7,6 +7,7 @@ var path = require('path');
 var TAG = pad(path.basename(__filename),15);
 var FixtureParameters = require('./FixtureParameters');
 var filter_utils = require('../utils/filter_utils.js');
+var data_utils = require('../utils/data_utils.js');
 
 
 
@@ -105,6 +106,12 @@ var CCTFixture = function(name, interface, outputid)
             this.interface.setOutputToLevel(bchannel, warmcoolvals[1], apply);
 
             this.lastupdated = moment();
+
+            var logobj = {};
+            logobj.date = new moment().unix();
+            logobj.brightness = Number(this.brightness).toFixed();
+            logobj.colortemp = this.colortemp;
+            data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
         }
     };
 
@@ -252,6 +259,12 @@ function autoAdjustLevel(fixobj)
     fixobj.interface.setOutputToLevel(bchannel, warmcoolvals[1], true);
     fixobj.lastupdated = moment();
 
+
+    var logobj = {};
+    logobj.date = new moment().unix();
+    logobj.brightness = Number(fixobj.brightness).toFixed();
+    logobj.colortemp = fixobj.colortemp;
+    data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
 
     if(canceltimer)
         stopAutoAdjustTimer();
