@@ -159,17 +159,17 @@ function updateUIPageComponents(config)
             else if(type == "dim")
             {
                 var gauge = gaugesmap[fixobj.assignedname];
-                gauge.refresh(fixobj.level);
+                gauge.refresh(fixobj.level.toFixed());
             }
             else if(type == "cct")
             {
                 var gauge = gaugesmap[fixobj.assignedname];
-                gauge.refresh(fixobj.brightness);
+                gauge.refresh(fixobj.brightness.toFixed());
             }
             else if(type == "rgbw") {
                 displevel = fixobj.white;
                 var gauge = gaugesmap[fixobj.assignedname];
-                gauge.refresh(fixobj.white);
+                gauge.refresh(fixobj.white.toFixed());
             }
         }
 
