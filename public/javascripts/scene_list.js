@@ -77,7 +77,7 @@ function openNewSceneListEditDlg()
 
 function filterAvalibleScenes()
 {
-    var fixturebucketdiv = document.getElementById("fixholder");
+    var fixturebucketdiv = document.getElementById("sceneholder");
     fixturebucketdiv.innerHTML = ""; // blank it out.
 
 

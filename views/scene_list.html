@@ -55,11 +55,9 @@
             cursor: default;
         }
 
-        .availiblefixturesholder {
-            margin: 0px;
-            width: 100%;
-            height: 100%;
-        }
+
+
+
 
         .actionbuttons {
             position: absolute;
@@ -73,10 +71,11 @@
             width: 100%;
             height: 200px;
         }
-        .availible_scene_holder {
+        .left_nav_bar {
 
+            background-color: white;
             width: 200px;
-            height: 300px;
+            height: 1000px;
             float: left;
         }
         .scenemgt_holder {
@@ -85,11 +84,21 @@
             height: 1000px;
 
         }
-         .trashcan {
 
-             width: 100%;
-             height: 100%;
-         }
+
+        .availiblescenesholder {
+            background-color: white;
+            margin: 0px;
+            width: 100%;
+            height: 90%;
+        }
+
+        .trashcan {
+
+            background-color: white;
+            width: 100%;
+            height: 70px;
+        }
 
         html, body {
             height: 100%;
@@ -125,27 +134,37 @@
         <p>
 
         <div id="includedContent"></div>
-            <div class="availible_scene_holder">
-                <input type="button" id = "btmakescene" class="btn-sm btn-large btn-primary" onclick=openNewSceneListEditDlg() value="New List"/>
-                <div class="box-header" data-original-title>
-                    <h2><i class="fa fa-user"></i><span class="break"></span>Scenes</h2>
-                </div>
-                <div class="box-content fill">
-                    <div id="fixholder" class="availiblefixturesholder"></div>
-                </div>
+        <div class="left_nav_bar">
+            <input type="button" id = "btmakescene" class="btn-sm btn-large btn-primary" onclick=openNewSceneListEditDlg() value="New List"/>
+
+            <div id="trashcan" class = "trashcanholderdiv">
                 <div class="box-header" data-original-title>
                     <h2><i class="fa fa-user"></i><span class="break"></span>Trash</h2>
                 </div>
-                <div class="box-content fill">
-                    <div id="trashholder" class="availiblefixturesholder"></div>
+                <div id="trashholder" class="box-content fill">
+
                 </div>
             </div>
 
-            <div class="scenemgt_holder">
-                <div class="col-lg-10">
-                    <div id="active_scenes_holder" class="scenelistscontainer" ></div>
+
+            <div id="availiblescenes" class="availiblescenesholder">
+
+                <div class="box-header" data-original-title>
+                    <h2><i class="fa fa-user"></i><span class="break"></span>Scenes</h2>
                 </div>
+                <div id="sceneholder" class="box-content fill">
+
+                </div>
+
             </div>
+
+        </div>
+
+        <div class="scenemgt_holder">
+            <div class="col-lg-10">
+                <div id="active_scenes_holder" class="scenelistscontainer" ></div>
+            </div>
+        </div>
         </p>
     </div>
 </div>
