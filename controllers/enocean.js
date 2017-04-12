@@ -26,23 +26,23 @@ var Dimmer = undefined;
 
 
 if(!israspberrypi) {
-    enocean = require("../crossplatform_modules/windows/node-enocean")(
+    enocean = require("../../crossplatform_modules/windows/node-enocean")(
         {sensorFilePath: known_s},
         {configFilePath: config},
         {timeout: 30}
     );
 
-     Dimmer = require("../crossplatform_modules/windows/node-enocean-dimmer");
+     Dimmer = require("../../crossplatform_modules/windows/node-enocean-dimmer");
 }
 else
 {
-    enocean = require("../crossplatform_modules/rpi/node-enocean")(
+    enocean = require("../../crossplatform_modules/rpi/node-enocean")(
         {sensorFilePath:known_s},
         {configFilePath:config},
         {timeout:30}
     );
 
-    Dimmer = require("../crossplatform_modules/rpi/node-enocean-dimmer");
+    Dimmer = require("../../crossplatform_modules/rpi/node-enocean-dimmer");
 }
 
 
