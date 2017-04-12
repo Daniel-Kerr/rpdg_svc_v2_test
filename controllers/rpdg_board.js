@@ -16,7 +16,7 @@ var ishv = data_utils.commandLineArgPresent("hv");
 var i2cwire = undefined;  // set at startup, for hw interface.
 
 if(platform == "RaspberryPI" && !nohw) {
-    var i2c = require('i2c');
+    var i2c = require('../crossplatform_modules/i2c');
 }
 // for debug info.
 global.applogger.info(TAG,"Board TYPE: " + boardvolts + " Voltage Board", "");
