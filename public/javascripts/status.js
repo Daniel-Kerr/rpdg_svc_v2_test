@@ -19,7 +19,9 @@ function initStatusHandler(config)
         if (fixcountinrow >= 4) {
             row++;
             currentrow_div = document.getElementById("fixture_row" + row);
+            fixcountinrow = 0;
         }
+        fixcountinrow++;
         var fixcol = constructFixtureBox(currentrow_div, cachedconfig.fixtures[i]);
     }
     updateUIPageComponents(undefined);
