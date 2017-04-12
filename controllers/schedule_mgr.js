@@ -40,6 +40,9 @@ var SCHEDULE_FILE_DAILY = 'datastore/schedule/daily.json';
 var SCHEDULE_FILE_WEEKLY = 'datastore/schedule/weekly.json';
 
 
+var HTML_SR_COLOR = '#ffff99';
+var HTML_SS_COLOR = '#ffcc66';
+
 var dirtyschedulecountdown = -1; // used to reinit, moved from service .
 
 function requireUncached(module){
@@ -355,7 +358,7 @@ var mgr = module.exports = {
             if( eventobj.timebase == "before_ss" || eventobj.timebase == "after_ss" ||
                 eventobj.timebase == "before_sr" || eventobj.timebase == "before_sr")
             {
-                var k = module.exports.calculateCalendarTimeFromSunTime(eventobj);
+                var k = calculateCalendarTimeFromSunTime(eventobj);
                 eventobj.start_date = k.toString("MM/dd/yyyy HH:mm");
                 var end = new Date(k);
                 end.setHours(end.getHours()+2);
@@ -492,7 +495,7 @@ var mgr = module.exports = {
                     else
                         fileevents[i].color = HTML_SS_COLOR;
                     //calc ss for this day,  and then set time accordingly.
-                    var k = module.exports.calculateCalendarTimeFromSunTime(fileevents[i]);
+                    var k = calculateCalendarTimeFromSunTime(fileevents[i]);
                     fileevents[i].start_date = k.toString("MM/dd/yyyy HH:mm");
                     var end = new Date(k);
                     end.setHours(end.getHours()+2);

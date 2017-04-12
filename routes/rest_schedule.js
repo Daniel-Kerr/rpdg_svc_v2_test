@@ -23,8 +23,6 @@ var last_start_req;
 var last_end_req;
 
 
-var HTML_SR_COLOR = '#ffff99';
-var HTML_SS_COLOR = '#ffcc66';
 
 /*
 function generateEventObjectAtTimeFromObj(time, obj, color)
