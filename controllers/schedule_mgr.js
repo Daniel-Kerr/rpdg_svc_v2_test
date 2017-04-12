@@ -50,7 +50,7 @@ function requireUncached(module){
 
 function printpendingevents()
 {
-    global.applogger.info(TAG, "*************** Schedule Event List" ,new Date().toDateString() + "**********************");
+    global.applogger.info(TAG, "*************** Schedule Event List" ,new Date().toString() + "**********************");
     for(var i = 0 ; i < pending_events.length; i++)
     {
         var event = pending_events[i];
