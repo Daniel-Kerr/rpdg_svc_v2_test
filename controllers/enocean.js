@@ -166,7 +166,7 @@ module.exports = {
             if(israspberrypi)
                 enocean.listen("/dev/ttyUSB0");
             else
-                enocean.listen("COM4");
+                enocean.listen("COM8");
 
 
             // startHWPolling();  //for debug only

@@ -209,16 +209,16 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
     eventobj.action = obj.action;
     eventobj.timebase = obj.timebase;
     eventobj.repeat = obj.repeat;
-    eventobj.color = color;
+    //eventobj.color = color;
 
 
     eventobj.relhour = obj.relhour;
     eventobj.relmin = obj.relmin;
 
     if( eventobj.timebase == "before_ss" || eventobj.timebase == "after_ss" ||
-        eventobj.timebase == "before_sr" || eventobj.timebase == "before_sr")
+        eventobj.timebase == "before_sr" || eventobj.timebase == "after_sr")
     {
-        if(eventobj.timebase == "before_sr" || eventobj.timebase == "before_sr")
+        if(eventobj.timebase == "before_sr" || eventobj.timebase == "after_sr")
             eventobj.color = HTML_SR_COLOR;
         else
             eventobj.color = HTML_SS_COLOR;
@@ -356,7 +356,7 @@ var mgr = module.exports = {
             var eventobj = file_contents[idx];
 
             if( eventobj.timebase == "before_ss" || eventobj.timebase == "after_ss" ||
-                eventobj.timebase == "before_sr" || eventobj.timebase == "before_sr")
+                eventobj.timebase == "before_sr" || eventobj.timebase == "after_sr")
             {
                 var k = calculateCalendarTimeFromSunTime(eventobj);
                 eventobj.start_date = k.toString("MM/dd/yyyy HH:mm");
@@ -488,9 +488,9 @@ var mgr = module.exports = {
             {
                 //fileevents[i].color = "red";
                 if( fileevents[i].timebase == "before_ss" || fileevents[i].timebase == "after_ss" ||
-                    fileevents[i].timebase == "before_sr" || fileevents[i].timebase == "before_sr")
+                    fileevents[i].timebase == "before_sr" || fileevents[i].timebase == "after_sr")
                 {
-                    if(fileevents[i].timebase == "before_sr" || fileevents[i].timebase == "before_sr")
+                    if(fileevents[i].timebase == "before_sr" || fileevents[i].timebase == "after_sr")
                         fileevents[i].color = HTML_SR_COLOR;
                     else
                         fileevents[i].color = HTML_SS_COLOR;
