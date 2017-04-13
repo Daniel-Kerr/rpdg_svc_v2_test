@@ -252,6 +252,8 @@ var mgr = module.exports = {
         {
             eventlist.push(pending_events[0]);
             return_element.events = eventlist;
+            var matchtime =  new moment(new Date(pending_events[0].start_date));  //record prev events start time,
+            return_element.date_time = matchtime;
             return return_element;
         }
 
