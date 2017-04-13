@@ -43,6 +43,8 @@ $(function() {
 
 var user_pref_format = 12;
 
+var view_mode = "month";
+
 function processConfig(configobj) {
     cachedconfig = configobj;
 
@@ -64,7 +66,7 @@ function processConfig(configobj) {
 
 
     dp.init(scheduler);
-   // dp.setTransactionMode("REST");
+    // dp.setTransactionMode("REST");
 
 
 
@@ -152,6 +154,30 @@ function processConfig(configobj) {
         }
     });
 
+    scheduler.attachEvent("onBeforeEventDisplay", function(id,view){
+        //any custom logic here
+
+        return true;
+
+    });
+    scheduler.attachEvent("onEventLoading", function(ev){
+        //any custom logic here
+      //  if(view_mode == "month")
+        //{
+          //  var ev = scheduler.getEvent(id);
+         //   var endd = ev.start_date;
+         //   endd.setMinutes(endd.getMinutes()+1);
+          //  ev.end_date = endd;
+       // }
+        return true;
+    });
+
+    scheduler.attachEvent("onViewChange", function (new_mode , new_date){
+        //any custom logic here
+        var k = 0;
+        k =  k  + 1;
+    });
+
     scheduler.attachEvent("onBeforeEventChanged", function(ev, e, is_new, original){
         if(!is_new)  //prevent resizing, (end date change),  prevent resource_id change, scene --> input..
         {
@@ -177,9 +203,9 @@ function processConfig(configobj) {
         return true;
     });
 
-   // initdayofmonthsel();
-   // dialogrepeatsel = document.getElementsByName('repeat');
-   // eventtypesel = document.getElementsByName('eventtype');
+    // initdayofmonthsel();
+    // dialogrepeatsel = document.getElementsByName('repeat');
+    // eventtypesel = document.getElementsByName('eventtype');
 
     $('#eventtime').timepicker();
 
@@ -218,16 +244,16 @@ function save_form() {
     ev.action = html("eventaction").value;
 
     var prefix = ev.action + ": "
-   // if(ev.action == "scene")
+    // if(ev.action == "scene")
     //    prefix = 'scene: ';
-   //if(ev.action == "ignore")
+    //if(ev.action == "ignore")
     //    prefix = 'ignore: ';
 
     ev.text = prefix + html("eventname").value;
 
 
     if(ev.action == "scene")
-       ev.resource_id = "Scene"
+        ev.resource_id = "Scene"
     else
         ev.resource_id = "Input";
 
@@ -237,7 +263,7 @@ function save_form() {
         var tempstart = new Date(ev.start_date);
         var abstime = html("eventtime").value;
 
-            var parts = abstime.split(":");
+        var parts = abstime.split(":");
         if(parts.length == 2)
         {
             var hour = Number(parts[0]);
@@ -265,6 +291,19 @@ function save_form() {
     var end = new Date(ev.start_date);
     end.setHours(end.getHours()+2);
     ev.end_date = end;
+
+    // overlap thing, 4/13/17
+    var hrs = ev.start_date.getHours();
+    if((ev.start_date.getHours() == 22 && ev.start_date.getMinutes() > 0)|| ev.start_date.getHours() == 23) // if > 10:00 PM
+    {
+        //var modend = new Date(ev.start_date);
+        //get time between midnight and start, calc and set to window -1,
+        var end = new Date(ev.start_date);
+        end.setHours(23);
+        end.setMinutes(59);
+        ev.end_date = end;
+    }
+
     scheduler.endLightbox(true, html("my_form"));
 
     if(ev.repeat != "none" || ev.timebase == "before_ss" || ev.timebase == "after_ss" || ev.timebase == "before_sr" || ev.timebase == "after_sr") {
