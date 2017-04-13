@@ -55,10 +55,25 @@ function init() {
 
 function processConfig(configobj) {
     cachedconfig = configobj;  // just so we can copy over groups on save.
+
     top_menu_selection = "Scenes";
+    if(pending_menu_selection != undefined) {
+        top_menu_selection = pending_menu_selection;
+        pending_menu_selection = undefined;
+    }
     updateDynButtonBar();
 }
 
+
+var pending_menu_selection = undefined;
+function showOnlyTheseButtons (whichButtons) {
+    // Hide all of them and then make visible the one chosen
+
+    pending_menu_selection = whichButtons;
+   // top_menu_selection = whichButtons;
+    getConfig(processConfig);
+    //updateDynButtonBar();
+}
 
 function updateDynButtonBar()
 {
@@ -659,11 +674,6 @@ function hideDivID (DivID) {
 
 
 
-function showOnlyTheseButtons (whichButtons) {
-    // Hide all of them and then make visible the one chosen
-    top_menu_selection = whichButtons;
-    updateDynButtonBar();
-}
 
 
 function SetDaylightPolling () {
