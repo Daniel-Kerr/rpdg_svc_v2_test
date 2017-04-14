@@ -41,6 +41,17 @@ $(document).ready(function() {
                 var fixture = cachedconfig.fixtures[i];
                 if(fixture.assignedname == row)
                 {
+
+
+
+
+                    document.getElementById("fixturetype").value = fixture.type;
+                    document.getElementById("fixturename").value = fixture.assignedname;
+
+                    document.getElementById("interface").value = fixture.interfacename;
+
+                    updateAvalibleStartingOutputNumbers();
+                    document.getElementById("starting_output").value = fixture.outputid; //[0]; // need to do some work here.
                     if(fixture.type == "cct")
                     {
                         showCCTOptions(true);
@@ -56,17 +67,6 @@ $(document).ready(function() {
                         // document.getElementById("candledim").checked = false;
                         // document.getElementById("candledim").disabled = true;
                     }
-
-
-
-                    document.getElementById("fixturetype").value = fixture.type;
-                    document.getElementById("fixturename").value = fixture.assignedname;
-
-                    document.getElementById("interface").value = fixture.interfacename;
-
-                    updateAvalibleStartingOutputNumbers();
-                    document.getElementById("starting_output").value = fixture.outputid; //[0]; // need to do some work here.
-
 
                     for(var j = 0; j < availibleinputs.length; j++)
                     {
