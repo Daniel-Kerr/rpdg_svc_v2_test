@@ -132,6 +132,43 @@ exports.setZero2TenDrive = function(inputs)
     }
 }
 
+
+// bitfield:  1 common anode,  0 common cathod (default)
+exports.setPWMOutputPolarity = function(polconfig)
+{
+    try {
+        global.applogger.info(TAG, "setPWMOutputPolarity ", "sending output config to hw");
+        var config = new Uint8Array(1);
+        //if(polconfig.length == 1) {
+            config[0] = polconfig;
+            var wire = getI2cWire();
+            if (wire != undefined) {
+                wire.writeBytes(2, config, function (err) {
+                    if (err != null)
+                        global.applogger.error(TAG, "setPWMOutputPolarity",  err);
+
+                });
+                wire.writeBytes(2, config, function (err) {
+                    if (err != null)
+                        global.applogger.error(TAG, "setPWMOutputPolarity",  err);
+                });
+            }
+            else {
+                global.applogger.info(TAG, "setPWMOutputPolarity", "no i2c hw");
+            }
+       // }
+       // else
+        //{
+        //    global.applogger.info(TAG, "setPWMOutputPolarity ", "cant set,  no config info to set");
+       // }
+    } catch (err)
+    {
+        global.applogger.error(TAG, "setPWMOutputPolarity",  err);
+    }
+}
+
+
+
 exports.enableHardwarePolling = function(enable)
 {
     polling_enabled = enable;
