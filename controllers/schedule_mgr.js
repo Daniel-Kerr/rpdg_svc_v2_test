@@ -225,7 +225,7 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
         }
         else {
             eventobj.color = HTML_SS_COLOR;
-            fileevents[i].textColor = HTML_TEXT_COLOR_DARK;
+            eventobj.textColor = HTML_TEXT_COLOR_DARK;
         }
 
         //calc ss for this day,  and then set time accordingly.
