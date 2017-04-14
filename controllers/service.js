@@ -429,25 +429,34 @@ var service = module.exports =  {
         //setup the 0-10 v drive values for current config,
         module.exports.updateRPDGInputDrive();
 
+        // todo:  pwm polarity bit,
+        rpdg.setPWMOutputPolarity(0x00);
+
+        //
         schedule_mgr.initManager();
         // test code
         // module.exports.getEnoceanKnownContactInputs();
 
 
         //test code to generate a pho data file.
-      /*  var dt = moment();
+       /* var dt = moment();
         for(var i = 0 ; i < 500; i++) {
 
             var element = {};
             element.date = dt.unix();
 
             y = Math.sin( i ) / 0.1  + 50;
-          // counter += i;
             element.level = y;
             data_utils.appendOutputObjectLogFile("dim1",element);
 
+            var element2 = {};
+            element2.date = dt.unix();
+            element2.level = y+10;
+            data_utils.appendOutputObjectLogFile("dim2",element2);
+
             dt = dt.add(30, "minutes");
         }*/
+
 
     },
 
@@ -502,8 +511,10 @@ var service = module.exports =  {
                     else if (fixobj instanceof CCTFixture) {
                         var powerwarm = power_watts[Number(fixobj.outputid) - 1];
                         var powercool = power_watts[Number(fixobj.outputid)];
-                        fixobj.powerwatts = Number(Number(powerwarm) + Number(powercool)).toFixed(2);
-                        //  global.applogger.info(TAG, "polling", "updated power on device: " + fixobj.assignedname + "   " + power);
+                        var totalpower = (Number(powerwarm) + Number(powercool));
+                        fixobj.powerwatts = totalpower.toFixed(2);
+
+                       // global.applogger.info(TAG, "polling", "updated power on cct device: " + fixobj.assignedname + "   outid=" + fixobj.outputid + "   " + powerwarm + "  +  " + powercool + "  = " + totalpower);
                     }
                 }
             }
