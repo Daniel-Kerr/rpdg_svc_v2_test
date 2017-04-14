@@ -320,6 +320,15 @@ function save_form() {
 
         });
     }
+    else {
+        // only covers absolute no repeast ,  becuase we dont reload.
+        // set color
+        if(ev.timebase == "absolute" && ev.repeat == "none")
+        {
+            ev.color = '#7cff8e';
+            ev.textColor = '#111111';
+        }
+    }
 }
 function close_form() {
     scheduler.endLightbox(false, html("my_form"));

@@ -42,6 +42,7 @@ var SCHEDULE_FILE_WEEKLY = 'datastore/schedule/weekly.json';
 
 var HTML_SR_COLOR = '#ffff99';
 var HTML_SS_COLOR = '#ffcc66';
+var HTML_ABSOLUTE_COLOR = '#7cff8e';
 var HTML_TEXT_COLOR_DARK = '#111111';
 
 var dirtyschedulecountdown = -1; // used to reinit, moved from service .
@@ -210,7 +211,8 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
     eventobj.action = obj.action;
     eventobj.timebase = obj.timebase;
     eventobj.repeat = obj.repeat;
-    //eventobj.color = color;
+    eventobj.color = HTML_ABSOLUTE_COLOR;
+    eventobj.textColor = HTML_TEXT_COLOR_DARK;
 
 
     eventobj.relhour = obj.relhour;
@@ -512,6 +514,11 @@ var mgr = module.exports = {
                     end.setHours(end.getHours()+2);
                     fileevents[i].end_date = end.toString("MM/dd/yyyy HH:mm");
                 }
+                else {
+                    fileevents[i].color = HTML_ABSOLUTE_COLOR;
+                    fileevents[i].textColor = HTML_TEXT_COLOR_DARK;
+                }
+
                 events.push(fileevents[i]);
             }
         }
