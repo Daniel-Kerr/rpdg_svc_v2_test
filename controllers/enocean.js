@@ -10,16 +10,31 @@ var data_utils = require('../utils/data_utils.js');  //1/15/17,
 var known_s = path.join(__dirname) + "/../enocean_db/knownSensors.json";
 var config = path.join(__dirname) + "/../enocean_db/enocean_config.json";
 
-var supported = (data_utils.commandLineArgPresent("enocean"))?true:false;
+var supported = false; //(data_utils.commandLineArgPresent("enocean"))?true:false;
 var israspberrypi = (process.arch == 'arm');
 
 var isready = false;
 
-//var enocean = require("node-enocean")(
-//    {sensorFilePath:known_s},
-//    {configFilePath:config},
-//    {timeout:30}
-//);
+var comport = '/dev/ttyUSB0';
+
+// if com port is present,
+if(!israspberrypi && process.argv.length > 0 && data_utils.commandLineArgPresent("COM"))
+{
+    for(var i = 0; i < process.argv.length; i++)
+    {
+        var argval = process.argv[i];
+        if(argval.includes("COM"))
+        {
+            comport = argval; //
+            supported = true;
+            break;// return true;
+        }
+    }
+}
+else if(israspberrypi)
+    supported = true;
+
+
 
 var enocean = undefined;
 var Dimmer = undefined;
@@ -32,7 +47,7 @@ if(!israspberrypi) {
         {timeout: 30}
     );
 
-     Dimmer = require("../../crossplatform_modules/windows/node-enocean-dimmer");
+    Dimmer = require("../../crossplatform_modules/windows/node-enocean-dimmer");
 }
 else
 {
@@ -61,7 +76,7 @@ enocean.on("ready",function(data){
 // ****************************************************************************************************
 enocean.on("known-data",function(data){
 
-  //  var message = {};
+    //  var message = {};
     if(data.sensor != undefined)
     {
         var sensor = data.sensor;
@@ -159,17 +174,15 @@ module.exports = {
     init : function(callback)
     {
 
-        global.applogger.info(TAG, "init enocean driver ", "  enocean support enabled: " + supported);
+        global.applogger.info(TAG, "init enocean driver ", "  enocean support enabled on comport: " + comport);
         rxhandler = callback;
 
         if(supported) {
             if(israspberrypi)
-                enocean.listen("/dev/ttyUSB0");
+                enocean.listen(comport); //"/dev/ttyUSB0");
             else
-                enocean.listen("COM8");
+                enocean.listen(comport); //"COM8");
 
-
-            // startHWPolling();  //for debug only
         }
     },
     setOutputToLevel :function(outputid, level, apply, options)
