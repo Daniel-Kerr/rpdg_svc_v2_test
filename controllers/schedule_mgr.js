@@ -42,6 +42,7 @@ var SCHEDULE_FILE_WEEKLY = 'datastore/schedule/weekly.json';
 
 var HTML_SR_COLOR = '#ffff99';
 var HTML_SS_COLOR = '#ffcc66';
+var HTML_TEXT_COLOR_DARK = '#111111';
 
 var dirtyschedulecountdown = -1; // used to reinit, moved from service .
 
@@ -218,10 +219,14 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
     if( eventobj.timebase == "before_ss" || eventobj.timebase == "after_ss" ||
         eventobj.timebase == "before_sr" || eventobj.timebase == "after_sr")
     {
-        if(eventobj.timebase == "before_sr" || eventobj.timebase == "after_sr")
+        if(eventobj.timebase == "before_sr" || eventobj.timebase == "after_sr") {
             eventobj.color = HTML_SR_COLOR;
-        else
+            eventobj.textColor = HTML_TEXT_COLOR_DARK;
+        }
+        else {
             eventobj.color = HTML_SS_COLOR;
+            fileevents[i].textColor = HTML_TEXT_COLOR_DARK;
+        }
 
         //calc ss for this day,  and then set time accordingly.
         var k = calculateCalendarTimeFromSunTime(eventobj);
@@ -492,10 +497,14 @@ var mgr = module.exports = {
                 if( fileevents[i].timebase == "before_ss" || fileevents[i].timebase == "after_ss" ||
                     fileevents[i].timebase == "before_sr" || fileevents[i].timebase == "after_sr")
                 {
-                    if(fileevents[i].timebase == "before_sr" || fileevents[i].timebase == "after_sr")
+                    if(fileevents[i].timebase == "before_sr" || fileevents[i].timebase == "after_sr") {
                         fileevents[i].color = HTML_SR_COLOR;
-                    else
+                        fileevents[i].textColor = HTML_TEXT_COLOR_DARK;
+                    }
+                    else {
                         fileevents[i].color = HTML_SS_COLOR;
+                        fileevents[i].textColor = HTML_TEXT_COLOR_DARK;
+                    }
                     //calc ss for this day,  and then set time accordingly.
                     var k = calculateCalendarTimeFromSunTime(fileevents[i]);
                     fileevents[i].start_date = k.toString("MM/dd/yyyy HH:mm");
