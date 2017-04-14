@@ -3,16 +3,43 @@
  */
 
 var REST_GET_DATA = "history/getdata";
+
+var output_plot = undefined;
+
+
 function init()
 {
     // constructObjectGraphHolder("test");
+    getConfig(function (cfg) {
+        var k = 0;
+        k = k + 1
+        if(cfg != undefined)
+        {
+            var fixtures = cfg.fixtures;
+            // for(var i = 0 ; i < fixtures.length; i++)
+            // {
+            var element = {};
+            element.name = "dim1";
+            element.type = "output";
+            getDataForObject(element, processDataFetch);
+
+            var element = {};
+            element.name = "dim2";
+            element.type = "output";
+            getDataForObject(element, processDataFetch);
 
 
-    var element = {};
-    element.name = "dim1";
-    element.type = "output";
-    getDataForObject(element, processDataFetch);
+            // }
+        }
+    });
+
+
+
+
 }
+
+
+
 
 
 
@@ -35,11 +62,8 @@ function getDataForObject(obj, callback) {
 }
 
 function processDataFetch(resultdata) {
-    cacheddata = resultdata;  // just so we can copy over groups on save.
-
-
+   // cacheddata = resultdata;  // just so we can copy over groups on save.
     var parts = resultdata.split('\n');
-
 
     for(var i = 0; i < parts.length; i++)
     {
@@ -48,6 +72,8 @@ function processDataFetch(resultdata) {
             var ele = [];
             ele.push(Number(Number(point.date) * 1000));
             ele.push(Number(point.level));
+
+
             testdataset.push(ele);
         } catch(err )
         {
@@ -57,13 +83,24 @@ function processDataFetch(resultdata) {
     var k = 0;
     k = k  +1;
 
-    var plotDetail = $.plot($("#main-graph"),
+    output_plot = $.plot($("#main-graph"),
         dataDetail,
         detailOptions
-     );
+    );
 }
 
+var output_data_sets = [];
 var testdataset = [];
+
+
+togglePlot = function(seriesIdx)
+{
+    var someData = output_plot.getData();
+    someData[seriesIdx].lines.show = !someData[seriesIdx].lines.show;
+    output_plot.setData(someData);
+    output_plot.draw();
+}
+
 
 var detailOptions = {
     series: {
@@ -87,17 +124,31 @@ var detailOptions = {
     selection:{
         mode: "x"
     },
+    //legend: {
+    //    position: "nw"
+    //}
+    // ,
     legend: {
-        position: "nw"
+        labelFormatter: function(label, series){
+            return '<a href="#" onClick="togglePlot('+series.idx+'); return false;">'+label+'</a>';
+        }
     }
 };
 
 
 var dataDetail = [
-    { data: testdataset,
-        label: "Temp0",
+    {
+        data: testdataset,idx:0,
+        label: "dim1",
         color: '#33AAFF'
-    } ];
+    },
+    {
+        data: testdataset,idx:1,
+        label: "dim2",
+        color: '#FFAA00'
+    }
+
+];
 
 
 function constructObjectGraphHolder(object) {
