@@ -275,5 +275,23 @@ router.get('/getschedule', function(req, res) {
   JSON.stringify(events);
   res.send(events);
 });
+
+
+
+router.post('/setschedulemode', function(req, res) {
+
+  var enable = req.body.enable;
+  service.setScheduleModeEnable(enable);
+  res.status(200).send("OK");
+});
+
+
+
+router.get('/getpersistantstore', function(req, res) {
+
+  res.status(200).send(service.getPersistantStore());
+});
+
+
 module.exports = router;
 

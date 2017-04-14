@@ -51,6 +51,8 @@ var REST_SET_OUTPUTS = "/config/setoutputs";
 
 var REST_SAVE_SITEINFO = "/config/siteinfo";
 
+
+
 // config get / set,
 function getConfig(callback)
 {
@@ -384,3 +386,4 @@ function setRPDGOutputs(obj, callback) {
         }
     });
 }
+

@@ -26,18 +26,24 @@ $( function() {
 $(document).ready(function() {
 
     getConfig(processConfig);
-
-
-
+    getPersistStore(function (store) {
+        // set sched mode toggle to correct state,
+        var enabled = store.schedulemode;
+        $('#schedenable').prop('checked', enabled).change();
+    });
 });
 
 
 
 $(function() {
     $('#schedenable').change(function() {
-        var k = 0;
-        k = k  +1;
-        // $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+        var enabled = $(this).prop('checked');
+        var element = {};
+        element.enable = enabled;
+        setScheduleMode(element,function () {
+
+        });
+
     })
 })
 
@@ -162,13 +168,13 @@ function processConfig(configobj) {
     });
     scheduler.attachEvent("onEventLoading", function(ev){
         //any custom logic here
-      //  if(view_mode == "month")
+        //  if(view_mode == "month")
         //{
-          //  var ev = scheduler.getEvent(id);
-         //   var endd = ev.start_date;
-         //   endd.setMinutes(endd.getMinutes()+1);
-          //  ev.end_date = endd;
-       // }
+        //  var ev = scheduler.getEvent(id);
+        //   var endd = ev.start_date;
+        //   endd.setMinutes(endd.getMinutes()+1);
+        //  ev.end_date = endd;
+        // }
         return true;
     });
 
@@ -492,3 +498,5 @@ function show_minical(){
         });
     }
 }
+
+

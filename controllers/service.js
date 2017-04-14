@@ -33,6 +33,7 @@ var filter_utils = require('./../utils/filter_utils.js');
 
 var schedule_mgr = require('./schedule_mgr.js');
 
+var PERSIST_FILE = 'datastore/persist.json';
 
 var enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
@@ -51,10 +52,15 @@ var currentschedule_eventbundle = undefined;
 
 
 
+
 var dim_bright_request_map = {};
 
 var rpdg_service_moment = undefined; // used as time reference for vairous functions 4/11/17,
 // can be either real time or virtual time,  for test.
+
+// PERSISTAT SETTINGS (not config) ,
+var persistantstore = undefined;
+
 
 
 //
@@ -235,8 +241,8 @@ function contactSwitchHandler(contactdef)
                         {
                             global.applogger.info(TAG, "CONTACT INPUT HANDLER", "   vacancy future message registered **************************" );
 
-                           // var future = new moment();
-                           // future.add(Number(delaymin),'minutes');
+                            // var future = new moment();
+                            // future.add(Number(delaymin),'minutes');
                             rpdg_service_moment.add(Number(delaymin),'minutes');
                             if(value == 1)
                                 contactdef.active_pending_vancancy = rpdg_service_moment.clone(); //future;
@@ -370,6 +376,21 @@ function constructMiscDirs()
             if (err.code !== 'EEXIST') throw err
         }
     }
+
+
+    if (!fs.existsSync(PERSIST_FILE)) {
+        try {
+            var target = path.resolve(PERSIST_FILE);
+            var blank = {};
+            var output = JSON.stringify(blank, null, 4);
+            fs.writeFileSync(target, output);
+        } catch (err) {
+            if (err.code !== 'EEXIST') throw err
+        }
+    }
+   // setup persistant store point, (may move to global. ),
+    var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
+    persistantstore = obj;
 }
 
 
@@ -537,68 +558,65 @@ var service = module.exports =  {
 
             // 3/17/17/    Schedule manage polling,*******************************************************************
             //********************************************************************************************************
-            if(schedule_mgr.scheduleCacheReset())
-                currentschedule_eventbundle = undefined;
+            if(persistantstore != undefined && persistantstore.schedulemode != undefined && persistantstore.schedulemode) {
+
+                if (schedule_mgr.scheduleCacheReset())
+                    currentschedule_eventbundle = undefined;
 
 
-            schedulepollcount++;
-            var schedulepollperiod = Math.round ((schedulepollseconds * 1000) / BasePollingPeriod);
-            if (schedulepollcount >= schedulepollperiod || currentschedule_eventbundle == undefined) {  // periodic or , at start
-                schedulepollcount = 0;
-                var eventbundle = schedule_mgr.getCurrentEvent(now);
-                if (eventbundle != undefined && eventbundle.events.length > 0) {
-                    if (currentschedule_eventbundle == undefined || eventbundle.date_time.diff(currentschedule_eventbundle.date_time) != 0) {
+                schedulepollcount++;
+                var schedulepollperiod = Math.round((schedulepollseconds * 1000) / BasePollingPeriod);
+                if (schedulepollcount >= schedulepollperiod || currentschedule_eventbundle == undefined) {  // periodic or , at start
+                    schedulepollcount = 0;
+                    var eventbundle = schedule_mgr.getCurrentEvent(now);
+                    if (eventbundle != undefined && eventbundle.events.length > 0) {
+                        if (currentschedule_eventbundle == undefined || eventbundle.date_time.diff(currentschedule_eventbundle.date_time) != 0) {
 
-                        global.applogger.info(TAG, "Sched Event Bunlde INVOKE Start -- : ", "", "");
-                        currentschedule_eventbundle = eventbundle; // store it,
+                            global.applogger.info(TAG, "Sched Event Bunlde INVOKE Start -- : ", "", "");
+                            currentschedule_eventbundle = eventbundle; // store it,
 
-                        for(var i = 0; i < eventbundle.events.length; i++)
-                        {
-                            var event = eventbundle.events[i];
-                            var parts = event.text.split(":");
-                            if(event.action == "scene")
-                            {
-                                if(parts.length == 2)
-                                {
-                                    var scenename = parts[1].trim();
-                                    global.applogger.info(TAG, "Sched Event INVOKE -- : ", scenename , "");
-                                    module.exports.invokeScene(scenename, "wallstation");
+                            for (var i = 0; i < eventbundle.events.length; i++) {
+                                var event = eventbundle.events[i];
+                                var parts = event.text.split(":");
+                                if (event.action == "scene") {
+                                    if (parts.length == 2) {
+                                        var scenename = parts[1].trim();
+                                        global.applogger.info(TAG, "Sched Event INVOKE -- : ", scenename, "");
+                                        module.exports.invokeScene(scenename, "wallstation");
+                                    }
                                 }
-                            }
 
-                            // for inputs, we set/ get the enabled bit on the input.
-                            //for contact inputs the only type is contactinput type.
-                            if(event.action == "disable")
-                            {
-                                if(parts.length == 2) {
-                                    var inputname = parts[1].trim();
-                                    global.applogger.info(TAG, "Sched Event --- INPUT DISABLE -- : ", inputname , "");
+                                // for inputs, we set/ get the enabled bit on the input.
+                                //for contact inputs the only type is contactinput type.
+                                if (event.action == "disable") {
+                                    if (parts.length == 2) {
+                                        var inputname = parts[1].trim();
+                                        global.applogger.info(TAG, "Sched Event --- INPUT DISABLE -- : ", inputname, "");
 
-                                    var inputobj = global.currentconfig.getInputByName(inputname);
-                                    if(inputobj != undefined)
-                                        inputobj.enabled = false;
+                                        var inputobj = global.currentconfig.getInputByName(inputname);
+                                        if (inputobj != undefined)
+                                            inputobj.enabled = false;
 
 
+                                    }
+                                    // to do , get input name, and set / clear flag.
                                 }
-                                // to do , get input name, and set / clear flag.
-                            }
-                            else if (event.action == "enable")
-                            {
-                                if(parts.length == 2) {
-                                    var inputname = parts[1].trim();
-                                    global.applogger.info(TAG, "Sched Event ---- INPUT ENABLE -- : ", inputname , "");
+                                else if (event.action == "enable") {
+                                    if (parts.length == 2) {
+                                        var inputname = parts[1].trim();
+                                        global.applogger.info(TAG, "Sched Event ---- INPUT ENABLE -- : ", inputname, "");
 
-                                    var inputobj = global.currentconfig.getInputByName(inputname);
-                                    if(inputobj != undefined)
-                                        inputobj.enabled = true;
+                                        var inputobj = global.currentconfig.getInputByName(inputname);
+                                        if (inputobj != undefined)
+                                            inputobj.enabled = true;
+                                    }
                                 }
-                            }
 
+                            }
                         }
                     }
                 }
             }
-
             // ******************************************** END SCHEDULE POLLING ***************************************
             // *********************************************************************************************************
 
@@ -734,7 +752,7 @@ var service = module.exports =  {
             if(requestobj.name != undefined) {
                 var fix = global.currentconfig.getFixtureByName(requestobj.name);
                 if(fix != undefined) {
-                   // global.applogger.info(TAG, "found fixture wil ltry  to set level", "");
+                    // global.applogger.info(TAG, "found fixture wil ltry  to set level", "");
                     fix.setLevel(requestobj, applytohw);
                 }
             }
@@ -981,15 +999,29 @@ var service = module.exports =  {
                 module.exports.invokeScene(targetscene, "wallstation");
             }
         }
+    },
+    setScheduleModeEnable : function(enable)
+    {
+        var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
+        if(obj.schedulemode != undefined)
+        {
+            if(obj.schedulemode == enable)
+                return;
+        }
+        obj.schedulemode = enable;
+        persistantstore = obj;
+        var output = JSON.stringify(obj, null, 4);
+        fs.writeFile(PERSIST_FILE, output, function (err) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+
+            }
+        });
+    },
+    getPersistantStore : function()
+    {
+        return JSON.stringify(persistantstore, null, 4);
     }
-
-    //testZero2TenVoltDriver : function()
-    // {
-    //     setHW_ConfigureZero2TenDrive();
-    // },
-    //testDimmerEdgeConfig : function()
-    // {
-    // setDimmerEdgeConfig();
-    // }
-
 };

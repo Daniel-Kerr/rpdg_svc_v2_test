@@ -78,6 +78,7 @@ module.exports = {
             global.applogger.info(TAG, " error writing file " + ex1, "");
         }
     },
+
     testReadObjectLogFile: function(objectname)
     {
         try {
