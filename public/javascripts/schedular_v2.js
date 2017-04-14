@@ -125,6 +125,8 @@ function processConfig(configobj) {
                     html("eventtimehour").value = ev.relhour;
                     html("eventtimemin").value = ev.relmin;
                 }
+
+                html("eventrepeat").value = ev.repeat;
             }
             else
             {
