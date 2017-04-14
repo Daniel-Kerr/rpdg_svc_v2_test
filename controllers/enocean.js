@@ -32,7 +32,14 @@ if(!israspberrypi && process.argv.length > 0 && data_utils.commandLineArgPresent
     }
 }
 else if(israspberrypi)
-    supported = true;
+{
+    global.applogger.info(TAG, "checking if port is valid", "");
+    var fs = require('fs');
+    if (fs.existsSync(comport)) {
+        global.applogger.info(TAG, "USB stick found, enabling enocean now", "");
+        supported = true;
+    }
+}
 
 
 
