@@ -435,7 +435,7 @@ var service = module.exports =  {
 
 
         //test code to generate a pho data file.
-        var dt = moment();
+      /*  var dt = moment();
         for(var i = 0 ; i < 500; i++) {
 
             var element = {};
@@ -447,7 +447,7 @@ var service = module.exports =  {
             data_utils.appendOutputObjectLogFile("dim1",element);
 
             dt = dt.add(30, "minutes");
-        }
+        }*/
 
     },
 
