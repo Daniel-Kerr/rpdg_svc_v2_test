@@ -53,6 +53,8 @@ function init() {
     getConfig(processConfig);
 }
 
+
+
 function processConfig(configobj) {
     cachedconfig = configobj;  // just so we can copy over groups on save.
 
@@ -319,7 +321,18 @@ function constructFixtureButtons()
                     showDivID("BrightnessBar","block");
                     showDivID("CCTBar","block");
                     document.getElementById("brightnesssliderobject").value = selected_fixture.brightness;
-                    var barval = ((Number(selected_fixture.colortemp) - 2000)*100) / 4500;
+
+                    var min = Number(selected_fixture.min);
+                    var max = Number(selected_fixture.max);
+                    var range = max-min;
+                    var barval2 = ((Number(selected_fixture.colortemp) - min)/range) * 100;
+                  //  var ctempcalc = (min + (max-min)*(Number(value)/100));
+
+
+                    var barval = barval2; //((Number(selected_fixture.colortemp) - 2000)*100) / 4500;
+                   // var min = selected_fixture.min;
+                   // var max = selected_fixture.max;
+
                     document.getElementById("CCTsliderobject").value = barval;
                     break;
                 case "rgbw":
@@ -394,14 +407,14 @@ function onBrightnessSliderChange(value)
                     break;
                 case "dim":
                     var element = {};
-                    element.requesttype = "override";
+                    element.requesttype = "wallstation";
                     element.name =  selected_fixture.assignedname;
                     element.level = value;
                     setFixtureLevel(element);
                     break;
                 case "cct":
                     var element = {};
-                    element.requesttype = "override";
+                    element.requesttype = "wallstation";
                     element.name = selected_fixture.assignedname;
                     element.brightness = value;
                     var ctempslider = document.getElementById("CCTsliderobject");
@@ -432,7 +445,7 @@ function onToggleButtonChange(value)
             if(selected_fixture != undefined && selected_fixture.type == "on_off")
             {
                 var element = {};
-                element.requesttype = "override";
+                element.requesttype = "wallstation";
                 element.name =  selected_fixture.assignedname;
                 element.level = (value)?100:0;
                 setFixtureLevel(element);
@@ -486,8 +499,22 @@ function onCCTSliderChange(value)
                     var bright = brightslider.value;
                     var element = {};
                     element.name = selected_group.name;
-                    element.ctemp =  (2000 + (4500*value/100));
+
+                    
+                    // per JOE H,  use any cct fixtures min / maxs to calc value to send over. well take first one in .ist
+                    var defcct = getDefaultCCTFixture();
+                    var min = 3000;
+                    var max = 6500;
+                    if(defcct != undefined)
+                    {
+                        min = Number(defcct.min);
+                        max = Number(defcct.max);
+                    }
+                    var ctempcalc = (min + (max-min)*(Number(value)/100));
+
+                    element.ctemp =  ctempcalc; //(2000 + (4500*value/100));
                     element.brightness = bright;
+
                     setGroupToColorTemp(element, function (retval) {
                         if (retval != undefined)
                         {
@@ -505,10 +532,16 @@ function onCCTSliderChange(value)
             {
                 case "cct":
                     var element = {};
-                    element.requesttype = "override";
+                    element.requesttype = "wallstation";
                     element.name = selected_fixture.assignedname;
-                    element.brightness = document.getElementById("brightnesssliderobject").value;;
-                    element.colortemp = (2000 + (4500*value/100));
+                    element.brightness = document.getElementById("brightnesssliderobject").value;
+
+                    var min = Number(selected_fixture.min);
+                    var max = Number(selected_fixture.max);
+                    var ctempcalc = (min + (max-min)*(Number(value)/100));
+
+
+                    element.colortemp = ctempcalc; //(2000 + (4500*value/100));
                     setFixtureLevel(element);
                     break;
                 default:
@@ -871,4 +904,19 @@ function updateContactInputsTable() {
     }
 
     document.getElementById("contactinputsdiv").appendChild(oTable);
+}
+
+
+function getDefaultCCTFixture()
+{
+    if(cachedconfig != undefined)
+    {
+        for(var i = 0; i < cachedconfig.fixtures.length; i++)
+        {
+            var fix = cachedconfig.fixtures[i];
+            if(fix.type == "cct")
+                return fix;
+        }
+    }
+    return undefined;
 }
