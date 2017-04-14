@@ -433,6 +433,22 @@ var service = module.exports =  {
         // test code
         // module.exports.getEnoceanKnownContactInputs();
 
+
+        //test code to generate a pho data file.
+        var dt = moment();
+        for(var i = 0 ; i < 500; i++) {
+
+            var element = {};
+            element.date = dt.unix();
+
+            y = Math.sin( i ) / 0.1  + 50;
+          // counter += i;
+            element.level = y;
+            data_utils.appendOutputObjectLogFile("dim1",element);
+
+            dt = dt.add(30, "minutes");
+        }
+
     },
 
     setupHWInterface : function(fixturename)
