@@ -380,10 +380,22 @@ function onBrightnessSliderChange(value)
                 else if(selected_group.type == "ctemp")
                 {
                     var ctempslider = document.getElementById("CCTsliderobject");
-                    var ctemp = ctempslider.value;
+
+                    // per JOE H,  use any cct fixtures min / maxs to calc value to send over. well take first one in .ist
+                    var defcct = getDefaultCCTFixture();
+                    var min = 3000;
+                    var max = 6500;
+                    if(defcct != undefined)
+                    {
+                        min = Number(defcct.min);
+                        max = Number(defcct.max);
+                    }
+                    var ctempcalc = (min + (max-min)*(Number(ctempslider.value)/100));
+
+
                     var element = {};
                     element.name = selected_group.name;
-                    element.ctemp = ctemp;
+                    element.ctemp = ctempcalc;
                     element.brightness = value;
                     setGroupToColorTemp(element, function (retval) {
                         if (retval != undefined)
@@ -500,7 +512,7 @@ function onCCTSliderChange(value)
                     var element = {};
                     element.name = selected_group.name;
 
-                    
+
                     // per JOE H,  use any cct fixtures min / maxs to calc value to send over. well take first one in .ist
                     var defcct = getDefaultCCTFixture();
                     var min = 3000;
