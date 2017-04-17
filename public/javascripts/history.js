@@ -6,42 +6,35 @@ var REST_GET_DATA = "history/getdata";
 
 var output_plot = undefined;
 
+var input_plot = undefined;
+
+
+var output_dataset = [];
+var input_dataset = [];
+
+var outputcount = 1;  // number of outputs
+
+var inputcount = 1;  // number of outputs
 
 function init()
 {
-    // constructObjectGraphHolder("test");
     getConfig(function (cfg) {
-        var k = 0;
-        k = k + 1
+
         if(cfg != undefined)
         {
-            var fixtures = cfg.fixtures;
-            // for(var i = 0 ; i < fixtures.length; i++)
-            // {
+            //var fixtures = cfg.fixtures;
             var element = {};
             element.name = "dim1";
             element.type = "output";
-            getDataForObject(element, processDataFetch);
+            getDataForObject(element, processOutputDataFetch);
 
             var element = {};
-            element.name = "dim2";
-            element.type = "output";
-            getDataForObject(element, processDataFetch);
-
-
-            // }
+            element.name = "occ_sensor";
+            element.type = "input";
+            getDataForObject(element, processInputDataFetch);
         }
     });
-
-
-
-
 }
-
-
-
-
-
 
 function getDataForObject(obj, callback) {
 
@@ -61,10 +54,10 @@ function getDataForObject(obj, callback) {
     });
 }
 
-function processDataFetch(resultdata) {
-   // cacheddata = resultdata;  // just so we can copy over groups on save.
-    var parts = resultdata.split('\n');
 
+function processOutputDataFetch(resultdata) {
+
+    var parts = resultdata.split('\n');
     for(var i = 0; i < parts.length; i++)
     {
         try {
@@ -72,25 +65,44 @@ function processDataFetch(resultdata) {
             var ele = [];
             ele.push(Number(Number(point.date) * 1000));
             ele.push(Number(point.level));
-
-
-            testdataset.push(ele);
+            output_dataset.push(ele);
         } catch(err )
         {
 
         }
     }
-    var k = 0;
-    k = k  +1;
-
-    output_plot = $.plot($("#main-graph"),
+    output_plot = $.plot($("#output-graph"),
         dataDetail,
         detailOptions
     );
 }
 
-var output_data_sets = [];
-var testdataset = [];
+
+
+
+function processInputDataFetch(resultdata) {
+
+    var parts = resultdata.split('\n');
+    for(var i = 0; i < parts.length; i++)
+    {
+        try {
+            var point = JSON.parse(parts[i]);
+            var ele = [];
+            ele.push(Number(Number(point.date) * 1000));
+            ele.push(Number(point.level));
+            input_dataset.push(ele);
+        } catch(err )
+        {
+
+        }
+    }
+
+    input_plot = $.plot($("#input-graph"),
+        inputdataDetail,
+        detailOptions
+    );
+}
+
 
 
 togglePlot = function(seriesIdx)
@@ -138,18 +150,75 @@ var detailOptions = {
 
 var dataDetail = [
     {
-        data: testdataset,idx:0,
+        data: output_dataset,idx:0,
         label: "dim1",
         color: '#33AAFF'
     },
     {
-        data: testdataset,idx:1,
+        data: output_dataset,idx:1,
         label: "dim2",
         color: '#FFAA00'
     }
 
 ];
 
+
+// ************************************ INPUT GRAPH **************************
+
+var inputdataDetail = [
+    {
+        data: input_dataset,idx:0,
+        label: "occ_sensor",
+        color: '#77FFFF'
+    }
+];
+
+
+var inputdetailOptions = {
+    series: {
+        lines: { show: true, lineWidth: 3 },
+        shadowSize: 0
+    },
+    grid: {
+        hoverable: true,
+        borderWidth: 1
+    },
+    yaxis:{
+        min: 0,
+        max: 100,
+        ticksize: 20
+    },
+    xaxis:{
+        show: true,
+        mode: "time",
+        timezone: "browser"
+    },
+    selection:{
+        mode: "x"
+    },
+    //legend: {
+    //    position: "nw"
+    //}
+    // ,
+    legend: {
+        labelFormatter: function(label, series){
+            return '<a href="#" onClick="toggleInputPlot('+series.idx+'); return false;">'+label+'</a>';
+        }
+    }
+};
+
+
+
+toggleInputPlot = function(seriesIdx)
+{
+    var someData = input_plot.getData();
+    someData[seriesIdx].lines.show = !someData[seriesIdx].lines.show;
+    input_plot.setData(someData);
+    input_plot.draw();
+}
+
+
+/*
 
 function constructObjectGraphHolder(object) {
 
@@ -237,7 +306,7 @@ function constructObjectGraphHolder(object) {
      row2right.appendChild(sunbox);
      contentrow2.appendChild(row2right);
      */
-    fixcontent.appendChild(contentrow2);
-    return fixcol;
+   // fixcontent.appendChild(contentrow2);
+   // return fixcol;
 
-}
+//}

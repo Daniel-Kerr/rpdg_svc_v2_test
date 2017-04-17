@@ -388,7 +388,7 @@ function constructMiscDirs()
             if (err.code !== 'EEXIST') throw err
         }
     }
-   // setup persistant store point, (may move to global. ),
+    // setup persistant store point, (may move to global. ),
     var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
     persistantstore = obj;
 }
@@ -437,24 +437,45 @@ var service = module.exports =  {
         // test code
         // module.exports.getEnoceanKnownContactInputs();
 
-
+     /*
         //test code to generate a pho data file.
-       /* var dt = moment();
-        for(var i = 0 ; i < 500; i++) {
+        var dt = moment('01-01-2017', 'MM-DD-YYYY');
+        var dim1level = 0;
+        var occ_sensorlevel = 0;
+        for(var i = 0 ; i < 800; i++) {
 
-            var element = {};
-            element.date = dt.unix();
+            var dim1 = {};
+            //y = Math.sin( i ) / 0.1  + 50;
+            dim1.date = dt.unix();
+            dim1.level = dim1level;
+            data_utils.appendOutputObjectLogFile("dim1", dim1);
 
-            y = Math.sin( i ) / 0.1  + 50;
-            element.level = y;
-            data_utils.appendOutputObjectLogFile("dim1",element);
+            var occ_sensor = {};
+            occ_sensor.date = dt.unix();
+            occ_sensor.level = occ_sensorlevel;
+            data_utils.appendInputObjectLogFile("occ_sensor",occ_sensor);
 
-            var element2 = {};
-            element2.date = dt.unix();
-            element2.level = y+10;
-            data_utils.appendOutputObjectLogFile("dim2",element2);
+            // ramp starting at 200
 
-            dt = dt.add(30, "minutes");
+            if (i > 200 && i < 500) {
+                occ_sensorlevel = 100;
+            }
+            else
+            {
+                occ_sensorlevel = 0;
+            }
+
+            // set dim level according to occ level.
+            if (occ_sensorlevel > 0 && dim1level < 100) {
+                dim1level+= 5;
+            }
+            else if (occ_sensorlevel <= 0 && dim1level > 0)
+            {
+                dim1level-= 5;
+            }
+
+
+            dt = dt.add(1, "minutes");
         }*/
 
 
@@ -514,7 +535,7 @@ var service = module.exports =  {
                         var totalpower = (Number(powerwarm) + Number(powercool));
                         fixobj.powerwatts = totalpower.toFixed(2);
 
-                       // global.applogger.info(TAG, "polling", "updated power on cct device: " + fixobj.assignedname + "   outid=" + fixobj.outputid + "   " + powerwarm + "  +  " + powercool + "  = " + totalpower);
+                        // global.applogger.info(TAG, "polling", "updated power on cct device: " + fixobj.assignedname + "   outid=" + fixobj.outputid + "   " + powerwarm + "  +  " + powercool + "  = " + totalpower);
                     }
                 }
             }
@@ -862,10 +883,10 @@ var service = module.exports =  {
         rpdg.latchOutputLevelsToHW();
     },
 
-    // **********************************************************TEST HARNESS APIS ***********************************
-    // ***************************************************************************************************************
+// **********************************************************TEST HARNESS APIS ***********************************
+// ***************************************************************************************************************
 
-    // this handles all level / contact inputs.
+// this handles all level / contact inputs.
     testSetInputLevelVolts : function (interface, type, inputid, level)
     {
         incommingHWChangeHandler(interface, type, inputid,level);
@@ -890,20 +911,20 @@ var service = module.exports =  {
         daylightpollseconds = intervalsec;
         daylightpolcount = 0;
     },
-    // ,
-    // reinitScheduleMgr : function()
-    // {
-    //     reinit_schedule_countdown = 2;
-    //     s
+// ,
+// reinitScheduleMgr : function()
+// {
+//     reinit_schedule_countdown = 2;
+//     s
 //
-    // },
+// },
     enableRPDGHardwarePolling : function(enable)
     {
         global.applogger.error("rpdg_driver.js ", "enable rpdg polling : " + enable,  "");
         rpdg.enableHardwarePolling(enable);
     },
-    // ******************************************ENOCEAN SUPPORT **********************************************
-    // ********************************************************************************************************
+// ******************************************ENOCEAN SUPPORT **********************************************
+// ********************************************************************************************************
     teachEnoceanDevice : function(enoceanid)
     {
         try {

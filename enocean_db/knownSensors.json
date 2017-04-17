@@ -22,8 +22,8 @@
             {
                 "type": "Voltage",
                 "unit": "V",
-                "value": 3.38,
-                "lastModified": "2017-04-14T19:22:38.891Z"
+                "value": 3.58,
+                "lastModified": "2017-04-17T14:47:31.052Z"
             }
         ]
     },
@@ -67,14 +67,14 @@
             {
                 "type": "illumination",
                 "unit": "lux",
-                "value": 60,
-                "lastModified": "2017-04-14T19:09:08.139Z"
+                "value": 52,
+                "lastModified": "2017-04-17T14:57:47.669Z"
             },
             {
                 "type": "voltage",
                 "unit": "V",
-                "value": 3.4599999999999995,
-                "lastModified": "2017-04-14T18:42:20.946Z"
+                "value": 3.4999999999999996,
+                "lastModified": "2017-04-17T14:27:49.438Z"
             }
         ]
     },
