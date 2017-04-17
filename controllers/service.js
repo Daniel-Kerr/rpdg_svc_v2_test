@@ -437,26 +437,38 @@ var service = module.exports =  {
         // test code
         // module.exports.getEnoceanKnownContactInputs();
 
-     /*
+
+/*
         //test code to generate a pho data file.
         var dt = moment('01-01-2017', 'MM-DD-YYYY');
         var dim1level = 0;
+        var dim2level = 0;
         var occ_sensorlevel = 0;
+        var daylightlevel = 0;
         for(var i = 0 ; i < 800; i++) {
 
             var dim1 = {};
-            //y = Math.sin( i ) / 0.1  + 50;
             dim1.date = dt.unix();
             dim1.level = dim1level;
             data_utils.appendOutputObjectLogFile("dim1", dim1);
+
+            var dim2 = {};
+            dim2.date = dt.unix();
+            dim2.level = dim2level;
+            data_utils.appendOutputObjectLogFile("dim2", dim2);
 
             var occ_sensor = {};
             occ_sensor.date = dt.unix();
             occ_sensor.level = occ_sensorlevel;
             data_utils.appendInputObjectLogFile("occ_sensor",occ_sensor);
 
-            // ramp starting at 200
+            var daylight = {};
+            daylight.date = dt.unix();
+            daylight.level = daylightlevel;
+            data_utils.appendInputObjectLogFile("daylight",daylight);
 
+            // ramp starting at 200
+             // OCC / dim1
             if (i > 200 && i < 500) {
                 occ_sensorlevel = 100;
             }
@@ -474,10 +486,23 @@ var service = module.exports =  {
                 dim1level-= 5;
             }
 
+              // DAYLIGHT, ... dim2 *******************
+             // ramp daylight 350 -- 550
+            if (i > 350 && i < 549 && daylightlevel < 100) {
+                daylightlevel += 1;
+            }
+            else if( i > 550 && daylightlevel > 0)
+            {
+                daylightlevel -=1;
+            }
+
+
+            dim2level = daylightlevel
+            // set dim level according to occ level.
 
             dt = dt.add(1, "minutes");
-        }*/
-
+        }
+*/
 
     },
 
