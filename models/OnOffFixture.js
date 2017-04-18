@@ -71,26 +71,26 @@ var OnOffFixture = function()
         }
 
         var filterblocked = false;
-      //  if(this.interfacename != "rpdg-plc") {
+        //  if(this.interfacename != "rpdg-plc") {
 
-            var dlsensor = this.getMyDaylightSensor();
-            var isdaylightbound = false;
-            var daylightvolts = 0;
-            if (dlsensor != undefined) {
-                isdaylightbound = true;
-                daylightvolts = dlsensor.value;
-            }
+        var dlsensor = this.getMyDaylightSensor();
+        var isdaylightbound = false;
+        var daylightvolts = 0;
+        if (dlsensor != undefined) {
+            isdaylightbound = true;
+            daylightvolts = dlsensor.value;
+        }
 
-            var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound,daylightvolts);
-            this.daylightlimited = returndataobj.isdaylightlimited;
-            if(returndataobj.modifiedlevel > -1) {
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound,daylightvolts);
+        this.daylightlimited = returndataobj.isdaylightlimited;
+        if(returndataobj.modifiedlevel > -1) {
 
-                var modpct = returndataobj.modifiedlevel;
-                requestobj.level = modpct;
-            }
-            else
-                filterblocked = true;
-       // }
+            var modpct = returndataobj.modifiedlevel;
+            requestobj.level = modpct;
+        }
+        else
+            filterblocked = true;
+        // }
 
 
         if(filterblocked)

@@ -66,6 +66,46 @@ var DimFixture = function(name, interface, outputid)
             requestobj.level = this.lastuserequestedlevel;
         }
 
+
+        // 4/18/17  ******************************** Moved filter up. *******************
+        this.stopAutoAdjustTimer(this.assignedname);  //stop timer...
+        var dlsensor = this.getMyDaylightSensor();
+        var isdaylightbound = false;
+        var daylightvolts = 0;
+        if (dlsensor != undefined) {
+            isdaylightbound = true;
+            daylightvolts = dlsensor.value;
+        }
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound, daylightvolts);
+        this.daylightlimited = returndataobj.isdaylightlimited;
+        if (returndataobj.modifiedlevel > -1) {
+
+            // if delta in level and rate is set,  start timer.
+            if((returndataobj.modifiedlevel > this.level && this.parameters.brightenrate > 0) || (returndataobj.modifiedlevel < this.level && this.parameters.dimrate > 0))
+            {
+                this.startAutoAdjustTimer(this, returndataobj.modifiedlevel, requestobj.requesttype);
+            }
+            else {
+
+                var modpct = returndataobj.modifiedlevel;
+                requestobj.level = modpct;
+                this.previousvalue = Number(this.value);
+                this.level = Number(requestobj.level);
+                this.lastupdated = moment();
+                this.interface.setOutputToLevel(this.outputid, this.level, apply);
+
+
+                var logobj = {};
+                logobj.date = new moment().toISOString();
+                logobj.level = this.level.toFixed();
+                data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
+            }
+        }
+
+
+
+
+        /*
         this.stopAutoAdjustTimer(this.assignedname);
         if(requestobj.level > this.level && this.parameters.brightenrate > 0)
         {
@@ -103,7 +143,7 @@ var DimFixture = function(name, interface, outputid)
                 logobj.level = this.level.toFixed();
                 data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
             }
-        }
+        }  */
 
     };
 
@@ -209,23 +249,26 @@ var DimFixture = function(name, interface, outputid)
         }
 
 
-        var dlsensor = fixobj.getMyDaylightSensor();
+       // var dlsensor = fixobj.getMyDaylightSensor();
 
 
-        var isdaylightbound = false;
-        var daylightvolts = 0;
-        if (dlsensor != undefined) {
-            isdaylightbound = true;
-            daylightvolts = dlsensor.value;
-        }
+      //  var isdaylightbound = false;
+       // var daylightvolts = 0;
+       // if (dlsensor != undefined) {
+       //     isdaylightbound = true;
+        //    daylightvolts = dlsensor.value;
+       // }
 
-        var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel, fixobj.parameters, isdaylightbound, daylightvolts);
-        this.daylightlimited = returndataobj.isdaylightlimited;
+        //var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel, fixobj.parameters, isdaylightbound, daylightvolts);
+        //this.daylightlimited = returndataobj.isdaylightlimited;
 
-        if (returndataobj.modifiedlevel > -1) {
+        if(requestlevel > -1)
+        {
 
-            var modpct = returndataobj.modifiedlevel;
-            requestlevel = modpct;
+       // if (returndataobj.modifiedlevel > -1) {
+
+           // var modpct = returndataobj.modifiedlevel;
+            //requestlevel = modpct;
             fixobj.previousvalue = Number(fixobj.value);
             fixobj.level = Number(requestlevel);
             fixobj.lastupdated = moment();

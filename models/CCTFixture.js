@@ -66,44 +66,56 @@ var CCTFixture = function(name, interface, outputid)
         }
 
 
+        //  4/18/17,  moved filter up.
         this.stopAutoAdjustTimer(this.assignedname);
-        if(requestobj.brightness > this.brightness && this.parameters.brightenrate > 0)
-        {
-            this.startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
+        /* if(requestobj.brightness > this.brightness && this.parameters.brightenrate > 0)
+         {
+         this.startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
+         }
+         else if(requestobj.brightness < this.brightness && this.parameters.dimrate > 0)
+         {
+         this.startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
+         }
+         else { */
+
+
+        var dlsensor = this.getMyDaylightSensor();
+        var isdaylightbound = false;
+        var daylightvolts = 0;
+        if (dlsensor != undefined) {
+            isdaylightbound = true;
+            daylightvolts = dlsensor.value;
         }
-        else if(requestobj.brightness < this.brightness && this.parameters.dimrate > 0)
+
+        var brightness = this.brightness;   //use current by default
+        if (requestobj.brightness != undefined)
+            brightness = requestobj.brightness;   //use requested if present,
+
+        var colortemp = this.colortemp;
+        if (requestobj.colortemp != undefined)
+            colortemp = requestobj.colortemp;
+
+        // dl/light filter
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, brightness, this.parameters, isdaylightbound, daylightvolts);
+        this.daylightlimited = returndataobj.isdaylightlimited;
+        if (returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
+            var modpct = returndataobj.modifiedlevel;
+            brightness = modpct;  // modify the req obj.
+        }
+
+        // color temp calculation
+        var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(this.min, this.max, colortemp, brightness, this.candledim);
+
+
+
+        if((returndataobj.modifiedlevel > this.brightness && this.parameters.brightenrate > 0) || (returndataobj.modifiedlevel < this.brightness && this.parameters.dimrate > 0))
         {
-            this.startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
+            this.startAutoAdjustTimer(this, returndataobj.modifiedlevel, requestobj.requesttype);
         }
         else {
 
 
-            var dlsensor = this.getMyDaylightSensor();
-            var isdaylightbound = false;
-            var daylightvolts = 0;
-            if (dlsensor != undefined) {
-                isdaylightbound = true;
-                daylightvolts = dlsensor.value;
-            }
 
-            var brightness = this.brightness;   //use current by default
-            if (requestobj.brightness != undefined)
-                brightness = requestobj.brightness;   //use requested if present,
-
-            var colortemp = this.colortemp;
-            if (requestobj.colortemp != undefined)
-                colortemp = requestobj.colortemp;
-
-            // dl/light filter
-            var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, brightness, this.parameters, isdaylightbound, daylightvolts);
-            this.daylightlimited = returndataobj.isdaylightlimited;
-            if (returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
-                var modpct = returndataobj.modifiedlevel;
-                brightness = modpct;  // modify the req obj.
-            }
-
-            // color temp calculation
-            var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(this.min, this.max, colortemp, brightness, this.candledim);
 
             this.previouscolortemp = this.colortemp;
             this.colortemp = colortemp;
@@ -124,6 +136,7 @@ var CCTFixture = function(name, interface, outputid)
             logobj.colortemp = this.colortemp;
             data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
         }
+
     };
 
     this.getvalue=function(){
@@ -201,7 +214,7 @@ var CCTFixture = function(name, interface, outputid)
 
     this.autoAdjustLevel = function(fixobj)
     {
-       // global.applogger.info(TAG, "Auto Adjust Timer called fix: -- " , fixobj.assignedname);
+        // global.applogger.info(TAG, "Auto Adjust Timer called fix: -- " , fixobj.assignedname);
         var stepsize = 0;
         var requestlevel = 0;
 
@@ -229,13 +242,13 @@ var CCTFixture = function(name, interface, outputid)
 
 
 
-        var dlsensor = fixobj.getMyDaylightSensor();
-        var isdaylightbound = false;
-        var daylightvolts = 0;
-        if (dlsensor != undefined) {
-            isdaylightbound = true;
-            daylightvolts = dlsensor.value;
-        }
+    //    var dlsensor = fixobj.getMyDaylightSensor();
+     //   var isdaylightbound = false;
+     //   var daylightvolts = 0;
+     //   if (dlsensor != undefined) {
+     //       isdaylightbound = true;
+      //      daylightvolts = dlsensor.value;
+      //  }
 
         // var brightness = fixobj.brightness;   //use current by default
         // if (requestobj.brightness != undefined)
@@ -246,12 +259,12 @@ var CCTFixture = function(name, interface, outputid)
         //    colortemp = requestobj.colortemp;
 
         // dl/light filter
-        var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel,  fixobj.parameters, isdaylightbound, daylightvolts);
-        this.daylightlimited = returndataobj.isdaylightlimited;
-        if (returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
-            var modpct = returndataobj.modifiedlevel;
-            requestlevel = modpct;  // modify the req obj.
-        }
+     //   var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel,  fixobj.parameters, isdaylightbound, daylightvolts);
+       // this.daylightlimited = returndataobj.isdaylightlimited;
+        //if (returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
+        //    var modpct = returndataobj.modifiedlevel;
+         //   requestlevel = modpct;  // modify the req obj.
+        //}
 
         // color temp calculation
         var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(fixobj.min, fixobj.max, colortemp, requestlevel, fixobj.candledim);
