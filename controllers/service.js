@@ -441,72 +441,9 @@ var service = module.exports =  {
         //4/17/17/
         module.exports.invokeScene("ALL_ON","override");
 
-/*
-        //test code to generate a pho data file.
-        var dt = moment('01-01-2017', 'MM-DD-YYYY');
-        var dim1level = 0;
-        var dim2level = 0;
-        var occ_sensorlevel = 0;
-        var daylightlevel = 0;
-        for(var i = 0 ; i < 800; i++) {
 
-            var dim1 = {};
-            dim1.date = dt.unix();
-            dim1.level = dim1level;
-            data_utils.appendOutputObjectLogFile("dim1", dim1);
 
-            var dim2 = {};
-            dim2.date = dt.unix();
-            dim2.level = dim2level;
-            data_utils.appendOutputObjectLogFile("dim2", dim2);
-
-            var occ_sensor = {};
-            occ_sensor.date = dt.unix();
-            occ_sensor.level = occ_sensorlevel;
-            data_utils.appendInputObjectLogFile("occ_sensor",occ_sensor);
-
-            var daylight = {};
-            daylight.date = dt.unix();
-            daylight.level = daylightlevel;
-            data_utils.appendInputObjectLogFile("daylight",daylight);
-
-            // ramp starting at 200
-             // OCC / dim1
-            if (i > 200 && i < 500) {
-                occ_sensorlevel = 100;
-            }
-            else
-            {
-                occ_sensorlevel = 0;
-            }
-
-            // set dim level according to occ level.
-            if (occ_sensorlevel > 0 && dim1level < 100) {
-                dim1level+= 5;
-            }
-            else if (occ_sensorlevel <= 0 && dim1level > 0)
-            {
-                dim1level-= 5;
-            }
-
-              // DAYLIGHT, ... dim2 *******************
-             // ramp daylight 350 -- 550
-            if (i > 350 && i < 549 && daylightlevel < 100) {
-                daylightlevel += 1;
-            }
-            else if( i > 550 && daylightlevel > 0)
-            {
-                daylightlevel -=1;
-            }
-
-            // dim level 2 is inverse of daylight,
-
-            dim2level = 100 - daylightlevel;
-            // set dim level according to occ level.
-
-            dt = dt.add(1, "minutes");
-        }
-*/
+        //data_utils.generateFauxDataSeries();
 
     },
 
@@ -590,30 +527,30 @@ var service = module.exports =  {
 
                         //if (currenthour >= 8 && currenthour <= 17) {     // only run the daylight sensor between the hours of 8am and 5pm
 
-                            var level = inputobj.value;
-                            // look through all fixtures connected to DL sensor.  and set to level (wallstation)
-                            for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
-                                var fixobj = global.currentconfig.fixtures[k];
-                                if (fixobj.isBoundToInput(inputobj.assignedname)) {
-                                    global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", "daylight update" + fixobj.assignedname);
-                                    var reqobj = {};
-                                    reqobj.requesttype = "daylight";
+                        var level = inputobj.value;
+                        // look through all fixtures connected to DL sensor.  and set to level (wallstation)
+                        for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
+                            var fixobj = global.currentconfig.fixtures[k];
+                            if (fixobj.isBoundToInput(inputobj.assignedname)) {
+                                global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", "daylight update" + fixobj.assignedname);
+                                var reqobj = {};
+                                reqobj.requesttype = "daylight";
 
-                                    if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
-                                        //global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", " fixture set level is :" + fixobj.level);
-                                        fixobj.setLevel(reqobj, true);
-                                    }
-                                    if (fixobj instanceof CCTFixture) {
-                                        // create request here iwthout a change to color temp,  tell driver to use last known,
-                                        fixobj.setLevel(reqobj, true);
-                                    }
-                                    if (fixobj instanceof RGBWFixture) {
-                                        // create request here iwthout a change to color temp,  tell driver to use last known,
-                                        fixobj.setLevel(reqobj, true);
-                                    }
+                                if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
+                                    //global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", " fixture set level is :" + fixobj.level);
+                                    fixobj.setLevel(reqobj, true);
+                                }
+                                if (fixobj instanceof CCTFixture) {
+                                    // create request here iwthout a change to color temp,  tell driver to use last known,
+                                    fixobj.setLevel(reqobj, true);
+                                }
+                                if (fixobj instanceof RGBWFixture) {
+                                    // create request here iwthout a change to color temp,  tell driver to use last known,
+                                    fixobj.setLevel(reqobj, true);
                                 }
                             }
-                       // }
+                        }
+                        // }
                         // }
                     }  // end if daylight type.
                 }

@@ -110,7 +110,7 @@ var OnOffFixture = function()
 
 
         var logobj = {};
-        logobj.date = new moment().unix();
+        logobj.date = new moment().toISOString();
         logobj.level = this.level.toFixed();
         data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
     };

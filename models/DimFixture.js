@@ -99,7 +99,7 @@ var DimFixture = function(name, interface, outputid)
 
 
                 var logobj = {};
-                logobj.date = new moment().unix();
+                logobj.date = new moment().toISOString();
                 logobj.level = this.level.toFixed();
                 data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
             }
@@ -232,7 +232,7 @@ var DimFixture = function(name, interface, outputid)
             fixobj.interface.setOutputToLevel(fixobj.outputid, fixobj.level, true);
 
             var logobj = {};
-            logobj.date = new moment().unix();
+            logobj.date = new moment().toISOString();
             logobj.level = fixobj.level.toFixed();
             data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
         }

@@ -42,7 +42,7 @@ var ContactInput = function()
         this.lastupdated = moment();
 
         var logobj = {};
-        logobj.date = new moment().unix();
+        logobj.date = new moment().toISOString();
         logobj.value = this.value;
         data_utils.appendInputObjectLogFile(this.assignedname, logobj);
     };

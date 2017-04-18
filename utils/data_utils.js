@@ -276,6 +276,75 @@ module.exports = {
         msgobj.error = message;
         return msgobj;
     },
+    generateFauxDataSeries: function()  {
+
+
+        //test code to generate a pho data file.
+        var dt = moment('03-15-2017', 'MM-DD-YYYY');
+        var dim1level = 0;
+        var dim2level = 0;
+        var occ_sensorlevel = 0;
+        var daylightlevel = 0;
+        for(var i = 0 ; i < 2500; i++) {
+
+            var dim1 = {};
+            dim1.date = dt.toISOString();
+            dim1.level = dim1level;
+            module.exports.appendOutputObjectLogFile("dim1", dim1);
+
+            var dim2 = {};
+            dim2.date = dt.toISOString();
+            dim2.level = dim2level;
+            module.exports.appendOutputObjectLogFile("dim2", dim2);
+
+            var occ_sensor = {};
+            occ_sensor.date = dt.toISOString();
+            occ_sensor.value = occ_sensorlevel;
+            module.exports.appendInputObjectLogFile("occ_sensor",occ_sensor);
+
+            var daylight = {};
+            daylight.date = dt.toISOString();
+            daylight.value = daylightlevel;
+            module.exports.appendInputObjectLogFile("daylight",daylight);
+
+            // ramp starting at 200
+            // OCC / dim1
+            if ((i > 200 && i < 500)  || (i > 750 && i < 1020) || (i > 1670 && i < 1834) ) {
+                occ_sensorlevel = 100;
+            }
+            else
+            {
+                occ_sensorlevel = 0;
+            }
+
+            // set dim level according to occ level.
+            if (occ_sensorlevel > 0 && dim1level < 100) {
+                dim1level+= 5;
+            }
+            else if (occ_sensorlevel <= 0 && dim1level > 0)
+            {
+                dim1level-= 5;
+            }
+
+            // DAYLIGHT, ... dim2 *******************
+            // ramp daylight 350 -- 550
+            if (i > 350 && i < 549 && daylightlevel < 100) {
+                daylightlevel += 1;
+            }
+            else if( i > 550 && daylightlevel > 0)
+            {
+                daylightlevel -=1;
+            }
+
+            // dim level 2 is inverse of daylight,
+
+            dim2level = 100 - daylightlevel;
+            // set dim level according to occ level.
+
+            dt = dt.add(30, "minutes");
+        }
+
+    },
     validateConfigData: function (data) {
 
 

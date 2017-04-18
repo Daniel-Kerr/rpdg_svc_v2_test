@@ -119,7 +119,7 @@ var CCTFixture = function(name, interface, outputid)
             this.lastupdated = moment();
 
             var logobj = {};
-            logobj.date = new moment().unix();
+            logobj.date = new moment().toISOString();
             logobj.brightness = Number(this.brightness).toFixed();
             logobj.colortemp = this.colortemp;
             data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
@@ -270,7 +270,7 @@ var CCTFixture = function(name, interface, outputid)
 
 
         var logobj = {};
-        logobj.date = new moment().unix();
+        logobj.date = new moment().toISOString();
         logobj.brightness = Number(fixobj.brightness).toFixed();
         logobj.colortemp = fixobj.colortemp;
         data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);

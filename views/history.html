@@ -4,7 +4,7 @@
 <!--script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <script type="text/javascript" src="http://www.pureexample.com/js/lib/jquery.ui.touch-punch.min.js"></script-->
-<title>Groups</title>
+<title>History</title>
 <script src="javascripts/wNumb.js"></script>
 <script src="javascripts/nouislider.min.js"></script>
 <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
@@ -19,11 +19,22 @@
 <script src="bsmaster/assets/js/jquery.noty.min.js"></script>
 
 <script src="bsmaster/assets/js/jquery.sparkline.min.js"></script>
+
+<!-- bsmaster
 <script src="bsmaster/assets/js/jquery.flot.min.js"></script>
 <script src="bsmaster/assets/js/jquery.flot.stack.min.js"></script>
 <script src="bsmaster/assets/js/jquery.flot.resize.min.js"></script>
 <script src="bsmaster/assets/js/jquery.flot.time.min.js"></script>
 <script src="bsmaster/assets/js/jquery.flot.selection.js"></script>
+-->
+
+<script src="flot/jquery.flot.min.js"></script>
+<script src="flot/jquery.flot.stack.min.js"></script>
+<script src="flot/jquery.flot.resize.min.js"></script>
+<script src="flot/jquery.flot.time.min.js"></script>
+<script src="flot/jquery.flot.selection.js"></script>
+<script src="flot/jquery.flot.navigate.js"></script>
+
 
 <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
@@ -83,6 +94,23 @@
         min-height: 100%;
         height: 100%;
     }
+
+
+    #output-graph .button {
+        position: absolute;
+        cursor: pointer;
+    }
+
+    #output-graph div.button {
+        font-size: smaller;
+        color: #999;
+        background-color: #eee;
+        padding: 2px;
+    }
+    .message {
+        padding-left: 50px;
+        font-size: smaller;
+    }
 </style>
 
 <script>
@@ -115,6 +143,13 @@
     <!--div id="outputs_graphs" class="output_graph_holder"-->
 
         <div class="col-lg-10">
+            <input type="button" id = "bt1hr" class="btn btn-large btn-success" onclick=setWindowHours(1) value="1 hour"/>
+            <input type="button" id = "bt6hr" class="btn btn-large btn-success" onclick=setWindowHours(6) value="6 hours"/>
+            <input type="button" id = "bt12hr" class="btn btn-large btn-success" onclick=setWindowHours(12) value="12 hours"/>
+            <input type="button" id = "btday" class="btn btn-large btn-success" onclick=setWindowHours(24) value="Day"/>
+            <input type="button" id = "btweek" class="btn btn-large btn-success" onclick=setWindowHours(24*7) value="Week"/>
+            <input type="button" id = "btmonth" class="btn btn-large btn-success" onclick=setWindowHours(24*30) value="Month"/>
+
             <div class="box">
                 <div class="box-header" data-original-title>
                     <h2><i class="fa fa-user"></i><span class="break"></span>Fixtures / (Outputs)</h2>
