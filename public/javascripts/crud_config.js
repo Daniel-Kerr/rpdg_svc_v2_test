@@ -51,7 +51,7 @@ var REST_SET_OUTPUTS = "/config/setoutputs";
 
 var REST_SAVE_SITEINFO = "/config/siteinfo";
 
-
+var REST_GET_ENOCEAN_RX = "/config/enoceanrx";
 
 // config get / set,
 function getConfig(callback)
@@ -387,3 +387,20 @@ function setRPDGOutputs(obj, callback) {
     });
 }
 
+
+
+
+
+function getEnoceanRx(callback)
+{
+    function onDataReceived(series) {
+        if(series != null)
+            callback(series);
+    }
+    $.ajax({
+        url: REST_GET_ENOCEAN_RX,
+        type: "GET",
+        dataType: "json",
+        success: onDataReceived,
+    });
+}

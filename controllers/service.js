@@ -1025,5 +1025,15 @@ var service = module.exports =  {
     getPersistantStore : function()
     {
         return JSON.stringify(persistantstore, null, 4);
+    },
+    getEnoceanRxQue : function()
+    {
+        if(enocean != undefined)
+            return enocean.getRxMessageFifo();
+        else
+        {
+            var k = [];
+            return k;
+        }
     }
 };

@@ -846,5 +846,12 @@ router.post('/siteinfo', function(req, res) {
 
 
 
+router.get('/enoceanrx', function(req, res) {
+
+    var que = service.getEnoceanRxQue();
+    res.status(200).send(que);
+});
+
+
 
 module.exports = router;

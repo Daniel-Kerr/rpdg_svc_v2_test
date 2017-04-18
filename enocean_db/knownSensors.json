@@ -12,7 +12,7 @@
                 "type": "PIR Status",
                 "unit": "",
                 "value": "on",
-                "lastModified": "2017-04-18T16:21:31.194Z"
+                "lastModified": "2017-04-18T18:34:22.103Z"
             },
             {
                 "type": "Supply voltage",
@@ -22,8 +22,8 @@
             {
                 "type": "Voltage",
                 "unit": "V",
-                "value": 3.36,
-                "lastModified": "2017-04-18T17:28:22.346Z"
+                "value": 3.38,
+                "lastModified": "2017-04-18T18:18:57.890Z"
             }
         ]
     },
@@ -73,8 +73,8 @@
             {
                 "type": "voltage",
                 "unit": "V",
-                "value": 3.4199999999999995,
-                "lastModified": "2017-04-18T17:18:59.920Z"
+                "value": 3.4399999999999995,
+                "lastModified": "2017-04-18T18:11:05.879Z"
             }
         ]
     },

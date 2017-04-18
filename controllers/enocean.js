@@ -3,6 +3,7 @@
  */
 var path = require('path');
 var pad = require('pad');
+var moment = require('moment');
 var TAG = pad(path.basename(__filename),15);
 var rxhandler = undefined;
 var data_utils = require('../utils/data_utils.js');  //1/15/17,
@@ -16,6 +17,10 @@ var israspberrypi = (process.arch == 'arm');
 var isready = false;
 
 var comport = '/dev/ttyUSB0';
+
+// 4/18/17,  console window for encean config,
+
+var last_rx_messages = [];
 
 // if com port is present,
 if(!israspberrypi && process.argv.length > 0 && data_utils.commandLineArgPresent("COM"))
@@ -137,6 +142,7 @@ enocean.on("known-data",function(data){
 // *******************************************************************************************************
 enocean.on("unknown-data",function(data){
     global.applogger.info(TAG, "unknown data from enocean device id: ",data.senderId);
+    storeRxMessage("unknown data from enocean device id: " + data.senderId);
 })
 
 enocean.on("unknown-teach-in",function(data){
@@ -159,6 +165,18 @@ enocean.on("learned",function(data){
 enocean.on("forgotten",function(data){
     global.applogger.info(TAG, "Device Forgotton: ",data);
 })
+
+
+function storeRxMessage(msg)
+{
+    var d = moment();
+    var str = d.format('MM/DD/YYYY ' + ' HH:mm') + " " + msg;
+    last_rx_messages.push(str);  // push onto end,
+
+    if(last_rx_messages.length > 10)
+        last_rx_messages.splice(0, 1);  // cut out index 0,
+
+}
 
 
 function getSystemIDFromEnoceanID(enoceanid)
@@ -191,6 +209,10 @@ module.exports = {
                 enocean.listen(comport); //"COM8");
 
         }
+    },
+    getRxMessageFifo: function()
+    {
+        return last_rx_messages;
     },
     setOutputToLevel :function(outputid, level, apply, options)
     {

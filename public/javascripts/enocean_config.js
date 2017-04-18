@@ -3,6 +3,25 @@
  */
 
 
+setInterval(function () {
+    getEnoceanRx(function(data) {
+
+        var k = 0;
+        k = k + 1;
+
+        var datastring = "";
+        for(var i =0; i < data.length; i++)
+        {
+            datastring += data[i] + "\n";
+        }
+        var textarea = document.getElementById("enoceanrx");
+
+        textarea.value = datastring;
+
+    })
+
+}, 5000);
+
 
 function init()
 {
