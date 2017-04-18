@@ -22,6 +22,8 @@ var DimFixture = function(name, interface, outputid)
 
     // status
     this.level = 0;
+    this.lastuserequestedlevel = 0;
+
     this.previousvalue = 0;
     this.lastupdated = undefined;
     this.powerwatts = 0;
@@ -54,6 +56,15 @@ var DimFixture = function(name, interface, outputid)
 
 
     this.setLevel = function(requestobj, apply){
+
+        if(requestobj.requesttype == "override" || requestobj.requesttype == "wallstation" || requestobj.requesttype == "wetdrycontact")
+        {
+            this.lastuserequestedlevel = requestobj.level;
+        }
+        else if(requestobj.requesttype == "daylight")
+        {
+            requestobj.level = this.lastuserequestedlevel;
+        }
 
         this.stopAutoAdjustTimer(this.assignedname);
         if(requestobj.level > this.level && this.parameters.brightenrate > 0)

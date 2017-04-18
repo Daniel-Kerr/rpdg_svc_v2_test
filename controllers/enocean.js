@@ -195,7 +195,8 @@ module.exports = {
     setOutputToLevel :function(outputid, level, apply, options)
     {
         if(supported) {
-            global.applogger.info(TAG, "set output ", outputid + "  to  " + level + "   applied " + apply + "  opts: " + options);
+
+            var k = fixturemap[outputid];
 
             // if its not there,
             if(fixturemap[outputid] == undefined)
@@ -205,11 +206,16 @@ module.exports = {
                 {
                     var dimmer = new Dimmer(enocean, Number(sysid));
                     fixturemap[outputid] = dimmer;
+                    global.applogger.info(TAG, "set new dimmer", outputid + "  sysid  " + sysid +   "  to  " + level + "   applied " + apply + "  opts: " + options);
+
                     dimmer.setValue(level);
                 }
             }
             else
             {
+                var sysid = getSystemIDFromEnoceanID(outputid);
+                global.applogger.info(TAG, "set existing dimmer", outputid + "  sysid  " + sysid +   "  to  " + level + "   applied " + apply + "  opts: " + options);
+
                 var dimmer = fixturemap[outputid];
                 dimmer.setValue(level);
             }
@@ -218,12 +224,13 @@ module.exports = {
     // for teaching output devices ,
     teachFixture: function (enoceanid) {   // will want to add callback,, of some kind,
         try {
-            global.applogger.info(TAG, "  teachFixture","TEACHING / CREATING ENOCEAN DEVICE ID: " + enoceanid);
+
             if(fixturemap[enoceanid] == undefined)
             {
                 var sysid = getSystemIDFromEnoceanID(enoceanid);
                 if(sysid != undefined)
                 {
+                    global.applogger.info(TAG, "  teachFixture","TEACHING / CREATING ENOCEAN DEVICE ID: " + enoceanid + "   system id :" + sysid);
                     var dimmer = new Dimmer(enocean, Number(sysid));
                     fixturemap[enoceanid] = dimmer;
                     dimmer.teach();
@@ -231,6 +238,9 @@ module.exports = {
             }
             else
             {
+                var sysid = getSystemIDFromEnoceanID(enoceanid);
+                global.applogger.info(TAG, "  teachFixture","TEACHING / CREATING ENOCEAN DEVICE ID: " + enoceanid + "   system id :" + sysid);
+
                 var dimmer = fixturemap[enoceanid];
                 dimmer.teach();
             }

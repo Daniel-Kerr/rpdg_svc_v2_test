@@ -23,6 +23,7 @@ var RGBWFixture = function(name, interface, outputid)
     this.green = 0;
     this.blue = 0;
     this.white = 0;
+    this.lastuserrequestedwhite = 0;
 
     this.previousred = 0;
     this.previousgreen = 0;
@@ -50,6 +51,16 @@ var RGBWFixture = function(name, interface, outputid)
     };
 
     this.setLevel = function(requestobj, apply){
+
+        if(requestobj.requesttype == "override" || requestobj.requesttype == "wallstation" || requestobj.requesttype == "wetdrycontact")
+        {
+            this.lastuserrequestedwhite = requestobj.white;
+        }
+        else if(requestobj.requesttype == "daylight")
+        {
+            requestobj.white = this.lastuserrequestedwhite;
+        }
+
 
         var dlsensor = this.getMyDaylightSensor();
         var isdaylightbound = false;

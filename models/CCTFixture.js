@@ -28,6 +28,7 @@ var CCTFixture = function(name, interface, outputid)
     // status
     this.colortemp = 3500;
     this.brightness = 100;
+    this.lastuserequestedbrightness = 0;
     this.previouscolortemp = 3500;
     this.previousbrightness = 100;
     this.lastupdated = undefined;
@@ -54,6 +55,16 @@ var CCTFixture = function(name, interface, outputid)
     };
 
     this.setLevel = function(requestobj, apply) {
+
+        if(requestobj.requesttype == "override" || requestobj.requesttype == "wallstation" || requestobj.requesttype == "wetdrycontact")
+        {
+            this.lastuserequestedbrightness = requestobj.brightness;
+        }
+        else if(requestobj.requesttype == "daylight")
+        {
+            requestobj.brightness = this.lastuserequestedbrightness;
+        }
+
 
         this.stopAutoAdjustTimer(this.assignedname);
         if(requestobj.brightness > this.brightness && this.parameters.brightenrate > 0)

@@ -3,11 +3,8 @@
  */
 
 var REST_GET_DATA = "history/getdata";
-
 var output_plot = undefined;
-
 var input_plot = undefined;
-
 
 var output_dataset = [];
 var input_dataset = [];
@@ -18,6 +15,14 @@ var outputcount = 0;  // number of outputs
 var inputcount = 0;  // number of outputs
 var totalinputs = 2;
 
+
+
+var end_date = new Date();
+var start_date = new Date();
+start_date.setHours(start_date.getHours() - 3);
+
+var FAUX_DATA = false;
+
 var line_colors = ['#33AAAA','#3322FF','#3377FF','#33AA11','#33AA99'];
 function init()
 {
@@ -25,30 +30,58 @@ function init()
 
         if(cfg != undefined)
         {
-            outputcount = 0;
 
-            var fixtures = cfg.fixtures;
+            if(!FAUX_DATA) {
+                outputcount = 0;
+                totaloutputs = cfg.fixtures.length;
+                var fixtures = cfg.fixtures;
+                var levelinputs = cfg.levelinputs;
+                totalinputs = cfg.levelinputs.length;
 
-            var element = {};
-            element.name = "dim1";
-            element.type = "output";
-            getDataForObject(element, processOutputDataFetch);
+
+                for (var i = 0; i < fixtures.length; i++) {
+                    // FAUX data .
+                    var element = {};
+                    element.name = fixtures[i].assignedname;
+                    element.type = "output";
+                    getDataForObject(element, processOutputDataFetch);
+                }
+
+                for (var i = 0; i < levelinputs.length; i++) {
+                    // FAUX data .
+                    var element = {};
+                    element.name = levelinputs[i].assignedname;
+                    element.type = "input";
+                    getDataForObject(element, processInputDataFetch);
+                }
+
+            }
+            else {
+
+                // FAUX data .
+
+                var element = {};
+                element.name = "dim1";
+                element.type = "output";
+                getDataForObject(element, processOutputDataFetch);
 
 
-            var element = {};
-            element.name = "dim2";
-            element.type = "output";
-            getDataForObject(element, processOutputDataFetch);
+                var element = {};
+                element.name = "dim2";
+                element.type = "output";
+                getDataForObject(element, processOutputDataFetch);
 
-            var element = {};
-            element.name = "occ_sensor";
-            element.type = "input";
-            getDataForObject(element, processInputDataFetch);
+                var element = {};
+                element.name = "occ_sensor";
+                element.type = "input";
+                getDataForObject(element, processInputDataFetch);
 
-            var element = {};
-            element.name = "daylight";
-            element.type = "input";
-            getDataForObject(element, processInputDataFetch);
+                var element = {};
+                element.name = "daylight";
+                element.type = "input";
+                getDataForObject(element, processInputDataFetch);
+            }
+
         }
     });
 }
@@ -71,10 +104,23 @@ function getDataForObject(obj, callback) {
     });
 }
 
+function getFixtureByName(name)
+{
+    for(var i = 0 ; i < cachedconfig.fixtures.length; i++)
+    {
+        if(name == cachedconfig.fixtures[i].assignedname)
+        {
+            return cachedconfig.fixtures[i];
+        }
+    }
+    return undefined;
+}
+
 
 function processOutputDataFetch(name, resultdata) {
 
 
+    //var fixobj = getFixtureByName(name);
     var dataholder = [];
     var parts = resultdata.split('\n');
 
@@ -90,7 +136,14 @@ function processOutputDataFetch(name, resultdata) {
     {
         try {
             var point = JSON.parse(parts[i]);
-            dataholder.push([Number(Number(point.date) * 1000),Number(point.level)]);
+
+            var yvalue = 0;
+            if(point.level != undefined)
+                yvalue = point.level;
+            else if(point.brightness != undefined)
+                yvalue = point.brightness;
+
+            dataholder.push([Number(Number(point.date) * 1000),Number(yvalue)]);
         } catch(err )
         {
         }
@@ -117,14 +170,6 @@ togglePlot = function(seriesIdx)
 }
 
 
-/*var dataDetail = [
-    {
-        data: output_dataset,idx:0,
-        label: "dim1",
-        color: '#33AAFF'
-    }
-];  */
-
 var detailOptions = {
     series: {
         lines: { show: true, lineWidth: 3 },
@@ -142,7 +187,10 @@ var detailOptions = {
     xaxis:{
         show: true,
         mode: "time",
-        timezone: "browser"
+        timezone: "browser",
+        min: start_date.getTime(),
+        max: end_date.getTime()
+
     },
     selection:{
         mode: "x"
@@ -178,7 +226,7 @@ function processInputDataFetch(name, resultdata) {
     {
         try {
             var point = JSON.parse(parts[i]);
-            dataholder.push([Number(Number(point.date) * 1000),Number(point.level)]);
+            dataholder.push([Number(Number(point.date) * 1000),Number(point.value*10)]);  // for now scale.
         } catch(err )
         {
         }
@@ -196,15 +244,6 @@ function processInputDataFetch(name, resultdata) {
     }
 }
 
-/*
-var inputdataDetail = [
-    {
-        data: input_dataset,idx:0,
-        label: "occ_sensor",
-        color: '#77FFFF'
-    }
-];
-*/
 
 var inputdetailOptions = {
     series: {
@@ -223,7 +262,9 @@ var inputdetailOptions = {
     xaxis:{
         show: true,
         mode: "time",
-        timezone: "browser"
+        timezone: "browser",
+        min: start_date.getTime(),
+        max: end_date.getTime()
     },
     selection:{
         mode: "x"

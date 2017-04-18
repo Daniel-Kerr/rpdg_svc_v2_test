@@ -39,8 +39,8 @@
             {
                 "type": "PIR Status",
                 "unit": "",
-                "value": "off",
-                "lastModified": "2017-04-14T19:06:11.730Z"
+                "value": "on",
+                "lastModified": "2017-04-17T18:41:20.632Z"
             },
             {
                 "type": "Supply voltage",
@@ -50,8 +50,8 @@
             {
                 "type": "Voltage",
                 "unit": "V",
-                "value": 3.1,
-                "lastModified": "2017-04-14T17:12:05.304Z"
+                "value": 3.84,
+                "lastModified": "2017-04-17T19:58:14.969Z"
             }
         ]
     },
@@ -91,7 +91,7 @@
                 "type": "state",
                 "unit": "",
                 "value": "released",
-                "lastModified": "2017-02-23T19:36:59.903Z"
+                "lastModified": "2017-04-17T19:26:41.918Z"
             }
         ]
     },
@@ -108,7 +108,7 @@
                 "type": "state",
                 "unit": "",
                 "value": "released",
-                "lastModified": "2017-02-23T19:36:55.601Z"
+                "lastModified": "2017-04-17T18:41:48.152Z"
             }
         ]
     },
@@ -125,7 +125,7 @@
                 "type": "state",
                 "unit": "",
                 "value": "released",
-                "lastModified": "2017-02-23T19:36:57.936Z"
+                "lastModified": "2017-04-17T19:27:19.301Z"
             }
         ]
     },

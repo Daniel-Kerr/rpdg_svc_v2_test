@@ -121,13 +121,14 @@ function adddevice()
 {
     var element = {}
     element.enoceanid = document.getElementById("deviceid").value;
-    for(var i = 10; i < 100; i++)
+    for(var i = 10; i < 100; i+=2)
     {
         if(!systemidtaken(i))
         {
             element.systemid = String(i);
             break;
         }
+
     }
 
     saveConfigObject("enocean",element,function (retval) {

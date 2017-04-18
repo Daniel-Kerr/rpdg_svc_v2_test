@@ -348,8 +348,17 @@ function readHW_0to10inputs() {
                         // update the stored value.
                         if (absdelta > .50) {  //for historisis (this is volts),
                             global.applogger.info(TAG, "Input Delta > .50:  ", "abs delta: " + absdelta.toFixed(2) + "  " + Zero_to_Ten_Volt_inputs[index].toFixed(2) + " : " + voltage.toFixed(2));
+
+
+
                             Zero_to_Ten_Volt_inputs[index] = voltage;  // NOTE,  this is voltage,
-                            rxhandler("rpdg","levelinput", index+1, voltage);
+
+                            var txvalue = voltage;
+
+                            if(txvalue > 10.0)
+                                txvalue = 10;
+
+                            rxhandler("rpdg","levelinput", index+1, txvalue);
                         }
 
                         if (err != null)

@@ -25,6 +25,7 @@ var OnOffFixture = function()
 
     // status
     this.level = 0;
+    this.lastuserequestedlevel = 0;
     this.previousvalue = 0;
     this.lastupdated = new moment();
     this.powerwatts = 0;
@@ -59,6 +60,15 @@ var OnOffFixture = function()
     };
 
     this.setLevel = function(requestobj, apply){
+
+        if(requestobj.requesttype == "override" || requestobj.requesttype == "wallstation" || requestobj.requesttype == "wetdrycontact")
+        {
+            this.lastuserequestedlevel = requestobj.level;
+        }
+        else if(requestobj.requesttype == "daylight")
+        {
+            requestobj.level = this.lastuserequestedlevel;
+        }
 
         var filterblocked = false;
       //  if(this.interfacename != "rpdg-plc") {

@@ -438,6 +438,9 @@ var service = module.exports =  {
         // module.exports.getEnoceanKnownContactInputs();
 
 
+        //4/17/17/
+        module.exports.invokeScene("ALL_ON","override");
+
 /*
         //test code to generate a pho data file.
         var dt = moment('01-01-2017', 'MM-DD-YYYY');
@@ -496,8 +499,9 @@ var service = module.exports =  {
                 daylightlevel -=1;
             }
 
+            // dim level 2 is inverse of daylight,
 
-            dim2level = daylightlevel
+            dim2level = 100 - daylightlevel;
             // set dim level according to occ level.
 
             dt = dt.add(1, "minutes");
@@ -578,20 +582,13 @@ var service = module.exports =  {
                 daylightpolcount = 0;
                 //  global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
                 // get the dl sensor
-                //var dlsensor = undefined; //global.currentconfig.getDayLightSensor();
 
                 // get each of the daylight sensors, in the config.
                 for(var levelidx = 0; levelidx < global.currentconfig.levelinputs.length; levelidx++ ) {
                     var inputobj = global.currentconfig.levelinputs[levelidx];
                     if (inputobj.type == "daylight") {
-                        // var currenthour = now.hour();
-                        //if (global.virtualbasetime != undefined) {
-                        //    var deltams = now - global.virtualtimeset;
-                        //    var virtualclocktime = global.virtualbasetime.add(deltams, 'ms');
-                        //    currenthour = virtualclocktime.hour();
-                        // }
 
-                        if (currenthour >= 8 && currenthour <= 17) {     // only run the daylight sensor between the hours of 8am and 5pm
+                        //if (currenthour >= 8 && currenthour <= 17) {     // only run the daylight sensor between the hours of 8am and 5pm
 
                             var level = inputobj.value;
                             // look through all fixtures connected to DL sensor.  and set to level (wallstation)
@@ -601,27 +598,22 @@ var service = module.exports =  {
                                     global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", "daylight update" + fixobj.assignedname);
                                     var reqobj = {};
                                     reqobj.requesttype = "daylight";
+
                                     if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
-                                        // the input level is 0 - 10, so mult by 10, and round to int,
-                                        var targetlevel = level * 10;
-                                        reqobj.level = targetlevel.toFixed(0);
+                                        //global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", " fixture set level is :" + fixobj.level);
                                         fixobj.setLevel(reqobj, true);
                                     }
                                     if (fixobj instanceof CCTFixture) {
                                         // create request here iwthout a change to color temp,  tell driver to use last known,
-                                        var targetlevel = level * 10;
-                                        reqobj.brightness = targetlevel.toFixed(0);
                                         fixobj.setLevel(reqobj, true);
                                     }
                                     if (fixobj instanceof RGBWFixture) {
                                         // create request here iwthout a change to color temp,  tell driver to use last known,
-                                        var targetlevel = level * 10;
-                                        reqobj.white = targetlevel.toFixed(0);
                                         fixobj.setLevel(reqobj, true);
                                     }
                                 }
                             }
-                        }
+                       // }
                         // }
                     }  // end if daylight type.
                 }
