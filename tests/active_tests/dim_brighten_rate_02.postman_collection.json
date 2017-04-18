@@ -1,0 +1,457 @@
+{
+	"variables": [],
+	"info": {
+		"name": "dim_brighten_rate_02",
+		"_postman_id": "5924ca3d-f6e5-08c1-429a-112ab305c3ce",
+		"description": "Using 6 dim fixtures and 1 CCT fixture to test a rim and brighten rates. Using occupancy/vacancy as a source of input and making sure the fixtures are following the proper dim/brighten rates.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_6dim_1cct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"10\",\n                \"brightenrate\": \"10\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"100\",\n                \"manualceiling\": \"100\",\n                \"daylightfloor\": \"0\",\n                \"manualfloor\": \"0\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-18T16:29:02.746Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Occ1\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"10\",\n                \"brightenrate\": \"10\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"100\",\n                \"manualceiling\": \"100\",\n                \"daylightfloor\": \"0\",\n                \"manualfloor\": \"0\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-18T16:29:02.756Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Occ1\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"10\",\n                \"brightenrate\": \"10\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"100\",\n                \"manualceiling\": \"100\",\n                \"daylightfloor\": \"0\",\n                \"manualfloor\": \"0\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-18T16:29:02.762Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Occ1\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"10\",\n                \"brightenrate\": \"10\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"100\",\n                \"manualceiling\": \"100\",\n                \"daylightfloor\": \"0\",\n                \"manualfloor\": \"0\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-18T16:29:02.767Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Occ1\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_5\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"10\",\n                \"brightenrate\": \"10\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"100\",\n                \"manualceiling\": \"100\",\n                \"daylightfloor\": \"0\",\n                \"manualfloor\": \"0\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-18T16:29:02.771Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Occ1\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_6\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"6\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"10\",\n                \"brightenrate\": \"10\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"100\",\n                \"manualceiling\": \"100\",\n                \"daylightfloor\": \"0\",\n                \"manualfloor\": \"0\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-18T16:29:02.775Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Occ1\"\n            ]\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"7\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": false,\n            \"min\": \"2000\",\n            \"max\": \"6500\",\n            \"boundinputs\": [\n                \"Occ1\"\n            ],\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"10\",\n                \"brightenrate\": \"10\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"100\",\n                \"manualceiling\": \"100\",\n                \"daylightfloor\": \"0\",\n                \"manualfloor\": \"0\"\n            },\n            \"colortemp\": 2000,\n            \"brightness\": 0,\n            \"lastuserequestedbrightness\": \"0\",\n            \"previouscolortemp\": 2000,\n            \"previousbrightness\": 0,\n            \"lastupdated\": \"2017-04-18T16:29:02.780Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [\n        {\n            \"assignedname\": \"Occ1\",\n            \"type\": \"maintained\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"1\",\n            \"active_action\": \"msg_@@_Occupancy_@@_Occupancy_@@_0\",\n            \"inactive_action\": \"msg_@@_Vacancy_@@_Occupancy_@@_0\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-04-18T16:31:35.116Z\",\n            \"enabled\": true\n        }\n    ],\n    \"groups\": [\n        {\n            \"name\": \"Occupancy\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_1\",\n                \"TEST_FIX_Dim_2\",\n                \"TEST_FIX_Dim_3\",\n                \"TEST_FIX_Dim_4\",\n                \"TEST_FIX_Dim_5\",\n                \"TEST_FIX_Dim_6\",\n                \"TEST_FIX_CCT\"\n            ]\n        }\n    ],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Disable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"false\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_occ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 1000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var out1 = jsonData.fixtures[0].level;",
+							"var out2 = jsonData.fixtures[1].level;",
+							"var out3 = jsonData.fixtures[2].level;",
+							"var out4 = jsonData.fixtures[3].level;",
+							"var out5 = jsonData.fixtures[4].level;",
+							"var out6 = jsonData.fixtures[5].level;",
+							"var out7 = jsonData.fixtures[6].hwwarm;",
+							"tests[\"Value of pwm output 1 is greater than 5 but less than 15 \"] = (out1<15&&out1>5);",
+							"tests[\"Value of pwm output 2 is greater than 5 but less than 15 \"] = (out2<15&&out2>5);",
+							"tests[\"Value of pwm output 3 is greater than 5 but less than 15 \"] = (out3<15&&out3>5);",
+							"tests[\"Value of pwm output 4 is greater than 5 but less than 15 \"] = (out4<15&&out4>5);",
+							"tests[\"Value of pwm output 5 is greater than 5 but less than 15 \"] = (out5<15&&out5>5);",
+							"tests[\"Value of pwm output 6 is greater than 5 but less than 15 \"] = (out6<15&&out6>5);",
+							"tests[\"Value of pwm output 7 is greater than 5 but less than 15 \"] = (out7<15&&out7>5);",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 3000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var out1 = jsonData.fixtures[0].level;",
+							"var out2 = jsonData.fixtures[1].level;",
+							"var out3 = jsonData.fixtures[2].level;",
+							"var out4 = jsonData.fixtures[3].level;",
+							"var out5 = jsonData.fixtures[4].level;",
+							"var out6 = jsonData.fixtures[5].level;",
+							"var out7 = jsonData.fixtures[6].hwwarm;",
+							"tests[\"Value of pwm output 1 is greater than 35 but less than 45 \"] = (out1<45&&out1>35);",
+							"tests[\"Value of pwm output 2 is greater than 35 but less than 45 \"] = (out2<45&&out2>35);",
+							"tests[\"Value of pwm output 3 is greater than 35 but less than 45 \"] = (out3<45&&out3>35);",
+							"tests[\"Value of pwm output 4 is greater than 35 but less than 45 \"] = (out4<45&&out4>35);",
+							"tests[\"Value of pwm output 5 is greater than 35 but less than 45 \"] = (out5<45&&out5>35);",
+							"tests[\"Value of pwm output 6 is greater than 35 but less than 45 \"] = (out6<45&&out6>35);",
+							"tests[\"Value of pwm output 7 is greater than 35 but less than 45 \"] = (out7<45&&out7>35);",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 3000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var out1 = jsonData.fixtures[0].level;",
+							"var out2 = jsonData.fixtures[1].level;",
+							"var out3 = jsonData.fixtures[2].level;",
+							"var out4 = jsonData.fixtures[3].level;",
+							"var out5 = jsonData.fixtures[4].level;",
+							"var out6 = jsonData.fixtures[5].level;",
+							"var out7 = jsonData.fixtures[6].hwwarm;",
+							"tests[\"Value of pwm output 1 is greater than 65 but less than 75 \"] = (out1<75&&out1>65);",
+							"tests[\"Value of pwm output 2 is greater than 65 but less than 75 \"] = (out2<75&&out2>65);",
+							"tests[\"Value of pwm output 3 is greater than 65 but less than 75 \"] = (out3<75&&out3>65);",
+							"tests[\"Value of pwm output 4 is greater than 65 but less than 75 \"] = (out4<75&&out4>65);",
+							"tests[\"Value of pwm output 5 is greater than 65 but less than 75 \"] = (out5<75&&out5>65);",
+							"tests[\"Value of pwm output 6 is greater than 65 but less than 75 \"] = (out6<75&&out6>65);",
+							"tests[\"Value of pwm output 7 is greater than 65 but less than 75 \"] = (out7<75&&out7>65);",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 3000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var out1 = jsonData.fixtures[0].level;",
+							"var out2 = jsonData.fixtures[1].level;",
+							"var out3 = jsonData.fixtures[2].level;",
+							"var out4 = jsonData.fixtures[3].level;",
+							"var out5 = jsonData.fixtures[4].level;",
+							"var out6 = jsonData.fixtures[5].level;",
+							"var out7 = jsonData.fixtures[6].hwwarm;",
+							"tests[\"Value of pwm output 1 is greater than 90 but less than or equal to 100 \"] = (out1<=100&&out1>90);",
+							"tests[\"Value of pwm output 2 is greater than 90 but less than or equal to 100 \"] = (out2<=100&&out2>90);",
+							"tests[\"Value of pwm output 3 is greater than 90 but less than or equal to 100 \"] = (out3<=100&&out3>90);",
+							"tests[\"Value of pwm output 4 is greater than 90 but less than or equal to 100 \"] = (out4<=100&&out4>90);",
+							"tests[\"Value of pwm output 5 is greater than 90 but less than or equal to 100 \"] = (out5<=100&&out5>90);",
+							"tests[\"Value of pwm output 6 is greater than 90 but less than or equal to 100 \"] = (out6<=100&&out6>90);",
+							"tests[\"Value of pwm output 7 is greater than 90 but less than or equal to 100 \"] = (out7<=100&&out7>90);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 1000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var out1 = jsonData.fixtures[0].level;",
+							"var out2 = jsonData.fixtures[1].level;",
+							"var out3 = jsonData.fixtures[2].level;",
+							"var out4 = jsonData.fixtures[3].level;",
+							"var out5 = jsonData.fixtures[4].level;",
+							"var out6 = jsonData.fixtures[5].level;",
+							"var out7 = jsonData.fixtures[6].hwwarm;",
+							"tests[\"Value of pwm output 1 is greater than 85 but less than 95 \"] = (out1<95&&out1>85);",
+							"tests[\"Value of pwm output 2 is greater than 85 but less than 95 \"] = (out2<95&&out2>85);",
+							"tests[\"Value of pwm output 3 is greater than 85 but less than 95 \"] = (out3<95&&out3>85);",
+							"tests[\"Value of pwm output 4 is greater than 85 but less than 95 \"] = (out4<95&&out4>85);",
+							"tests[\"Value of pwm output 5 is greater than 85 but less than 95 \"] = (out5<95&&out5>85);",
+							"tests[\"Value of pwm output 6 is greater than 85 but less than 95 \"] = (out6<95&&out6>85);",
+							"tests[\"Value of pwm output 7 is greater than 85 but less than 95 \"] = (out7<95&&out7>85);",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 3000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var out1 = jsonData.fixtures[0].level;",
+							"var out2 = jsonData.fixtures[1].level;",
+							"var out3 = jsonData.fixtures[2].level;",
+							"var out4 = jsonData.fixtures[3].level;",
+							"var out5 = jsonData.fixtures[4].level;",
+							"var out6 = jsonData.fixtures[5].level;",
+							"var out7 = jsonData.fixtures[6].hwwarm;",
+							"tests[\"Value of pwm output 1 is greater than 55 but less than 65 \"] = (out1<65&&out1>55);",
+							"tests[\"Value of pwm output 2 is greater than 55 but less than 65 \"] = (out2<75&&out2>55);",
+							"tests[\"Value of pwm output 3 is greater than 55 but less than 65 \"] = (out3<75&&out3>55);",
+							"tests[\"Value of pwm output 4 is greater than 55 but less than 65 \"] = (out4<75&&out4>55);",
+							"tests[\"Value of pwm output 5 is greater than 55 but less than 65 \"] = (out5<75&&out5>55);",
+							"tests[\"Value of pwm output 6 is greater than 55 but less than 65 \"] = (out6<75&&out6>55);",
+							"tests[\"Value of pwm output 7 is greater than 55 but less than 65 \"] = (out7<75&&out7>55);",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 3000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var out1 = jsonData.fixtures[0].level;",
+							"var out2 = jsonData.fixtures[1].level;",
+							"var out3 = jsonData.fixtures[2].level;",
+							"var out4 = jsonData.fixtures[3].level;",
+							"var out5 = jsonData.fixtures[4].level;",
+							"var out6 = jsonData.fixtures[5].level;",
+							"var out7 = jsonData.fixtures[6].hwwarm;",
+							"tests[\"Value of pwm output 1 is greater than 25 but less than 35 \"] = (out1<35&&out1>25);",
+							"tests[\"Value of pwm output 2 is greater than 25 but less than 35 \"] = (out2<35&&out2>25);",
+							"tests[\"Value of pwm output 3 is greater than 25 but less than 35 \"] = (out3<35&&out3>25);",
+							"tests[\"Value of pwm output 4 is greater than 25 but less than 35 \"] = (out4<35&&out4>25);",
+							"tests[\"Value of pwm output 5 is greater than 25 but less than 35 \"] = (out5<35&&out5>25);",
+							"tests[\"Value of pwm output 6 is greater than 25 but less than 35 \"] = (out6<35&&out6>25);",
+							"tests[\"Value of pwm output 7 is greater than 25 but less than 35 \"] = (out7<35&&out7>25);",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 3000);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"var out1 = jsonData.fixtures[0].level;",
+							"var out2 = jsonData.fixtures[1].level;",
+							"var out3 = jsonData.fixtures[2].level;",
+							"var out4 = jsonData.fixtures[3].level;",
+							"var out5 = jsonData.fixtures[4].level;",
+							"var out6 = jsonData.fixtures[5].level;",
+							"var out7 = jsonData.fixtures[6].hwwarm;",
+							"tests[\"Value of pwm output 1 is greater than or equal to 0 but less than 10 \"] = (out1<10&&out1>=0);",
+							"tests[\"Value of pwm output 2 is greater than or equal to 0 but less than 10 \"] = (out2<10&&out2>=0);",
+							"tests[\"Value of pwm output 3 is greater than or equal to 0 but less than 10 \"] = (out3<10&&out3>=0);",
+							"tests[\"Value of pwm output 4 is greater than or equal to 0 but less than 10 \"] = (out4<10&&out4>=0);",
+							"tests[\"Value of pwm output 5 is greater than or equal to 0 but less than 10 \"] = (out5<10&&out5>=0);",
+							"tests[\"Value of pwm output 6 is greater than or equal to 0 but less than 10 \"] = (out6<10&&out6>=0);",
+							"tests[\"Value of pwm output 7 is greater than or equal to 0 but less than 10 \"] = (out7<10&&out7>=0);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Enable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"true\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
