@@ -14,114 +14,69 @@ var server = dgram.createSocket("udp4");
 var serverisready = false;
 var rxhandler = undefined;
 
+var isSender = false;
+
 exports.init = function(callback) {
 
     rxhandler = callback;
-    // client, side
-// var message = new Buffer("hello");
-   // var message = new Buffer("3031323334353637", "hex");
-
-/*
-    client.on("message", function(msg, rinfo) {
-        console.log("recieved: " + msg.toString("hex"));
-        client.close();
-    });
-
-
-    client.on("err", function(err) {
-        console.log("client error: \n" + err.stack);
-        console.close();
-    });
-
-// Socket
-    client.on("close", function() {
-        console.log("closed.");
-    });
-
-
-    send(message, host, c_port);
-/*
-    function send(message, host, port) {
-        client.send(message, 0, message.length, port, host, function(err, bytes) {
-            console.log("sent.");
-        });
-    }
-*/
-    // UDP Sample Server
 
     server.on("listening", function() {
         var address = server.address();
+        server.setBroadcast(true);
         global.applogger.info(TAG, "server listening " + address.address + ":" + address.port, "");
-       // console.log("server listening " + address.address + ":" + address.port);
     });
 
     server.on("message", function(msg, rinfo) {
-       // global.applogger.info(TAG, "server got a message from " + rinfo.address + ":" + rinfo.port, "");
-       // global.applogger.info(TAG, "  HEX  : " + msg.toString('hex'), "");
+        // global.applogger.info(TAG, "server got a message from " + rinfo.address + ":" + rinfo.port, "");
+        // global.applogger.info(TAG, "  HEX  : " + msg.toString('hex'), "");
         global.applogger.info(TAG, "RX: " + msg, "");
 
         var msgobj = JSON.parse(msg);
         rxhandler(msgobj);
 
-        //console.log("server got a message from " + rinfo.address + ":" + rinfo.port);
-       // console.log("  HEX  : " + msg.toString('hex'));
-       // console.log("  ASCII: " + msg);
-       // var ack = new Buffer("ack");
+        // var ack = new Buffer("ack");
         //server.send(ack, 0, ack.length, rinfo.port, rinfo.address, function(err, bytes) {
-            //console.log("sent ACK.");
+        //console.log("sent ACK.");
         //    global.applogger.info(TAG, "sent ack", "");
-       // });
+        // });
     });
 
     server.on("error", function(err) {
-        //console.log("server error: \n" + err.stack);
+
         global.applogger.info(TAG, "server error", err.stack);
         server.close();
     });
 
-
     server.on("close", function() {
-       // console.log("closed.");
         global.applogger.info(TAG, "server closed", "");
     });
 
-   // server.setBroadcast(true);   // <-----------------------------------------------BROADCAST --------
-
-    server.bind(function() {
-        server.setBroadcast(true);
-       // setInterval(broadcastNew, 3000);
-    });
-
-   // server.bind(s_port);
-    //console.log("udp server is setup.");
+    server.bind(s_port);
     global.applogger.info(TAG, "server setup complete and bound", "");
     serverisready = true;
-
 }
 
 
 function send(message, host) {
     server.send(message, 0, message.length, s_port, host, function(err, bytes) {
-        //console.log("sent.");
-
         global.applogger.info(TAG, "message sent", "");
     });
 }
 
+if(isSender) {
+    setInterval(function () {
 
+       // global.applogger.info(TAG, "send timer fired", "");
+        if (serverisready) {
 
-setInterval(function () {
+            var element = {};
+            element.group = "nickgroup";
+            element.action = "occupancy";
+            var out = JSON.stringify(element);
+            var message = new Buffer(out, "utf-8");
+            // var message = new Buffer("3031323334353637", "hex");
+            send(message, "192.168.50.255");
+        }
 
-    global.applogger.info(TAG, "send timer fired", "");
-    if(serverisready) {
-
-        var element = {};
-        element.group = "nickgroup";
-        element.action = "occupancy";
-        var out = JSON.stringify(element);
-        var message = new Buffer(out, "utf-8");
-       // var message = new Buffer("3031323334353637", "hex");
-        send(message, "192.168.50.255");
-    }
-
-}, 5000);
+    }, 5000);
+}

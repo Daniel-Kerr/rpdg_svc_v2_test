@@ -418,7 +418,7 @@ var service = module.exports =  {
         enocean.init(incommingHWChangeHandler);
         rpdg.init(incommingHWChangeHandler);
 
-      //  upd_handler.init(incommingUDPMessageHandler);
+    //    upd_handler.init(incommingUDPMessageHandler);
 
         var cfg = data_utils.getConfigFromFile();
         var active_cfg = undefined;
