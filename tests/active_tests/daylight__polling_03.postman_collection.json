@@ -60,6 +60,37 @@
 			"response": []
 		},
 		{
+			"name": "setMultipleFixtures_100%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_1\",\n\t\t\"level\": \"100\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_Plc_1\",\n\t\t\"level\": \"100\"\n\t}\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Set DaylightInterval to 500 sec",
 			"event": [
 				{
@@ -85,40 +116,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n  \"interval\": 500\r\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "invoke_wet_occ",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[1].level == 100;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/tester/setinputlevel",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": \"1\"\n}"
 				},
 				"description": ""
 			},
