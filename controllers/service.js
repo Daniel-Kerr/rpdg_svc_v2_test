@@ -66,6 +66,15 @@ var persistantstore = undefined;
 // 4/19/17, Networking start.
 var upd_handler = require('./udp_handler.js');
 
+
+
+
+function incommingUDPMessageHandler(messageobj)
+{
+   // stub for now,  but will act on group / scene messages ..
+    // add filter to check for group id, ..etc, and if found,,,
+    global.applogger.info(TAG, "UDP rx handler got message", JSON.stringify(messageobj));
+}
 //
 /***
  * this is where the messages from rpdg driver or the enocean hw come in ,  like (occ, vac...polling changes..etc),
@@ -409,7 +418,7 @@ var service = module.exports =  {
         enocean.init(incommingHWChangeHandler);
         rpdg.init(incommingHWChangeHandler);
 
-     //   upd_handler.init();  //todo , put in callback,
+      //  upd_handler.init(incommingUDPMessageHandler);
 
         var cfg = data_utils.getConfigFromFile();
         var active_cfg = undefined;

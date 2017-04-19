@@ -67,8 +67,8 @@
             {
                 "type": "illumination",
                 "unit": "lux",
-                "value": 40,
-                "lastModified": "2017-04-19T15:27:19.763Z"
+                "value": 48,
+                "lastModified": "2017-04-19T16:17:19.609Z"
             },
             {
                 "type": "voltage",

@@ -11,12 +11,15 @@ var pad = require('pad');
 var TAG = pad(path.basename(__filename),15);
 var server = dgram.createSocket("udp4");
 
+var serverisready = false;
+var rxhandler = undefined;
 
-exports.init = function() {
+exports.init = function(callback) {
 
+    rxhandler = callback;
     // client, side
 // var message = new Buffer("hello");
-    var message = new Buffer("3031323334353637", "hex");
+   // var message = new Buffer("3031323334353637", "hex");
 
 /*
     client.on("message", function(msg, rinfo) {
@@ -53,17 +56,21 @@ exports.init = function() {
     });
 
     server.on("message", function(msg, rinfo) {
-        global.applogger.info(TAG, "server got a message from " + rinfo.address + ":" + rinfo.port, "");
-        global.applogger.info(TAG, "  HEX  : " + msg.toString('hex'), "");
-        global.applogger.info(TAG, "  ASCII: " + msg, "");
+       // global.applogger.info(TAG, "server got a message from " + rinfo.address + ":" + rinfo.port, "");
+       // global.applogger.info(TAG, "  HEX  : " + msg.toString('hex'), "");
+        global.applogger.info(TAG, "RX: " + msg, "");
+
+        var msgobj = JSON.parse(msg);
+        rxhandler(msgobj);
+
         //console.log("server got a message from " + rinfo.address + ":" + rinfo.port);
        // console.log("  HEX  : " + msg.toString('hex'));
        // console.log("  ASCII: " + msg);
-        var ack = new Buffer("ack");
-        server.send(ack, 0, ack.length, rinfo.port, rinfo.address, function(err, bytes) {
+       // var ack = new Buffer("ack");
+        //server.send(ack, 0, ack.length, rinfo.port, rinfo.address, function(err, bytes) {
             //console.log("sent ACK.");
-            global.applogger.info(TAG, "sent ack", "");
-        });
+        //    global.applogger.info(TAG, "sent ack", "");
+       // });
     });
 
     server.on("error", function(err) {
@@ -78,16 +85,43 @@ exports.init = function() {
         global.applogger.info(TAG, "server closed", "");
     });
 
-    server.bind(s_port);
+   // server.setBroadcast(true);   // <-----------------------------------------------BROADCAST --------
+
+    server.bind(function() {
+        server.setBroadcast(true);
+       // setInterval(broadcastNew, 3000);
+    });
+
+   // server.bind(s_port);
     //console.log("udp server is setup.");
     global.applogger.info(TAG, "server setup complete and bound", "");
+    serverisready = true;
 
 }
 
 
-function send(message, host, port) {
-    server.send(message, 0, message.length, port, host, function(err, bytes) {
+function send(message, host) {
+    server.send(message, 0, message.length, s_port, host, function(err, bytes) {
         //console.log("sent.");
+
         global.applogger.info(TAG, "message sent", "");
     });
 }
+
+
+
+setInterval(function () {
+
+    global.applogger.info(TAG, "send timer fired", "");
+    if(serverisready) {
+
+        var element = {};
+        element.group = "nickgroup";
+        element.action = "occupancy";
+        var out = JSON.stringify(element);
+        var message = new Buffer(out, "utf-8");
+       // var message = new Buffer("3031323334353637", "hex");
+        send(message, "192.168.50.255");
+    }
+
+}, 5000);
