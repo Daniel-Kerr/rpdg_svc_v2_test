@@ -64,7 +64,7 @@ var persistantstore = undefined;
 
 
 // 4/19/17, Networking start.
-var upd_handler = require('./udp_handler.js');
+var upd_handler = undefined; //require('./udp_handler.js');
 
 
 
@@ -418,7 +418,11 @@ var service = module.exports =  {
         enocean.init(incommingHWChangeHandler);
         rpdg.init(incommingHWChangeHandler);
 
-    //    upd_handler.init(incommingUDPMessageHandler);
+        data_utils.commandLineArgPresent("udp")
+        {
+            upd_handler  = require('./udp_handler.js');
+            upd_handler.init(incommingUDPMessageHandler);
+        }
 
         var cfg = data_utils.getConfigFromFile();
         var active_cfg = undefined;
@@ -456,7 +460,8 @@ var service = module.exports =  {
         module.exports.invokeScene("ALL_ON","override");
 
 
-
+        var ip = require('ip');
+        global.applogger.info(TAG, "IP ADDRESS IS: " + ip.address(), "");
         //data_utils.generateFauxDataSeries();
 
     },
