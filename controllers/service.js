@@ -63,6 +63,9 @@ var persistantstore = undefined;
 
 
 
+// 4/19/17, Networking start.
+var upd_handler = require('./udp_handler.js');
+
 //
 /***
  * this is where the messages from rpdg driver or the enocean hw come in ,  like (occ, vac...polling changes..etc),
@@ -405,6 +408,8 @@ var service = module.exports =  {
         global.applogger.info(TAG, " --init---", "");
         enocean.init(incommingHWChangeHandler);
         rpdg.init(incommingHWChangeHandler);
+
+     //   upd_handler.init();  //todo , put in callback,
 
         var cfg = data_utils.getConfigFromFile();
         var active_cfg = undefined;
