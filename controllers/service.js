@@ -418,8 +418,9 @@ var service = module.exports =  {
         enocean.init(incommingHWChangeHandler);
         rpdg.init(incommingHWChangeHandler);
 
-        data_utils.commandLineArgPresent("udp")
+        if(data_utils.commandLineArgPresent("udp"))
         {
+            global.applogger.info(TAG, " Initilizing the udp handler now. ", "");
             upd_handler  = require('./udp_handler.js');
             upd_handler.init(incommingUDPMessageHandler);
         }

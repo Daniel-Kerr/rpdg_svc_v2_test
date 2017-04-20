@@ -17,7 +17,7 @@ var server = dgram.createSocket("udp4");
 var serverisready = false;
 var rxhandler = undefined;
 
-var isSender = true;
+var isSender = false;
 
 var local_ip_address= undefined;
 
