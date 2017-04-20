@@ -12,10 +12,9 @@ var selected_group = undefined;
 var selected_fixture = undefined;
 var top_menu_selection = undefined;
 
-//function setglobalvariable(fixtureImagePathfound){
- //   console.log ("  here is the image path", fixtureImagePathfound);
- //   fixtureImagePath = fixtureImagePathfound;
-//};
+var rgbwsettimer; // timer used to send off override calls for rgb fixtures.
+var lastrgbcolor;
+var colorwheel_control;
 
 function resizeImg(img, height, width) {
     img.height = height;
@@ -51,7 +50,64 @@ function voltageToFC (volts) {
 
 function init() {
     getConfig(processConfig);
+
+
+    var cwheelvalues = "rgb(255,255,255)";
+    //convert from pct back to rgb 8 bit,
+    //var red = (selected_fixture.red * 255)/100;
+    // var green = (selected_fixture.green * 255)/100;
+    // var blue = (selected_fixture.blue * 255)/100;
+
+    // cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
+
+    colorwheel_control = iro.ColorWheel("#colorWheelDemo", {
+        width: 300,
+        height: 300,
+        padding: 4,
+        sliderMargin: 24,
+        markerRadius: 4,
+        color: cwheelvalues,
+        CSS: {} // apply colors to any elements
+    });
+
+    colorwheel_control.watch(function(color) {
+        startRGBWCallHWCallTimer(color);
+    });
 }
+
+
+// RGB support
+
+function setRGBWToHW()
+{
+    if(lastrgbcolor != undefined && selected_fixture != undefined) {
+        var element = {};
+        element.requesttype = "override";
+        element.name = selected_fixture.assignedname;
+        element.red = ((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);  // convert to pct
+        element.green = ((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);  // convert to pct
+        element.blue = ((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);  // convert to pct
+        element.white = 100;
+        setFixtureLevel(element);
+    }
+}
+
+
+
+function startRGBWCallHWCallTimer(color)
+{
+    // stop timer ,,
+    if(rgbwsettimer != undefined)
+    {
+        clearTimeout(rgbwsettimer);
+    }
+    lastrgbcolor = color;
+    rgbwsettimer = setTimeout(setRGBWToHW, 250)  //600ms,  reset,
+}
+
+// end rgb support **********************************
+
+
 
 
 
@@ -64,6 +120,11 @@ function processConfig(configobj) {
         pending_menu_selection = undefined;
     }
     updateDynButtonBar();
+
+
+
+
+
 }
 
 
@@ -87,6 +148,7 @@ function updateDynButtonBar()
     hideDivID("BrightnessBar");
     hideDivID("CCTBar");
     hideDivID("ToggleButton");
+    hideDivID("RGB_ColorWheel");
     hideDivID("StatusPage");
     hideDivID("occ_vac_holder");
 
@@ -301,6 +363,7 @@ function constructFixtureButtons()
             selected_fixture = getFixtureByName(fixname);
             hideDivID("BrightnessBar");
             hideDivID("CCTBar");
+            hideDivID("RGB_ColorWheel");
             hideDivID("ToggleButton");
 
             switch(selected_fixture.type)
@@ -336,6 +399,19 @@ function constructFixtureButtons()
                     document.getElementById("CCTsliderobject").value = barval;
                     break;
                 case "rgbw":
+                    showDivID("RGB_ColorWheel","block");
+                    // set rgb wheel to the correct value.
+                    var cwheelvalues = "rgb(255,255,255)";
+                    //convert from pct back to rgb 8 bit,
+                    var red = (selected_fixture.red * 255)/100;
+                    var green = (selected_fixture.green * 255)/100;
+                    var blue = (selected_fixture.blue * 255)/100;
+
+                    cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
+
+                    //var k = document.getElementById("colorWheelDemo");
+
+                    colorwheel_control.color.hexString = cwheelvalues;
                     break;
                 default:
                     break;

@@ -55,6 +55,7 @@ $(document).ready(function() {
                     if(fixture.type == "cct")
                     {
                         showCCTOptions(true);
+
                         // document.getElementById("candledim").disabled = false;
                         document.getElementById("candledim").checked = fixture.candledim;
 
@@ -67,6 +68,16 @@ $(document).ready(function() {
                         // document.getElementById("candledim").checked = false;
                         // document.getElementById("candledim").disabled = true;
                     }
+
+
+                    if(fixture.type == "rgbw" || fixture.type == "cct")
+                    {
+                        showCommonAnodeOption(true);
+                        document.getElementById("commonanode").checked = fixture.commonanode;
+                    }
+                    else
+                        showCommonAnodeOption(false);
+
 
                     for(var j = 0; j < availibleinputs.length; j++)
                     {
@@ -272,6 +283,7 @@ function init()
     constructPLCOutputToggleTable();
 
     showCCTOptions(false);
+    showCommonAnodeOption(false);
 }
 
 
@@ -564,9 +576,12 @@ function saveNewFixture() {
         fixture.min = document.getElementById("minctemp").value;
         fixture.max =  document.getElementById("maxctemp").value;
 
+        fixture.commonanode = document.getElementById("commonanode").checked;
     }
-    else if(seltype == "rgbw")
+    else if(seltype == "rgbw") {
         fixture.image = "/images/rgbw_fixture.jpg";
+        fixture.commonanode = document.getElementById("commonanode").checked;
+    }
 
     var boundinputs =[];
     for(var i = 0; i < availibleinputs.length; i++)
@@ -784,6 +799,14 @@ function updateAvalibleStartingOutputNumbers()
         showCCTOptions(false);
         // document.getElementById("candledim").checked = false;
         //  document.getElementById("candledim").disabled = true;
+    }
+
+    if(seltype == "rgbw" || seltype == "cct") {
+        showCommonAnodeOption(true);
+        document.getElementById("commonanode").value = false;
+    }
+    else {
+        showCommonAnodeOption(false);
     }
 
     var sel = document.getElementById('starting_output');
@@ -1815,6 +1838,13 @@ function populateDropDown(dropdown, optionslist)
 }
 
 
+function showCommonAnodeOption(show)
+{
+    if(show)
+        $('#fixopts1_8').show();
+    else
+        $('#fixopts1_8').hide();
+}
 
 
 
@@ -1824,11 +1854,13 @@ function showCCTOptions(show)
         $('#fixopts1_5').show();
         $('#fixopts1_6').show();
         $('#fixopts1_7').show();
+
     }
     else {
         $('#fixopts1_5').hide();
         $('#fixopts1_6').hide();
         $('#fixopts1_7').hide();
+       // $('#fixopts1_8').hide();
     }
 }
 

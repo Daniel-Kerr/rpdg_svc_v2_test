@@ -22,6 +22,7 @@ var CCTFixture = function(name, interface, outputid)
     this.candledim = false;
     this.min = 2000;
     this.max = 6500;
+    this.commonanode = false;
     this.boundinputs = [];
     this.parameters = new FixtureParameters();
 

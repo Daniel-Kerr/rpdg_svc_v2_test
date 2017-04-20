@@ -244,7 +244,7 @@ $(document).ready(function() {
                     var green = (selectedfixtureobj.green * 255)/100;
                     var blue = (selectedfixtureobj.blue * 255)/100;
 
-                    cwheelvalues = "rgb(" + red+ "," + green + "," + blue + ")";
+                    cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
                // }
                 // }
 
@@ -282,6 +282,9 @@ function processConfig(configobj)
     updateFixturesTable();
     redrawScenes();
 }
+
+
+
 function setRGBWToHW()
 {
     if(lastrgbcolor != undefined && selectedfixtureobj != undefined) {
@@ -316,6 +319,7 @@ function startRGBWCallHWCallTimer(color)
 function postSetFixtureHandler(status)
 {
     if (status != null) {
+        cachedconfig = status;
         scenesettingsholdermap = status.fixtures;
         // nullselectedscene();  //on change of level,
     }

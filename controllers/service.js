@@ -407,6 +407,33 @@ function constructMiscDirs()
 
 
 
+function constructPWMPolarityMask()
+{
+    var fixlist = global.currentconfig.fixtures;
+    var mask = 0x00;
+    for(var i = 0 ; i <  fixlist.length; i++)
+    {
+        var fix = fixlist[i];
+        if(fix.interfacename == "rpdg-pwm") {
+            if(fix.commonanode == true) {
+                if (fix.type == "rgbw") {
+                    var baseidx = fix.outputid - 1; // zero based index.
+                    for (var k = baseidx; k < baseidx + 4; k++) {
+                        mask |= (0x01 << k);
+                    }
+                }
+                else if (fix.type == "cct") {
+                    var baseidx = fix.outputid - 1; // zero based index.
+                    for (var k = baseidx; k < baseidx + 2; k++) {
+                        mask |= (0x01 << k);
+                    }
+                }
+            }
+        }
+    }
+    return mask;
+}
+
 var service = module.exports =  {
 
 
@@ -449,7 +476,9 @@ var service = module.exports =  {
         module.exports.updateRPDGInputDrive();
 
         // todo:  pwm polarity bit,
-        rpdg.setPWMOutputPolarity(0x00);
+        var pwmpolmask = constructPWMPolarityMask();
+        global.applogger.info(TAG, "PWM polarity Mask: " + pwmpolmask.toString(16), "");
+        rpdg.setPWMOutputPolarity(pwmpolmask);
 
         //
         schedule_mgr.initManager();

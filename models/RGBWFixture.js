@@ -16,6 +16,7 @@ var RGBWFixture = function(name, interface, outputid)
     this.outputid = "";
     this.image = "";
     this.boundinputs = [];
+    this.commonanode = false;
     this.parameters = new FixtureParameters();
 
     // status
@@ -94,24 +95,40 @@ var RGBWFixture = function(name, interface, outputid)
             white = modpct;  // modify the req obj.
         }
 
+        // 4/20/17, test inversion logic,  for common anode.
+         if(this.commonanode)
+         {
+            // red = 100 - red;
+            // green = 100 - green;
+            // blue = 100 - blue;
+            // white = 100 - white;
+         }
+
+
         this.previousred = this.red;
         this.red = red;
-        this.interface.setOutputToLevel(Number(this.outputid), red, apply);
+        var setred = (this.commonanode)?(100-red):red;
+
+        this.interface.setOutputToLevel(Number(this.outputid), setred, apply);
 
         this.previousgreen = this.green;
         this.green = green;
         var gchannel = Number(this.outputid) + 1;
-        this.interface.setOutputToLevel(gchannel, green, apply);
+        var setgreen = (this.commonanode)?(100-green):green;
+        this.interface.setOutputToLevel(gchannel, setgreen, apply);
 
         this.previousblue = this.blue;
         this.blue = blue;
         var bchannel = Number(this.outputid) + 2;
-        this.interface.setOutputToLevel(bchannel, blue, apply);
+        var setblue = (this.commonanode)?(100-blue):blue;
+        this.interface.setOutputToLevel(bchannel, setblue, apply);
 
         this.previouswhite = this.white;
         this.white = white;
         var wchannel = Number(this.outputid) + 3;
-        this.interface.setOutputToLevel(wchannel, white, apply);
+
+        var setwhite = (this.commonanode)?(100-white):white;
+        this.interface.setOutputToLevel(wchannel, setwhite, apply);
 
         this.lastupdated = moment();
     };
