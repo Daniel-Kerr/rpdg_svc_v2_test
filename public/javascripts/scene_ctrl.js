@@ -7,6 +7,22 @@ var selecteditem;
 var defaultcolor = "rgba(0,0,0,0)";
 var selected_scene;
 
+
+// These are the constraints used to validate the form
+var constraints = {
+    name: {
+        length: {
+            minimum: 6,
+            maximum: 15
+        },
+        format: {
+            pattern: "[a-z0-9_]+",
+            flags: "i",
+            message: "Name can only contain a-z ,0-9, and _"
+        },
+        presence: true
+    }
+}
 $(function () {
     // click handler for boxes.. just under test.
     $('.dropzone2').live('click', function(){
@@ -98,9 +114,21 @@ function openNewSceneEditDlg()
 
                 if(scenename == "ALL_ON" || scenename == "ALL_OFF")
                 {
-                    noty({text: 'Error: scene name already taken  ', type: 'error'});
+                    noty({text: 'Error: scene name reserved  ', type: 'error'});
                     return ;
                 }
+
+
+
+                var j = validate({name: scenename}, constraints);
+                if(j != undefined && j.name != undefined && j.name.length > 0)
+                {
+                    noty({text: j.name[0], type: 'error', timeout:1000});
+                    return;
+                }
+
+
+
                 saveConfigObject("scene", scene,function (retval) {
                     if(retval != undefined)  // as of 1/24/17, added version.
                     {
