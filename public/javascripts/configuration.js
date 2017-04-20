@@ -13,7 +13,27 @@ var hostip = "";
 var cachedconfig = "";
 
 
+// These are the constraints used to validate the form
+var constraints = {
+    fixturename: {
+        length: {
+            minimum: 6,
+            message: "must be at least 6 characters"
+        },
+        presence: true
+    },
+    minctemp: {
+        presence: true,
+        length: 4
+    }
+}
+
 $(document).ready(function() {
+
+
+
+
+
 
     $("#fixturetable").on("click", " tr", function(e) {
 
@@ -541,9 +561,34 @@ function buildassignment(start, type)
 
 function saveNewFixture() {
 
-    var fixture = {};
+
     var startout = document.getElementById("starting_output");
     var type = document.getElementById("fixturetype");
+    // start of validation code.
+   /* var j = validate({fixturename: document.getElementById("fixturename").value}, constraints);
+    if(j.fixturename.length > 0)
+    {
+        bootbox.alert(j.fixturename[0], function() {});
+        return;
+
+    }
+
+
+
+    if(type == "cct")
+    {
+        var j = validate({minctemp: document.getElementById("minctemp").value}, constraints);
+        if(j.fixturename.length > 0)
+        {
+            bootbox.alert(j.fixturename[0], function() {});
+            return;
+        }
+    }
+*/
+
+
+    var fixture = {};
+
 
     var selstart = startout.options[startout.selectedIndex].value;
     var seltype = type.options[type.selectedIndex].value;
@@ -567,6 +612,7 @@ function saveNewFixture() {
     else if (seltype == "dim")
         fixture.image = "/images/light_eg1.jpg";
     else if (seltype == "cct") {
+
 
         fixture.image = "/images/ceiling_spotlight.jpg";
         fixture.candledim = document.getElementById("candledim").checked;
