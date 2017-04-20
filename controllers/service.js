@@ -475,10 +475,12 @@ var service = module.exports =  {
         //setup the 0-10 v drive values for current config,
         module.exports.updateRPDGInputDrive();
 
-        // todo:  pwm polarity bit,
-        var pwmpolmask = constructPWMPolarityMask();
-        global.applogger.info(TAG, "PWM polarity Mask: " + pwmpolmask.toString(16), "");
-        rpdg.setPWMOutputPolarity(pwmpolmask);
+
+        module.exports.updatePWMPolarity();
+        //global.applogger.info(TAG, "writing pwm pol mask now", "");
+       // var pwmpolmask = constructPWMPolarityMask();
+       //  global.applogger.info(TAG, "PWM polarity Mask: " + pwmpolmask.toString(16), "");
+       //rpdg.setPWMOutputPolarity(pwmpolmask);
 
         //
         schedule_mgr.initManager();
@@ -495,7 +497,12 @@ var service = module.exports =  {
         //data_utils.generateFauxDataSeries();
 
     },
-
+    updatePWMPolarity : function()
+    {
+        var pwmpolmask = constructPWMPolarityMask();
+        global.applogger.info(TAG, "PWM polarity Mask: " + pwmpolmask.toString(16), "");
+        rpdg.setPWMOutputPolarity(pwmpolmask);
+    },
     setupHWInterface : function(fixturename)
     {
         var fix = global.currentconfig.getFixtureByName(fixturename);

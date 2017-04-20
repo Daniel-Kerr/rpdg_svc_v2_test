@@ -150,6 +150,11 @@ router.post('/savefixture', function(req, res) {
         }
     }
 
+
+    service.updatePWMPolarity();
+
+
+
     var cfg = JSON.stringify(global.currentconfig,null,2);
 
     // for now cache it to disk .
@@ -206,6 +211,8 @@ router.post('/deletefixture', function(req, res) {
         }
 
     }
+
+    service.updatePWMPolarity();
 
     var cfg = JSON.stringify(global.currentconfig,null,2);
     data_utils.writeConfigToFile();

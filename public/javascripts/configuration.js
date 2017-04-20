@@ -15,16 +15,31 @@ var cachedconfig = "";
 
 // These are the constraints used to validate the form
 var constraints = {
-    fixturename: {
+    name: {
         length: {
             minimum: 6,
-            message: "must be at least 6 characters"
+            maximum: 15
+        },
+        format: {
+            pattern: "[a-z0-9_]+",
+            flags: "i",
+            message: "Name can only contain a-z ,0-9, and _"
         },
         presence: true
     },
     minctemp: {
-        presence: true,
-        length: 4
+        numericality: {
+            onlyInteger: true,
+            greaterThanOrEqualTo:1800,
+            lessThanOrEqualTo:6500
+        }
+    },
+    maxctemp: {
+        numericality: {
+            onlyInteger: true,
+            greaterThanOrEqualTo:1800,
+            lessThanOrEqualTo:6500
+        }
     }
 }
 
@@ -564,34 +579,42 @@ function saveNewFixture() {
 
     var startout = document.getElementById("starting_output");
     var type = document.getElementById("fixturetype");
+    var selstart = startout.options[startout.selectedIndex].value;
+    var seltype = type.options[type.selectedIndex].value;
     // start of validation code.
-   /* var j = validate({fixturename: document.getElementById("fixturename").value}, constraints);
-    if(j.fixturename.length > 0)
-    {
-        bootbox.alert(j.fixturename[0], function() {});
-        return;
 
+    var fixname = document.getElementById("fixturename").value.trim();
+    var j = validate({name: fixname}, constraints);
+    if(j != undefined && j.name != undefined && j.name.length > 0)
+    {
+        noty({text: j.name[0], type: 'error', timeout:750});
+        return;
     }
 
 
-
-    if(type == "cct")
+    if(seltype == "cct")
     {
-        var j = validate({minctemp: document.getElementById("minctemp").value}, constraints);
-        if(j.fixturename.length > 0)
+        var j = validate({minctemp: Number(document.getElementById("minctemp").value)}, constraints);
+        if(j != undefined && j.minctemp != undefined && j.minctemp.length > 0)
         {
-            bootbox.alert(j.fixturename[0], function() {});
+            noty({text: j.minctemp[0], type: 'error', timeout:750});
+            return;
+        }
+
+        var j = validate({maxctemp: Number(document.getElementById("maxctemp").value)}, constraints);
+        if(j != undefined && j.maxctemp != undefined && j.maxctemp.length > 0)
+        {
+            noty({text: j.maxctemp[0], type: 'error', timeout:750});
+            //bootbox.alert(j.fixturename[0], function() {});
             return;
         }
     }
-*/
 
 
     var fixture = {};
 
 
-    var selstart = startout.options[startout.selectedIndex].value;
-    var seltype = type.options[type.selectedIndex].value;
+
     //  var assignment = buildassignment(Number(selstart), seltype);
     //  fixture.assignment = assignment;
 
@@ -1025,6 +1048,17 @@ function updateWetDryContactTable() {
 
 function saveNewContactInputObj() {
 
+    var objname = document.getElementById("contactname").value.trim();
+    var j = validate({name: objname}, constraints);
+    if(j != undefined && j.name != undefined && j.name.length > 0)
+    {
+        noty({text: j.name[0], type: 'error', timeout:750});
+        return;
+    }
+
+
+
+
     var contactinput = {};
     contactinput.assignedname = document.getElementById("contactname").value;
 
@@ -1309,6 +1343,14 @@ function updateLevelInputsTable() {
 
 function saveNewLevelInput() {
 
+    var objname = document.getElementById("levelinputname").value.trim();
+    var j = validate({name: objname}, constraints);
+    if(j != undefined && j.name != undefined && j.name.length > 0)
+    {
+        noty({text: j.name[0], type: 'error', timeout:750});
+        return;
+    }
+
     var levelinput = {};
     levelinput.assignedname = document.getElementById("levelinputname").value;
     levelinput.inputid = $("#levelinput_inputs").val();;
@@ -1554,7 +1596,7 @@ setInterval(function () {
                 // loadedconfig = retval;// for now ignore returned confg
             }
             else if (retval.error != undefined)
-                noty({text: 'Error saving config ' + retval.error, type: 'error'});
+                noty({text: 'Error saving config ' + retval.error, type: 'error', timeout:750});
         });
     }
 
