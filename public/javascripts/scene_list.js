@@ -6,6 +6,23 @@ var pendingdeleteitem = undefined;
 // for tracking walk
 var current_sel_scene_map = {};  // scene name : sel index
 
+
+// These are the constraints used to validate the form
+var constraints = {
+    name: {
+        length: {
+            minimum: 6,
+            maximum: 15
+        },
+        format: {
+            pattern: "[a-z0-9_]+",
+            flags: "i",
+            message: "Name can only contain a-z ,0-9, and _"
+        },
+        presence: true
+    }
+}
+
 function init() {
     getConfig(processConfig);
 }
@@ -57,6 +74,14 @@ function openNewSceneListEditDlg()
                     var groups_div = document.getElementById("active_scenes_holder");
                     var scenelist = {};
                     scenelist.name = listname;
+
+                    var j = validate({name: listname}, constraints);
+                    if(j != undefined && j.name != undefined && j.name.length > 0)
+                    {
+                        noty({text: j.name[0], type: 'error', timeout:1000});
+                        return false;
+                    }
+
 
                     saveConfigObject("scenelist", scenelist,function (retval) {
                         if(retval != undefined)

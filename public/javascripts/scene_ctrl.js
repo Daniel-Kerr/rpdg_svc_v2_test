@@ -124,7 +124,7 @@ function openNewSceneEditDlg()
                 if(j != undefined && j.name != undefined && j.name.length > 0)
                 {
                     noty({text: j.name[0], type: 'error', timeout:1000});
-                    return;
+                    return false;
                 }
 
 

@@ -7,6 +7,23 @@ var selecteditem;
 var defaultcolor = "rgba(0,0,0,0)";
 var selected_group;
 
+
+// These are the constraints used to validate the form
+var constraints = {
+    name: {
+        length: {
+            minimum: 6,
+            maximum: 15
+        },
+        format: {
+            pattern: "[a-z0-9_]+",
+            flags: "i",
+            message: "Name can only contain a-z ,0-9, and _"
+        },
+        presence: true
+    }
+}
+
 $(document).ready(function() {
 
     getConfig(processConfig);
@@ -106,6 +123,16 @@ function openNewGroupEditDialog()
                 var group1 = {};
                 group1.name = groupname;
                 group1.type = grouptype;
+
+
+                var j = validate({name: groupname}, constraints);
+                if(j != undefined && j.name != undefined && j.name.length > 0)
+                {
+                    noty({text: j.name[0], type: 'error', timeout:1000});
+                    return false;
+                }
+
+
                 saveConfigObject("group", group1,function (retval) {
                     if(retval != undefined)  // as of 1/24/17, added version.
                     {
