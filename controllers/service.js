@@ -559,6 +559,20 @@ var service = module.exports =  {
 
                         // global.applogger.info(TAG, "polling", "updated power on cct device: " + fixobj.assignedname + "   outid=" + fixobj.outputid + "   " + powerwarm + "  +  " + powercool + "  = " + totalpower);
                     }
+                    else if (fixobj instanceof RGBWFixture) {
+                        var powerred = power_watts[Number(fixobj.outputid) - 1];
+                        var powergreen = power_watts[Number(fixobj.outputid)];
+                        var powerblue = power_watts[Number(fixobj.outputid) + 1];
+                        var powerwhite = power_watts[Number(fixobj.outputid) + 2];
+
+                        var totalpower = (Number(powerred) + Number(powergreen) + Number(powerblue) + Number(powerwhite));
+                        if(fixobj.twelvevolt)
+                            totalpower /= 2;
+
+                        fixobj.powerwatts = totalpower.toFixed(2);
+
+                        // global.applogger.info(TAG, "polling", "updated power on cct device: " + fixobj.assignedname + "   outid=" + fixobj.outputid + "   " + powerwarm + "  +  " + powercool + "  = " + totalpower);
+                    }
                 }
             }
 
