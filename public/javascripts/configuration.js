@@ -595,6 +595,9 @@ function saveNewFixture() {
     }
 
 
+
+
+
     if(seltype == "cct")
     {
         var j = validate({minctemp: Number(document.getElementById("minctemp").value)}, constraints);
@@ -608,9 +611,16 @@ function saveNewFixture() {
         if(j != undefined && j.maxctemp != undefined && j.maxctemp.length > 0)
         {
             noty({text: j.maxctemp[0], type: 'error', timeout:750});
-            //bootbox.alert(j.fixturename[0], function() {});
             return;
         }
+
+
+        if((Number(document.getElementById("minctemp").value) > document.getElementById("maxctemp").value))
+        {
+            noty({text: "Minimum Color temp must be < Maximum", type: 'error', timeout:1250});
+            return;
+        }
+
     }
 
 
@@ -1952,7 +1962,7 @@ function showCCTOptions(show)
         $('#fixopts1_5').hide();
         $('#fixopts1_6').hide();
         $('#fixopts1_7').hide();
-       // $('#fixopts1_8').hide();
+        // $('#fixopts1_8').hide();
     }
 }
 
