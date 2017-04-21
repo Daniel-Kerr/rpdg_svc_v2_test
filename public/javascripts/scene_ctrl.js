@@ -265,7 +265,8 @@ function filterAvalibleFixtures()
             var name = dropped.get(0).innerText;
             //var uid = fixtureNameToUID(name);
             if (name != undefined) {
-                var updatelayout = selected_scene.fixtures.length == 4;  // if going from 4--> 3
+                //var updatelayout = selected_scene.fixtures.length == 9;  // if going from 4--> 3
+
 
                 var index = selected_scene.fixtures.indexOf(name);
                 if (index > -1) {
@@ -275,25 +276,30 @@ function filterAvalibleFixtures()
                 element.scenename = selected_scene.name;
                 element.fixturename = name;
 
+                var selindex = getIndexOfScene(selected_scene.name);
+
                 deleteFixtureFromScene(element,function (retval) {
                     if(retval != undefined)  // as of 1/24/17, added version.
                     {
                         cachedconfig = retval;
+
+                        redrawScenes();
+                        $('#group_'+selindex).trigger('click');
                     }
                     else if(retval.error != undefined)
                         noty({text: 'Error saving config ' + retval.error, type: 'error'});
                 });
 
 
-                if (updatelayout)
-                {
-                    var selectedindex = selecteditem.attr('index');
+              //  if (updatelayout)
+               // {
+                //    var selectedindex = selecteditem.attr('index');
                     // var k = $('.selecteditem').attr('id');
                     // this should be a "group_X",
                     //   var num = k.substr(6);
-                    var bla = document.getElementById("group_holder_"+selectedindex);
-                    bla.className = "col-lg-5";
-                }
+                //    var bla = document.getElementById("group_holder_"+selectedindex);
+                 //   bla.className = "col-lg-5";
+               // }
 
             }
             //  droppedOn.droppable("disable");
@@ -311,12 +317,23 @@ function captureScenceSettings()
 
 }
 
+
+function getIndexOfScene(name)
+{
+    for(var i = 0 ; i < cachedconfig.scenes.length; i++)
+    {
+        var sceneobj = cachedconfig.scenes[i];
+        if(sceneobj.name == name)
+            return i;
+    }
+    return -1;
+}
 function constructSceneBox(currentdiv, scene, groupnum) {
     var fixcol = document.createElement("div");
     fixcol.className = "col-lg-5";
     fixcol.id = "group_holder_"+groupnum;
 
-    if(scene.fixtures != undefined && scene.fixtures.length >= 4)
+    if(scene.fixtures != undefined && scene.fixtures.length >= 10)
         fixcol.className = "col-lg-10";
 
     currentdiv.appendChild(fixcol);
@@ -403,8 +420,16 @@ function constructSceneBox(currentdiv, scene, groupnum) {
         drop: function(event, ui) {
             var dropped = ui.draggable;
             var droppedOn = $(this);
-            // $(dropped).parent().droppable("enable");
-            $(dropped).detach().appendTo(droppedOn);
+
+            //$(dropped).detach().appendTo(droppedOn);
+            // rescale down when dropping
+
+            $(dropped).detach();
+
+
+           // $(dropped).appendTo(droppedOn);  removed , manul refresh, for scaling 4/21/17,
+
+
             var name = dropped.get(0).innerText;
             var updatelayout = false;
             if (name != undefined) {
@@ -415,28 +440,33 @@ function constructSceneBox(currentdiv, scene, groupnum) {
 
                 selected_scene.fixtures.push(name);
 
+                var selindex = getIndexOfScene(selected_scene.name);
+
+
                 var element = {};
                 element.scenename = selected_scene.name;
                 element.fixturename = name;
                 element.type = getFixtureByName(name).type;
 
                 addFixtureToScene(element,function (retval) {
-                    if(retval != undefined && retval.version != undefined)  // as of 1/24/17, added version.
+                    if(retval != undefined)  // as of 1/24/17, added version.
                     {
                         cachedconfig = retval;
+                        redrawScenes();
+                        $('#group_'+selindex).trigger('click');
                     }
                     else if(retval.error != undefined)
                         noty({text: 'Error saving fixture to group: ' + retval.error, type: 'error'});
                 });
 
-                if (selected_scene.fixtures != undefined && selected_scene.fixtures.length == 4)  // if going from 2-->3
-                {
-                    var k = $(this).attr('id');
+               // if (selected_scene.fixtures != undefined && selected_scene.fixtures.length == 4)  // if going from 2-->3
+               // {
+               //     var k = $(this).attr('id');
                     // this should be a "group_X",
-                    var num = k.substr(6);
-                    var bla = document.getElementById("group_holder_"+num);
-                    bla.className = "col-lg-10";
-                }
+                //    var num = k.substr(6);
+                //    var bla = document.getElementById("group_holder_"+num);
+                //    bla.className = "col-lg-10";
+                //}
             }
         }
     });
@@ -447,11 +477,11 @@ function constructSceneBox(currentdiv, scene, groupnum) {
         var fixobj = getFixtureByName(fixname);
         if(fixobj != undefined) {
             var fixdiv = document.createElement("div");
-            fixdiv.className = "availiblefixture";
+            fixdiv.className = "consumedfixture_micro";
             dropzonediv.appendChild(fixdiv);
             var bulb_iconimg = document.createElement("img");
             bulb_iconimg.src = fixobj.image;
-            bulb_iconimg.className = "bulbiconrow";
+            bulb_iconimg.className = "bulbiconrow_micro";
             fixdiv.appendChild(bulb_iconimg);
             var debug_label = document.createElement("label");
             debug_label.innerHTML = fixobj.assignedname;
