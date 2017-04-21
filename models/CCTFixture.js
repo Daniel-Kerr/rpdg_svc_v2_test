@@ -71,15 +71,6 @@ var CCTFixture = function(name, interface, outputid)
 
         //  4/18/17,  moved filter up.
         this.stopAutoAdjustTimer(this.assignedname);
-        /* if(requestobj.brightness > this.brightness && this.parameters.brightenrate > 0)
-         {
-         this.startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
-         }
-         else if(requestobj.brightness < this.brightness && this.parameters.dimrate > 0)
-         {
-         this.startAutoAdjustTimer(this, requestobj.brightness, requestobj.requesttype);
-         }
-         else { */
 
 
         var dlsensor = this.getMyDaylightSensor();
@@ -111,14 +102,20 @@ var CCTFixture = function(name, interface, outputid)
 
 
 
+        // per dan/ joe 4/21, if color temp is changed, from prev,  then also restart timer.
+
+
         if((returndataobj.modifiedlevel > this.brightness && this.parameters.brightenrate > 0) || (returndataobj.modifiedlevel < this.brightness && this.parameters.dimrate > 0))
         {
-            this.startAutoAdjustTimer(this, returndataobj.modifiedlevel, requestobj.requesttype);
+            this.startAutoAdjustTimer(this, returndataobj.modifiedlevel,"brightness", requestobj.requesttype);
         }
+        else if((warmcoolvals[0] != this.hwwarm || warmcoolvals[1] != this.hwcool) && (this.parameters.brightenrate > 0 || this.parameters.dimrate > 0))
+        {
+            // need to pass in warm / cool values.
+            this.startAutoAdjustTimer(this, colortemp, "colortemp", requestobj.requesttype);
+        }
+
         else {
-
-
-
 
 
             this.previouscolortemp = this.colortemp;
@@ -205,12 +202,20 @@ var CCTFixture = function(name, interface, outputid)
     var autoadjusttargetlevel = 0;
     var autoadjuststartlevel = 0;
     var autoadjustrequesttype = "";
+    var autoadjustchangetype = "brightness";  // 4/21/17 // either bright or ctemp,
 
-    this.startAutoAdjustTimer = function(fixture, targetlevel, requesttype)
+    this.startAutoAdjustTimer = function(fixture, targetlevel, changetype,  requesttype)
     {
         autoadjustrequesttype = requesttype;
-        autoadjuststartlevel = fixture.brightness;
+
+        if(changetype == "brightness")
+            autoadjuststartlevel = fixture.brightness;
+        else
+            autoadjuststartlevel = fixture.colortemp;
+
         autoadjusttargetlevel = targetlevel;
+
+        autoadjustchangetype = changetype;
 
         if(autoadjusttimer == undefined)
         {
@@ -241,26 +246,58 @@ var CCTFixture = function(name, interface, outputid)
 
         var canceltimer = false;
 
-        var delta = autoadjusttargetlevel - autoadjuststartlevel;
-        if(delta > 0) {
-            stepsize = delta / fixobj.parameters.brightenrate;
-            requestlevel = Number(fixobj.brightness) + stepsize;
-            if(requestlevel >= autoadjusttargetlevel) {
-                requestlevel = autoadjusttargetlevel;
-                canceltimer = true;
+
+        var colortemp = 2000; //fixobj.colortemp;  // no color temp change
+
+        // 4/21/17, calc either bright change or ctemp change,
+
+        if(autoadjustchangetype == "brightness") {
+            var delta = autoadjusttargetlevel - autoadjuststartlevel;
+            if (delta > 0) {
+                stepsize = delta / fixobj.parameters.brightenrate;
+                requestlevel = Number(fixobj.brightness) + stepsize;
+                if (requestlevel >= autoadjusttargetlevel) {
+                    requestlevel = autoadjusttargetlevel;
+                    canceltimer = true;
+                }
+
+            }
+            else if (delta < 0) {
+                stepsize = delta / fixobj.parameters.dimrate;
+                requestlevel = Number(fixobj.brightness) + stepsize;
+                if (requestlevel <= autoadjusttargetlevel) {
+                    requestlevel = autoadjusttargetlevel;
+                    canceltimer = true;
+                }
             }
 
+            colortemp = fixobj.colortemp;  // no color temp change
         }
-        else if(delta < 0) {
-            stepsize = delta / fixobj.parameters.dimrate;
-            requestlevel = Number(fixobj.brightness) + stepsize;
-            if(requestlevel <= autoadjusttargetlevel) {
-                requestlevel = autoadjusttargetlevel;
-                canceltimer = true;
+        else  //color temp change req.
+        {
+            var delta = autoadjusttargetlevel - autoadjuststartlevel;
+            if (delta > 0) {
+                stepsize = delta / fixobj.parameters.brightenrate;
+                colortemp = Number(fixobj.colortemp) + stepsize;
+                if (colortemp >= autoadjusttargetlevel) {
+                    colortemp = autoadjusttargetlevel;
+                    canceltimer = true;
+                }
+
             }
+            else if (delta < 0) {
+                stepsize = delta / fixobj.parameters.dimrate;
+                colortemp = Number(fixobj.colortemp) + stepsize;
+                if (colortemp <= autoadjusttargetlevel) {
+                    colortemp = autoadjusttargetlevel;
+                    canceltimer = true;
+                }
+            }
+
+            requestlevel = fixobj.brightness; // no bright change, just ctemp.
         }
 
-        var colortemp = fixobj.colortemp;  // no color temp change
+        global.applogger.info(TAG, "Auto Adjust Timer Loop calc'd:  req: ---    "+ autoadjustchangetype , colortemp + "   " + requestlevel + "  -----------------");
 
         // color temp calculation
         var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(fixobj.min, fixobj.max, colortemp, requestlevel, fixobj.candledim);
