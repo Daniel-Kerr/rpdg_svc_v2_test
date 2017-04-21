@@ -97,48 +97,64 @@ var RGBWFixture = function(name, interface, outputid)
         }
 
         // 4/20/17, test inversion logic,  for common anode.
-         if(this.commonanode)
-         {
+        if(this.commonanode)
+        {
             // red = 100 - red;
             // green = 100 - green;
             // blue = 100 - blue;
             // white = 100 - white;
-         }
-
+        }
+        // for common anode, we need the range to be inverted,
+        // for 12 V device range is 50%, on high side, meaning
+        // 50 - 100,
 
         this.previousred = this.red;
         this.red = red;
-        var setred = (this.commonanode)?(100-red):red;
-        if(this.twelvevolt)
-            setred /= 2;
+
+
+        var setred = this.calculateOutputLevel(red);
+        //if(this.twelvevolt)
+        //    setred /= 2;
+
+        //if(this.commonanode)
+        //    setred = 100 - setred;
 
         this.interface.setOutputToLevel(Number(this.outputid), setred, apply);
 
+
+
         this.previousgreen = this.green;
         this.green = green;
-        var gchannel = Number(this.outputid) + 1;
-        var setgreen = (this.commonanode)?(100-green):green;
-        if(this.twelvevolt)
-            setgreen /= 2;
 
-        this.interface.setOutputToLevel(gchannel, setgreen, apply);
+       // var setgreen = green;
+       // if(this.twelvevolt)
+       //     setgreen /= 2;
+
+        //if(this.commonanode)
+        //    setgreen = 100 - setgreen;
+        var setgreen = this.calculateOutputLevel(green);
+
+        var gchannel = Number(this.outputid) + 1;
+       this.interface.setOutputToLevel(gchannel, setgreen, apply);
+
 
         this.previousblue = this.blue;
         this.blue = blue;
-        var bchannel = Number(this.outputid) + 2;
-        var setblue = (this.commonanode)?(100-blue):blue;
-        if(this.twelvevolt)
-            setblue /= 2;
 
+
+        var setblue = this.calculateOutputLevel(blue);
+        var bchannel = Number(this.outputid) + 2;
         this.interface.setOutputToLevel(bchannel, setblue, apply);
+
 
         this.previouswhite = this.white;
         this.white = white;
         var wchannel = Number(this.outputid) + 3;
 
-        var setwhite = (this.commonanode)?(100-white):white;
-        if(this.twelvevolt)
-            setwhite /= 2;
+        var setwhite = this.calculateOutputLevel(white);
+        //var setwhite = (this.commonanode)?(100-white):white;
+        //if(this.twelvevolt)
+        //    setwhite /= 2;
 
         this.interface.setOutputToLevel(wchannel, setwhite, apply);
 
@@ -181,7 +197,20 @@ var RGBWFixture = function(name, interface, outputid)
         }
         return undefined
     };
+
+    this.calculateOutputLevel = function(level)
+    {
+        var returnlevel = level;
+        if(this.twelvevolt)
+            returnlevel /= 2;
+
+        if(this.commonanode)
+            returnlevel = 100 - returnlevel;
+
+        return returnlevel;
+    };
 };
+
 
 
 module.exports = RGBWFixture;
