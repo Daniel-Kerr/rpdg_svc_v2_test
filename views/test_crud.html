@@ -10,109 +10,88 @@
     <script src="bsmaster/assets/js/jquery.ui.touch-punch.min.js"></script>
     <script src="bsmaster/assets/js/moment.min.js"></script>
 
-    <script src="javascripts/require.js"></script>
+    <script src="thirdparty/require.js"></script>
     <script src="javascripts/crud_config.js"></script>
 
+    <script src="image-picker/image-picker.js"></script>
+    <link href="image-picker/image-picker.css" rel="stylesheet">
 
 
-    <script>
-
-        function restRxHandler(result)
-        {
-
-            var k = 0;
-            k = k + 1;
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
         }
 
-        function savefix()
-        {
-            var fix = {};
-            fix.type = "on_off";
-            fix.assignedname = "NicksFixture";
-            fix.interfacename = "enocean";
-            fix.outputid = "2888888";
-            fix.candledim = false;
-            saveConfigObject("fixture",fix,restRxHandler);
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
         }
 
-        function savelevelinput()
-        {
-            var li = {};
-            li.type = "MotionSensor";
-            li.assignedname = "nickssensor";
-            li.interfacename = "enocean";
-            li.inputid = "2888888";
-            saveConfigObject("levelinput",li,restRxHandler);
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
         }
 
-        function savecontactinput()
-        {
-            var li = {};
-            li.type = "dry";
-            li.assignedname = "nickscontactinput";
-            li.interfacename = "enocean";
-            li.inputid = "2888888";
-            saveConfigObject("contactinput",li,restRxHandler);
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
         }
+    </style>
 
-        function delfix()
-        {
-            var fix = {};
-            fix.assignedname = "NicksFixture";
-            deleteConfigObject("fixture",fix,restRxHandler);
-        }
 
-        function delli()
-        {
-            var li = {};
-            li.assignedname = "nickssensor";
-            deleteConfigObject("levelinput",li,restRxHandler);
-        }
 
-        function delci()
-        {
-            var ci = {};
-            ci.assignedname = "nickscontactinput";
-            deleteConfigObject("contactinput",ci,restRxHandler);
-        }
-
-        function savenewgroup()
-        {
-            var grp = {};
-            grp.name = "nickstestgroup";
-            grp.type = "brightness";
-            saveConfigObject("group",grp,restRxHandler);
-        }
-
-        function delgroup()
-        {
-            var grp = {};
-            grp.name = "nickstestgroup";
-            deleteConfigObject("group",grp,restRxHandler);
-        }
-
-        function addfixtogroup()
-        {
-            var grp = {};
-            grp.groupname = "nickstestgroup";
-            grp.fixturename = "onoff1";
-            addFixtureToGroup(grp,restRxHandler);
-        }
-
-        function delfixfromgroup()
-        {
-            var grp = {};
-            grp.groupname = "nickstestgroup";
-            grp.fixturename = "onoff1";
-            deleteFixtureFromGroup(grp,restRxHandler);
-        }
-
-    </script>
 </head>
 <body>
+
+
+<!-- Trigger/Open The Modal -->
+<button id="myBtn">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+
+
+        <select id="iconpick" class="image-picker show-html">
+            <option value=""></option>
+            <option data-img-src="images/bulb_off.jpg" value="1">Cute Kitten 1</option>
+            <option data-img-src="images/bulb_on.jpg" value="2">Cute Kitten 2</option>
+            <option data-img-src="images/light_eg1.jpg" value="3">Cute Kitten 2</option>
+            <option data-img-src="images/light_eg2.jpg" value="4">Cute Kitten 2</option>
+            <option data-img-src="images/recessed_wall.jpg" value="5">Cute Kitten 2</option>
+        </select>
+
+    </div>
+
+</div>
+
 test crud page
 
-<input type="button" id = "btsavefixture"  onclick=savefix() value="SAVE FIXURE"/>
+<!--input type="button" id = "btsavefixture"  onclick=savefix() value="SAVE FIXURE"/>
 
 <input type="button" id = "btdelfixture"  onclick=delfix() value="del FIXURE"/>
 </br>
@@ -138,6 +117,144 @@ test crud page
 <input type="button" id = "btaddtogrp"  onclick=addfixtogroup() value="ADD fix to group"/>
 <input type="button" id = "btremovefromgroup"  onclick=delfixfromgroup() value="del fix from group"/>
 </br>
-</br>
+</br-->---
+
+<!--select id="iconpick" class="image-picker show-html">
+    <option value=""></option>
+    <option data-img-src="images/bulb_off.jpg" value="1">Cute Kitten 1</option>
+    <option data-img-src="images/bulb_on.jpg" value="2">Cute Kitten 2</option>
+    <option data-img-src="images/light_eg1.jpg" value="3">Cute Kitten 2</option>
+    <option data-img-src="images/light_eg2.jpg" value="4">Cute Kitten 2</option>
+    <option data-img-src="images/recessed_wall.jpg" value="5">Cute Kitten 2</option>
+</select-->
+
+
+
+<script>
+
+    $(document).ready(function() {
+        $("#iconpick").imagepicker()
+    });
+
+
+    function restRxHandler(result)
+    {
+
+        var k = 0;
+        k = k + 1;
+    }
+
+    function savefix()
+    {
+        var fix = {};
+        fix.type = "on_off";
+        fix.assignedname = "NicksFixture";
+        fix.interfacename = "enocean";
+        fix.outputid = "2888888";
+        fix.candledim = false;
+        saveConfigObject("fixture",fix,restRxHandler);
+    }
+
+    function savelevelinput()
+    {
+        var li = {};
+        li.type = "MotionSensor";
+        li.assignedname = "nickssensor";
+        li.interfacename = "enocean";
+        li.inputid = "2888888";
+        saveConfigObject("levelinput",li,restRxHandler);
+    }
+
+    function savecontactinput()
+    {
+        var li = {};
+        li.type = "dry";
+        li.assignedname = "nickscontactinput";
+        li.interfacename = "enocean";
+        li.inputid = "2888888";
+        saveConfigObject("contactinput",li,restRxHandler);
+    }
+
+    function delfix()
+    {
+        var fix = {};
+        fix.assignedname = "NicksFixture";
+        deleteConfigObject("fixture",fix,restRxHandler);
+    }
+
+    function delli()
+    {
+        var li = {};
+        li.assignedname = "nickssensor";
+        deleteConfigObject("levelinput",li,restRxHandler);
+    }
+
+    function delci()
+    {
+        var ci = {};
+        ci.assignedname = "nickscontactinput";
+        deleteConfigObject("contactinput",ci,restRxHandler);
+    }
+
+    function savenewgroup()
+    {
+        var grp = {};
+        grp.name = "nickstestgroup";
+        grp.type = "brightness";
+        saveConfigObject("group",grp,restRxHandler);
+    }
+
+    function delgroup()
+    {
+        var grp = {};
+        grp.name = "nickstestgroup";
+        deleteConfigObject("group",grp,restRxHandler);
+    }
+
+    function addfixtogroup()
+    {
+        var grp = {};
+        grp.groupname = "nickstestgroup";
+        grp.fixturename = "onoff1";
+        addFixtureToGroup(grp,restRxHandler);
+    }
+
+    function delfixfromgroup()
+    {
+        var grp = {};
+        grp.groupname = "nickstestgroup";
+        grp.fixturename = "onoff1";
+        deleteFixtureFromGroup(grp,restRxHandler);
+    }
+
+
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+
 </body>
 </html>
