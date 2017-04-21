@@ -120,16 +120,22 @@ var CCTFixture = function(name, interface, outputid)
 
 
 
+
             this.previouscolortemp = this.colortemp;
             this.colortemp = colortemp;
-            this.interface.setOutputToLevel(Number(this.outputid), warmcoolvals[0], apply);
+
+            var warmvalueout = this.calculateOutputLevel(warmcoolvals[0]);
+            this.interface.setOutputToLevel(Number(this.outputid), warmvalueout, apply);
 
             this.previousbrightness = this.brightness;
             this.brightness = brightness;
             var bchannel = Number(this.outputid) + 1;
             this.hwwarm = warmcoolvals[0];
             this.hwcool = warmcoolvals[1];
-            this.interface.setOutputToLevel(bchannel, warmcoolvals[1], apply);
+
+            var coolvalueout = this.calculateOutputLevel(warmcoolvals[1]);
+
+            this.interface.setOutputToLevel(bchannel, coolvalueout, apply);
 
             this.lastupdated = moment();
 
@@ -140,6 +146,18 @@ var CCTFixture = function(name, interface, outputid)
             data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
         }
 
+    };
+
+    this.calculateOutputLevel = function(level)
+    {
+        var returnlevel = level;
+        if(this.twelvevolt)
+            returnlevel /= 2;
+
+        if(this.commonanode)
+            returnlevel = 100 - returnlevel;
+
+        return returnlevel;
     };
 
     this.getvalue=function(){
@@ -242,46 +260,26 @@ var CCTFixture = function(name, interface, outputid)
             }
         }
 
-
-
-
-    //    var dlsensor = fixobj.getMyDaylightSensor();
-     //   var isdaylightbound = false;
-     //   var daylightvolts = 0;
-     //   if (dlsensor != undefined) {
-     //       isdaylightbound = true;
-      //      daylightvolts = dlsensor.value;
-      //  }
-
-        // var brightness = fixobj.brightness;   //use current by default
-        // if (requestobj.brightness != undefined)
-        //     brightness = requestobj.brightness;   //use requested if present,
-
         var colortemp = fixobj.colortemp;  // no color temp change
-        // if (requestobj.colortemp != undefined)
-        //    colortemp = requestobj.colortemp;
-
-        // dl/light filter
-     //   var returndataobj = filter_utils.LightLevelFilter(autoadjustrequesttype, requestlevel,  fixobj.parameters, isdaylightbound, daylightvolts);
-       // this.daylightlimited = returndataobj.isdaylightlimited;
-        //if (returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
-        //    var modpct = returndataobj.modifiedlevel;
-         //   requestlevel = modpct;  // modify the req obj.
-        //}
 
         // color temp calculation
         var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(fixobj.min, fixobj.max, colortemp, requestlevel, fixobj.candledim);
 
         fixobj.previouscolortemp = fixobj.colortemp;
         fixobj.colortemp = colortemp;
-        fixobj.interface.setOutputToLevel(Number(fixobj.outputid), warmcoolvals[0], true);
+
+
+        var warmvalueout = fixobj.calculateOutputLevel(warmcoolvals[0]);
+        fixobj.interface.setOutputToLevel(Number(fixobj.outputid), warmvalueout, true);
 
         fixobj.previousbrightness = fixobj.brightness;
         fixobj.brightness = requestlevel;
         var bchannel = Number(fixobj.outputid) + 1;
         fixobj.hwwarm = warmcoolvals[0];
         fixobj.hwcool = warmcoolvals[1];
-        fixobj.interface.setOutputToLevel(bchannel, warmcoolvals[1], true);
+
+        var coolvalueout = fixobj.calculateOutputLevel(warmcoolvals[1]);
+        fixobj.interface.setOutputToLevel(bchannel, coolvalueout, true);
         fixobj.lastupdated = moment();
 
 

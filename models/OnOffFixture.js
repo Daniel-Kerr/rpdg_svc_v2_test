@@ -107,13 +107,28 @@ var OnOffFixture = function()
         this.lastupdated = moment();
 
         var options = (this.interfacename.includes("plc"))?"plc":undefined;
-        this.interface.setOutputToLevel(this.outputid, this.level, apply, options);
+
+        var outlevel = this.calculateOutputLevel(this.level);
+
+        this.interface.setOutputToLevel(this.outputid, outlevel, apply, options);
 
 
         var logobj = {};
         logobj.date = new moment().toISOString();
         logobj.level = this.level.toFixed();
         data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
+    };
+
+    this.calculateOutputLevel = function(level)
+    {
+        var returnlevel = level;
+        if(this.twelvevolt)
+            returnlevel /= 2;
+
+        if(this.commonanode)
+            returnlevel = 100 - returnlevel;
+
+        return returnlevel;
     };
 
     this.getLevel=function(){
