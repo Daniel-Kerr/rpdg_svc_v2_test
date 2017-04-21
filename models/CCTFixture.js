@@ -23,6 +23,7 @@ var CCTFixture = function(name, interface, outputid)
     this.min = 2000;
     this.max = 6500;
     this.commonanode = false;
+    this.twelvevolt = false;
     this.boundinputs = [];
     this.parameters = new FixtureParameters();
 
@@ -35,6 +36,7 @@ var CCTFixture = function(name, interface, outputid)
     this.lastupdated = undefined;
     this.powerwatts = 0;
     this.daylightlimited = false;
+
 
     //filteredlevel
     this.hwwarm = 0;

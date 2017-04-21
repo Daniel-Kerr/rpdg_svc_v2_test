@@ -17,6 +17,7 @@ var RGBWFixture = function(name, interface, outputid)
     this.image = "";
     this.boundinputs = [];
     this.commonanode = false;
+    this.twelvevolt = false;
     this.parameters = new FixtureParameters();
 
     // status
@@ -108,6 +109,8 @@ var RGBWFixture = function(name, interface, outputid)
         this.previousred = this.red;
         this.red = red;
         var setred = (this.commonanode)?(100-red):red;
+        if(this.twelvevolt)
+            setred /= 2;
 
         this.interface.setOutputToLevel(Number(this.outputid), setred, apply);
 
@@ -115,12 +118,18 @@ var RGBWFixture = function(name, interface, outputid)
         this.green = green;
         var gchannel = Number(this.outputid) + 1;
         var setgreen = (this.commonanode)?(100-green):green;
+        if(this.twelvevolt)
+            setgreen /= 2;
+
         this.interface.setOutputToLevel(gchannel, setgreen, apply);
 
         this.previousblue = this.blue;
         this.blue = blue;
         var bchannel = Number(this.outputid) + 2;
         var setblue = (this.commonanode)?(100-blue):blue;
+        if(this.twelvevolt)
+            setblue /= 2;
+
         this.interface.setOutputToLevel(bchannel, setblue, apply);
 
         this.previouswhite = this.white;
@@ -128,6 +137,9 @@ var RGBWFixture = function(name, interface, outputid)
         var wchannel = Number(this.outputid) + 3;
 
         var setwhite = (this.commonanode)?(100-white):white;
+        if(this.twelvevolt)
+            setwhite /= 2;
+
         this.interface.setOutputToLevel(wchannel, setwhite, apply);
 
         this.lastupdated = moment();

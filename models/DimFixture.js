@@ -18,6 +18,7 @@ var DimFixture = function(name, interface, outputid)
     this.outputid = "";
     this.image = "";
     this.candledim = false;
+    this.twelvevolt = false;
     this.parameters = new FixtureParameters();
 
     // status

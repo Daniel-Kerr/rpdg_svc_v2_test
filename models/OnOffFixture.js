@@ -21,6 +21,7 @@ var OnOffFixture = function()
     this.image = "";
     this.candledim = false;
     this.boundinputs = [];
+    this.twelvevolt = false;
     this.parameters = new FixtureParameters();
 
     // status

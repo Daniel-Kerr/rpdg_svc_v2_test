@@ -125,6 +125,9 @@ $(document).ready(function() {
 
                     }
 
+                    var tvd = (fixture.twelvevolt != undefined)? fixture.twelvevolt: false;
+                    document.getElementById("twelvevolt").checked = tvd;
+
                     document.getElementById("fixtureparam_0").value = fixture.parameters.dimoptions;
                     document.getElementById("fixtureparam_1").value =fixture.parameters.dimrate;
                     document.getElementById("fixtureparam_2").value = fixture.parameters.brightenrate
@@ -665,6 +668,7 @@ function saveNewFixture() {
 
     }
 
+    fixture.twelvevolt = document.getElementById("twelvevolt").checked;
 
     fixture.boundinputs = boundinputs;
     //  fixture.candledim = document.getElementById("candledim").checked;
