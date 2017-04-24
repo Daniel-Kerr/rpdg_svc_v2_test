@@ -3,6 +3,23 @@
  */
 
 
+// These are the constraints used to validate the form
+var constraints = {
+    name: {
+        length: {
+            minimum: 8,
+            maximum: 8
+        },
+        format: {
+            pattern: "[a-f0-9]+",
+            flags: "i",
+            message: "Device ID can only contain hex ( a-f  / 0-9 ) "
+        },
+        presence: true
+    }
+}
+
+
 setInterval(function () {
     getEnoceanRx(function(data) {
 
@@ -138,8 +155,17 @@ function systemidtaken(id)
 
 function adddevice()
 {
+     //4/24/217
+    var devid = document.getElementById("deviceid").value.trim().toUpperCase();
+    var j = validate({name: devid}, constraints);
+    if(j != undefined && j.name != undefined && j.name.length > 0)
+    {
+        noty({text: j.name[0], type: 'error', timeout:750});
+        return;
+    }
+
     var element = {}
-    element.enoceanid = document.getElementById("deviceid").value;
+    element.enoceanid = devid; // document.getElementById("deviceid").value;
     for(var i = 10; i < 100; i+=2)
     {
         if(!systemidtaken(i))
