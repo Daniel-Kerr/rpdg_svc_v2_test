@@ -298,6 +298,10 @@ $(document).ready(function() {
             }
         }
     });
+
+
+    $("#iconpick").imagepicker();
+
 });
 
 
@@ -415,12 +419,13 @@ function updateFixturesTable() {
     oCell4.innerHTML = "Outputs Utilized";
     oCell5 = document.createElement("TD");
     oCell5.innerHTML = "Bound Inputs";
-    //  oCell5 = document.createElement("TD");
-    //  oCell5.innerHTML = "Contact Inputs";
+
     oCell6 = document.createElement("TD");
     oCell6.innerHTML = "Candle Dim";
-    // oCell7 = document.createElement("TD");
-    // oCell7.innerHTML = "Local Groups";
+
+    oCell8 = document.createElement("TD");
+    oCell8.innerHTML = "Image";
+
     oCell7 = document.createElement("TD");
     oCell7.innerHTML = "Delete";
 
@@ -430,6 +435,7 @@ function updateFixturesTable() {
     oRow.appendChild(oCell4);
     oRow.appendChild(oCell5);
     oRow.appendChild(oCell6);
+    oRow.appendChild(oCell8);
     oRow.appendChild(oCell7);
     //  oRow.appendChild(oCell8);
     // oRow.appendChild(oCell9);
@@ -438,6 +444,9 @@ function updateFixturesTable() {
 
     var coldef = document.createElement("col");
     coldef.className = "col-md-2";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
@@ -498,6 +507,21 @@ function updateFixturesTable() {
         col6part.innerHTML = fixtures[i].candledim;
 
 
+        // image.
+        var col8part = document.createElement("TD");
+        var fiximage = document.createElement("img");
+       // fiximage.value="X";
+        fiximage.src =  fixtures[i].image; //"fixtureimg/1.jpg";
+        fiximage.height="30";
+        fiximage.width="30";
+      //  fiximage.setAttribute("index",i);
+        fiximage.addEventListener("click", setfixtureimage);
+       // fiximage.className = "btn btn-xs btn-danger";
+        col8part.appendChild(fiximage);
+
+
+
+
         var col7part = document.createElement("TD");
         var delbutton = document.createElement("input");
         delbutton.value="X";
@@ -513,6 +537,7 @@ function updateFixturesTable() {
         oRow.appendChild(col4part);
         oRow.appendChild(col5part);
         oRow.appendChild(col6part);
+        oRow.appendChild(col8part);
         oRow.appendChild(col7part);
         //}   // end row create ..*************************
     }
@@ -577,7 +602,7 @@ function buildassignment(start, type)
 }
 
 
-function saveNewFixture() {
+function saveNewFixture(image) {
 
 
     var startout = document.getElementById("starting_output");
@@ -642,26 +667,30 @@ function saveNewFixture() {
     //  fixture.localgroups = "";
     fixture.outputid = selstart;
 
+
+    fixture.image = "/fixtureimg/1.jpg";
+
+
+    if(image != undefined)
+    {
+        fixture.image = "/fixtureimg/" + image;
+    }
+
     fixture.status = 0;
-    if (seltype == "on_off")
-        fixture.image = "/images/bulb_off.jpg";
-    else if (seltype == "dim")
-        fixture.image = "/images/light_eg1.jpg";
-    else if (seltype == "cct") {
+    //if (seltype == "on_off")
 
-
-        fixture.image = "/images/ceiling_spotlight.jpg";
+   // else if (seltype == "dim")
+   //     fixture.image = "/images/light_eg1.jpg";
+     if (seltype == "cct") {
+      //  fixture.image = "/images/ceiling_spotlight.jpg";
         fixture.candledim = document.getElementById("candledim").checked;
-
-
-
         fixture.min = document.getElementById("minctemp").value;
         fixture.max =  document.getElementById("maxctemp").value;
 
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
     else if(seltype == "rgbw") {
-        fixture.image = "/images/rgbw_fixture.jpg";
+     //   fixture.image = "/images/rgbw_fixture.jpg";
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
 
@@ -720,7 +749,44 @@ function deleteFixture()
 }
 
 
+function saveImageToFixture()
+{
+    // var k = $("#iconpick").data('picker');
+    var bla =  $( "#iconpick" ).val();
+    var j = 0;
+    j = j + 1;
+    var modal = document.getElementById('myModal');
+    modal.style.display = "none";
 
+
+    saveNewFixture(bla+".jpg");
+
+}
+
+
+function setfixtureimage()
+{
+
+    var modal = document.getElementById('myModal');
+    modal.style.display = "block";
+    // Get the button that opens the modal
+    /*var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+            modal.style.display = "none";
+        }
+        */
+
+}
 
 function cacheFixtureParamOptions(params)
 {

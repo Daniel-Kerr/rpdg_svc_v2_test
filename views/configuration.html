@@ -27,6 +27,9 @@
     <script src="javascripts/crud_config.js"></script>
     <script src="javascripts/configuration.js"></script>
 
+    <script src="image-picker/image-picker.js"></script>
+    <link href="image-picker/image-picker.css" rel="stylesheet">
+
     <link href="stylesheets/bootstrap-toggle.css" rel="stylesheet">
     <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
@@ -131,6 +134,48 @@
             display: inline-block;
 
         }
+
+
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 200; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
     </style>
 
 </head>
@@ -163,27 +208,27 @@
             <div id="wizard" class="col-sm-11">
 
 
-            <div class="col-lg-10">
-                <div class="box">
-                    <div class="box-header" data-original-title>
-                        <h2><i class="fa fa-user"></i><span class="break"></span>Site Information</h2>
-                        <div class="box-icon">
-                            <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-down"></i></a>
+                <div class="col-lg-10">
+                    <div class="box">
+                        <div class="box-header" data-original-title>
+                            <h2><i class="fa fa-user"></i><span class="break"></span>Site Information</h2>
+                            <div class="box-icon">
+                                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-down"></i></a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="box-content collapse">
-                        <div id="siteinfo_1" class="row_7part1">
-                            <label>Location: </label>
-                            <label>ZipCode: </label> <input id="sitezip" type="text" />
-                            <label>Latitude: </label> <input id="sitelatt" type="text" />
-                            <label>Longitude: </label> <input id="sitelong" type="text" />
+                        <div class="box-content collapse">
+                            <div id="siteinfo_1" class="row_7part1">
+                                <label>Location: </label>
+                                <label>ZipCode: </label> <input id="sitezip" type="text" />
+                                <label>Latitude: </label> <input id="sitelatt" type="text" />
+                                <label>Longitude: </label> <input id="sitelong" type="text" />
+                            </div>
+
+                            <input type="button" id = "btsavesiteinfo" class="btn btn-large btn-success" onclick=saveSiteInfo() value="Save Settings"/>
+
                         </div>
-
-                        <input type="button" id = "btsavesiteinfo" class="btn btn-large btn-success" onclick=saveSiteInfo() value="Save Settings"/>
-
                     </div>
                 </div>
-            </div>
 
                 <div class="col-lg-5">
                     <div class="box">
@@ -522,5 +567,37 @@
     </div>
     </div>
 </form>
+
+
+
+
+
+
+
 </body>
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Please select an image for your fixture</p>
+
+
+        <select id="iconpick" class="image-picker show-html">
+            <option value=""></option>
+            <option data-img-src="fixtureimg/1.jpg" value="1">Cute Kitten 1</option>
+            <option data-img-src="fixtureimg/2.jpg" value="2">Cute Kitten 2</option>
+            <option data-img-src="fixtureimg/3.jpg" value="3">Cute Kitten 2</option>
+            <option data-img-src="fixtureimg/4.jpg" value="4">Cute Kitten 2</option>
+            <option data-img-src="fixtureimg/5.jpg" value="5">Cute Kitten 2</option>
+        </select>
+
+
+
+        <input type="button" id = "btsaveimage"  onclick="saveImageToFixture()" value="SAVE"/>
+    </div>
+
+</div>
 </html>

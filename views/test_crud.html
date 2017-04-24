@@ -60,6 +60,7 @@
 
 
 
+
 </head>
 <body>
 
@@ -78,55 +79,21 @@
 
         <select id="iconpick" class="image-picker show-html">
             <option value=""></option>
-            <option data-img-src="images/bulb_off.jpg" value="1">Cute Kitten 1</option>
-            <option data-img-src="images/bulb_on.jpg" value="2">Cute Kitten 2</option>
-            <option data-img-src="images/light_eg1.jpg" value="3">Cute Kitten 2</option>
-            <option data-img-src="images/light_eg2.jpg" value="4">Cute Kitten 2</option>
-            <option data-img-src="images/recessed_wall.jpg" value="5">Cute Kitten 2</option>
+            <option data-img-src="fixtureimg/1.jpg" value="1">Cute Kitten 1</option>
+            <option data-img-src="fixtureimg/2.jpg" value="2">Cute Kitten 2</option>
+            <option data-img-src="fixtureimg/3.jpg" value="3">Cute Kitten 2</option>
+            <option data-img-src="fixtureimg/4.jpg" value="4">Cute Kitten 2</option>
+            <option data-img-src="fixtureimg/5.jpg" value="5">Cute Kitten 2</option>
         </select>
 
+
+
+        <input type="button" id = "btsavesiteinfo"  onclick="saveSiteInfo()" value="OK"/>
     </div>
 
 </div>
 
 test crud page
-
-<!--input type="button" id = "btsavefixture"  onclick=savefix() value="SAVE FIXURE"/>
-
-<input type="button" id = "btdelfixture"  onclick=delfix() value="del FIXURE"/>
-</br>
-</br>
-<input type="button" id = "btsaveli"  onclick=savelevelinput() value="SAVE LEVELINPUT"/>
-
-<input type="button" id = "btdelli"  onclick=delli() value="DEL LEVELINPUT"/>
-</br>
-</br>
-
-
-<input type="button" id = "btsaveci"  onclick=savecontactinput() value="SAVE CONTACT_INPUT"/>
-<input type="button" id = "btdelci"  onclick=delgroup() value="DEL CONTACT INPUT"/>
-</br>
-</br>
-
-<input type="button" id = "btsavegrp"  onclick=savenewgroup() value="SAVE GROUP"/>
-<input type="button" id = "btdelgrp"  onclick=delgroup() value="DEL_GROUP"/>
-</br>
-</br>
-
-
-<input type="button" id = "btaddtogrp"  onclick=addfixtogroup() value="ADD fix to group"/>
-<input type="button" id = "btremovefromgroup"  onclick=delfixfromgroup() value="del fix from group"/>
-</br>
-</br-->---
-
-<!--select id="iconpick" class="image-picker show-html">
-    <option value=""></option>
-    <option data-img-src="images/bulb_off.jpg" value="1">Cute Kitten 1</option>
-    <option data-img-src="images/bulb_on.jpg" value="2">Cute Kitten 2</option>
-    <option data-img-src="images/light_eg1.jpg" value="3">Cute Kitten 2</option>
-    <option data-img-src="images/light_eg2.jpg" value="4">Cute Kitten 2</option>
-    <option data-img-src="images/recessed_wall.jpg" value="5">Cute Kitten 2</option>
-</select-->
 
 
 
@@ -137,12 +104,22 @@ test crud page
     });
 
 
-    function restRxHandler(result)
-    {
 
-        var k = 0;
-        k = k + 1;
+    function saveSiteInfo()
+    {
+       // var k = $("#iconpick").data('picker');
+        var bla =  $( "#iconpick" ).val();
+        var j = 0;
+        j = j + 1;
+        var modal = document.getElementById('myModal');
+        modal.style.display = "none";
     }
+
+  //  $('#iconpick').on('change', function() {
+     //   alert( this.value );
+   // })
+
+
 
     function savefix()
     {
@@ -155,77 +132,7 @@ test crud page
         saveConfigObject("fixture",fix,restRxHandler);
     }
 
-    function savelevelinput()
-    {
-        var li = {};
-        li.type = "MotionSensor";
-        li.assignedname = "nickssensor";
-        li.interfacename = "enocean";
-        li.inputid = "2888888";
-        saveConfigObject("levelinput",li,restRxHandler);
-    }
 
-    function savecontactinput()
-    {
-        var li = {};
-        li.type = "dry";
-        li.assignedname = "nickscontactinput";
-        li.interfacename = "enocean";
-        li.inputid = "2888888";
-        saveConfigObject("contactinput",li,restRxHandler);
-    }
-
-    function delfix()
-    {
-        var fix = {};
-        fix.assignedname = "NicksFixture";
-        deleteConfigObject("fixture",fix,restRxHandler);
-    }
-
-    function delli()
-    {
-        var li = {};
-        li.assignedname = "nickssensor";
-        deleteConfigObject("levelinput",li,restRxHandler);
-    }
-
-    function delci()
-    {
-        var ci = {};
-        ci.assignedname = "nickscontactinput";
-        deleteConfigObject("contactinput",ci,restRxHandler);
-    }
-
-    function savenewgroup()
-    {
-        var grp = {};
-        grp.name = "nickstestgroup";
-        grp.type = "brightness";
-        saveConfigObject("group",grp,restRxHandler);
-    }
-
-    function delgroup()
-    {
-        var grp = {};
-        grp.name = "nickstestgroup";
-        deleteConfigObject("group",grp,restRxHandler);
-    }
-
-    function addfixtogroup()
-    {
-        var grp = {};
-        grp.groupname = "nickstestgroup";
-        grp.fixturename = "onoff1";
-        addFixtureToGroup(grp,restRxHandler);
-    }
-
-    function delfixfromgroup()
-    {
-        var grp = {};
-        grp.groupname = "nickstestgroup";
-        grp.fixturename = "onoff1";
-        deleteFixtureFromGroup(grp,restRxHandler);
-    }
 
 
     // Get the modal
