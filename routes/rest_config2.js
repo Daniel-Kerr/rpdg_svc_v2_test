@@ -424,6 +424,9 @@ router.post('/deletegroup', function(req, res) {
         var group = global.currentconfig.groups[i];
         if(group.name == groupname)
         {
+
+
+
             global.currentconfig.groups.splice(i,1);
             found = true;
             break;

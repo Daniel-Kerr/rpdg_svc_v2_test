@@ -170,6 +170,30 @@ function enableDisableFixturesInDiv(groupdiv, enable)
 
 function deleteSelectedGroup()
 {
+   // 4/26/17.  validate no assignement in level or contact inputs.
+    for(var i = 0; i < loadedconfig.levelinputs.length; i++)
+    {
+        if(loadedconfig.levelinputs[i].group == selected_group.name)
+        {
+            noty({text: 'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group", type: 'error'});
+            return;
+        }
+    }
+
+
+    for(var i = 0; i < loadedconfig.contactinputs.length; i++)
+    {
+        if(loadedconfig.contactinputs[i].active_action.includes(selected_group.name) || loadedconfig.contactinputs[i].inactive_action.includes(selected_group.name))
+        {
+            noty({text: 'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group", type: 'error'});
+            return;
+        }
+    }
+
+
+
+
+
     deleteConfigObject("group",selected_group,function (retval) {
     //deleteConfigObject(selected_scene.name, function (retval) {
         if(retval != undefined)  // as of 1/24/17, added version.
