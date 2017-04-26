@@ -20,6 +20,7 @@
     <script src="thirdparty/modernizr.js"></script>
     <script src="thirdparty/validate.min.js"></script>
     <script src="thirdparty/bootbox.min.js"></script>
+    <script src="thirdparty/rangeslider.js"></script>
 
     <script src="javascripts/scene_ctrl.js"></script>
     <script src="javascripts/crud_config.js"></script>
@@ -30,10 +31,33 @@
     <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
     <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
 
+
     <link href="stylesheets/bootstrap-slider.css" rel="stylesheet">
     <link href="stylesheets/bootstrap-toggle.css" rel="stylesheet">
+    <link href="stylesheets/rangeslider.css" rel="stylesheet">
 
     <style>
+
+        /*   top fixture table and override setting control holder */
+        .table_scrollit {
+            overflow-y:scroll;
+            height:300px;
+            width:30%;
+            vertical-align: top;
+            display: inline-block;
+        }
+
+        /*   top override control divs */
+        .settingholder {
+            display: inline-block;
+            margin-left: 20px;
+            vertical-align: top;
+            width: 400px;
+            text-align: center;
+            height: 300px;
+
+        }
+
         .gap {
             display: inline-block;
             width: 400px;
@@ -41,40 +65,65 @@
             padding: 4px;
             margin: 4px;
         }
-        .btntable {
-            display: inline-block;
-            margin-right: 30px;
-            margin-top: 50px;
-            width: 300px;
-            background-color: #EEE;
-        }
+
         .rgbrowcell {
 
             margin-left: 10px;
             width: 300px;
             height: 300px;
-            background-color: #EEE;
+
         }
 
-        .settingholder {
-            display: inline-block;
-            margin-left: 20px;
-            width: 400px;
-            text-align: center;
-            height: 300px;
-            background-color: #EEE;
-        }
+
 
         .singlerow {
-            display: inline-block;
-            height: 30px;
-            margin-right: 50px;
+
+            height: 80px;
+            margin-right: 10px;
             margin-top: 50px;
-            width: 300px;
-            background-color: #EEE;
+            width: 400px;
+            position: absolute;
+
         }
 
 
+        .tophalf {
+            height: 50%;
+            width: 100%;
+        }
+
+        .bottomhalf {
+            height: 50%;
+            width: 100%;
+        }
+
+        .controllabel {
+            margin-top: 40px;
+            vertical-align:middle;
+            display: inline-block;
+            height: 20%;
+
+            width:20%;
+
+        }
+
+        .controlvalue {
+            margin-top: 40px;
+            vertical-align:middle;
+            display: inline-block;
+            height: 20%;
+
+            width:20%;
+
+        }
+
+        .controlholder {
+            margin-top: 40px;
+            display: inline-block;
+            vertical-align:middle;
+            height: 20%;
+            width: 60%;
+        }
 
         .bulbiconrow {
             width: 100px;
@@ -82,22 +131,6 @@
             display: inline-block;
         }
 
-        .bulbiconrow_micro {
-            width: 30px;
-            height: 30px;
-            display: inline-block;
-            background-color: #44ddff;
-
-        }
-
-        .consumedfixture_micro {
-            display: inline-block;
-            width: 140px;
-            margin: 5px;
-            height: 30px;
-            cursor: default;
-            background-color: #FFFFFF;
-        }
 
         #testitem {
             width: 50px;
@@ -105,39 +138,90 @@
             display: inline-block;
         }
 
-        .dropzone2 {
+        /* block for availble fixture */
+        .availible_fix_holder {
             width: 100%;
-            margin: 0 0;
-            border: 2px solid green;
-            height: 120px;
+            height: 200px;
 
-            border-color: white;
+            float: left;
+        }
+
+        /* block for availble fixture */
+        .gap_span_div {
+            width: 100%;
+            height: 500px;
+
+        }
+
+        .availiblefix_wrapperbox {
+            margin: 5px;
+            width: 100%;
+            height: 70%;
+            overflow: auto;
+            white-space: nowrap;
+
+        }
+
+        .scene_holder_main {
+            margin: 5px;
+            width: 100%;
+            height: 200px;
+
+            overflow-y: scroll;
+
         }
 
 
+        /*  avaible fixture holder  holds icon and label, */
         .availiblefixture {
-            display: inline-block;
 
-            width: 100px;
+            display: inline-block;
+            vertical-align: top;
+            width: 120px;
             margin: 5px;
-            height: 100px;
+            height: 120px;
             cursor: default;
         }
 
-        .availiblefixturesholder {
-            margin: 0px;
-
-            width: 100%;
-            height: 50%;
-            overflow-y: scroll;
-
+        .fixture_icon_small {
+            width: 110px;
+            height: 110px;
 
         }
 
-        .groups_row {
+        .fixture_label {
+
+            width: 110px;
+            height: 20px;
+
+        }
+
+
+        .hor_spacer {
+            margin: 0px;
+            width: 100%;
+            height: 5px;
+
+            background-color: #000000;
+        }
+
+
+        .scene_dropzone {
+            width: 100%;
+            margin: 0 0;
+            border: 2px solid green;
+            height: 140px;
+            border-color: white;
+            overflow: auto;
+        }
+
+        /*  this div holds all the scenes   */
+        .scenes_hold_div {
 
             width: 100%;
-            height: 100px;
+            height: 100%;
+
+            overflow-y: scroll;
         }
 
         .background_main {
@@ -146,20 +230,6 @@
             height: 30%;
 
         }
-
-        .availible_fix_holder {
-
-            width: 200px;
-            height: 1000px;
-            float: left;
-        }
-        .scenemgt_holder {
-
-            width: 100%;
-            height: 1000px;
-
-        }
-
 
 
         html, body {
@@ -179,9 +249,11 @@
         .actionbuttons {
             position: absolute;
             right: 2px;
-            width: 170px;
+            width: 220px;
             padding: 0px;
         }
+
+
 
 
     </style>
@@ -210,12 +282,11 @@
 <div class="tab-content">
     <div class="tab-pane active" id="tab1">
         <p>
-        <!--input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/-->
         <div id="wizard" class="col-sm-11">
             <div class="col-lg-12">
                 <div class="box">
                     <div class="box-header" data-original-title>
-                        <h2><i class="fa fa-user"></i><span class="break"></span>Fixtures</h2>
+                        <h2><i class="fa fa-user"></i><span class="break"></span>Override Control</h2>
                         <div class="box-icon">
                             <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
                         </div>
@@ -223,11 +294,14 @@
                     <div class="box-content">
 
                         <div id="fixturetablediv" style="width: 100%; overflow: hidden;">
-                            <div style="width: 30%; float: left;">
-                                <table id="fixturetable" class="table table-striped table-bordered "></table>
+                            <div class="table_scrollit">
+                                <table id="fixturetable" class="table table-striped table-bordered"></table>
                             </div>
-                            <div id="fixturesettingsdiv" class="settingholder">
 
+                            <div id="fixturesettingsdiv" class="settingholder">
+                                <div id="slfdkjds" class="singlerow">
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -240,33 +314,30 @@
 
             <input type="button" id = "btmakescene" class="btn btn-large btn-primary" onclick=createNewScene() value="NEW"/>
 
-            <input type="button" id = "btdelgroup" class="btn btn-large btn-primary" onclick=deleteSelScene() value="Delete"/>
+
+
+
+            <input type="button" id = "btalloff" class="btn btn-large btn-primary" onclick=invokeAllOff() value="Invoke All OFF"/>
+            <input type="button" id = "btall10" class="btn btn-large btn-primary" onclick=invokeAll10() value="Invoke All 10%"/>
+            <input type="button" id = "btall50" class="btn btn-large btn-primary" onclick=invokeAll50() value="Invoke All 50%"/>
+            <input type="button" id = "btallon" class="btn btn-large btn-primary" onclick=invokeAllOn() value="Invoke All 100%"/>
             <!--input type="button" id = "btsaveconfig" class="btn btn-large btn-primary" onclick=saveConfigSettings() value="SAVE"/-->
+
+
             <div class="box-header" data-original-title>
-                <h2><i class="fa fa-user"></i><span class="break"></span>Fixtures</h2>
+                <h2><i class="fa fa-user"></i><span class="break"></span>Scene Managment</h2>
             </div>
-            <div class="box-content fill">
-                <div id="fixholder" class="availiblefixturesholder"></div>
-            </div>
-            <!--div class="box">
 
+
+            <div id="fixholder" class="availiblefix_wrapperbox"></div>
+            <!--div class="box-content fill">
             </div-->
+            <div id="space_gap1" class="hor_spacer"></div>
+
+
+            <div id="active_scenes_holder" class="scene_holder_main"></div>
+
         </div>
-
-        <div class="scenemgt_holder">
-            <div class="col-lg-10">
-
-                <input type="button" id = "btalloff" class="btn btn-large btn-primary" onclick=invokeAllOff() value="Invoke All OFF"/>
-                <input type="button" id = "btall10" class="btn btn-large btn-primary" onclick=invokeAll10() value="Invoke All 10%"/>
-                <input type="button" id = "btall50" class="btn btn-large btn-primary" onclick=invokeAll50() value="Invoke All 50%"/>
-                <input type="button" id = "btallon" class="btn btn-large btn-primary" onclick=invokeAllOn() value="Invoke All 100%"/>
-                <div id="active_scenes_holder" class="groups_row" ></div>
-            </div>
-        </div>
-
-
-        <!--/div-->
-
         </p>
     </div>
 </div>

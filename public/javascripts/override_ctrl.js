@@ -16,6 +16,16 @@ var lastrgbcolor;
 $(document).ready(function() {
 
 
+    $('input[type="range"]').rangeslider({
+        polyfill : false,
+        onInit : function() {
+          //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+        },
+        onSlide : function( position, value ) {
+          //  this.output.html( value );
+        }
+    });
+
     // handler for fixture table,
     $("#fixturetable").on("click", " tr", function(e) {
 
@@ -30,6 +40,13 @@ $(document).ready(function() {
             selecteditem = undefined;
         }
 
+        //disable action buttons on all ,
+        for(var k = 0; k <  cachedconfig.scenes.length; k++)
+        {
+            var disableele = '#actionbuttons_'+k;
+            $(disableele).children().addClass('disabled');
+            $(disableele).children().removeClass('active');
+        }
 
 
         if ($(this).hasClass('active')) {
@@ -40,7 +57,9 @@ $(document).ready(function() {
             var fixsetting = document.getElementById("fixturesettingsdiv");
 
             fixsetting.innerHTML = ""; //clear
-            //$("#fixturetable").$('tr.active').removeClass('active');
+            fixsetting.className="settingholder";
+
+
             $(this).addClass('active').siblings().removeClass('active');
 
             var row = $(this).find('td:first').text();
@@ -66,11 +85,13 @@ $(document).ready(function() {
                 fixrow1.id = 'fix_toggle1';
                 fixrow1.className="singlerow";
                 fixsetting.appendChild(fixrow1);
+
                 var toggleelement = $("<input/>").appendTo('#fix_toggle1');
                 toggleelement.attr('type', 'checkbox');
                 toggleelement.attr('id','toggle1');
                 toggleelement.attr('data-toggle', 'toggle');
                 toggleelement.attr('checked', curr_state);
+
 
                 $("[data-toggle='toggle']").bootstrapToggle('destroy')
                 $("[data-toggle='toggle']").bootstrapToggle();
@@ -92,48 +113,57 @@ $(document).ready(function() {
             }
             else if(type == "dim")
             {
-                var dimlevel = selectedfixtureobj.level; //scenesettingsholdermap[selectedfixtureobj.assignedname].status.currentlevels;
-                var current_brightness = "50";
 
-                if(dimlevel != undefined)
-                    current_brightness = dimlevel;
+                var fixrow1 = document.createElement("DIV");
+                fixrow1.className = "tophalf";
+                fixrow1.id = 'fixrow_ctemp';
+                fixsetting.appendChild(fixrow1);
+
+                // label
+                var ctrllabel2 = document.createElement("DIV");
+                ctrllabel2.className = "controllabel";
+                ctrllabel2.innerHTML  = "Level";
+                fixrow1.appendChild(ctrllabel2);
+
+                // control
+                var ctrlholder2 = document.createElement("DIV");
+                ctrlholder2.className = "controlholder";
+                ctrlholder2.id = 'control2';
+                fixrow1.appendChild(ctrlholder2);
 
 
-                var $ctrldiv = $("<div>", {id: "controldiv", "class": "singlerow"});  // create a control div
-                $('#fixturesettingsdiv').append($ctrldiv);
-                $('<label>Level</label>').appendTo('#controldiv');
+                var ctrlvalue2 = document.createElement("DIV");
+                ctrlvalue2.className = "controlvalue";
+                ctrlvalue2.id = 'controlvalue2';
+                ctrlvalue2.innerHTML  = selectedfixtureobj.level;
+                fixrow1.appendChild(ctrlvalue2);
 
-                var orgId = 'o1';
-                var charityId = 'c1';
-                var sliderElement = $("<input/>").appendTo('#controldiv');
+                var brightslider = document.createElement("INPUT");
+                brightslider.setAttribute("type", "range");
+                brightslider.setAttribute("id", "level");
+                brightslider.setAttribute("target", selectedfixtureobj.assignedname);
+                brightslider.value = selectedfixtureobj.level;
+                ctrlholder2.appendChild(brightslider);
 
-                sliderElement.attr('name', selectedfixtureobj.assignedname);
-                var sliderUnique= orgId.concat("Slider");
-                var sliderUniqueVal = orgId.concat("SliderVal");
-                sliderElement.attr('id', selectedfixtureobj.assignedname + "_DIM");
-                sliderElement.attr('data-slider-id', sliderUnique);
-                sliderElement.attr('type', 'text');
-                sliderElement.attr('data-slider-min', '0');
-                sliderElement.attr('data-slider-max', '100');
-                sliderElement.attr('data-slider-step', '1');
-                sliderElement.attr('data-slider-value', current_brightness);
-                sliderElement.bootstrapSlider({tooltip: 'show'});
-                sliderElement.on("slideStop", function(slideEvt) {
-                    var bla2 = slideEvt.currentTarget.getAttribute("name");
-                    var levelpct = document.getElementById(bla2 + "_DIM").value;
-                    if(bla2 != undefined) {
-                        var element = {};
-                        element.requesttype = "override";
-                        element.name = bla2;
-                        element.level = levelpct;
-                        // var dim = {};
-                        // dim.levelpct = levelpct;
-                        //element.dim = dim;
-                        setFixtureLevel(element);
-                        //console.log("dim set: "  + levelpct);
+                $('input[type="range"]').rangeslider({
+                    polyfill : false,
+                    onInit : function() {
+                        //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+                    },
+                    onSlide : function( position, value ) {
+                        var level = document.getElementById("level").value;
+                        var bla2 = selectedfixtureobj.assignedname;
+                        if(bla2 != undefined)
+                        {
+                            var element = {};
+                            element.name = bla2;
+                            element.requesttype = "override";
+                            element.level = level;
+                            setFixtureLevel(element);
+                            document.getElementById("controlvalue2").innerHTML = level;
+                        }
                     }
                 });
-
             }
             else if(type == "cct")
             {
@@ -141,80 +171,96 @@ $(document).ready(function() {
                 var current_brightness = selectedfixtureobj.brightness; //"50";
 
                 var fixrow1 = document.createElement("DIV");
-                fixrow1.className = "row";
-                fixrow1.id = 'fixrow'+i;
+                fixrow1.className = "tophalf";
+                fixrow1.id = 'fixrow_ctemp';
                 fixsetting.appendChild(fixrow1);
 
-                var $testdiv = $("<div>", {id: "controldiv", "class": "btntable"});
-                $("#fixrow"+i).append($testdiv);
 
-                var $ctrl1 = $("<div>", {id: "ctrl1", "class": "btntable"});
-
-                $("#controldiv").append($ctrl1);
-
-                var ctemplbl = $('<label>Color Temp</label>').appendTo('#ctrl1');
-                var ctempslider = $("<input/>").appendTo('#ctrl1');
-                ctempslider.attr('name', selectedfixtureobj.assignedname);
-                var sliderUnique= selectedfixtureobj.assignedname + "_CTEMP";
-                ctempslider.attr('id', selectedfixtureobj.assignedname + "_CTEMP");
-                ctempslider.attr('data-slider-id', sliderUnique);
-                ctempslider.attr('type', 'text');
-
-                ctempslider.attr('data-slider-min', selectedfixtureobj.min);
-                ctempslider.attr('data-slider-max', selectedfixtureobj.max);
-                ctempslider.attr('data-slider-step', '100');
-                ctempslider.attr('data-slider-value', current_ctemp);  // note var.
-                ctempslider.bootstrapSlider({tooltip: 'show'});
-                ctempslider.on("slideStop", function(slideEvt) {
-                    var bla2 = slideEvt.currentTarget.getAttribute("name");
-                    var ctemp = document.getElementById(bla2 + "_CTEMP").textContent;
-                    var bright = document.getElementById(bla2 + "_BRIGHT").textContent;
-
-                    if(bla2 != undefined)
-                    {
-                        var element = {};
-                        element.name = bla2;
-                        element.requesttype = "override";
-                        element.colortemp = ctemp;
-                        element.brightness = bright;
-                        setFixtureLevel(element);
-                    }
-                });
-
-                var $gapdiv = $("<div>", {id: "gapdiv", "class": "gap"});
-                $("#controldiv").append($gapdiv);
-                var $ctrl2 = $("<div>", {id: "ctrl2", "class": "btntable"});
-                $("#controldiv").append($ctrl2);
-                var ctemplbl = $('<label>Brightness</label>').appendTo('#ctrl2');
+                var fixrow2 = document.createElement("DIV");
+                fixrow2.className = "bottomhalf";
+                fixrow2.id = 'bottomhalf';
+                fixsetting.appendChild(fixrow2);
 
 
-                var brightslider = $("<input/>").appendTo('#ctrl2');
-                brightslider.attr('name', selectedfixtureobj.assignedname);
-                var sliderUnique= selectedfixtureobj.assignedname + "_BRIGHT"; //orgId.concat("Slider");
-                brightslider.attr('id', selectedfixtureobj.assignedname + "_BRIGHT");
-                //brightslider.attr('uid', uid);
-                brightslider.attr('data-slider-id', sliderUnique);
-                brightslider.attr('type', 'text');
-                brightslider.attr('data-slider-min', '0');
-                brightslider.attr('data-slider-max', '100');
-                brightslider.attr('data-slider-step', '1');
-                brightslider.attr('data-slider-value', current_brightness);
+                // label
+                var ctrllabel = document.createElement("DIV");
+                ctrllabel.className = "controllabel";
+                //     ctrllabel.id = 'controllabel1';
+                ctrllabel.innerHTML  = "Color Temp";
+                fixrow1.appendChild(ctrllabel);
 
-                brightslider.bootstrapSlider({tooltip: 'show'});
-                brightslider.on("slideStop", function(slideEvt) {
+                // control
+                var ctrlholder = document.createElement("DIV");
+                ctrlholder.className = "controlholder";
+                ctrlholder.id = 'control1';
+                fixrow1.appendChild(ctrlholder);
 
-                    var bla2 = slideEvt.currentTarget.getAttribute("name");
-                    var ctemp = document.getElementById(bla2 + "_CTEMP").textContent;
-                    var bright = document.getElementById(bla2 + "_BRIGHT").textContent;
 
-                    if(bla2 != undefined)
-                    {
-                        var element = {};
-                        element.name = bla2;
-                        element.requesttype = "override";
-                        element.colortemp = ctemp;
-                        element.brightness = bright;
-                        setFixtureLevel(element);
+                var ctrlvalue = document.createElement("DIV");
+                ctrlvalue.className = "controlvalue";
+                ctrlvalue.id = 'controlvalue1';
+                ctrlvalue.innerHTML  = selectedfixtureobj.colortemp;
+                fixrow1.appendChild(ctrlvalue);
+
+                //  Color Temp ***************************************************************************
+                var ctempslider = document.createElement("INPUT");
+                ctempslider.setAttribute("type", "range");
+                ctrlholder.appendChild(ctempslider);
+                ctempslider.setAttribute("id", "ctemp");
+                ctempslider.setAttribute("min", selectedfixtureobj.min);
+                ctempslider.setAttribute("max", selectedfixtureobj.max);
+                ctempslider.value = selectedfixtureobj.colortemp;
+                //  Brightness ***************************************************************************
+
+
+
+                // label
+                var ctrllabel2 = document.createElement("DIV");
+                ctrllabel2.className = "controllabel";
+                ctrllabel2.innerHTML  = "Brightness";
+                fixrow2.appendChild(ctrllabel2);
+
+                // control
+                var ctrlholder2 = document.createElement("DIV");
+                ctrlholder2.className = "controlholder";
+                ctrlholder2.id = 'control2';
+                fixrow2.appendChild(ctrlholder2);
+
+
+                var ctrlvalue2 = document.createElement("DIV");
+                ctrlvalue2.className = "controlvalue";
+                ctrlvalue2.id = 'controlvalue2';
+                ctrlvalue2.innerHTML  = selectedfixtureobj.brightness;
+                fixrow2.appendChild(ctrlvalue2);
+
+                var brightslider = document.createElement("INPUT");
+                brightslider.setAttribute("type", "range");
+                brightslider.setAttribute("id", "bright");
+                brightslider.setAttribute("target", selectedfixtureobj.assignedname);
+                brightslider.value = selectedfixtureobj.brightness;
+                ctrlholder2.appendChild(brightslider);
+
+                $('input[type="range"]').rangeslider({
+                    polyfill : false,
+                    onInit : function() {
+                        //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+                    },
+                    onSlide : function( position, value ) {
+                        var ctemp = document.getElementById("ctemp").value;
+                        var bright= document.getElementById("bright").value;
+                        var bla2 = selectedfixtureobj.assignedname;
+                        if(bla2 != undefined)
+                        {
+                            var element = {};
+                            element.name = bla2;
+                            element.requesttype = "override";
+                            element.colortemp = ctemp;
+                            element.brightness = bright;
+                            setFixtureLevel(element);
+
+                            document.getElementById("controlvalue2").innerHTML = bright;
+                            document.getElementById("controlvalue1").innerHTML = ctemp;
+                        }
                     }
                 });
             }
@@ -235,17 +281,17 @@ $(document).ready(function() {
                 var cwheelvalues = "rgb(255,255,255)";
                 //if(scenesettingsholdermap[selectedfixtureobj.uid] != undefined)
                 //{
-               // var rgbwlevels = scenesettingsholdermap[selectedfixtureobj.uid].status.currentlevels;
+                // var rgbwlevels = scenesettingsholdermap[selectedfixtureobj.uid].status.currentlevels;
 
                 //if(rgbwlevels != undefined)
-               // {
-                    //convert from pct back to rgb 8 bit,
-                    var red = (selectedfixtureobj.red * 255)/100;
-                    var green = (selectedfixtureobj.green * 255)/100;
-                    var blue = (selectedfixtureobj.blue * 255)/100;
+                // {
+                //convert from pct back to rgb 8 bit,
+                var red = (selectedfixtureobj.red * 255)/100;
+                var green = (selectedfixtureobj.green * 255)/100;
+                var blue = (selectedfixtureobj.blue * 255)/100;
 
-                    cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
-               // }
+                cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
+                // }
                 // }
 
 
@@ -372,12 +418,12 @@ function updateFixturesTable() {
     //oCell.colSpan = 2;
     oCell2 = document.createElement("TD");
     oCell2.innerHTML = "Type";
-    oCell3 = document.createElement("TD");
-    oCell3.innerHTML = "Output#'s";
+    // oCell3 = document.createElement("TD");
+    // oCell3.innerHTML = "Output#'s";
 
     oRow.appendChild(oCell1);
     oRow.appendChild(oCell2);
-    oRow.appendChild(oCell3);
+    //oRow.appendChild(oCell3);
     oTHead.appendChild(oRow);
 
     var coldef = document.createElement("col");
@@ -386,9 +432,9 @@ function updateFixturesTable() {
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-6";
-    oTColGrp.appendChild(coldef);
+    // coldef = document.createElement("col");
+    // coldef.className = "col-md-6";
+    // oTColGrp.appendChild(coldef);
 
     oTable.appendChild(oTHead);
     oTable.appendChild(oTColGrp);
@@ -412,15 +458,7 @@ function updateFixturesTable() {
         type.innerHTML = fixtures[i].type;
         typetd.appendChild(type);
         oRow.appendChild(typetd);
-
-        var assigntd = document.createElement("TD");
-        var ass = document.createElement("label");
-        // ass.innerHTML = fixtures[i].assignment;
-        assigntd.appendChild(ass);
-        oRow.appendChild(assigntd);
-
     }
-
 }
 
 
