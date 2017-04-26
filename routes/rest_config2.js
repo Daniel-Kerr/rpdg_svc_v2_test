@@ -199,7 +199,7 @@ router.post('/deletefixture', function(req, res) {
         }
 
 
-        // delete from groups
+        // delete from scenes
         for(var i = 0; i < global.currentconfig.scenes.length; i++)
         {
             var scene = global.currentconfig.scenes[i];

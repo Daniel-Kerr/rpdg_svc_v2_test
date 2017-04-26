@@ -369,6 +369,19 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
         pendingdeleteitem = this.getAttribute('scenelist');
 
+
+        for(var i = 0; i < cachedconfig.contactinputs.length; i++)
+        {
+            if(cachedconfig.contactinputs[i].active_action.includes(scenelist.name) || cachedconfig.contactinputs[i].inactive_action.includes(scenelist.name))
+            {
+                noty({text: 'Please reassign contact input: ' + cachedconfig.contactinputs[i].assignedname + " to a different scene list ", type: 'error'});
+                return;
+            }
+        }
+
+
+
+
         bootbox.confirm({
             message : "Please Confirm Delete of Scene List",
             size: 'small',
