@@ -510,13 +510,13 @@ function updateFixturesTable() {
         // image.
         var col8part = document.createElement("TD");
         var fiximage = document.createElement("img");
-       // fiximage.value="X";
+        // fiximage.value="X";
         fiximage.src =  fixtures[i].image; //"fixtureimg/1.jpg";
         fiximage.height="30";
         fiximage.width="30";
-      //  fiximage.setAttribute("index",i);
+        //  fiximage.setAttribute("index",i);
         fiximage.addEventListener("click", setfixtureimage);
-       // fiximage.className = "btn btn-xs btn-danger";
+        // fiximage.className = "btn btn-xs btn-danger";
         col8part.appendChild(fiximage);
 
 
@@ -679,10 +679,10 @@ function saveNewFixture(image) {
     fixture.status = 0;
     //if (seltype == "on_off")
 
-   // else if (seltype == "dim")
-   //     fixture.image = "/images/light_eg1.jpg";
-     if (seltype == "cct") {
-      //  fixture.image = "/images/ceiling_spotlight.jpg";
+    // else if (seltype == "dim")
+    //     fixture.image = "/images/light_eg1.jpg";
+    if (seltype == "cct") {
+        //  fixture.image = "/images/ceiling_spotlight.jpg";
         fixture.candledim = document.getElementById("candledim").checked;
         fixture.min = document.getElementById("minctemp").value;
         fixture.max =  document.getElementById("maxctemp").value;
@@ -690,7 +690,7 @@ function saveNewFixture(image) {
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
     else if(seltype == "rgbw") {
-     //   fixture.image = "/images/rgbw_fixture.jpg";
+        //   fixture.image = "/images/rgbw_fixture.jpg";
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
 
@@ -742,10 +742,41 @@ function saveNewFixture(image) {
 function deleteFixture()
 {
     var index =  Number(this.getAttribute('index'));
-    deleteConfigObject("fixture",cachedconfig.fixtures[index],function (retval) {
-        cachedconfig = retval;
-        updateFixturesTable();
+    // bug 201,  set the outputs of this fixture to 0,
+    var element = {};
+    element.requesttype = "override";
+    element.name = cachedconfig.fixtures[index].assignedname;
+    if(cachedconfig.fixtures[index].type == "on_off" || cachedconfig.fixtures[index] == "dim")
+        element.level = 0;
+    else if(cachedconfig.fixtures[index].type == "cct")
+    {
+        element.brightness = 0;
+        element.colortemp =  2200;
+    }
+    else if(cachedconfig.fixtures[index].type == "rgbw")
+    {
+        element.red = 0;
+        element.green = 0;
+        element.blue = 0;
+        element.white = 0;
+    }
+    setFixtureLevel2(element, function (result) {
+
+        var i = 0;  //cb stub
+        deleteConfigObject("fixture",cachedconfig.fixtures[index],function (retval) {
+            cachedconfig = retval;
+            updateFixturesTable();
+        });
     });
+
+
+
+
+    // var index =  Number(this.getAttribute('index'));
+    // deleteConfigObject("fixture",cachedconfig.fixtures[index],function (retval) {
+    //     cachedconfig = retval;
+    //     updateFixturesTable();
+    //  });
 }
 
 
@@ -772,19 +803,19 @@ function setfixtureimage()
     // Get the button that opens the modal
     /*var btn = document.getElementById("myBtn");
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+     // Get the <span> element that closes the modal
+     var span = document.getElementsByClassName("close")[0];
 
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
+     // When the user clicks the button, open the modal
+     btn.onclick = function() {
+     modal.style.display = "block";
+     }
 
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-            modal.style.display = "none";
-        }
-        */
+     // When the user clicks on <span> (x), close the modal
+     span.onclick = function() {
+     modal.style.display = "none";
+     }
+     */
 
 }
 

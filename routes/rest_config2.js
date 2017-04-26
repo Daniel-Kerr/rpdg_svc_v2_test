@@ -174,6 +174,9 @@ router.post('/deletefixture', function(req, res) {
             var fix = global.currentconfig.fixtures[i];
             if(fix.assignedname == req.body.assignedname)
             {
+
+
+
                 global.currentconfig.fixtures.splice(i,1);
                 break;
             }
