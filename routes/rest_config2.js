@@ -44,8 +44,9 @@ var RGBWFixture = require('../models/RGBWFixture.js');
 
 //var OccSensor = require('../models/OccSensor.js');
 //var MotionSensor = require('../models/MotionSensor.js');
-var Dimmer = require('../models/Dimmer.js');
-var DayLightSensor = require('../models/DayLightSensor.js');
+//var Dimmer = require('../models/Dimmer.js');
+//var DayLightSensor = require('../models/DayLightSensor.js');
+var LevelInput = require('../models/LevelInput.js');
 
 var Group = require('../models/Group.js');
 var Scene = require('../models/Scene.js');
@@ -244,7 +245,11 @@ router.post('/savelevelinput', function(req, res) {
             }
         }
 
-        switch (req.body.type) {
+        var fix = new LevelInput();
+        fix.fromJson(req.body);
+        global.currentconfig.levelinputs.push(fix);
+
+        /*switch (req.body.type) {
             case "daylight":
                 var fix = new DayLightSensor();
                 fix.fromJson(req.body);
@@ -257,7 +262,7 @@ router.post('/savelevelinput', function(req, res) {
                 break;
             default:
                 break;
-        }
+        }*/
 
         service.updateRPDGInputDrive();
     }

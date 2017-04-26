@@ -13,8 +13,10 @@ var InputMessage = require('../models/InputMessage.js');
 
 //var OccSensor = require('../models/OccSensor.js');
 //var MotionSensor = require('../models/MotionSensor.js');
-var Dimmer = require('../models/Dimmer.js');
-var DayLightSensor = require('../models/DayLightSensor.js');
+
+//var Dimmer = require('../models/Dimmer.js');
+//var DayLightSensor = require('../models/DayLightSensor.js');
+var LevelInput = require('../models/LevelInput.js');
 
 var OnOffFixture = require('../models/OnOffFixture.js');
 var DimFixture = require('../models/DimFixture.js');
@@ -112,6 +114,26 @@ function incommingHWChangeHandler(interface, type, inputid,level)
 
                         if (dev.type == "dimmer")  // dimmer == wallstation.
                         {
+                            // 4/26/17,   group action now.
+
+                            var groupname = dev.group; //req.body.name;
+                            if(groupname != undefined) {
+                                var groupobj = global.currentconfig.getGroupByName(groupname);
+                                if (groupobj != undefined) {
+                                    if(groupobj.type == "brightness") {
+                                        var targetlevel = level * 10;
+                                        service.setGroupToBrightnessLevel(groupname, targetlevel);
+                                    }
+                                    else if(groupobj.type == "ctemp") {
+                                        //scale color temp. between 2200 / 6500
+                                        var scale = level / 10;
+                                        var targetctemp = ((6500-2200) * scale) + 2200;
+                                        service.setGroupToColorTemp(groupname,targetctemp,100);
+                                    }
+                                }
+                            }
+
+                            /*
                             // look through all devices conntect and set to level (wallstation)
                             for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
                                 var fixobj = global.currentconfig.fixtures[k];
@@ -132,7 +154,7 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                                         fixobj.setLevel(reqobj, true);
                                     }
                                 }
-                            }
+                            } */
                         }
                         else if (dev.type == "daylight")  // check if input is a daylight sensor, and apply it, to global.
                         {
@@ -595,9 +617,28 @@ var service = module.exports =  {
                     var inputobj = global.currentconfig.levelinputs[levelidx];
                     if (inputobj.type == "daylight") {
 
-                        //if (currenthour >= 8 && currenthour <= 17) {     // only run the daylight sensor between the hours of 8am and 5pm
-
+                       // 4/26/17 -- changed to group ..a
                         var level = inputobj.value;
+
+                        var groupname = inputobj.group; //req.body.name;
+                        if(groupname != undefined) {
+                            var groupobj = global.currentconfig.getGroupByName(groupname);
+                            if (groupobj != undefined) {
+
+                                if(groupobj.type == "brightness") {
+                                    var targetlevel = level * 10;
+                                    service.setGroupToBrightnessLevel(groupname, targetlevel);
+                                }
+                                else if(groupobj.type == "ctemp") {
+                                    //scale color temp. between 2200 / 6500
+                                    var scale = level / 10;
+                                    var targetctemp = ((6500-2200) * scale) + 2200;
+                                    service.setGroupToColorTemp(groupname,targetctemp,100);
+                                }
+                            }
+                        }
+
+                           /*
                         // look through all fixtures connected to DL sensor.  and set to level (wallstation)
                         for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
                             var fixobj = global.currentconfig.fixtures[k];
@@ -619,7 +660,7 @@ var service = module.exports =  {
                                     fixobj.setLevel(reqobj, true);
                                 }
                             }
-                        }
+                        }*/
                         // }
                         // }
                     }  // end if daylight type.

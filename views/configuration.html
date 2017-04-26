@@ -349,13 +349,13 @@
                             </div>
 
                             <br>
-                            <div id="inputsheader">
+                            <!--div id="inputsheader">
                                 <label>Bound Inputs</label>
                             </div>
                             <br>
                             <div id="boundinputs">
 
-                            </div>
+                            </div-->
                             <br>
 
                             <div id="fixtureparamstable" class = "tg"></div>
@@ -557,6 +557,11 @@
                         <option value="64">64</option>
                     </select>
 
+
+
+                    <label> Group Assignment</label>
+                    <select id="groupassignment" class="btn btn-large btn-primary">
+                    </select>
                     <br>
                     <br>
                     <input type="button" id = "btsavelevelinput" class="btn btn-large btn-success" onclick=saveNewLevelInput() value="Save Input"/>
@@ -582,7 +587,7 @@
 <div id="myModal" class="modal">
 
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close" onclick="closemodal()">&times;</span>
         <p>Please select an image for your fixture</p>
 
 
@@ -598,6 +603,7 @@
 
 
         <input type="button" id = "btsaveimage"  onclick="saveImageToFixture()" value="SAVE"/>
+
     </div>
 
 </div>

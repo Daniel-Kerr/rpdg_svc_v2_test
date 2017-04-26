@@ -8,10 +8,10 @@ var DimFixture = require('./DimFixture.js');
 var CCTFixture = require('./CCTFixture.js');
 var RGBWFixture = require('./RGBWFixture.js');
 // inputs(sensors..etc)
-//var MotionSensor = require('./MotionSensor.js');
-//var OccSensor = require('./OccSensor.js');
-var Dimmer = require('./Dimmer.js');
-var DayLightSensor = require('./DayLightSensor.js');
+
+//var Dimmer = require('./Dimmer.js');
+//var DayLightSensor = require('./DayLightSensor.js');
+var LevelInput = require('./LevelInput.js');
 
 var ContactInput = require('./ContactInput.js');
 
@@ -74,7 +74,12 @@ var Configuration = function()
 
         for (var i = 0; i < obj.levelinputs.length; i++) {
             var input = obj.levelinputs[i];
-            switch (input.type) {
+
+            var f = new LevelInput();
+            f.fromJson(input);
+            this.levelinputs.push(f);
+
+           /* switch (input.type) {
 
                 case "dimmer":
                     var f = new Dimmer();
@@ -89,7 +94,7 @@ var Configuration = function()
                     break;
                 default:
                     break;
-            }
+            }*/
         }
 
 

@@ -13,6 +13,8 @@ var hostip = "";
 var cachedconfig = "";
 
 
+var selected_edit_fixture = undefined;
+
 // These are the constraints used to validate the form
 var constraints = {
     name: {
@@ -77,7 +79,7 @@ $(document).ready(function() {
                 if(fixture.assignedname == row)
                 {
 
-
+                    selected_edit_fixture = fixture;
 
 
                     document.getElementById("fixturetype").value = fixture.type;
@@ -205,52 +207,6 @@ $(document).ready(function() {
                     updateInputContactActionDropDowns(ic);
                     enableDisableInputActionDropDowns();
 
-                    /*
-                     if(ic.active_action != undefined)
-                     {
-                     var aa = ic.active_action;
-                     if(aa.includes("_@@_"))
-                     {
-                     var parts = aa.split("_@@_");
-                     if(parts.length == 2)
-                     {
-                     $("#active_action_sel").val(parts[0]).change();
-                     $("#active_action_target").val(parts[1]).change();
-                     }
-                     }
-                     else if(aa.includes("scene_"))
-                     {
-                     //var part = aa.substring(6);
-                     $("#active_action_sel").val(aa).change();
-                     }
-                     else
-                     {
-                     $("#active_action_sel").val(aa).change();
-                     }
-                     }
-
-                     if(ic.inactive_action != undefined)
-                     {
-                     var aa = ic.inactive_action;
-                     if(aa.includes("_@@_"))
-                     {
-                     var parts = aa.split("_@@_");
-                     if(parts.length == 2)
-                     {
-                     $("#inactive_action_sel").val(parts[0]).change();
-                     $("#inactive_action_target").val(parts[1]).change();
-                     }
-                     }
-                     else if(aa.includes("scene_"))
-                     {
-                     $("#inactive_action_sel").val(aa).change();
-                     }
-                     else
-                     {
-                     $("#inactive_action_sel").val(aa).change();
-                     }
-                     }
-                     */
 
 
                 }
@@ -292,6 +248,8 @@ $(document).ready(function() {
                     $("#levelinput_inputs").val(ic.inputid);
 
                     $("#levelinput_drive").val(ic.drivelevel);
+
+                    $("#groupassignment").val(ic.group);
 
 
                 }
@@ -347,7 +305,7 @@ function processConfig(configobj)
     // loadedfixtures = configobj.fixtures;
     updateFixturesTable();
 
-    populateBoundInputOptions();
+    // populateBoundInputOptions();
 
     //  loadedinputcontacts = configobj.contactinputs;
 
@@ -387,6 +345,12 @@ function processConfig(configobj)
     document.getElementById("sitezip").value = cachedconfig.sitezip;
     document.getElementById("sitelatt").value = cachedconfig.sitelatt;
     document.getElementById("sitelong").value = cachedconfig.sitelong;
+
+
+
+    populateDropDown("groupassignment", getGroupNames());
+
+
 }
 
 
@@ -417,8 +381,8 @@ function updateFixturesTable() {
     oCell3.innerHTML = "Interface";
     oCell4 = document.createElement("TD");
     oCell4.innerHTML = "Outputs Utilized";
-    oCell5 = document.createElement("TD");
-    oCell5.innerHTML = "Bound Inputs";
+    // oCell5 = document.createElement("TD");
+    // oCell5.innerHTML = "Bound Inputs";
 
     oCell6 = document.createElement("TD");
     oCell6.innerHTML = "Candle Dim";
@@ -433,7 +397,7 @@ function updateFixturesTable() {
     oRow.appendChild(oCell2);
     oRow.appendChild(oCell3);
     oRow.appendChild(oCell4);
-    oRow.appendChild(oCell5);
+    // oRow.appendChild(oCell5);
     oRow.appendChild(oCell6);
     oRow.appendChild(oCell8);
     oRow.appendChild(oCell7);
@@ -454,9 +418,9 @@ function updateFixturesTable() {
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
+    //  coldef = document.createElement("col");
+    //  coldef.className = "col-md-1";
+    //  oTColGrp.appendChild(coldef);
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
@@ -497,8 +461,8 @@ function updateFixturesTable() {
         var col4part = document.createElement("TD");
         col4part.innerHTML = fixtures[i].outputid;
 
-        var col5part = document.createElement("TD");
-        col5part.innerHTML = fixtures[i].boundinputs;
+        // var col5part = document.createElement("TD");
+        // col5part.innerHTML = fixtures[i].boundinputs;
 
         //var col5part = document.createElement("TD");
         // col5part.innerHTML = fixtures[i].contactinputs;
@@ -535,7 +499,7 @@ function updateFixturesTable() {
         oRow.appendChild(col2part);
         oRow.appendChild(col3part);
         oRow.appendChild(col4part);
-        oRow.appendChild(col5part);
+        //   oRow.appendChild(col5part);
         oRow.appendChild(col6part);
         oRow.appendChild(col8part);
         oRow.appendChild(col7part);
@@ -548,34 +512,34 @@ function updateFixturesTable() {
 }
 
 
+/*
+ function populateBoundInputOptions() {
 
-function populateBoundInputOptions() {
+ availibleinputs = [];
+ $('#boundinputs').empty();
 
-    availibleinputs = [];
-    $('#boundinputs').empty();
+ for(var i =0; i < cachedconfig.levelinputs.length; i++) {
+ var name = cachedconfig.levelinputs[i].assignedname;
+ var container = $('#boundinputs');
+ var id = i + 1;
+ var cb = $('<input />', {type: 'checkbox', id: 'bi' + id, value: name}).appendTo(container);
+ $('<label />', {'for': 'bi' + id, text: name}).appendTo(container);
+ $('<span />', {style:'display:inline-block', width: '30px'}).appendTo(container);
 
-    for(var i =0; i < cachedconfig.levelinputs.length; i++) {
-        var name = cachedconfig.levelinputs[i].assignedname;
-        var container = $('#boundinputs');
-        var id = i + 1;
-        var cb = $('<input />', {type: 'checkbox', id: 'bi' + id, value: name}).appendTo(container);
-        $('<label />', {'for': 'bi' + id, text: name}).appendTo(container);
-        $('<span />', {style:'display:inline-block', width: '30px'}).appendTo(container);
+ availibleinputs.push(cb);
+ }
 
-        availibleinputs.push(cb);
-    }
-
-    for(var i =0; i < cachedconfig.contactinputs.length; i++) {
-        var name = cachedconfig.contactinputs[i].assignedname;
-        var container = $('#boundinputs');
-        var id = i + 1;
-        var cb = $('<input />', {type: 'checkbox', id: 'bi' + id, value: name}).appendTo(container);
-        $('<label />', {'for': 'bi' + id, text: name}).appendTo(container);
-        $('<span />', {style:'display:inline-block', width: '30px'}).appendTo(container);
-        availibleinputs.push(cb);
-    }
-}
-
+ for(var i =0; i < cachedconfig.contactinputs.length; i++) {
+ var name = cachedconfig.contactinputs[i].assignedname;
+ var container = $('#boundinputs');
+ var id = i + 1;
+ var cb = $('<input />', {type: 'checkbox', id: 'bi' + id, value: name}).appendTo(container);
+ $('<label />', {'for': 'bi' + id, text: name}).appendTo(container);
+ $('<span />', {style:'display:inline-block', width: '30px'}).appendTo(container);
+ availibleinputs.push(cb);
+ }
+ }
+ */
 
 
 function buildassignment(start, type)
@@ -604,7 +568,7 @@ function buildassignment(start, type)
 
 function saveNewFixture(image) {
 
-
+    selected_edit_fixture = undefined;
     var startout = document.getElementById("starting_output");
     var type = document.getElementById("fixturetype");
     var selstart = startout.options[startout.selectedIndex].value;
@@ -782,41 +746,31 @@ function deleteFixture()
 
 function saveImageToFixture()
 {
-    // var k = $("#iconpick").data('picker');
     var bla =  $( "#iconpick" ).val();
-    var j = 0;
-    j = j + 1;
     var modal = document.getElementById('myModal');
     modal.style.display = "none";
-
-
     saveNewFixture(bla+".jpg");
+}
 
+function closemodal()
+{
+    var modal = document.getElementById('myModal');
+    modal.style.display = "none";
 }
 
 
 function setfixtureimage()
 {
+    if(selected_edit_fixture != undefined) {
+        //  var bla =  $( "#iconpick" ).val();
+        var base = selected_edit_fixture.image.lastIndexOf("/") + 1;
+        var end = selected_edit_fixture.image.indexOf(".");
+        var value = selected_edit_fixture.image.substring(base, end);
 
+        $("#iconpick").val(value).change();
+    }
     var modal = document.getElementById('myModal');
     modal.style.display = "block";
-    // Get the button that opens the modal
-    /*var btn = document.getElementById("myBtn");
-
-     // Get the <span> element that closes the modal
-     var span = document.getElementsByClassName("close")[0];
-
-     // When the user clicks the button, open the modal
-     btn.onclick = function() {
-     modal.style.display = "block";
-     }
-
-     // When the user clicks on <span> (x), close the modal
-     span.onclick = function() {
-     modal.style.display = "none";
-     }
-     */
-
 }
 
 function cacheFixtureParamOptions(params)
@@ -1253,7 +1207,7 @@ function saveNewContactInputObj() {
     saveConfigObject("contactinput",contactinput ,function(retval) {
         cachedconfig = retval;
         updateWetDryContactTable();
-        populateBoundInputOptions();
+        //  populateBoundInputOptions();
 
     });
 
@@ -1267,7 +1221,7 @@ function deleteInputContactItem()
     deleteConfigObject("contactinput",cachedconfig.contactinputs[index],function (retval) {
         cachedconfig = retval;
         updateWetDryContactTable();
-        populateBoundInputOptions();
+        //  populateBoundInputOptions();
         updateFixturesTable();
 
     });
@@ -1468,10 +1422,14 @@ function saveNewLevelInput() {
     levelinput.type = $("#levelinputtype").val();
     levelinput.interface = $("#levelinputinterface").val();
     levelinput.drivelevel = $("#levelinput_drive").val();
+
+    levelinput.group = $("#groupassignment").val();
+
+
     saveConfigObject("levelinput",levelinput ,function(retval) {
         cachedconfig = retval;
         updateLevelInputsTable();
-        populateBoundInputOptions();
+        //  populateBoundInputOptions();
 
     });
 }
@@ -1483,7 +1441,7 @@ function deleteLevelInput()
     deleteConfigObject("levelinput",cachedconfig.levelinputs[index],function (retval) {
         cachedconfig = retval;
         updateLevelInputsTable();
-        populateBoundInputOptions();
+        //   populateBoundInputOptions();
         updateFixturesTable();
 
     });
@@ -1858,6 +1816,17 @@ function getSceneListsNames()
     for(var i = 0; i < cachedconfig.scenelists.length; i++)
     {
         names.push(cachedconfig.scenelists[i].name);
+    }
+    return names;
+}
+
+
+function getGroupNames()
+{
+    var names = [];
+    for(var i = 0; i < cachedconfig.groups.length; i++)
+    {
+        names.push(cachedconfig.groups[i].name);
     }
     return names;
 }
