@@ -27,7 +27,7 @@ router.post('/setgrouptolevel', function(req, res) {
         var groupobj = global.currentconfig.getGroupByName(groupname);
         if(groupobj != undefined)
         {
-            service.setGroupToBrightnessLevel(groupname,level);
+            service.setGroupToBrightnessLevel(groupname,level, "wallstation");
             code = 200;
         }
     }

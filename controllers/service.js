@@ -74,79 +74,6 @@ var firmware_version = "???";
 
 
 
-function outputAvalibleCheck(inputlist, desiredstartoutput, type)
-{
-    // filter out any already used outputs.
-    for(var i = 0; i < global.currentconfig.fixtures.length; i++)
-    {
-        var fixobj = global.currentconfig.fixtures[i];
-
-        var outstart = Number(fixobj.outputid);
-        if(fixobj.type == "on_off" || fixobj.type == "dim") {
-            var idx = inputlist.indexOf(String(outstart));
-            if(idx > -1) {
-                inputlist.splice(idx, 1);
-            }
-        }
-        if(fixobj.type == "cct") {
-            var idx = inputlist.indexOf(String(outstart));
-            if(idx > -1)
-            {
-                inputlist.splice(idx,1);
-                inputlist.splice(idx,1);  // do it 2 times,  to remove both channels,
-            }
-        }
-        if(fixobj.type == "rgbw") {
-            var idx = inputlist.indexOf(String(outstart));
-            if (idx > -1) {
-                inputlist.splice(idx, 1);
-                inputlist.splice(idx, 1);  // do it X times,
-                inputlist.splice(idx, 1);
-                inputlist.splice(idx, 1);
-            }
-        }
-    }
-
-
-    // filter based on edit type,
-    if(type == "cct")
-    {
-        var ctemp = inputlist.indexOf(String(desiredstartoutput));
-        if(ctemp < 0)
-            return false;
-
-        var bright = inputlist.indexOf(String(desiredstartoutput+1));
-        if(bright < 0)
-            return false;
-
-    }
-    else if(type == "rgbw")
-    {
-        var red = inputlist.indexOf(String(desiredstartoutput));
-        if(red < 0)
-            return false;
-
-        var green = inputlist.indexOf(String(desiredstartoutput+1));
-        if(green < 0)
-            return false;
-
-        var blue = inputlist.indexOf(String(desiredstartoutput+2));
-        if(blue < 0)
-            return false;
-
-        var white = inputlist.indexOf(String(desiredstartoutput+3));
-        if(white < 0)
-            return false;
-    }
-    else {
-        var out = inputlist.indexOf(String(desiredstartoutput));
-        if(out < 0)
-            return false;
-    }
-
-    return true;
-}
-
 
 
 function incommingUDPMessageHandler(messageobj)
@@ -200,7 +127,7 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                                 if (groupobj != undefined) {
                                     if(groupobj.type == "brightness") {
                                         var targetlevel = level * 10;
-                                        service.setGroupToBrightnessLevel(groupname, targetlevel);
+                                        service.setGroupToBrightnessLevel(groupname, targetlevel, "wallstation");
                                     }
                                     else if(groupobj.type == "ctemp") {
                                         //scale color temp. between 2200 / 6500
@@ -602,10 +529,8 @@ var service = module.exports =  {
 
         sw_version = data_utils.getVersionFromFile();
 
-        var list = ["1","2","3","4","5","6","7","8"];
-       var k = outputAvalibleCheck(list, "2","dim");
 
-        var j = 0;
+
 
 
 
@@ -729,7 +654,7 @@ var service = module.exports =  {
                                     //inverted 100 - (level*10)
                                     var targetlevel = 100- (level * 10);
                                   //  var targetlevel = level * 10;
-                                    service.setGroupToBrightnessLevel(groupname, targetlevel);
+                                    service.setGroupToBrightnessLevel(groupname, targetlevel, "daylight");
                                 }
                                // removed 4/27/17
                                 // else if(groupobj.type == "ctemp") {
@@ -895,13 +820,13 @@ var service = module.exports =  {
         }, BasePollingPeriod);
     },
 
-    setGroupToBrightnessLevel : function (groupname, level)
+    setGroupToBrightnessLevel : function (groupname, level, requesttype)
     {
         if(groupname != undefined)
         {
             var groupobj = global.currentconfig.getGroupByName(groupname);
             if(groupobj != undefined && groupobj.type == "brightness") {
-                sendMessageToGroup(groupobj,"wallstation",level);
+                sendMessageToGroup(groupobj,requesttype,level);
             }
         }
     },
