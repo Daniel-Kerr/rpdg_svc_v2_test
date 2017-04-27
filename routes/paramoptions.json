@@ -1,0 +1,485 @@
+{
+    "parameters": [
+        {
+            "name": "Dimming Options",
+            "options": [
+                {
+                    "name": "Don't Dim",
+                    "value": 0
+                },
+                {
+                    "name": "Low Voltage Dimming",
+                    "value": 1
+                },
+                {
+                    "name": "Forward Phase Dimming",
+                    "value": 2
+                },
+                {
+                    "name": "Reverse Phase Dimming",
+                    "value": 3
+                }
+            ]
+        },
+        {
+            "name": "Dim Rate",
+           
+            "options": [
+                {
+                    "name": "Instant",
+                    "value": 0
+                },
+                {
+                    "name": "<1 sec",
+                    "value": 1
+                },
+                {
+                    "name": "<2 sec",
+                    "value": 2
+                },
+                {
+                    "name": "<5 sec",
+                    "value": 5
+                },
+                {
+                    "name": "<10 sec",
+                    "value": 10
+                },
+                {
+                    "name": "<30 sec",
+                    "value": 30
+                },
+                {
+                    "name": "<60 sec",
+                    "value": 60
+                }
+            ]
+        },
+        {
+            "name": "Brighten Rate",
+           
+            "options": [
+                {
+                    "name": "Instant",
+                    "value": 0
+                },
+                {
+                    "name": "<1 sec",
+                    "value": 1
+                },
+                {
+                    "name": "<2 sec",
+                    "value": 2
+                },
+                {
+                    "name": "<5 sec",
+                    "value": 5
+                },
+                {
+                    "name": "<10 sec",
+                    "value": 10
+                },
+                {
+                    "name": "<30 sec",
+                    "value": 30
+                },
+                {
+                    "name": "<60 sec",
+                    "value": 60
+                }
+            ]
+        },
+        {
+            "name": "Response to Occupancy Message",
+           
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "Off",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "25 %",
+                    "value": 25
+                },
+                {
+                    "name": "50 %",
+                    "value": 50
+                },
+                {
+                    "name": "75 %",
+                    "value": 75
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "Response to Vacancy Message",
+          
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "Off",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "25 %",
+                    "value": 25
+                },
+                {
+                    "name": "50 %",
+                    "value": 50
+                },
+                {
+                    "name": "75 %",
+                    "value": 75
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "ResponsetoDaylight 50+ fc message",
+           
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "Off",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "25 %",
+                    "value": 25
+                },
+                {
+                    "name": "50 %",
+                    "value": 50
+                },
+                {
+                    "name": "75 %",
+                    "value": 75
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "ResponsetoDaylight 40+ fc message",
+           
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "Off",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "25 %",
+                    "value": 25
+                },
+                {
+                    "name": "50 %",
+                    "value": 50
+                },
+                {
+                    "name": "75 %",
+                    "value": 75
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "ResponsetoDaylight 30+ fc message",
+           
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "Off",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "25 %",
+                    "value": 25
+                },
+                {
+                    "name": "50 %",
+                    "value": 50
+                },
+                {
+                    "name": "75 %",
+                    "value": 75
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "ResponsetoDaylight 20+ fc message",
+           
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "Off",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "25 %",
+                    "value": 25
+                },
+                {
+                    "name": "50 %",
+                    "value": 50
+                },
+                {
+                    "name": "75 %",
+                    "value": 75
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "ResponsetoDaylight 10+ fc message",
+           
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "Off",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "25 %",
+                    "value": 25
+                },
+                {
+                    "name": "50 %",
+                    "value": 50
+                },
+                {
+                    "name": "75 %",
+                    "value": 75
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "ResponsetoDaylight 0+ fc message",
+          
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "Off",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "25 %",
+                    "value": 25
+                },
+                {
+                    "name": "50 %",
+                    "value": 50
+                },
+                {
+                    "name": "75 %",
+                    "value": 75
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "Daylight Ceiling",
+          
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "60%",
+                    "value": 60
+                },
+                {
+                    "name": "70 %",
+                    "value": 10
+                },
+                {
+                    "name": "80 %",
+                    "value": 80
+                },
+                {
+                    "name": "90 %",
+                    "value": 90
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "Manual Ceiling",
+           
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "60%",
+                    "value": 60
+                },
+                {
+                    "name": "70 %",
+                    "value": 10
+                },
+                {
+                    "name": "80 %",
+                    "value": 80
+                },
+                {
+                    "name": "90 %",
+                    "value": 90
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "name": "Daylight Floor",
+          
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "0%",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "20 %",
+                    "value": 20
+                },
+                {
+                    "name": "30 %",
+                    "value": 30
+                },
+                {
+                    "name": "40 %",
+                    "value": 40
+                }
+            ]
+        },
+        {
+            "name": "Manual Floor",
+            
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "0%",
+                    "value": 0
+                },
+                {
+                    "name": "10 %",
+                    "value": 10
+                },
+                {
+                    "name": "20 %",
+                    "value": 20
+                },
+                {
+                    "name": "30 %",
+                    "value": 30
+                },
+                {
+                    "name": "40 %",
+                    "value": 40
+                }
+            ]
+        }
+    ]
+}

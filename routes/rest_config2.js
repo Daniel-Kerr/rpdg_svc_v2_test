@@ -53,7 +53,8 @@ var Scene = require('../models/Scene.js');
 var SceneList = require('../models/SceneList.js');
 var ContactInput = require('../models/ContactInput.js');
 // CRUD interface for modifying the configuration.
-var file_paramoptions = '../datastore/paramoptions.json';
+//var file_paramoptions = '../datastore/paramoptions.json';
+var file_paramoptions = 'routes/paramoptions.json';
 
 var service = require('../controllers/service');
 
