@@ -12,7 +12,7 @@ require('datejs');
 var service = require('../controllers/service');
 var schedule_mgr = require('../controllers/schedule_mgr.js');
 
-var file_schedule = 'datastore/schedule.json';
+var file_schedule = '../datastore/schedule.json';
 /* GET */
 router.get('/', function(req, res, next) {
   res.sendFile(path.join( app.get('views') +'/scheduler2.html'));
@@ -106,7 +106,7 @@ router.get('/getschedule', function(req, res) {
   var events = [];
   try {
     // daily first.
-    var file_schedule = 'datastore/schedule/daily.json';
+    var file_schedule = '../datastore/schedule/daily.json';
     var target = path.resolve(file_schedule);
     var stats = fs.statSync(target);
     if (stats.isFile()) {
@@ -141,7 +141,7 @@ router.get('/getschedule', function(req, res) {
     }
 
     // weekly
-    var file_schedule = 'datastore/schedule/weekly.json';
+    var file_schedule = '../datastore/schedule/weekly.json';
     var target = path.resolve(file_schedule);
     var stats = fs.statSync(target);
     if (stats.isFile()) {
@@ -179,7 +179,7 @@ router.get('/getschedule', function(req, res) {
 
 
     // montly:
-    var file_schedule = 'datastore/schedule/monthly.json';
+    var file_schedule = '../datastore/schedule/monthly.json';
     var target = path.resolve(file_schedule);
     var stats = fs.statSync(target);
     if (stats.isFile()) {
@@ -228,7 +228,7 @@ router.get('/getschedule', function(req, res) {
     // and how many files do I think I will have.... (elements).
     var current_d = startd;
     while(1) {
-      var file_schedule = 'datastore/schedule/' + current_d + '.json';
+      var file_schedule = '../datastore/schedule/' + current_d + '.json';
       var target = path.resolve(file_schedule);
       var stats = fs.statSync(target);
       if (stats.isFile()) {

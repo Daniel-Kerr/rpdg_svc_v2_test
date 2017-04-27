@@ -35,7 +35,7 @@ var filter_utils = require('./../utils/filter_utils.js');
 
 var schedule_mgr = require('./schedule_mgr.js');
 
-var PERSIST_FILE = 'datastore/persist.json';
+var PERSIST_FILE = '../datastore/persist.json';
 
 var enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
@@ -379,33 +379,33 @@ function invokeAllToLevel(level, requesttype)
 // build out any misc directories,  that maybe missing,
 function constructMiscDirs()
 {
-    if (!fs.existsSync('datastore/object_logs/')) {
+    if (!fs.existsSync('../datastore/object_logs/')) {
         try {
-            fs.mkdirSync('datastore/object_logs/')
+            fs.mkdirSync('../datastore/object_logs/')
         } catch (err) {
             if (err.code !== 'EEXIST') throw err
         }
     }
 
-    if (!fs.existsSync('datastore/object_logs/input/')) {
+    if (!fs.existsSync('../datastore/object_logs/input/')) {
         try {
-            fs.mkdirSync('datastore/object_logs/input/')
+            fs.mkdirSync('../datastore/object_logs/input/')
         } catch (err) {
             if (err.code !== 'EEXIST') throw err
         }
     }
 
-    if (!fs.existsSync('datastore/object_logs/output/')) {
+    if (!fs.existsSync('../datastore/object_logs/output/')) {
         try {
-            fs.mkdirSync('datastore/object_logs/output/')
+            fs.mkdirSync('../datastore/object_logs/output/')
         } catch (err) {
             if (err.code !== 'EEXIST') throw err
         }
     }
 
-    if (!fs.existsSync('datastore/schedule/')) {
+    if (!fs.existsSync('../datastore/schedule/')) {
         try {
-            fs.mkdirSync('datastore/schedule/')
+            fs.mkdirSync('../datastore/schedule/')
         } catch (err) {
             if (err.code !== 'EEXIST') throw err
         }
@@ -538,6 +538,7 @@ var service = module.exports =  {
     },
 
     startPolling : function() {
+        //global.applogger.info(TAG, "Polling started", "");
 
         var BasePollingPeriod = 1000;        // Time interval in mSec that we do the most frequent checks.
         periodictimer = setInterval(function () {

@@ -35,9 +35,9 @@ var SunCalc = require('suncalc');
 var fs = require('fs');
 
 var pending_events = [];
-var SCHEDULE_FILE_ONETIME = 'datastore/schedule/onetime.json';
-var SCHEDULE_FILE_DAILY = 'datastore/schedule/daily.json';
-var SCHEDULE_FILE_WEEKLY = 'datastore/schedule/weekly.json';
+var SCHEDULE_FILE_ONETIME = '../datastore/schedule/onetime.json';
+var SCHEDULE_FILE_DAILY = '../datastore/schedule/daily.json';
+var SCHEDULE_FILE_WEEKLY = '../datastore/schedule/weekly.json';
 
 
 var HTML_SR_COLOR = '#ffff99';

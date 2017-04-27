@@ -7,7 +7,7 @@ var moment = require('moment');
 var app = express();
 var os = require( 'os' );
 
-var file_config = 'datastore/config.json';
+var file_config = '../datastore/config.json';
 //var rpdg_driver = require('./rpdg_driver.js');
 
 //var data_utils = require('./data_utils.js');
@@ -53,7 +53,7 @@ var Scene = require('../models/Scene.js');
 var SceneList = require('../models/SceneList.js');
 var ContactInput = require('../models/ContactInput.js');
 // CRUD interface for modifying the configuration.
-var file_paramoptions = 'datastore/paramoptions.json';
+var file_paramoptions = '../datastore/paramoptions.json';
 
 var service = require('../controllers/service');
 

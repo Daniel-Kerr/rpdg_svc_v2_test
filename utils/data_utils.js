@@ -9,8 +9,8 @@ var moment = require('moment');
 var os = require( 'os' );
 var Ajv = require('ajv');
 
-var file_scenes = 'datastore/scenes.json'; // scenes file
-var file_config = 'datastore/config.json';
+var file_scenes = '../datastore/scenes.json'; // scenes file
+var file_config = '../datastore/config.json';
 
 
 function createBlankFile(filepath)
@@ -56,7 +56,7 @@ module.exports = {
     appendInputObjectLogFile: function(objectname, datanew)
     {
         try {
-            var objectpath = 'datastore/object_logs/input/'+ objectname + '.json';
+            var objectpath = '../datastore/object_logs/input/'+ objectname + '.json';
             var target = path.resolve(objectpath);
             var output = JSON.stringify(datanew)+'\n';
             fs.appendFileSync(target, output, 'utf-8');
@@ -69,7 +69,7 @@ module.exports = {
     appendOutputObjectLogFile: function(objectname, datanew)
     {
         try {
-            var objectpath = 'datastore/object_logs/output/'+ objectname + '.json';
+            var objectpath = '../datastore/object_logs/output/'+ objectname + '.json';
             var target = path.resolve(objectpath);
             var output = JSON.stringify(datanew)+'\n';
             fs.appendFileSync(target, output, 'utf-8');
@@ -82,7 +82,7 @@ module.exports = {
     testReadObjectLogFile: function(objectname)
     {
         try {
-            var objectpath = 'datastore/object_logs/'+ objectname + '.json';
+            var objectpath = '../datastore/object_logs/'+ objectname + '.json';
             var target = path.resolve(objectpath);
             if (fs.existsSync(target)) {
 
