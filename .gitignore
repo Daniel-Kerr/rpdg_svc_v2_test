@@ -8,3 +8,4 @@ crossplatform_modules/windows/
 /datastore/schedule/
 /datastore/object_logs/
 /enocean_db/
+version.txt
