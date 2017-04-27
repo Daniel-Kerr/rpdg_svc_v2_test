@@ -1614,7 +1614,7 @@ setInterval(function () {
             if(state == 0)
             {
                 pwm_output_state_map[i-1] = 1;
-                element.level = 100;
+                element.level = 75;
                 labelval = "ON"
             }
             else {
@@ -1642,7 +1642,7 @@ setInterval(function () {
             if(state == 0)
             {
                 plc_output_state_map[i-1] = 1;
-                element.level = 100;
+                element.level = 75;
                 labelval = "ON"
             }
             else {
