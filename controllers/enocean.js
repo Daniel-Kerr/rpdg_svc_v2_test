@@ -7,7 +7,7 @@ var moment = require('moment');
 var TAG = pad(path.basename(__filename),15);
 var rxhandler = undefined;
 var data_utils = require('../utils/data_utils.js');  //1/15/17,
-
+var fs = require('fs');
 var known_s = path.join(__dirname) + "/../enocean_db/knownSensors.json";
 var config = path.join(__dirname) + "/../enocean_db/enocean_config.json";
 
@@ -21,6 +21,17 @@ var comport = '/dev/ttyUSB0';
 // 4/18/17,  console window for encean config,
 
 var last_rx_messages = [];
+
+
+// 4/27/17 added enocean db
+if (!fs.existsSync('enocean_db/')) {
+    try {
+        fs.mkdirSync('enocean_db/')
+    } catch (err) {
+        if (err.code !== 'EEXIST') throw err
+    }
+}
+
 
 // if com port is present,
 if(!israspberrypi && process.argv.length > 0 && data_utils.commandLineArgPresent("COM"))

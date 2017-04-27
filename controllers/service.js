@@ -426,6 +426,10 @@ function constructMiscDirs()
     // setup persistant store point, (may move to global. ),
     var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
     persistantstore = obj;
+
+
+
+
 }
 
 
