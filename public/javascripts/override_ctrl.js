@@ -150,7 +150,7 @@ $(document).ready(function() {
                     onInit : function() {
                         //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
                     },
-                    onSlide : function( position, value ) {
+                    onSlideEnd : function( position, value ) {
                         var level = document.getElementById("level").value;
                         var bla2 = selectedfixtureobj.assignedname;
                         if(bla2 != undefined)
@@ -245,7 +245,7 @@ $(document).ready(function() {
                     onInit : function() {
                         //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
                     },
-                    onSlide : function( position, value ) {
+                    onSlideEnd : function( position, value ) {
                         var ctemp = document.getElementById("ctemp").value;
                         var bright= document.getElementById("bright").value;
                         var bla2 = selectedfixtureobj.assignedname;
