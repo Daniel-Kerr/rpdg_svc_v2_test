@@ -7,4 +7,4 @@ crossplatform_modules/rpi/
 crossplatform_modules/windows/
 /datastore/schedule/
 /datastore/object_logs/
-/enocean_db/knownSensors.json
+/enocean_db/
