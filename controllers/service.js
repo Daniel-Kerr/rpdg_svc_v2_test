@@ -644,15 +644,18 @@ var service = module.exports =  {
                             if (groupobj != undefined) {
 
                                 if(groupobj.type == "brightness") {
-                                    var targetlevel = level * 10;
+                                    //inverted 100 - (level*10)
+                                    var targetlevel = 100- (level * 10);
+                                  //  var targetlevel = level * 10;
                                     service.setGroupToBrightnessLevel(groupname, targetlevel);
                                 }
-                                else if(groupobj.type == "ctemp") {
-                                    //scale color temp. between 2200 / 6500
-                                    var scale = level / 10;
-                                    var targetctemp = ((6500-2200) * scale) + 2200;
-                                    service.setGroupToColorTemp(groupname,targetctemp,100);
-                                }
+                               // removed 4/27/17
+                                // else if(groupobj.type == "ctemp") {
+                                //    //scale color temp. between 2200 / 6500
+                                //    var scale = level / 10;
+                               //     var targetctemp = ((6500-2200) * scale) + 2200;
+                               //     service.setGroupToColorTemp(groupname,targetctemp,100);
+                               // }
                             }
                         }
 
