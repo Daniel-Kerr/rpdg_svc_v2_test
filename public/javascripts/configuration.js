@@ -380,7 +380,7 @@ function updateFixturesTable() {
     oCell3 = document.createElement("TD");
     oCell3.innerHTML = "Interface";
     oCell4 = document.createElement("TD");
-    oCell4.innerHTML = "Outputs Utilized";
+    oCell4.innerHTML = "Starting Output#";
     // oCell5 = document.createElement("TD");
     // oCell5.innerHTML = "Bound Inputs";
 
@@ -569,10 +569,10 @@ function buildassignment(start, type)
 function saveNewFixture(image) {
 
     selected_edit_fixture = undefined;
-    var startout = document.getElementById("starting_output");
-    var type = document.getElementById("fixturetype");
-    var selstart = startout.options[startout.selectedIndex].value;
-    var seltype = type.options[type.selectedIndex].value;
+  //  var startout = document.getElementById("starting_output");
+  //  var type = document.getElementById("fixturetype");
+    var selstart =  $("#starting_output").val(); //startout.options[startout.selectedIndex].value;
+    var seltype = $("#fixturetype").val();  //type.options[type.selectedIndex].value;
     // start of validation code.
 
     var fixname = document.getElementById("fixturename").value.trim();
@@ -583,9 +583,25 @@ function saveNewFixture(image) {
         return;
     }
 
+    var outputlist = [];
+    var interface = $("#interface").val();
+    if(interface == "rpdg-pwm")
+        outputlist = cachedinterfaceio.rpdg.pwmoutputs.slice(0);
+    if(interface == "rpdg-plc")
+        outputlist = cachedinterfaceio.rpdg.plcoutputs.slice(0);
 
-
-
+    // 4/27/17,  validate output number,
+    if(interface == "rpdg-pwm" || interface == "rpdg-plc") {
+        var outputcheck = outputAvalibleCheck(outputlist, selstart, seltype, fixname, interface);
+        if (!outputcheck) {
+            noty({
+                text: "Output number conflict, or output limit issue, please check type and output number",
+                type: 'error',
+                timeout: 4000
+            });
+            return;
+        }
+    }
 
     if(seltype == "cct")
     {
@@ -2045,3 +2061,85 @@ function saveSiteInfo()
 
     });
 }
+
+
+function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interface)
+{
+    // filter out any already used outputs.
+    for(var i = 0; i < cachedconfig.fixtures.length; i++)
+    {
+        var fixobj = cachedconfig.fixtures[i];
+
+        if(fixobj.interfacename == interface) {
+
+            if (fixobj.assignedname == name)
+                continue; // allows for edit,
+
+            var outstart = Number(fixobj.outputid);
+            if (fixobj.type == "on_off" || fixobj.type == "dim") {
+                var idx = inputlist.indexOf(String(outstart));
+                if (idx > -1) {
+                    inputlist.splice(idx, 1);
+                }
+            }
+            if (fixobj.type == "cct") {
+                var idx = inputlist.indexOf(String(outstart));
+                if (idx > -1) {
+                    inputlist.splice(idx, 1);
+                    inputlist.splice(idx, 1);  // do it 2 times,  to remove both channels,
+                }
+            }
+            if (fixobj.type == "rgbw") {
+                var idx = inputlist.indexOf(String(outstart));
+                if (idx > -1) {
+                    inputlist.splice(idx, 1);
+                    inputlist.splice(idx, 1);  // do it X times,
+                    inputlist.splice(idx, 1);
+                    inputlist.splice(idx, 1);
+                }
+            }
+        }
+    }
+
+
+
+    // filter based on edit type,
+    if(type == "cct")
+    {
+        var ctemp = inputlist.indexOf(String(desiredstartoutput));
+        if(ctemp < 0)
+            return false;
+
+        var ne
+        var bright = inputlist.indexOf(String(Number(desiredstartoutput)+1));
+        if(bright < 0)
+            return false;
+
+    }
+    else if(type == "rgbw")
+    {
+        var red = inputlist.indexOf(String(desiredstartoutput));
+        if(red < 0)
+            return false;
+
+        var green = inputlist.indexOf(String(Number(desiredstartoutput)+1));
+        if(green < 0)
+            return false;
+
+        var blue = inputlist.indexOf(String(Number(desiredstartoutput)+2));
+        if(blue < 0)
+            return false;
+
+        var white = inputlist.indexOf(String(Number(desiredstartoutput)+3));
+        if(white < 0)
+            return false;
+    }
+    else {
+        var out = inputlist.indexOf(String(desiredstartoutput));
+        if(out < 0)
+            return false;
+    }
+
+    return true;
+}
+
