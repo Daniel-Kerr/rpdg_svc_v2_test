@@ -69,7 +69,8 @@ var persistantstore = undefined;
 var upd_handler = undefined; //require('./udp_handler.js');
 
 
-
+var sw_version = "???";
+var firmware_version = "???";
 
 function incommingUDPMessageHandler(messageobj)
 {
@@ -518,6 +519,18 @@ var service = module.exports =  {
         global.applogger.info(TAG, "IP ADDRESS IS: " + ip.address(), "");
         //data_utils.generateFauxDataSeries();
 
+        sw_version = data_utils.getVersionFromFile();
+
+
+
+    },
+    getVersionObject: function()
+    {
+
+        var ele = {};
+        ele.controller = sw_version;
+        ele.firmware = firmware_version;
+        return ele;
     },
     updatePWMPolarity : function()
     {

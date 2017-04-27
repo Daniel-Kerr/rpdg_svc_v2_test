@@ -53,6 +53,7 @@ var REST_SAVE_SITEINFO = "/config/siteinfo";
 
 var REST_GET_ENOCEAN_RX = "/config/enoceanrx";
 
+var REST_GET_VERSION = "/version";
 // config get / set,
 function getConfig(callback)
 {
@@ -68,7 +69,19 @@ function getConfig(callback)
     });
 }
 
-
+function getVersion(callback)
+{
+    function onDataReceived(series) {
+        if(series != null)
+            callback(series);
+    }
+    $.ajax({
+        url: REST_GET_VERSION,
+        type: "GET",
+        dataType: "json",
+        success: onDataReceived,
+    });
+}
 /***
  *
  * @param

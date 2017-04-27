@@ -27,12 +27,18 @@ function initStatusHandler(config)
     updateUIPageComponents(undefined);
 
 
+
+
 }
 
 
 
 function initFixtureStatusBoxes() {
     getConfig(initStatusHandler);
+
+    getVersion(function(ver) {
+        document.getElementById("version").innerHTML = ver.controller + " / " + ver.firmware;
+    })
 }
 
 

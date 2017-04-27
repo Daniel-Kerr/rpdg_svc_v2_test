@@ -173,6 +173,22 @@ module.exports = {
         }
         return;
     },
+    getVersionFromFile: function() {
+        var target = path.resolve("version.txt");
+        try {
+            var stats = fs.statSync(target);
+            if (stats.isFile()) {
+                var contents = fs.readFileSync(target, 'utf8');
+                if (contents.length > 0) {
+                   // var mastercenelist = JSON.parse(contents);
+                    return contents;
+                }
+            }
+        }
+        catch (err) {
+        }
+        return "???";
+    },
     getSceneObjDataByName: function(scenename)
     {
         var slist = this.getSceneListFromScenesFile();
