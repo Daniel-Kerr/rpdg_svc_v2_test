@@ -254,7 +254,7 @@ function filterAvalibleFixtures()
         scroll: false,
         zIndex: 100,
         helper: function() {
-            return $("<div id='testitem'>Moving</div>")[0];
+            return $("<div id='movingitem'>Moving</div>")[0];
         },
         start: function(event, ui) {
             $(this).hide();

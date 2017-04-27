@@ -40,7 +40,7 @@ function processConfig(configobj)
 
 $(function () {
     // click handler for boxes.. just under test.
-    $('.dropzone2').live('click', function(){
+    $('.group_dropzone').live('click', function(){
         var x = $(this).css('backgroundColor');
 
         var selecteditemthistime = $(this);
@@ -48,6 +48,15 @@ $(function () {
         // then disable the current,
         if(selecteditem != undefined && selecteditem.get(0) != selecteditemthistime.get(0))
         {
+            //disable action buttons on all ,
+            for(var k = 0; k <  loadedconfig.groups.length; k++)
+            {
+                var disableele = '#actionbuttons_'+k;
+                $(disableele).children().addClass('disabled');
+                $(disableele).children().removeClass('active');
+            }
+
+
 
             selecteditem.css("border-color", defaultcolor);
             selecteditem.droppable("option", "disabled", true);
@@ -59,6 +68,10 @@ $(function () {
             $(this).droppable("option", "disabled", false);
 
             var selectedindex = selecteditem.attr('index');
+
+            var enableelement = '#actionbuttons_'+selectedindex;
+            $(enableelement).children().removeClass('disabled');
+            $(enableelement).children().addClass('active');
 
             selected_group = loadedconfig.groups[Number(selectedindex)];
             filterAvalibleFixtures();
@@ -72,6 +85,11 @@ $(function () {
             $(this).droppable("option", "disabled", false);
 
             var selectedindex = selecteditem.attr('index');
+
+            var enableelement = '#actionbuttons_'+selectedindex;
+            $(enableelement).children().removeClass('disabled');
+            $(enableelement).children().addClass('active');
+
             selected_group = loadedconfig.groups[Number(selectedindex)];
             filterAvalibleFixtures();
         }
@@ -100,7 +118,7 @@ function redrawGroup(groupname)
     //{
     //    var group = loadedconfig.groups[i];
     //    constructSceneBox(groups_div, group,i);
-   // }
+    // }
     //.
 }
 
@@ -167,47 +185,48 @@ function enableDisableFixturesInDiv(groupdiv, enable)
     }
 }
 
-
-function deleteSelectedGroup()
-{
-   // 4/26/17.  validate no assignement in level or contact inputs.
-    for(var i = 0; i < loadedconfig.levelinputs.length; i++)
-    {
-        if(loadedconfig.levelinputs[i].group == selected_group.name)
-        {
-            noty({text: 'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group", type: 'error'});
-            return;
-        }
-    }
-
-
-    for(var i = 0; i < loadedconfig.contactinputs.length; i++)
-    {
-        if(loadedconfig.contactinputs[i].active_action.includes(selected_group.name) || loadedconfig.contactinputs[i].inactive_action.includes(selected_group.name))
-        {
-            noty({text: 'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group", type: 'error'});
-            return;
-        }
-    }
+/*
+ function deleteSelectedGroup()
+ {
+ // 4/26/17.  validate no assignement in level or contact inputs.
+ for(var i = 0; i < loadedconfig.levelinputs.length; i++)
+ {
+ if(loadedconfig.levelinputs[i].group == selected_group.name)
+ {
+ noty({text: 'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group", type: 'error'});
+ return;
+ }
+ }
 
 
+ for(var i = 0; i < loadedconfig.contactinputs.length; i++)
+ {
+ if(loadedconfig.contactinputs[i].active_action.includes(selected_group.name) || loadedconfig.contactinputs[i].inactive_action.includes(selected_group.name))
+ {
+ noty({text: 'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group", type: 'error'});
+ return;
+ }
+ }
 
 
 
-    deleteConfigObject("group",selected_group,function (retval) {
-    //deleteConfigObject(selected_scene.name, function (retval) {
-        if(retval != undefined)  // as of 1/24/17, added version.
-        {
-            loadedconfig = retval;
-            selected_group = undefined;
-            redrawGroups();
 
-            filterAvalibleFixtures();
-        }
-        else
-            noty({text: 'Error deleting group: ' + retval, type: 'error'});
-    });
-}
+
+ deleteConfigObject("group",selected_group,function (retval) {
+ //deleteConfigObject(selected_scene.name, function (retval) {
+ if(retval != undefined)  // as of 1/24/17, added version.
+ {
+ loadedconfig = retval;
+ selected_group = undefined;
+ redrawGroups();
+
+ filterAvalibleFixtures();
+ }
+ else
+ noty({text: 'Error deleting group: ' + retval, type: 'error'});
+ });
+ }
+ */
 
 function filterAvalibleFixtures()
 {
@@ -223,12 +242,12 @@ function filterAvalibleFixtures()
             var fix = fixtures[i];
 
 
-           // if(selected_group.fixtures.indexOf(fix.assignedname) > -1) // if it contains it, alreayd,
-           // {
-           //     include = false;
-           // }
-          //  if(include)
-          //      filteredlist.push(fix);
+            // if(selected_group.fixtures.indexOf(fix.assignedname) > -1) // if it contains it, alreayd,
+            // {
+            //     include = false;
+            // }
+            //  if(include)
+            //      filteredlist.push(fix);
             // smart filter,
             if(selected_group.type == "brightness") // include all types  && (fix.type == "cct" || fix.type == "dim" || fix.type == "rgbw"))
             {
@@ -279,19 +298,20 @@ function filterAvalibleFixtures()
         var fix = filteredlist[i];
         var fixdiv = document.createElement("div");
         fixdiv.className = "availiblefixture";
-        //fixdiv.id = "fixture_"+fix.id;
         fixturebucketdiv.appendChild(fixdiv);
 
         var bulb_iconimg = document.createElement("img");
         bulb_iconimg.src = fix.image;
-        bulb_iconimg.className = "bulbiconrow";
+        bulb_iconimg.className = "fixture_icon_small";
         fixdiv.appendChild(bulb_iconimg);
 
+        var labeldiv = document.createElement("div");
+        labeldiv.className = "fixture_label";
+        fixdiv.appendChild(labeldiv);
 
         var debug_label = document.createElement("label");
         debug_label.innerHTML  = fix.assignedname;
-        fixdiv.appendChild(debug_label);
-
+        labeldiv.appendChild(debug_label);
     }
 
 
@@ -301,7 +321,7 @@ function filterAvalibleFixtures()
         scroll: false,
         zIndex: 100,
         helper: function() {
-            return $("<div id='testitem'>Moving</div>")[0];
+            return $("<div id='movingitem'>Moving</div>")[0];
         },
         start: function(event, ui) {
             $(this).hide();
@@ -312,7 +332,7 @@ function filterAvalibleFixtures()
     });
 
 
-    $('.availiblefixturesholder').droppable({
+    $('.availiblefix_wrapperbox').droppable({
         tolerance: 'touch',
         drop: function(event, ui) {
             var dropped = ui.draggable;
@@ -346,9 +366,9 @@ function filterAvalibleFixtures()
                 if (updatelayout)
                 {
                     var selectedindex = selecteditem.attr('index');
-                   // var k = $('.selecteditem').attr('id');
+                    // var k = $('.selecteditem').attr('id');
                     // this should be a "group_X",
-                 //   var num = k.substr(6);
+                    //   var num = k.substr(6);
                     var bla = document.getElementById("group_holder_"+selectedindex);
                     bla.className = "col-lg-5";
                 }
@@ -382,6 +402,63 @@ function constructGroupBox(currentdiv, group,groupnum) {
     fixboxheader.className = "box-header";
     fixbox.appendChild(fixboxheader);
 
+
+    var buttonholder = document.createElement("div");
+    buttonholder.className = "actionbuttons";
+    buttonholder.id = "actionbuttons_"+groupnum;
+    fixboxheader.appendChild(buttonholder);
+
+    var btndelete = document.createElement("input");
+    btndelete.className = "btn btn-xs btn-danger disabled";
+    btndelete.type = "button";
+    btndelete.value = "Delete";
+    //  btndelete.setAttribute('group', group.name);
+    btndelete.onclick = function () {
+
+        for(var i = 0; i < loadedconfig.levelinputs.length; i++)
+        {
+            if(loadedconfig.levelinputs[i].group == selected_group.name)
+            {
+                noty({text: 'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group", type: 'error'});
+                return;
+            }
+        }
+
+        for(var i = 0; i < loadedconfig.contactinputs.length; i++)
+        {
+            if(loadedconfig.contactinputs[i].active_action.includes(selected_group.name) || loadedconfig.contactinputs[i].inactive_action.includes(selected_group.name))
+            {
+                noty({text: 'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group", type: 'error'});
+                return;
+            }
+        }
+
+        bootbox.confirm({
+            message : "Please Confirm Delete of Group",
+            size: 'small',
+            callback: function(result){
+                if(result) {
+                    deleteConfigObject("group",selected_group,function (retval) {
+                        if(retval != undefined)  // as of 1/24/17, added version.
+                        {
+                            loadedconfig = retval;
+                            selected_group = undefined;
+                            redrawGroups();
+
+                            filterAvalibleFixtures();
+                        }
+                        else
+                            noty({text: 'Error deleting group: ' + retval, type: 'error'});
+                    });
+                }
+            }});
+    };
+    buttonholder.appendChild(btndelete);
+
+
+
+
+
     var header = document.createElement("h2");
     header.innerHTML = group.name;
     fixboxheader.appendChild(header);
@@ -391,7 +468,7 @@ function constructGroupBox(currentdiv, group,groupnum) {
     fixbox.appendChild(fixcontent);
 
     var dropzonediv = document.createElement("div");
-    dropzonediv.className = "dropzone2";
+    dropzonediv.className = "group_dropzone";
     dropzonediv.id = "group_"+groupnum;
     dropzonediv.setAttribute("index",groupnum);
     // dropzonediv.innerHTML = "test";
@@ -399,7 +476,7 @@ function constructGroupBox(currentdiv, group,groupnum) {
 
 
 
-    $('.dropzone2').droppable({
+    $('.group_dropzone').droppable({
         tolerance: 'touch',
         drop: function(event, ui) {
             var dropped = ui.draggable;
@@ -411,8 +488,8 @@ function constructGroupBox(currentdiv, group,groupnum) {
             if (name != undefined) {
 
                 // 1/28/17, make sure its not already in the array:
-               // if(selected_group.fixtures != undefined || selected_group.fixtures.indexOf(name) != -1)
-               //     return;
+                // if(selected_group.fixtures != undefined || selected_group.fixtures.indexOf(name) != -1)
+                //     return;
 
                 selected_group.fixtures.push(name);
 
@@ -441,22 +518,28 @@ function constructGroupBox(currentdiv, group,groupnum) {
         }
     });
     // now add in the existing fixutres:
-    for(var i = 0; i < group.fixtures.length; i++)
-    {
+    if(group.fixtures != undefined) {
+        for (var i = 0; i < group.fixtures.length; i++) {
+            var fixname = group.fixtures[i];
+            var fixobj = getFixtureByName(fixname);
+            if (fixobj != undefined) {
 
-        var fixname = group.fixtures[i];
-        var fixobj = getFixtureByName(fixname);
-        if(fixobj != undefined) {
-            var fixdiv = document.createElement("div");
-            fixdiv.className = "availiblefixture";
-            dropzonediv.appendChild(fixdiv);
-            var bulb_iconimg = document.createElement("img");
-            bulb_iconimg.src = fixobj.image;
-            bulb_iconimg.className = "bulbiconrow";
-            fixdiv.appendChild(bulb_iconimg);
-            var debug_label = document.createElement("label");
-            debug_label.innerHTML = fixobj.assignedname;
-            fixdiv.appendChild(debug_label);
+                var fixdiv = document.createElement("div");
+                fixdiv.className = "availiblefixture";
+                dropzonediv.appendChild(fixdiv);
+                var bulb_iconimg = document.createElement("img");
+                bulb_iconimg.src = fixobj.image;
+                bulb_iconimg.className = "fixture_icon_small";
+                fixdiv.appendChild(bulb_iconimg);
+
+                var labeldiv = document.createElement("div");
+                labeldiv.className = "fixture_label";
+                fixdiv.appendChild(labeldiv);
+
+                var debug_label = document.createElement("label");
+                debug_label.innerHTML = fixobj.assignedname;
+                labeldiv.appendChild(debug_label);
+            }
         }
     }
 

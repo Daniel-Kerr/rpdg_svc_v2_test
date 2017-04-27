@@ -34,84 +34,73 @@
 <!-- CSS -->
 <style type="text/css">
 
-    .bulbiconrow {
-        width: 100px;
-        height: 80px;
-        display: inline-block;
-    }
-
-    #testitem {
+    #movingitem {
         width: 50px;
         height: 80px;
         display: inline-block;
     }
-
-    .dropzone2 {
-        width: 100%;
-        margin: 0 0;
-        border: 2px solid green;
-        height: 120px;
-
-        border-color: white;
-    }
-
-
-    .availiblefixture {
-        display: inline-block;
-        background-color: lightgreen;
-        width: 100px;
-        margin: 5px;
-        height: 100px;
-        cursor: default;
-    }
-
-    .availiblefixturesholder {
-        margin: 0px;
-
-        width: 100%;
-        height: 100%;
-    }
-
-    .groups_row {
-
-        width: 100%;
-        height: 100px;
-    }
-
     .background_main {
-
         width: 100%;
         height: 100%;
     }
-
     .availible_fix_holder {
-
-        width: 200px;
-        height: 1000px;
+        width: 100%;
+        height: 200px;
         float: left;
     }
-    .groups_holder {
 
+    .groups_holder_main {
+        margin: 5px;
         width: 100%;
-        height: 1000px;
-
+        height: 500px;
+        overflow-y: scroll;
     }
-
-
-
     html, body {
         height: 100%;
     }
-    .fill-height {
-        min-height: 100%;
-        height:auto !important; /* cross-browser */
-        height: 100%; /* cross-browser */
+
+    .availiblefix_wrapperbox {
+        margin: 5px;
+        width: 100%;
+        height: 70%;
+        overflow: auto;
+        white-space: nowrap;
     }
 
-    .fill {
-        min-height: 100%;
-        height: 100%;
+    /*  avaible fixture holder  holds icon and label, */
+    .availiblefixture {
+        display: inline-block;
+        vertical-align: top;
+        width: 100px;
+        margin: 5px;
+        height: 120px;
+        cursor: default;
     }
+    .fixture_icon_small {
+        width: 100px;
+        height: 100px;
+    }
+    .fixture_label {
+        width: 100px;
+        height: 20px;
+    }
+
+    .group_dropzone {
+        width: 100%;
+        margin: 0 0;
+        border: 2px solid green;
+        height: 140px;
+        border-color: white;
+        overflow: auto;
+    }
+
+    .actionbuttons {
+        position: absolute;
+        right: 2px;
+        width: 100px;
+        padding: 0px;
+    }
+
 </style>
 
 <script>
@@ -138,30 +127,18 @@
 </ul>
 
 <div class="background_main">
-
     <div id="titlebar"></div>
-
     <div class="availible_fix_holder">
-
         <input type="button" id = "btmakescene" class="btn btn-large btn-primary" onclick=createnewgroup() value="NEW"/>
-
-        <input type="button" id = "btdelgroup" class="btn btn-large btn-primary" onclick=deleteSelectedGroup() value="Delete"/>
-        <!--input type="button" id = "btsaveconfig" class="btn btn-large btn-primary" onclick=saveConfigSettings() value="SAVE"/-->
+        <!--input type="button" id = "btdelgroup" class="btn btn-large btn-primary" onclick=deleteSelectedGroup() value="Delete"/-->
         <div class="box-header" data-original-title>
             <h2><i class="fa fa-user"></i><span class="break"></span>Fixtures</h2>
         </div>
-        <div class="box-content fill">
-            <div id="fixholder" class="availiblefixturesholder"></div>
-        </div>
-        <!--div class="box">
+        <div id="fixholder" class="availiblefix_wrapperbox"></div>
 
-        </div-->
+
+        <div id="active_groups_holder" class="groups_holder_main" ></div>
     </div>
 
-    <div class="groups_holder">
 
-        <div class="col-lg-10">
-            <div id="active_groups_holder" class="groups_row" ></div>
-        </div>
-    </div>
 </div>
