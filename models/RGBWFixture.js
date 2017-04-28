@@ -15,7 +15,7 @@ var RGBWFixture = function(name, interface, outputid)
     this.interfacename = "";
     this.outputid = "";
     this.image = "";
-    this.boundinputs = [];
+   // this.boundinputs = [];
     this.commonanode = false;
     this.twelvevolt = false;
     this.parameters = new FixtureParameters();
@@ -48,8 +48,8 @@ var RGBWFixture = function(name, interface, outputid)
         if(obj.parameters != undefined )
             this.parameters.fromJson(obj.parameters);
 
-        if(obj.boundinputs != undefined)
-            this.boundinputs = obj.boundinputs;
+       // if(obj.boundinputs != undefined)
+        //    this.boundinputs = obj.boundinputs;
     };
 
     this.setLevel = function(requestobj, apply){
@@ -63,12 +63,9 @@ var RGBWFixture = function(name, interface, outputid)
             requestobj.white = this.lastuserrequestedwhite;
         }
 
-
-        var dlsensor = this.getMyDaylightSensor();
-        var isdaylightbound = false;
+        var dlsensor = global.currentconfig.getDaylightSensor();
         var daylightvolts = 0;
         if (dlsensor != undefined) {
-            isdaylightbound = true;
             daylightvolts = dlsensor.value;
         }
 
@@ -89,7 +86,7 @@ var RGBWFixture = function(name, interface, outputid)
             white = requestobj.white;
 
         // dl/light filter
-        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, white, this.parameters, isdaylightbound,daylightvolts);
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, white, this.parameters,daylightvolts);
         this.daylightlimited = returndataobj.isdaylightlimited;
         if(returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
             var modpct = returndataobj.modifiedlevel;

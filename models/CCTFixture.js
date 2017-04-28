@@ -24,7 +24,7 @@ var CCTFixture = function(name, interface, outputid)
     this.max = 6500;
     this.commonanode = false;
     this.twelvevolt = false;
-    this.boundinputs = [];
+   // this.boundinputs = [];
     this.parameters = new FixtureParameters();
 
     // status
@@ -53,8 +53,8 @@ var CCTFixture = function(name, interface, outputid)
         if(obj.parameters != undefined )
             this.parameters.fromJson(obj.parameters);
 
-        if(obj.boundinputs != undefined)
-            this.boundinputs = obj.boundinputs;
+       // if(obj.boundinputs != undefined)
+        //    this.boundinputs = obj.boundinputs;
     };
 
     this.setLevel = function(requestobj, apply) {
@@ -72,12 +72,10 @@ var CCTFixture = function(name, interface, outputid)
         //  4/18/17,  moved filter up.
         this.stopAutoAdjustTimer(this.assignedname);
 
+        var dlsensor = global.currentconfig.getDaylightSensor();
 
-        var dlsensor = this.getMyDaylightSensor();
-        var isdaylightbound = false;
         var daylightvolts = 0;
         if (dlsensor != undefined) {
-            isdaylightbound = true;
             daylightvolts = dlsensor.value;
         }
 
@@ -90,7 +88,7 @@ var CCTFixture = function(name, interface, outputid)
             colortemp = requestobj.colortemp;
 
         // dl/light filter
-        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, brightness, this.parameters, isdaylightbound, daylightvolts);
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, brightness, this.parameters, daylightvolts);
         this.daylightlimited = returndataobj.isdaylightlimited;
         if (returndataobj.modifiedlevel > -1) {    // if filter returns a valid value,  apply it,  (use it),  else use above .
             var modpct = returndataobj.modifiedlevel;
@@ -166,36 +164,6 @@ var CCTFixture = function(name, interface, outputid)
     this.getlastupdated=function() {
         return this.lastupdated;
     };
-
-    this.isBoundToInput = function(name)
-    {
-        for(var k = 0; k < this.boundinputs.length; k++)
-        {
-            if(this.boundinputs[k] == name)
-                return true;
-        }
-        return false;
-    };
-
-    this.getMyDaylightSensor = function()
-    {
-        for(var i = 0; i < this.boundinputs.length; i++)
-        {
-            var inputname = this.boundinputs[i];
-            var inputobj = global.currentconfig.getLevelInputByName(inputname);
-            if(inputobj != undefined)
-            {
-                if(inputobj.type == "daylight")
-                {
-                    // this is out bound dl sensor,
-                    return inputobj;
-                }
-            }
-        }
-        return undefined
-    };
-
-
 
 
     var autoadjusttimer = undefined;

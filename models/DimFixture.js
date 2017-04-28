@@ -41,8 +41,8 @@ var DimFixture = function(name, interface, outputid)
         this.parameters = new FixtureParameters();
         this.parameters.fromJson(obj.parameters);
 
-        if(obj.boundinputs != undefined)
-            this.boundinputs = obj.boundinputs;
+       // if(obj.boundinputs != undefined)
+       //     this.boundinputs = obj.boundinputs;
 
     };
 
@@ -70,14 +70,14 @@ var DimFixture = function(name, interface, outputid)
 
         // 4/18/17  ******************************** Moved filter up. *******************
         this.stopAutoAdjustTimer(this.assignedname);  //stop timer...
-        var dlsensor = this.getMyDaylightSensor();
-        var isdaylightbound = false;
+
+        var dlsensor = global.currentconfig.getDaylightSensor();
         var daylightvolts = 0;
         if (dlsensor != undefined) {
-            isdaylightbound = true;
+
             daylightvolts = dlsensor.value;
         }
-        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, isdaylightbound, daylightvolts);
+        var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, daylightvolts);
         this.daylightlimited = returndataobj.isdaylightlimited;
         if (returndataobj.modifiedlevel > -1) {
 
@@ -128,32 +128,7 @@ var DimFixture = function(name, interface, outputid)
         return this.lastupdated;
     };
 
-    this.isBoundToInput = function(name)
-    {
-        for(var k = 0; k < this.boundinputs.length; k++)
-        {
-            if(this.boundinputs[k] == name)
-                return true;
-        }
-        return false;
-    };
-    this.getMyDaylightSensor = function()
-    {
-        for(var i = 0; i < this.boundinputs.length; i++)
-        {
-            var inputname = this.boundinputs[i];
-            var inputobj = global.currentconfig.getLevelInputByName(inputname);
-            if(inputobj != undefined)
-            {
-                if(inputobj.type == "daylight")
-                {
-                    // this is out bound dl sensor,
-                    return inputobj;
-                }
-            }
-        }
-        return undefined
-    };
+
 
     // ********************************************* START MOVE *************************
 

@@ -643,17 +643,14 @@ var service = module.exports =  {
                     if (inputobj.type == "daylight") {
 
                        // 4/26/17 -- changed to group ..a
-                        var level = inputobj.value;
+                        //var level = inputobj.value;
 
                         var groupname = inputobj.group; //req.body.name;
                         if(groupname != undefined) {
                             var groupobj = global.currentconfig.getGroupByName(groupname);
                             if (groupobj != undefined) {
-
                                 if(groupobj.type == "brightness") {
-                                    //inverted 100 - (level*10)
-                                    var targetlevel = 100- (level * 10);
-                                  //  var targetlevel = level * 10;
+                                   var targetlevel = 0; // the level is irrelelevent since its a dl request type.. level * 10;
                                     service.setGroupToBrightnessLevel(groupname, targetlevel, "daylight");
                                 }
                                // removed 4/27/17

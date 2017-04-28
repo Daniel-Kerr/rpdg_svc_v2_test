@@ -227,6 +227,16 @@ var Configuration = function()
         }
         return undefined;
     };
+    this.getDaylightSensor = function()
+    {
+        for(var i = 0 ; i < this.levelinputs.length; i++)  //find the first dl .
+        {
+            if (this.levelinputs[i].type == "daylight") {
+                return this.levelinputs[i];
+            }
+        }
+        return undefined;
+    };
 
     this.getContactInputByName = function(name)
     {

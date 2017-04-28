@@ -52,14 +52,14 @@ module.exports = {
      * @returns {number|*}  level in pct (0 - 100) ,  or -1 to ignore, (beyond limits)
      * @constructor
      */
-    LightLevelFilter: function  (RequestType,UserLevelRequestedPCT,fixtureparams, isDaylightSensitive, DaylightZerotoTenValueVolts) {
+    LightLevelFilter: function  (RequestType,UserLevelRequestedPCT,fixtureparams, DaylightZerotoTenValueVolts) {
 
        // var DaylightZerotoTenValueVolts = global.currentconfig.daylightlevelvolts;
 
         if (RequestType == undefined)                  { global.applogger.error (TAG, "RequestType is undefined to LightLevelFilter", "");   }
         if (fixtureparams == undefined)                { global.applogger.error(TAG,"fixtureparams is undefined to LightLevelFilter", "");   }
         if (DaylightZerotoTenValueVolts == undefined)  { global.applogger.error(TAG,"DaylightZerotoTenValueVolts is undefined to LightLevelFilter" ,"");   }
-        if (isDaylightSensitive == undefined)          { global.applogger.error(TAG,"isDaylightSensitive is undefined to LightLevelFilter","");   }
+       // if (isDaylightSensitive == undefined)          { global.applogger.error(TAG,"isDaylightSensitive is undefined to LightLevelFilter","");   }
 
 
         if(global.loghw.lightfilter)
@@ -87,7 +87,7 @@ module.exports = {
         var maxModifiedLevel, daylightModifiedLevel;	// maxM.. is the "min of maxes", daylight... is what is set by daylight engine
         var ModifiedLevel = UserLevelRequestedPCT;
 
-        if(isDaylightSensitive) {
+        if(RequestType == "daylight") {
             var currentDaylightLevel = FCLookupTable(DaylightZerotoTenValueVolts);
             // This needs to connect to the 0-10V level assigned for the daylight sensor.
             // if(global.loghw.lightfilter)
