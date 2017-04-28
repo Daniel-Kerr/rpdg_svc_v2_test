@@ -3,7 +3,7 @@
 	"info": {
 		"name": "dimmer_no_daylight_test_02",
 		"_postman_id": "b1956569-cda6-dcf2-f674-7e9ea60e6c43",
-		"description": "Setup Dimmer 1 (only) as input stimulus\nLoop single output 1-8;\nLoop pair outputs {1,2};{3,4};{5,6};{7,8}\nLoop triplets {1,2,3};{4,5,6};{2,5,8}\nLoop Quad {1-4};{5-8}\nLoop Multi {1-6};{2-7};{3-8}\nLoop Multi2 {1-7};{2-8}\nAll ouputs {1-8}\nRandom output assignment for random number of outputs",
+		"description": "Similar to dimmer_no_daylight_test_01 except testing sending the same input ID to multiple groups and sending multiple input ID's to one or more groups.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
@@ -33,7 +33,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation_2\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation_2\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation_2\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation_2\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_5\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation_2\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_6\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"6\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation_2\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_7\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"7\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation_2\"\n            ]\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_8\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"8\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptooc\": -1,\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptoocc\": \"-1\"\n            },\n            \"level\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": [\n                \"Wallstation_2\"\n            ]\n        }\n    ],\n    \"levelinputs\": [\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Wallstation\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"1\",\n            \"drivelevel\": \"0\",\n            \"value\": 0,\n            \"previousvalue\": 0\n        },\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Wallstation_2\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"2\",\n            \"drivelevel\": \"0\",\n            \"value\": 0,\n            \"previousvalue\": 0\n        }\n    ],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"daylightlevelvolts\": 0,\n    \"occupiedstate\": 0\n}"
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptooc\": -1\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-28T19:54:40.964Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptooc\": -1\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-28T19:54:40.970Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptooc\": -1\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-28T19:54:45.885Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptooc\": -1\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-28T19:54:45.893Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_5\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptooc\": -1\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-28T19:54:35.221Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_6\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"6\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptooc\": -1\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-28T19:54:35.227Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_7\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"7\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptooc\": -1\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-28T19:54:35.233Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_8\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"8\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\",\n                \"resptooc\": -1\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": \"0\",\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-28T19:54:35.238Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        }\n    ],\n    \"levelinputs\": [\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Wallstation\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"1\",\n            \"drivelevel\": \"0\",\n            \"group\": \"Pair_01\",\n            \"value\": \"10.00\",\n            \"previousvalue\": \"10.00\",\n            \"lastupdated\": \"2017-04-28T19:54:40.957Z\",\n            \"enabled\": true\n        },\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Wallstation_2\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"1\",\n            \"drivelevel\": \"0\",\n            \"group\": \"Pair_02\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"enabled\": true\n        },\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Wallstation_3\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"2\",\n            \"drivelevel\": \"0\",\n            \"group\": \"Pair_03\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"enabled\": true\n        },\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Wallstation_4\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"3\",\n            \"drivelevel\": \"0\",\n            \"group\": \"Pair_04\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"enabled\": true\n        },\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Wallstation_5\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"4\",\n            \"drivelevel\": \"0\",\n            \"group\": \"Pair_03\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"enabled\": true\n        },\n        {\n            \"type\": \"dimmer\",\n            \"assignedname\": \"Wallstation_6\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"4\",\n            \"drivelevel\": \"0\",\n            \"group\": \"Pair_04\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"enabled\": true\n        }\n    ],\n    \"contactinputs\": [],\n    \"groups\": [\n        {\n            \"name\": \"Pair_01\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_1\",\n                \"TEST_FIX_Dim_2\"\n            ]\n        },\n        {\n            \"name\": \"Pair_02\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_3\",\n                \"TEST_FIX_Dim_4\"\n            ]\n        },\n        {\n            \"name\": \"Pair_03\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_5\",\n                \"TEST_FIX_Dim_6\"\n            ]\n        },\n        {\n            \"name\": \"Pair_04\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_7\",\n                \"TEST_FIX_Dim_8\"\n            ]\n        }\n    ],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}"
 				},
 				"description": ""
 			},
@@ -98,7 +98,16 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 100;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
 						]
 					}
 				}
@@ -137,8 +146,8 @@
 							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 100;",
 							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 100;",
 							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 100;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 100;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 100;"
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
 						]
 					}
 				}
@@ -171,14 +180,14 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 90;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 90;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 90;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 90;",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 100;",
 							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 90;",
 							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 90;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 90;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 90;"
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level === 0;"
 						]
 					}
 				}
@@ -202,7 +211,7 @@
 			"response": []
 		},
 		{
-			"name": "setDimmer1_Level10V",
+			"name": "setDimmer3_Level5V",
 			"event": [
 				{
 					"listen": "test",
@@ -211,14 +220,14 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 90;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 90;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 90;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 90;",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 100;",
 							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 90;",
 							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 90;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 90;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 90;"
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 50;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 50;"
 						]
 					}
 				}
@@ -235,7 +244,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 10\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"3\",\n\t\"levelvolts\": 5\n}"
 				},
 				"description": ""
 			},
@@ -251,14 +260,14 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 83;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 83;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 83;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 83;",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 100;",
 							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 83;",
 							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 83;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 83;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 83;"
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 50;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 50;"
 						]
 					}
 				}
@@ -282,7 +291,7 @@
 			"response": []
 		},
 		{
-			"name": "setDimmer2_Level6.5V",
+			"name": "setDimmer4_Level6.5V",
 			"event": [
 				{
 					"listen": "test",
@@ -291,10 +300,10 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 65;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 65;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 65;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 65;",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 100;",
 							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 65;",
 							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 65;",
 							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 65;",
@@ -315,7 +324,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 6.5\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"4\",\n\t\"levelvolts\": 6.5\n}"
 				},
 				"description": ""
 			},
@@ -331,14 +340,14 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 37;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 37;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 37;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 37;",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 100;",
 							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 37;",
 							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 37;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 37;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 37;"
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 65;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 65;"
 						]
 					}
 				}
@@ -362,7 +371,7 @@
 			"response": []
 		},
 		{
-			"name": "setDimmer2_Level0.6V",
+			"name": "setDimmer1_Level0.6V",
 			"event": [
 				{
 					"listen": "test",
@@ -375,10 +384,10 @@
 							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 6;",
 							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 6;",
 							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 6;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 6;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 6;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 6;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 6;"
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 37;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 37;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 65;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 65;"
 						]
 					}
 				}
@@ -395,7 +404,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 0.6\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 0.6\n}"
 				},
 				"description": ""
 			},
@@ -403,6 +412,86 @@
 		},
 		{
 			"name": "setDimmer2_Level0V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 6;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 6;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 6;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 6;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 65;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 65;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmer1_Level0V",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 65;",
+							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 65;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmer3_Level0V",
 			"event": [
 				{
 					"listen": "test",
@@ -435,7 +524,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": 0\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"3\",\n\t\"levelvolts\": 0\n}"
 				},
 				"description": ""
 			},
