@@ -19,7 +19,7 @@ var selected_edit_fixture = undefined;
 var constraints = {
     name: {
         length: {
-            minimum: 6,
+            minimum: 3,
             maximum: 15
         },
         format: {

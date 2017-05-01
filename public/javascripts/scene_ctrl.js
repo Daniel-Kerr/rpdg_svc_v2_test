@@ -12,7 +12,7 @@ var selected_scene;
 var constraints = {
     name: {
         length: {
-            minimum: 6,
+            minimum: 3,
             maximum: 15
         },
         format: {
