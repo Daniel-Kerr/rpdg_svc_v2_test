@@ -1818,6 +1818,12 @@ function getGroupNameList()
 function getSceneNameList2()
 {
     var names = [];
+
+    names.push("ALL_OFF");
+    names.push("ALL_10");
+    names.push("ALL_50");
+    names.push("ALL_ON");
+
     for(var i = 0; i < cachedconfig.scenes.length; i++)
     {
         names.push(cachedconfig.scenes[i].name);
