@@ -125,12 +125,12 @@ function redrawGroup(groupname)
 
 function openNewSceneEditDlg()
 {
-    bootbox.confirm("<form id='infos' action=''>\
-    Scene Name:<input type='text' id='group_name' /><br/>\
+    var box = bootbox.confirm("<form id='infos' action=''>\
+    Scene Name:<input type='text' id='scene_name' /><br/>\
     </form>", function(result) {
         if(result) {
             var grouptype = $('#grouptype').val();
-            var scenename = $('#group_name').val();
+            var scenename = $('#scene_name').val();
             if(scenename.length > 0) {  //todo validate its unique.
                 var groups_div = document.getElementById("active_scenes_holder");
                 var scene = {};
@@ -168,6 +168,10 @@ function openNewSceneEditDlg()
             else
                 noty({text: 'Incomplete Name, please try again ', type: 'error'});
         }
+    });
+
+    box.on('shown.bs.modal',function(){
+        $("#scene_name").focus();
     });
 }
 

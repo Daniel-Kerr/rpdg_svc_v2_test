@@ -62,7 +62,7 @@ function redrawSceneLists()
 
 function openNewSceneListEditDlg()
 {
-    bootbox.confirm({
+    var box = bootbox.confirm({
         message: "<form id='infos' action=''>\
                 Scene List:<input type='text' id='scenelist_name' /><br/>\
                 </form>",
@@ -97,6 +97,10 @@ function openNewSceneListEditDlg()
                     noty({text: 'Incomplete Name, please try again ', type: 'error'});
             }
         }});
+
+    box.on('shown.bs.modal',function(){
+        $("#scenelist_name").focus();
+    });
 }
 
 

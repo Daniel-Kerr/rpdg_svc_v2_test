@@ -124,7 +124,7 @@ function redrawGroup(groupname)
 
 function openNewGroupEditDialog()
 {
-    bootbox.confirm("<form id='infos' action=''>\
+    var box = bootbox.confirm("<form id='infos' action=''>\
     Group Name:<input type='text' id='group_name' /><br/>\
     Group Type: <select id='grouptype'>\
             <option value='brightness'>Brightness</option>\
@@ -165,6 +165,10 @@ function openNewGroupEditDialog()
             else
                 noty({text: 'Incomplete Name, please try again ', type: 'error'});
         }
+    });
+
+    box.on('shown.bs.modal',function(){
+        $("#group_name").focus();
     });
 }
 
