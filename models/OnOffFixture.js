@@ -25,8 +25,8 @@ var OnOffFixture = function()
     this.parameters = new FixtureParameters();
 
     // status
-    this.level = 0;
-    this.lastuserequestedlevel = 0;
+    this.level = 100;
+    this.lastuserequestedlevel = 100;
     this.previousvalue = 0;
     this.lastupdated = new moment();
     this.powerwatts = 0;
@@ -74,7 +74,7 @@ var OnOffFixture = function()
         var filterblocked = false;
 
         var dlsensor = global.currentconfig.getDaylightSensor();
-        var daylightvolts = 0;
+        var daylightvolts = undefined;
         if (dlsensor != undefined) {
             daylightvolts = dlsensor.value;
         }

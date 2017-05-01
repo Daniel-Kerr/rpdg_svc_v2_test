@@ -30,7 +30,7 @@ var CCTFixture = function(name, interface, outputid)
     // status
     this.colortemp = 3500;
     this.brightness = 100;
-    this.lastuserequestedbrightness = 0;
+    this.lastuserequestedbrightness = 100;
     this.previouscolortemp = 3500;
     this.previousbrightness = 100;
     this.lastupdated = undefined;
@@ -74,7 +74,7 @@ var CCTFixture = function(name, interface, outputid)
 
         var dlsensor = global.currentconfig.getDaylightSensor();
 
-        var daylightvolts = 0;
+        var daylightvolts = undefined;
         if (dlsensor != undefined) {
             daylightvolts = dlsensor.value;
         }

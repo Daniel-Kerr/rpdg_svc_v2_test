@@ -8,6 +8,9 @@ var TAG = pad(path.basename(__filename),15);
 
 function FCLookupTable (Zero2TenInputVolts) {
 
+    if(Zero2TenInputVolts == undefined)
+        return undefined;
+
     // takes in 0-10V and returns a FC reading
     // This is a calibration table populated by factory or in field.
     // At known FC readings (external instrument) the 0-10V is captured and then the two datapoints (voltage,FC) added to this array
@@ -41,26 +44,32 @@ function FCLookupTable (Zero2TenInputVolts) {
 
 var currentstate = 'Occupied'; // moved here 2/28/17,
 
+/* This function will take the various types of requestors and pass back the adjusted dim level incorporating daylight settings, occ/vac settings, manually set floors and ceilings etc.  This function ASSUMES:
+ - That ONLY an intensity lwvwl is passed to it.  No `color temp slider is passed
+ - any errors then output level = UserLevelRequested
+ - ZoneRequested is used as an offset into the config array for that setting;
+ - CurrentDaylightLimits is an array with the limit set by the Daylight sensor.
+ - Daylight level is read each time a request is made so no state need be saved.  This function will look at the current 0-10 level; map to a FC reading and then Look at the action defined in the configArray on how to respond
+
+ // There is a periodic timer that will periodically ask to set the light level to its last user requested value to force a reassesment
+ // Anytime anyone makes a call to this function daylight levels will always be re-evaluated
+ // a return of -1 indicates "ignore"; used when that the requestor is accessing a zone that is supposed to ignore ingnore.  Examples are
+ occupancy message from sensor when in "vacancy mode" or wallstation request when it is masked, or daylight request to a zone not in daylight
+ It is very important that daylight requests are ignored when a room has gone vacant.  Vacancy settings supercede daylight polling.
+
+ */
+
+
 module.exports = {
 
     /***
      *
-     * @param RequestType
-     * @param UserLevelRequestedPCT  -- pct 0--100 of incomming dimmer (ws)
-     * @param fixtureparams
-     * @param DaylightZerotoTenValueVolts -- current dl sensor level,
-     * @returns {number|*}  level in pct (0 - 100) ,  or -1 to ignore, (beyond limits)
-     * @constructor
      */
     LightLevelFilter: function  (RequestType,UserLevelRequestedPCT,fixtureparams, DaylightZerotoTenValueVolts) {
 
-       // var DaylightZerotoTenValueVolts = global.currentconfig.daylightlevelvolts;
-
         if (RequestType == undefined)                  { global.applogger.error (TAG, "RequestType is undefined to LightLevelFilter", "");   }
         if (fixtureparams == undefined)                { global.applogger.error(TAG,"fixtureparams is undefined to LightLevelFilter", "");   }
-        if (DaylightZerotoTenValueVolts == undefined)  { global.applogger.error(TAG,"DaylightZerotoTenValueVolts is undefined to LightLevelFilter" ,"");   }
-       // if (isDaylightSensitive == undefined)          { global.applogger.error(TAG,"isDaylightSensitive is undefined to LightLevelFilter","");   }
-
+        if (DaylightZerotoTenValueVolts == undefined)  { global.applogger.error(TAG,"DaylightZerotoTenValueVolts is undefined (NO DL SENSOR PRESENT)" ,"");   }
 
         if(global.loghw.lightfilter)
             global.applogger.info (TAG, "LightLevelFilter", "  The requested level UserLevelRequestedPCT in is: " + UserLevelRequestedPCT);
@@ -69,31 +78,21 @@ module.exports = {
         returndataobj.modifiedlevel = UserLevelRequestedPCT;
         returndataobj.isdaylightlimited = false;
 
-        /* This function will take the various types of requestors and pass back the adjusted dim level incorporating daylight settings, occ/vac settings, manually set floors and ceilings etc.  This function ASSUMES:
-         - That ONLY an intensity lwvwl is passed to it.  No `color temp slider is passed
-         - any errors then output level = UserLevelRequested
-         - ZoneRequested is used as an offset into the config array for that setting;
-         - CurrentDaylightLimits is an array with the limit set by the Daylight sensor.
-         - Daylight level is read each time a request is made so no state need be saved.  This function will look at the current 0-10 level; map to a FC reading and then Look at the action defined in the configArray on how to respond
-
-         // There is a periodic timer that will periodically ask to set the light level to its last user requested value to force a reassesment
-         // Anytime anyone makes a call to this function daylight levels will always be re-evaluated
-         // a return of -1 indicates "ignore"; used when that the requestor is accessing a zone that is supposed to ignore ingnore.  Examples are
-         occupancy message from sensor when in "vacancy mode" or wallstation request when it is masked, or daylight request to a zone not in daylight
-         It is very important that daylight requests are ignored when a room has gone vacant.  Vacancy settings supercede daylight polling.
-
-         */
-
         var maxModifiedLevel, daylightModifiedLevel;	// maxM.. is the "min of maxes", daylight... is what is set by daylight engine
-        var ModifiedLevel = UserLevelRequestedPCT;
+        var ModifiedLevel = UserLevelRequestedPCT;  // start mod level at the requested level from user...
 
-        if(RequestType == "daylight") {
-            var currentDaylightLevel = FCLookupTable(DaylightZerotoTenValueVolts);
+        // if not override,  go through the dl logic,
+        //if(RequestType != "override") {
+
+        var currentDaylightLevel = FCLookupTable(DaylightZerotoTenValueVolts);
+
+        if(currentDaylightLevel == undefined)  // if no dl sensor. set ceiling to 100, else calc based on params,, if any,
+            CurrentDaylightCeiling = 100;
+        else {
             // This needs to connect to the 0-10V level assigned for the daylight sensor.
             // if(global.loghw.lightfilter)
             //   global.log.info("filter_utils.js ", "LightLevelFilter ","Requested Level PCT:  " + UserLevelRequestedPCT + "    Daylight volts: " + DaylightZerotoTenValueVolts + "   Daylight (FC) calculated to: " + currentDaylightLevel );
 
-            // console.log("Requested Level PCT:  " + UserLevelRequestedPCT + "    Daylight volts: " + DaylightZerotoTenValueVolts + "   Daylight (FC) calculated to: ", currentDaylightLevel);
             switch (currentDaylightLevel) {
 
                 case 50:
@@ -115,25 +114,26 @@ module.exports = {
                     CurrentDaylightCeiling = fixtureparams.resptodl0;
                     break;
                 default:
-                    CurrentDaylightCeiling = 96.4;
+                    CurrentDaylightCeiling = 100; //96.4;
 
-                    if(global.loghw.lightfilter)
-                        global.applogger.info(TAG, "LightLevelFilter ", "    The Daylight celling for fixture uid: "+ fixtureuid, "was set to " + CurrentDaylightCeiling );
-                    // console.log("The Daylight celling for fixture uid: ", fixtureuid, "was set to ", CurrentDaylightCeiling);
+                    if (global.loghw.lightfilter)
+                        global.applogger.info(TAG, "LightLevelFilter ", "    The Daylight celling for fixture uid: " + fixtureuid, "was set to " + CurrentDaylightCeiling);
+
                     break;
             }
         }
-        else {
+
+        // handle ignore case. ,  from above calc,  user may have setup range to ignroe,  which defualts i back  to 100%
+        if (CurrentDaylightCeiling < 0) {
             CurrentDaylightCeiling = 100;
         }
 
-        if (CurrentDaylightCeiling < 0) {
-            CurrentDaylightCeiling = 100;
-        }  // ignore is -1;
-
         var daylightceiling_mod, manualceiling_mod;
+
+        // calc daylight ceiling and manual ceiling,...values.
         if (fixtureparams.daylightceiling < 0) {daylightceiling_mod = 100} else {daylightceiling_mod = fixtureparams.daylightceiling};
         if (fixtureparams.manualceiling < 0) {manualceiling_mod = 100} else {manualceiling_mod = fixtureparams.manualceiling};
+
 
         var maxModifiedLevel = Math.min (UserLevelRequestedPCT, CurrentDaylightCeiling, daylightceiling_mod, manualceiling_mod);
 
@@ -141,8 +141,6 @@ module.exports = {
             global.applogger.info (TAG, "LIGHTLEVELFILTER" , "   The maxModifiedLevel is " + maxModifiedLevel + "  UserLevelRequestedPCT is " + UserLevelRequestedPCT);
 
 
-        // GetConfigValue ("Daylight Ceiling", ZoneRequested), GetConfigValue ("Manual Ceiling", ZoneRequested));
-        // console.log ("maxModifiedLevel is ", maxModifiedLevel);
         if (maxModifiedLevel < 0 ){
             global.applogger.error(TAG, "LightLevelFilter ", "ERROR: Config error in trim settings");
         }
@@ -153,31 +151,27 @@ module.exports = {
         if (UserLevelRequestedPCT > maxModifiedLevel)
         {
             returndataobj.isdaylightlimited = true;
-            // console.log("This zone is daylight limited");
         }
 
         var daylightfloor_mod, manualfloor_mod;
         if (fixtureparams.daylightfloor < 0) {daylightfloor_mod = 0} else {daylightfloor_mod = fixtureparams.daylightfloor};
         if (fixtureparams.manualfloor < 0) {manualfloor_mod = 0} else {manualfloor_mod = fixtureparams.manualfloor};
 
+        // calc the max between the whats allowed by dl, fixutre param settings, and what came out of the min calc above
         daylightModifiedLevel = Math.max (maxModifiedLevel, daylightfloor_mod, manualfloor_mod);
-        // console.log ("daylightModifiedLevel is ", daylightModifiedLevel);
         if (daylightModifiedLevel < 0){
             global.applogger.error(TAG, "LightLevelFilter ", "   ERROR: Config error in trim settings" );
-            //  console.log ("ERROR: Config error in trim settings");
         }
 
         OccupiedLevel = fixtureparams.resptoocc;
         VacancyLevel = fixtureparams.resptovac;
-        //  var currentstate = 'Occupied';		// indicates if the current room is Occupied or Vacant.  Currently binary but leaves room for additional states
+     	// indicates if the current room is Occupied or Vacant.  Currently binary but leaves room for additional states
         switch (RequestType) {
             case 'override':
                 ModifiedLevel = UserLevelRequestedPCT;
                 currentstate = 'Occupied';
                 break;
-            case 'network':
-                break;
-            case 'wallstation':
+            case 'wallstation':   // this covers level inputs (0-10V),
                 currentstate = 'Occupied';
                 ModifiedLevel = daylightModifiedLevel;
                 break;
@@ -205,9 +199,9 @@ module.exports = {
                 ModifiedLevel = UserLevelRequestedPCT;
                 currentstate = 'Occupied';
                 break;
-            case 'zero2teninput':
-                currentstate = 'Occupied';
-                break;
+           // case 'zero2teninput':
+            //    currentstate = 'Occupied';
+            //    break;
             default:
                 ModifiedLevel = UserLevelRequestedPCT;
                 global.applogger.error(TAG, "LightLevelFilter ", "   ERROR: That requst type was not found "+ RequestType );

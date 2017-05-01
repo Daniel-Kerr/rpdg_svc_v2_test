@@ -21,11 +21,11 @@ var RGBWFixture = function(name, interface, outputid)
     this.parameters = new FixtureParameters();
 
     // status
-    this.red = 0;
-    this.green = 0;
-    this.blue = 0;
-    this.white = 0;
-    this.lastuserrequestedwhite = 0;
+    this.red = 100;
+    this.green = 100;
+    this.blue = 100;
+    this.white = 100;
+    this.lastuserrequestedwhite = 100;
 
     this.previousred = 0;
     this.previousgreen = 0;
@@ -64,7 +64,7 @@ var RGBWFixture = function(name, interface, outputid)
         }
 
         var dlsensor = global.currentconfig.getDaylightSensor();
-        var daylightvolts = 0;
+        var daylightvolts = undefined;
         if (dlsensor != undefined) {
             daylightvolts = dlsensor.value;
         }

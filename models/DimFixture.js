@@ -22,8 +22,8 @@ var DimFixture = function(name, interface, outputid)
     this.parameters = new FixtureParameters();
 
     // status
-    this.level = 0;
-    this.lastuserequestedlevel = 0;
+    this.level = 100;
+    this.lastuserequestedlevel = 100;
 
     this.previousvalue = 0;
     this.lastupdated = undefined;
@@ -72,9 +72,8 @@ var DimFixture = function(name, interface, outputid)
         this.stopAutoAdjustTimer(this.assignedname);  //stop timer...
 
         var dlsensor = global.currentconfig.getDaylightSensor();
-        var daylightvolts = 0;
+        var daylightvolts = undefined;
         if (dlsensor != undefined) {
-
             daylightvolts = dlsensor.value;
         }
         var returndataobj = filter_utils.LightLevelFilter(requestobj.requesttype, requestobj.level, this.parameters, daylightvolts);
