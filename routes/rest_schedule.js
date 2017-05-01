@@ -67,6 +67,9 @@ router.post('/getschedule2', function(req, res) {
       var eventobj = createEventObject(req.body);
       var id = req.body.ids;
       var crudaction = req.body[id + "_!nativeeditor_status"];
+
+     var debug = JSON.stringify(req.body,null,4);
+
       if (crudaction == "inserted")  //----> CREATE
       {
         schedule_mgr.createEvent(eventobj);
@@ -89,6 +92,16 @@ router.post('/getschedule2', function(req, res) {
 });
 
 
+
+router.post('/deleteall', function(req, res) {
+
+  schedule_mgr.deleteAllEvents();
+  res.status(200).send("OK");
+});
+
+
+
+/*  I think this is old stuff??,  5/1/17,
 router.get('/getschedule', function(req, res) {
 
   //figure out date range by month.
@@ -276,7 +289,7 @@ router.get('/getschedule', function(req, res) {
   res.send(events);
 });
 
-
+*/
 
 router.post('/setschedulemode', function(req, res) {
 

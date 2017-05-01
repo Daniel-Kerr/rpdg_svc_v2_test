@@ -382,7 +382,7 @@ var mgr = module.exports = {
         //  daily, *******************************************************
         // for this we will generate an event for the last 2 days.
         var target = path.resolve(SCHEDULE_FILE_DAILY);
-       var stopdate = new Date();
+        var stopdate = new Date();
         stopdate.setDate(stopdate.getDate()+1);
         var file_contents = requireUncached(target);
         for (var idx = 0; idx < file_contents.length; idx++) {
@@ -417,7 +417,7 @@ var mgr = module.exports = {
             var currdt = new Date();
             currdt.addHours(-24*12);  // start 12 days
 
-           // currdt.setDate(currdt.getDate()-2);    // today minus 2 days,
+            // currdt.setDate(currdt.getDate()-2);    // today minus 2 days,
             var k = new Date(weeklyevent.start_date);
             var dayofweek = k.getDay();  // sunday = 0,
 
@@ -622,6 +622,14 @@ var mgr = module.exports = {
         }
         if(edit)
             writeEventListToFile(eventlist, file);
-    }
+    },
+    deleteAllEvents: function() {
+
+        createBlankFile(SCHEDULE_FILE_ONETIME);
+        createBlankFile(SCHEDULE_FILE_DAILY);
+        createBlankFile(SCHEDULE_FILE_WEEKLY);
+        module.exports.requestScheduleCacheReset();
+
+    },
 
 }; // end exports
