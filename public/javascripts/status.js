@@ -26,11 +26,7 @@ function initStatusHandler(config)
     }
     updateUIPageComponents(undefined);
 
-
-
-
 }
-
 
 
 function initFixtureStatusBoxes() {
@@ -47,58 +43,41 @@ var bulb_icon_map = {};
 var daylight_limit_icon_map = {};
 function constructFixtureBox(currentdiv, fixture) {
     var fixcol = document.createElement("div");
-    fixcol.className = "col-lg-2";
+    fixcol.className = "col-sm-2";
     currentdiv.appendChild(fixcol);
 
     var fixbox = document.createElement("div");
-    fixbox.className = "box";
+    fixbox.className = "card-box";
     fixcol.appendChild(fixbox);
 
-    var fixboxheader = document.createElement("div");
-    fixboxheader.className = "box-header";
-    fixbox.appendChild(fixboxheader);
+   // var fixboxheader = document.createElement("div");
+  //  fixboxheader.className = "testme"; //"box-header";
+   // fixbox.appendChild(fixboxheader);
 
-
-   /* var sunbox = document.createElement("img");
-    sunbox.src = "images/handtinytrans.gif";
-    sunbox.height="20";
-    sunbox.width="20";
-    sunbox.style = "float: left";
-    daylight_limit_icon_map[fixture.uid] = sunbox;
-    fixboxheader.appendChild(sunbox);  */
-
-    var header = document.createElement("h2");
+    var header = document.createElement("h4");
     header.innerHTML = fixture.assignedname;
-    fixboxheader.appendChild(header);
-
-
+    fixbox.appendChild(header);
 
     var fixcontent = document.createElement("div");
     fixcontent.className = "box-content";
     fixbox.appendChild(fixcontent);
 
-
     var contentrow1 = document.createElement("div");
     contentrow1.className = "guagerow";
     contentrow1.id = fixture.assignedname + "_level";
 
-
     fixcontent.appendChild(contentrow1);
 
-    //<div id="gauge1" class="gaugeblock"></div>
     if (fixture.type == "on_off") {
         //var contentrow1 = document.createElement("div");
         // contentrow1.innerHTML = " this is row 1 content ";
         var bulb_icondiv = document.createElement("div");
         bulb_icondiv.className = "gaugeblock";
         bulb_icondiv.id = fixture.assignedname + "_bulb";
-        // <img src="something.jpg" alt="" />
         var bulb_iconimg = document.createElement("img");
         bulb_iconimg.src = "images/bulb_off.jpg";
         bulb_iconimg.className = "bulbiconrow";
-
         bulb_icon_map[fixture.assignedname] = bulb_iconimg;
-
         bulb_icondiv.appendChild(bulb_iconimg);
         contentrow1.appendChild(bulb_icondiv);
 
@@ -109,7 +88,10 @@ function constructFixtureBox(currentdiv, fixture) {
         gaugediv.id = fixture.assignedname + "_gauge";
         contentrow1.appendChild(gaugediv);
         // place gauge element inside the div
-        var test = new JustGage({id: fixture.assignedname + "_gauge", value: 50, min: 0, max: 100, title: "Dim Level"});
+
+
+
+        var test = new JustGage({id: fixture.assignedname + "_gauge", value: 50, min: 0, max: 100,  levelColors : [  "#72d2ff" ], title: "Dim Level"});
         gaugesmap[fixture.assignedname] = test;
 
     }
@@ -204,7 +186,7 @@ function updateUIPageComponents(config)
     //var dllabel = cachedconfig.daylightlevelvolts.toFixed(2) + " V  -- " + fc;
    // document.getElementById("daylightlevel").innerHTML = dllabel;
 
-    document.getElementById("occ_state").innerHTML = cachedconfig.occupiedstate;
+ //   document.getElementById("occ_state").innerHTML = cachedconfig.occupiedstate;
 
 
     updateLevelInputsTable();

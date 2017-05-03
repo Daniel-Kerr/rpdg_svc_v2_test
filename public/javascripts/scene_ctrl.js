@@ -23,9 +23,11 @@ var constraints = {
         presence: true
     }
 }
+
+
 $(function () {
     // click handler for boxes.. just under test.
-    $('.scene_dropzone').live('click', function(){
+    $('.scene_dropzone').click(function() { //('click','a', function(){
 
         // 3/15/17, remove any thing else that is highlighted,
         // remove any selected items from table X
@@ -481,6 +483,75 @@ function constructSceneBox(currentdiv, scene, groupnum) {
 
 
 
+    $('.scene_dropzone').click(function() { //('click','a', function(){
+
+        // 3/15/17, remove any thing else that is highlighted,
+        // remove any selected items from table X
+        $('#fixturetable > tbody  > tr').each(function() {
+            $(this).removeClass('active');
+        });
+        var fixsetting = document.getElementById("fixturesettingsdiv");  // clear the control
+        fixsetting.innerHTML = ""; //clear
+
+
+        var x = $(this).css('backgroundColor');
+        var selecteditemthistime = $(this);
+        // if selected item is not ud , and it does not equal the current.
+        // then disable the current,
+        if(selecteditem != undefined && selecteditem.get(0) != selecteditemthistime.get(0))
+        {
+            //disable action buttons on all ,
+            for(var k = 0; k <  cachedconfig.scenes.length; k++)
+            {
+                var disableele = '#actionbuttons_'+k;
+                $(disableele).children().addClass('disabled');
+                $(disableele).children().removeClass('active');
+            }
+
+
+            selecteditem.css("border-color", defaultcolor);
+            selecteditem.droppable("option", "disabled", true);
+            enableDisableFixturesInDiv(selecteditem, false);
+
+            $(this).css("border-color", "blue");
+            selecteditem = selecteditemthistime; //$(this);
+            enableDisableFixturesInDiv(selecteditem, true);
+            $(this).droppable("option", "disabled", false);
+
+            var selectedindex = selecteditem.attr('index');
+
+            var btns = document.getElementById("actionbuttons_0");
+
+
+            var enableelement = '#actionbuttons_'+selectedindex;
+            $(enableelement).children().removeClass('disabled');
+            $(enableelement).children().addClass('active');
+
+
+            selected_scene = cachedconfig.scenes[Number(selectedindex)];
+            filterAvalibleFixtures();
+
+        }
+        else if(selecteditem == undefined)
+        {
+            $(this).css("border-color", "blue");
+            selecteditem = selecteditemthistime; //$(this);
+            enableDisableFixturesInDiv(selecteditem, true);
+            $(this).droppable("option", "disabled", false);
+
+            var selectedindex = selecteditem.attr('index');
+
+            var enableelement = '#actionbuttons_'+selectedindex;
+            $(enableelement).children().removeClass('disabled');
+            $(enableelement).children().addClass('active');
+
+            selected_scene = cachedconfig.scenes[Number(selectedindex)];
+            filterAvalibleFixtures();
+        }
+    });
+
+
+
 
 
     $('.scene_dropzone').droppable({
@@ -520,8 +591,8 @@ function constructSceneBox(currentdiv, scene, groupnum) {
                         if(updatebox)
                         {
                             var point = document.getElementById('active_scenes_holder').scrollTop;
-                             redrawScenes();
-                             $('#group_'+selindex).trigger('click');
+                            redrawScenes();
+                            $('#group_'+selindex).trigger('click');
 
                             document.getElementById('active_scenes_holder').scrollTop = point;
 

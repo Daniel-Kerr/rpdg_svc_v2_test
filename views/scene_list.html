@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+
+    <link href="minton_dark_hor/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/core.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/pages.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/responsive.css" rel="stylesheet" type="text/css" />
+
+    <script src="minton_dark_hor/js/modernizr.min.js"></script>
+
+    <!--script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
     <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
     <script src="bsmaster/assets/js/bootstrap.min.js"></script>
     <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -21,7 +32,7 @@
 
     <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
-    <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet"-->
 
     <link rel="icon" type="image/png" href="/images/RVLT_LOGO_FAV.png">
     <style>
@@ -30,12 +41,15 @@
             width: 100%;
             margin: 0 0;
             height: 300px;
-            border-color: white;
+            border-color: green;
+           /* background-color: #2eb9b4;  */
+            border: 4px solid darkgrey;
+            overflow: auto;
         }
 
         .availiblescene {
             border: 4px solid #1111FF;
-            width: 100px;
+            width: 140px;
             margin: 5px;
             height: 30px;
             cursor: default;
@@ -43,7 +57,7 @@
 
         .verticallistitem {
             border: 4px solid #1111FF;
-            width: 100px;
+            width: 140px;
             margin: 5px;
             height: 30px;
             cursor: default;
@@ -52,21 +66,18 @@
         .verticallistitem_sel {
             border: 4px solid #FF5555;
             background-color: #ffff00;
-            width: 100px;
+            width: 140px;
             margin: 5px;
             height: 30px;
             cursor: default;
         }
 
-
-
-
-
         .actionbuttons {
-            position: absolute;
             right: 2px;
-            width: 150px;
+            width: 130px;
+            height: 100%;
             padding: 0px;
+            float: left;
         }
 
         .scenelistscontainer {
@@ -75,8 +86,8 @@
             height: 200px;
         }
         .left_nav_bar {
-
-            background-color: white;
+            border: 5px solid ;
+            border-color: black;
             width: 200px;
             height: 1000px;
             float: left;
@@ -90,15 +101,17 @@
 
 
         .availiblescenesholder {
-            background-color: white;
+            border: 4px solid;
             margin: 0px;
             width: 100%;
             height: 90%;
+            border-color: dimgray;
         }
 
         .trashcan {
-
-            background-color: white;
+            border-color: red;
+            border: 4px solid ;
+            background-color: black;
             width: 100%;
             height: 70px;
         }
@@ -116,28 +129,35 @@
 
 <body onload='init()'>
 
-<ul class="nav nav-tabs" >
-    <li ><a href="status" >Status</a></li>
-    <li ><a href="config" >Configuration</a></li>
-    <li ><a href="override_scene" >Override/Scene Edit</a></li>
-    <li><a href="schedule" >Schedule</a></li>
-    <li><a href="groups" >Groups</a></li>
-    <li class="active"><a href="scenelist" >Scene Lists</a></li>
-    <li><a href="history" >History</a></li>
-    <li style="float: right;">
-        <div >
-            <a href="/status">
-                <img src="/images/RVLT_LOGO.png" style="width:180px;height:40px;">
-            </a>
+<header id="topnav">
+    <!-- Navbar Start -->
+    <div class="navbar-custom">
+        <div class="container">
+            <div id="navigation">
+                <ul class="navigation-menu" >
+                    <li class="has-submenu"><a href="status" ><i class="md md-dashboard"></i>Status</a></li>
+                    <li class="has-submenu"><a href="config" ><i class="md md-dashboard"></i>Configuration</a></li>
+                    <li class="has-submenu"><a href="override_scene" ><i class="md md-dashboard"></i>Override/Scene Edit</a></li>
+                    <li class="has-submenu"><a href="schedule" ><i class="md md-dashboard"></i>Schedule</a></li>
+                    <li class="has-submenu"><a href="groups" ><i class="md md-dashboard"></i>Groups</a></li>
+                    <li class="has-submenu"><a href="scenelist" ><i class="md md-dashboard"></i>Scene Lists</a></li>
+                    <li class="has-submenu"><a href="history" ><i class="md md-dashboard"></i>History</a></li>
+                    <li style="float: right;">
+                        <div >
+                            <a href="/status">
+                                <img src="/images/RVLT_LOGO.png" style="width:180px;height:40px;">
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </li>
-</ul>
+    </div>
+</header>
 
-<div class="tab-content">
-    <div class="tab-pane active" id="tab1">
-        <p>
 
-        <div id="includedContent"></div>
+<div class="wrapper">
+    <div class="container">
         <div class="left_nav_bar">
             <input type="button" id = "btmakescene" class="btn-sm btn-large btn-primary" onclick=openNewSceneListEditDlg() value="New List"/>
 
@@ -169,9 +189,53 @@
                 <div id="active_scenes_holder" class="scenelistscontainer" ></div>
             </div>
         </div>
-        </p>
+
     </div>
 </div>
+
+
+
+<!-- jQuery  -->
+<script src="minton_dark_hor/js/jquery.min.js"></script>
+<script src="minton_dark_hor/js/bootstrap.min.js"></script>
+<script src="minton_dark_hor/js/detect.js"></script>
+<script src="minton_dark_hor/js/fastclick.js"></script>
+<script src="minton_dark_hor/js/jquery.blockUI.js"></script>
+<script src="minton_dark_hor/js/waves.js"></script>
+<script src="minton_dark_hor/js/wow.min.js"></script>
+<script src="minton_dark_hor/js/jquery.nicescroll.js"></script>
+<script src="minton_dark_hor/js/jquery.scrollTo.min.js"></script>
+
+<!-- Counter Up  -->
+<script src="minton_dark_hor/plugins/waypoints/lib/jquery.waypoints.js"></script>
+<script src="minton_dark_hor/plugins/counterup/jquery.counterup.min.js"></script>
+
+<!-- circliful Chart -->
+<script src="minton_dark_hor/plugins/jquery-circliful/js/jquery.circliful.min.js"></script>
+<script src="minton_dark_hor/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
+
+<!-- skycons -->
+<script src="minton_dark_hor/plugins/skyicons/skycons.min.js" type="text/javascript"></script>
+
+<!-- Page js  -->
+<script src="minton_dark_hor/pages/jquery.dashboard.js"></script>
+
+<!-- Custom main Js -->
+<script src="minton_dark_hor/js/jquery.core.js"></script>
+<script src="minton_dark_hor/js/jquery.app.js"></script>
+
+<script src="bsmaster/assets/js/raphael.min.js"></script>
+<script src="bsmaster/assets/js/jquery.noty.min.js"></script>
+
+<script src="thirdparty/validate.min.js"></script>
+<script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+
+<script src="thirdparty/validate.min.js"></script>
+<script src="thirdparty/bootbox.min.js"></script>
+
+<script src="javascripts/crud_config.js"></script>
+<script src="javascripts/crud_override.js"></script>
+<script src="javascripts/scene_list.js"></script>
 
 </body>
 </html>

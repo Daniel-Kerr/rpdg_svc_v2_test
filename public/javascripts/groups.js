@@ -4,7 +4,7 @@
 
 var loadedconfig = "";
 var selecteditem;
-var defaultcolor = "rgba(0,0,0,0)";
+var defaultcolor = "rgba(100,100,100,100)";
 var selected_group;
 
 
@@ -37,10 +37,10 @@ function processConfig(configobj)
 }
 
 
-
+/*
 $(function () {
     // click handler for boxes.. just under test.
-    $('.group_dropzone').live('click', function(){
+    $('.group_dropzone').on('click', function(){
         var x = $(this).css('backgroundColor');
 
         var selecteditemthistime = $(this);
@@ -96,6 +96,8 @@ $(function () {
     });
 
 });
+
+*/
 
 function redrawGroups()
 {
@@ -413,9 +415,10 @@ function constructGroupBox(currentdiv, group,groupnum) {
     fixboxheader.appendChild(buttonholder);
 
     var btndelete = document.createElement("input");
-    btndelete.className = "btn btn-xs btn-danger disabled";
+    btndelete.className = "btn btn-xs btn-danger";
     btndelete.type = "button";
     btndelete.value = "Delete";
+    btndelete.disabled = true;
     //  btndelete.setAttribute('group', group.name);
     btndelete.onclick = function () {
 
@@ -477,6 +480,68 @@ function constructGroupBox(currentdiv, group,groupnum) {
     dropzonediv.setAttribute("index",groupnum);
     // dropzonediv.innerHTML = "test";
     fixcontent.appendChild(dropzonediv);
+
+
+    $('.group_dropzone').on('click', function(){
+        var x = $(this).css('backgroundColor');
+
+        var selecteditemthistime = $(this);
+        // if selected item is not ud , and it does not equal the current.
+        // then disable the current,
+        if(selecteditem != undefined && selecteditem.get(0) != selecteditemthistime.get(0))
+        {
+            //disable action buttons on all ,
+            for(var k = 0; k <  loadedconfig.groups.length; k++)
+            {
+                var disableele = '#actionbuttons_'+k;
+
+                $(disableele).children().prop('disabled', true);
+                //$(disableele).children().addClass('disabled');
+               // $(disableele).children().removeClass('active');
+            }
+
+
+
+            selecteditem.css("border-color", defaultcolor);
+            selecteditem.droppable("option", "disabled", true);
+            enableDisableFixturesInDiv(selecteditem, false);
+
+            $(this).css("border-color", "blue");
+            selecteditem = selecteditemthistime; //$(this);
+            enableDisableFixturesInDiv(selecteditem, true);
+            $(this).droppable("option", "disabled", false);
+
+            var selectedindex = selecteditem.attr('index');
+
+            var enableelement = '#actionbuttons_'+selectedindex;
+
+            $(enableelement).children().prop('disabled', false);
+           // $(enableelement).children().removeClass('disabled');
+           // $(enableelement).children().addClass('active');
+
+            selected_group = loadedconfig.groups[Number(selectedindex)];
+            filterAvalibleFixtures();
+
+        }
+        else if(selecteditem == undefined)
+        {
+            $(this).css("border-color", "blue");
+            selecteditem = selecteditemthistime; //$(this);
+            enableDisableFixturesInDiv(selecteditem, true);
+            $(this).droppable("option", "disabled", false);
+
+            var selectedindex = selecteditem.attr('index');
+
+            var enableelement = '#actionbuttons_'+selectedindex;
+
+            $(enableelement).children().prop('disabled', false);
+           // $(enableelement).children().removeClass('disabled');
+          //  $(enableelement).children().addClass('active');
+
+            selected_group = loadedconfig.groups[Number(selectedindex)];
+            filterAvalibleFixtures();
+        }
+    });
 
 
 

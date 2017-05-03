@@ -6,6 +6,7 @@ var pad = require('pad');
 var path = require('path');
 var FixtureParameters = require('./FixtureParameters');
 var filter_utils = require('../utils/filter_utils.js');
+var data_utils = require('../utils/data_utils.js');
 
 var RGBWFixture = function(name, interface, outputid)
 {
@@ -120,6 +121,15 @@ var RGBWFixture = function(name, interface, outputid)
         var setwhite = this.calculateOutputLevel(white);
         this.interface.setOutputToLevel(wchannel, setwhite, apply);
         this.lastupdated = moment();
+
+
+        var logobj = {};
+        logobj.date = new moment().toISOString();
+        logobj.red = this.red.toFixed();
+        logobj.green = this.green.toFixed();
+        logobj.blue = this.blue.toFixed();
+        logobj.white = this.white.toFixed();
+        data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
     };
 
     this.getvalue=function(){

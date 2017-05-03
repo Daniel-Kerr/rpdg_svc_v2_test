@@ -45,30 +45,52 @@ var constraints = {
     }
 }
 
+
+function transformFixtureToDataSet()
+{
+    var datasetobj = {};
+    var datasetarray = [];
+    for(var i = 0;i < cachedconfig.fixtures.length; i++)
+    {
+        var fixobj = cachedconfig.fixtures[i];
+        datasetarray.push(fixobj);
+    }
+    datasetobj = datasetarray;
+    return datasetobj;
+}
+
+
+var fixturetable = undefined;
+var selectedfixtureindex = -1;
+
 $(document).ready(function() {
 
 
+    //$('#fixturetable > tbody > tr').click(function() {
 
-
-
-
-    $("#fixturetable").on("click", " tr", function(e) {
+    $("#fixturetable").on("click", " tbody > tr", function(e) {
 
         // 3/15/17, remove any thing else that is highlighted,
         $('#wetdrycontacttable > tbody  > tr').each(function() {
-            $(this).removeClass('active');
+            $(this).removeClass('bg-primary');
         });
         $('#levelinputstable > tbody  > tr').each(function() {
-            $(this).removeClass('active');
+            $(this).removeClass('bg-primary');
         });
 
 
-        if ( $(this).hasClass('active') ) {
-            $(this).removeClass('active');
+        if ( $(this).hasClass('bg-primary') ) {
+            $(this).removeClass('bg-primary');
         }
         else {
-            //$("#fixturetable").$('tr.active').removeClass('active');
-            $(this).addClass('active').siblings().removeClass('active');
+
+           // fixturetable.$('tr.active').removeClass('active');
+           // $(this).addClass('active');
+
+            //$(this).addClass('active').siblings().removeClass('active');
+            $(this).addClass('bg-primary').siblings().removeClass('bg-primary');
+
+
 
             var row = $(this).find('td:first').text();
             // alert('You clicked ' + row);
@@ -79,6 +101,7 @@ $(document).ready(function() {
                 if(fixture.assignedname == row)
                 {
 
+                    selectedfixtureindex = i;
                     selected_edit_fixture = fixture;
 
 
@@ -167,22 +190,25 @@ $(document).ready(function() {
     });
 
     // start, click handler for contact input
-    $("#wetdrycontacttable").on("click", " tr", function(e) {
+    $("#wetdrycontacttable").on("click", " tbody > tr", function(e) {
 
         // 3/15/17, remove any thing else that is highlighted,
         $('#fixturetable > tbody  > tr').each(function() {
-            $(this).removeClass('active');
+            $(this).removeClass('bg-primary');
         });
         $('#levelinputstable > tbody  > tr').each(function() {
-            $(this).removeClass('active');
+            $(this).removeClass('bg-primary');
         });
 
 
-        if ($(this).hasClass('active')) {
-            $(this).removeClass('active');
+        if ($(this).hasClass('bg-primary')) {
+            $(this).removeClass('bg-primary');
         }
         else {
-            $(this).addClass('active').siblings().removeClass('active');
+            //$(this).addClass('active').siblings().removeClass('active');
+            $(this).addClass('bg-primary').siblings().removeClass('bg-primary');
+
+
 
             var row = $(this).find('td:first').text();
 
@@ -218,23 +244,23 @@ $(document).ready(function() {
 
 
     // start, click handler for contact input
-    $("#levelinputstable").on("click", " tr", function(e) {
+    $("#levelinputstable").on("click", " tbody > tr", function(e) {
 
         // 3/15/17, remove any thing else that is highlighted,
         $('#fixturetable > tbody  > tr').each(function() {
-            $(this).removeClass('active');
+            $(this).removeClass('bg-primary');
         });
         $('#wetdrycontacttable > tbody  > tr').each(function() {
-            $(this).removeClass('active');
+            $(this).removeClass('bg-primary');
         });
 
 
 
-        if ($(this).hasClass('active')) {
-            $(this).removeClass('active');
+        if ($(this).hasClass('bg-primary')) {
+            $(this).removeClass('bg-primary');
         }
         else {
-            $(this).addClass('active').siblings().removeClass('active');
+            $(this).addClass('bg-primary').siblings().removeClass('bg-primary');
             var row = $(this).find('td:first').text();
 
             for(var i = 0; i < cachedconfig.levelinputs.length; i++) {
@@ -301,17 +327,14 @@ function processConfig(configobj)
 
 
     getFixtureParameterOptions(cacheFixtureParamOptions);
-    // loadParamOptions();
-    // loadedfixtures = configobj.fixtures;
-    updateFixturesTable();
 
-    // populateBoundInputOptions();
+  //  updateFixturesTable();
 
-    //  loadedinputcontacts = configobj.contactinputs;
+
 
     updateWetDryContactTable();
 
-    // loadedlevelinputs = configobj.levelinputs;
+
     updateLevelInputsTable();
 
 
@@ -328,7 +351,7 @@ function processConfig(configobj)
     }
 
 
-    //  initgroupsel();
+
 
 
     getInterfaceOutputs(function (retval) {
@@ -350,13 +373,66 @@ function processConfig(configobj)
 
     populateDropDown("groupassignment", getGroupNames());
 
+    constructFixtureTable();
+    /*
+    // new stuff,
+    var dataset = transformFixtureToDataSet();
+
+    fixturetable = $('#fixturetable').DataTable( {
+        "aaData": dataset,
+        "pageLength": 5,
+        "bLengthChange": false,
+        "aoColumns": [
+            { "mData": 'assignedname'},
+            { "mData": 'type'},
+            { "mData": 'interfacename'},
+            { "mData": 'outputid', "bSortable": false},
+            { "mData": 'image', "bSortable": false,
+                "mRender": function (data, type, row) {
+                    //  var sens = data;
+                    //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
+                    var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
+                    return imgstring;
+
+                }
+            }
+        ]
+    } );
+*/
 
 }
 
 
 
+function constructFixtureTable()
+{
+    var dataset = transformFixtureToDataSet();
+    fixturetable = $('#fixturetable').DataTable( {
+        "aaData": dataset,
+        "pageLength": 5,
+        select: true,
+        "bLengthChange": false,
+        "aoColumns": [
+            { "mData": 'assignedname'},
+            { "mData": 'type'},
+            { "mData": 'interfacename'},
+            { "mData": 'outputid', "bSortable": false},
+            { "mData": 'image', "bSortable": false,
+                "mRender": function (data, type, row) {
+                    //  var sens = data;
+                    //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
+                    var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
+                    return imgstring;
+
+                }
+            }
+        ]
+    } );
+}
 
 
+
+/*
 
 function updateFixturesTable() {
 
@@ -510,6 +586,10 @@ function updateFixturesTable() {
 
     fixturetablediv.appendChild(oTable);
 }
+
+*/
+
+
 
 
 /*
@@ -713,7 +793,31 @@ function saveNewFixture(image) {
 
     saveConfigObject("fixture",fixture,function (retval) {
         cachedconfig = retval;
-        updateFixturesTable();
+
+       // updateFixturesTable();
+        fixturetable.destroy();
+
+        constructFixtureTable();
+        /*
+        var dataset = transformFixtureToDataSet();
+        fixturetable = $('#fixturetable').DataTable( {
+            "aaData": dataset,
+            "aoColumns": [
+                { "mData": 'assignedname'},
+                { "mData": 'type'},
+                { "mData": 'interfacename'},
+                { "mData": 'outputid', "bSortable": false},
+                { "mData": 'image', "bSortable": false,
+                    "mRender": function (data, type, row) {
+                        //  var sens = data;
+                        //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
+                        var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
+                        return imgstring;
+
+                    }
+                }
+            ]
+        } );*/
     });
 }
 
@@ -721,7 +825,9 @@ function saveNewFixture(image) {
 
 function deleteFixture()
 {
-    var index =  Number(this.getAttribute('index'));
+
+
+    var index =  selectedfixtureindex; //Number(this.getAttribute('index'));
     // bug 201,  set the outputs of this fixture to 0,
     var element = {};
     element.requesttype = "override";
@@ -745,7 +851,30 @@ function deleteFixture()
         var i = 0;  //cb stub
         deleteConfigObject("fixture",cachedconfig.fixtures[index],function (retval) {
             cachedconfig = retval;
-            updateFixturesTable();
+
+            fixturetable.destroy();
+
+            constructFixtureTable();
+           /* var dataset = transformFixtureToDataSet();
+            fixturetable = $('#fixturetable').DataTable( {
+                "aaData": dataset,
+                "aoColumns": [
+                    { "mData": 'assignedname'},
+                    { "mData": 'type'},
+                    { "mData": 'interfacename'},
+                    { "mData": 'outputid', "bSortable": false},
+                    { "mData": 'image', "bSortable": false,
+                        "mRender": function (data, type, row) {
+                            //  var sens = data;
+                            //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
+                            var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
+                            return imgstring;
+
+                        }
+                    }
+                ]
+            } );*/
+          //  updateFixturesTable();
         });
     });
 
@@ -1149,8 +1278,15 @@ function saveNewContactInputObj() {
     var selinputnum = inputnum.options[inputnum.selectedIndex].value;
     contactinput.inputid = selinputnum;
 
-    var type = $('input[name=contacttype]:checked', '#myForm').val();
+
+
+    var myRadio = $('input[name=contacttype]');
+    var type = myRadio.filter(':checked').val();
     contactinput.type = type;
+
+
+   // var type = $('input[name=contacttype]:checked', '#myForm').val();
+   // contactinput.type = type;
     var active_action = "";
 
     var aa_p1 = $('#active_action_sel_part1').val();

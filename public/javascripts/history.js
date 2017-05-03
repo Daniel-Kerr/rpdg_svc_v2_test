@@ -277,6 +277,9 @@ var detailOptions = {
 
 function processInputDataFetch(name, resultdata) {
 
+    if(resultdata == undefined)
+        return;
+
 
     var dataholder = [];
     var parts = resultdata.split('\n');

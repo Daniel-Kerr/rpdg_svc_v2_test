@@ -3,7 +3,17 @@
 
 <title>History</title>
 
-<script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+
+<link href="minton_dark_hor/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="minton_dark_hor/css/core.css" rel="stylesheet" type="text/css" />
+<link href="minton_dark_hor/css/components.css" rel="stylesheet" type="text/css" />
+<link href="minton_dark_hor/css/icons.css" rel="stylesheet" type="text/css" />
+<link href="minton_dark_hor/css/pages.css" rel="stylesheet" type="text/css" />
+<link href="minton_dark_hor/css/menu.css" rel="stylesheet" type="text/css" />
+<link href="minton_dark_hor/css/responsive.css" rel="stylesheet" type="text/css" />
+
+
+<!--script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
 <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
 <script src="bsmaster/assets/js/bootstrap.min.js"></script>
 <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
@@ -32,7 +42,7 @@
 <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
 <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
-<link href="stylesheets/nouislider.min.css" rel="stylesheet">
+<link href="stylesheets/nouislider.min.css" rel="stylesheet"-->
 
 <link rel="icon" type="image/png" href="/images/RVLT_LOGO_FAV.png">
 <!-- CSS -->
@@ -109,64 +119,156 @@
 
 </script>
 
-<ul class="nav nav-tabs" >
-    <li><a href="status" >Status</a></li>
-    <li><a href="config" >Configuration</a></li>
-    <li><a href="override_scene" >Override/Scene Edit</a></li>
-    <li><a href="schedule" >Schedule</a></li>
-    <li ><a href="groups" >Groups</a></li>
-    <li><a href="scenelist" >Scene Lists</a></li>
-    <li class="active"><a href="history" >History</a></li>
-    <li style="float: right;">
-        <div >
-            <a href="/status">
-                <img src="/images/RVLT_LOGO.png" style="width:180px;height:40px;">
-            </a>
-        </div>
-    </li>
 
-</ul>
+<header id="topnav">
+    <!-- Navbar Start -->
+    <div class="navbar-custom">
+        <div class="container">
+            <div id="navigation">
+                <ul class="navigation-menu" >
+                    <li class="has-submenu"><a href="status" ><i class="md md-dashboard"></i>Status</a></li>
+                    <li class="has-submenu"><a href="config" ><i class="md md-dashboard"></i>Configuration</a></li>
+                    <li class="has-submenu"><a href="override_scene" ><i class="md md-dashboard"></i>Override/Scene Edit</a></li>
+                    <li class="has-submenu"><a href="schedule" ><i class="md md-dashboard"></i>Schedule</a></li>
+                    <li class="has-submenu"><a href="groups" ><i class="md md-dashboard"></i>Groups</a></li>
+                    <li class="has-submenu"><a href="scenelist" ><i class="md md-dashboard"></i>Scene Lists</a></li>
+                    <li class="has-submenu"><a href="history" ><i class="md md-dashboard"></i>History</a></li>
+                    <li style="float: right;">
+                        <div >
+                            <a href="/status">
+                                <img src="/images/RVLT_LOGO.png" style="width:180px;height:40px;">
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+
 
 <body onload="init()">
-<div class="background_main">
 
-    <div id="titlebar"></div>
-    <!--div id="outputs_graphs" class="output_graph_holder"-->
+<div class="wrapper">
+    <div class="container">
 
-        <div class="col-lg-10">
-            <input type="button" id = "bt1hr" class="btn btn-large btn-success" onclick=setWindowHours(1) value="1 hour"/>
-            <input type="button" id = "bt6hr" class="btn btn-large btn-success" onclick=setWindowHours(6) value="6 hours"/>
-            <input type="button" id = "bt12hr" class="btn btn-large btn-success" onclick=setWindowHours(12) value="12 hours"/>
-            <input type="button" id = "btday" class="btn btn-large btn-success" onclick=setWindowHours(24) value="Day"/>
-            <input type="button" id = "btweek" class="btn btn-large btn-success" onclick=setWindowHours(24*7) value="Week"/>
-            <input type="button" id = "btmonth" class="btn btn-large btn-success" onclick=setWindowHours(24*30) value="Month"/>
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="button" id = "bt1hr" class="btn btn-large btn-success" onclick=setWindowHours(1) value="1 hour"/>
+                <input type="button" id = "bt6hr" class="btn btn-large btn-success" onclick=setWindowHours(6) value="6 hours"/>
+                <input type="button" id = "bt12hr" class="btn btn-large btn-success" onclick=setWindowHours(12) value="12 hours"/>
+                <input type="button" id = "btday" class="btn btn-large btn-success" onclick=setWindowHours(24) value="Day"/>
+                <input type="button" id = "btweek" class="btn btn-large btn-success" onclick=setWindowHours(24*7) value="Week"/>
+                <input type="button" id = "btmonth" class="btn btn-large btn-success" onclick=setWindowHours(24*30) value="Month"/>
+            </div>
+        </div>
 
-            <div class="box">
-                <div class="box-header" data-original-title>
-                    <h2><i class="fa fa-user"></i><span class="break"></span>Fixtures / (Outputs)</h2>
-                    <div class="box-icon">
-                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="portlet"><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            Fixtures / Output Devices
+                        </h3>
+                        <div class="portlet-widgets">
+                            <!--a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a-->
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet_outputs"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
-                </div>
-                <div class="box-content">
-                    <div id="output-graph" class="demo-placeholder" style="height:260px;"></div>
+                    <div id="portlet_outputs" class="panel-collapse collapse in">
+                        <div class="portlet-body">
+                            <div id="output-graph" class="demo-placeholder" style="height:260px;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="box">
-                <div class="box-header" data-original-title>
-                    <h2><i class="fa fa-user"></i><span class="break"></span>Sensors/Wallstations</h2>
-                    <div class="box-icon">
-                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="portlet"><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            Sensors / Inputs Devices
+                        </h3>
+                        <div class="portlet-widgets">
+                            <!--a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a-->
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet_inputs"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
-                </div>
-                <div class="box-content">
-                    <div id="input-graph" class="demo-placeholder" style="height:260px;"></div>
+                    <div id="portlet_inputs" class="panel-collapse collapse in">
+                        <div class="portlet-body">
+                            <div id="input-graph" class="demo-placeholder" style="height:260px;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>
+
+
+<!-- jQuery  -->
+<script src="minton_dark_hor/js/jquery.min.js"></script>
+<script src="minton_dark_hor/js/bootstrap.min.js"></script>
+<script src="minton_dark_hor/js/detect.js"></script>
+<script src="minton_dark_hor/js/fastclick.js"></script>
+<script src="minton_dark_hor/js/jquery.blockUI.js"></script>
+<script src="minton_dark_hor/js/waves.js"></script>
+<script src="minton_dark_hor/js/wow.min.js"></script>
+<script src="minton_dark_hor/js/jquery.nicescroll.js"></script>
+<script src="minton_dark_hor/js/jquery.scrollTo.min.js"></script>
+
+
+<!-- Counter Up  -->
+<script src="minton_dark_hor/plugins/waypoints/lib/jquery.waypoints.js"></script>
+<script src="minton_dark_hor/plugins/counterup/jquery.counterup.min.js"></script>
+
+<!-- circliful Chart -->
+<script src="minton_dark_hor/plugins/jquery-circliful/js/jquery.circliful.min.js"></script>
+<script src="minton_dark_hor/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
+
+<!-- skycons -->
+<script src="minton_dark_hor/plugins/skyicons/skycons.min.js" type="text/javascript"></script>
+
+<!-- Page js  -->
+<script src="minton_dark_hor/pages/jquery.dashboard.js"></script>
+
+<!-- Custom main Js -->
+<script src="minton_dark_hor/js/jquery.core.js"></script>
+<script src="minton_dark_hor/js/jquery.app.js"></script>
+
+<script src="bsmaster/assets/js/raphael.min.js"></script>
+<script src="bsmaster/assets/js/justgage.1.0.1.min.js"></script>
+<script src="bsmaster/assets/js/jquery.noty.min.js"></script>
+
+<script src="thirdparty/validate.min.js"></script>
+<script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+
+<script src="thirdparty/modernizr.js"></script>
+<script src="thirdparty/validate.min.js"></script>
+<script src="thirdparty/bootbox.min.js"></script>
+
+<script src="flot/jquery.flot.min.js"></script>
+<script src="flot/jquery.flot.stack.min.js"></script>
+<script src="flot/jquery.flot.resize.min.js"></script>
+<script src="flot/jquery.flot.time.min.js"></script>
+<script src="flot/jquery.flot.selection.js"></script>
+<script src="flot/jquery.flot.navigate.js"></script>
+
+
+<script src="javascripts/crud_config.js"></script>
+<script src="javascripts/history.js"></script>
+
 </body>
+</html>

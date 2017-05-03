@@ -4,19 +4,36 @@
     <meta charset="UTF-8">
     <title>Config</title>
 
-    <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+
+    <link href="minton_dark_hor/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/plugins/datatables/buttons.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/plugins/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/plugins/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/plugins/datatables/scroller.bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="minton_dark_hor/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/core.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/pages.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/responsive.css" rel="stylesheet" type="text/css" />
+
+    <link href="image-picker/image-picker.css" rel="stylesheet">
+
+    <script src="minton_dark_hor/js/modernizr.min.js"></script>
+    <!--script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
     <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
     <script src="bsmaster/assets/js/bootstrap.min.js"></script>
-    <!-- page scripts -->
+
     <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
     <script src="bsmaster/assets/js/jquery.ui.touch-punch.min.js"></script>
-    <!-- theme scripts -->
+
     <script src="bsmaster/assets/js/custom.min.js"></script>
     <script src="bsmaster/assets/js/core.min.js"></script>
     <script src="bsmaster/assets/js/raphael.min.js"></script>
     <script src="bsmaster/assets/js/justgage.1.0.1.min.js"></script>
     <script src="bsmaster/assets/js/jquery.noty.min.js"></script>
-    <!--script src="javascripts/nodecontrol.js"></script-->
 
     <script src="thirdparty/bootstrap-toggle.js"></script>
     <script src="thirdparty/validate.min.js"></script>
@@ -177,6 +194,13 @@
             cursor: pointer;
         }
 
+
+        /* this is to override boostrap */
+        /*.row_selected td {
+            background-color: black !important; /* Add !important to make sure override datables base styles
+        }  */
+
+
     </style>
 
 </head>
@@ -184,40 +208,65 @@
 
 <body onload="init()">
 
-<form id="myForm">
-
-    <ul class="nav nav-tabs" >
-        <li ><a href="status" >Status</a></li>
-        <li class="active"><a href="config" >Configuration</a></li>
-        <li><a href="override_scene" >Override/Scene Edit</a></li>
-        <li><a href="schedule" >Schedule</a></li>
-        <li><a href="groups" >Groups</a></li>
-        <li><a href="scenelist" >Scene Lists</a></li>
-        <li><a href="history" >History</a></li>
-        <li style="float: right;">
-            <div >
-                <a href="/status">
-                    <img src="/images/RVLT_LOGO.png" style="width:180px;height:40px;">
-                </a>
-            </div>
-        </li>
-    </ul>
-
-    <div class="tab-content">
-        <div class="tab-pane active" id="tab1">
-            <p>
-            <div id="wizard" class="col-sm-11">
+<!--form id="myForm"-->
 
 
-                <div class="col-lg-10">
-                    <div class="box">
-                        <div class="box-header" data-original-title>
-                            <h2><i class="fa fa-user"></i><span class="break"></span>Site Information</h2>
-                            <div class="box-icon">
-                                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-down"></i></a>
-                            </div>
+
+<!-- Navigation Bar-->
+<header id="topnav">
+    <!-- Navbar Start -->
+    <div class="navbar-custom">
+        <div class="container">
+            <div id="navigation">
+
+                <ul class="navigation-menu" >
+
+
+                    <li class="has-submenu"><a href="status" ><i class="md md-dashboard"></i>Status</a></li>
+                    <li class="has-submenu"><a href="config" ><i class="md md-dashboard"></i>Configuration</a></li>
+                    <li class="has-submenu"><a href="override_scene" ><i class="md md-dashboard"></i>Override/Scene Edit</a></li>
+                    <li class="has-submenu"><a href="schedule" ><i class="md md-dashboard"></i>Schedule</a></li>
+                    <li class="has-submenu"><a href="groups" ><i class="md md-dashboard"></i>Groups</a></li>
+                    <li class="has-submenu"><a href="scenelist" ><i class="md md-dashboard"></i>Scene Lists</a></li>
+                    <li class="has-submenu"><a href="history" ><i class="md md-dashboard"></i>History</a></li>
+                    <li style="float: right;">
+                        <div >
+                            <a href="/status">
+                                <img src="/images/RVLT_LOGO.png" style="width:180px;height:40px;">
+                            </a>
                         </div>
-                        <div class="box-content collapse">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- =======================
+        ===== START PAGE ======
+        ======================= -->
+
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="portlet"><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            Site Information
+                        </h3>
+                        <div class="portlet-widgets">
+                            <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet1"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="portlet1" class="panel-collapse collapse in">
+                        <div class="portlet-body">
+                            <!--div id="website-stats" style="height: 320px;" class="flot-chart"></div-->
                             <div id="siteinfo_1" class="row_7part1">
                                 <label>Location: </label>
                                 <label>ZipCode: </label> <input id="sitezip" type="text" />
@@ -226,37 +275,56 @@
                             </div>
 
                             <input type="button" id = "btsavesiteinfo" class="btn btn-large btn-success" onclick=saveSiteInfo() value="Save Settings"/>
-
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="col-lg-5">
-                    <div class="box">
-                        <div class="box-header" data-original-title>
-                            <h2><i class="fa fa-user"></i><span class="break"></span>RPDG PWM OUTPUT TOGGLE TEST</h2>
-                            <div class="box-icon">
-                                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-down"></i></a>
-                            </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="portlet"><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            RPDG PWM OUTPUT TOGGLE
+                        </h3>
+                        <div class="portlet-widgets">
+                            <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet2"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
                         </div>
-                        <div class="box-content collapse">
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="portlet2" class="panel-collapse collapse in">
+                        <div class="portlet-body">
                             <div id="pwmoutputtoggletablediv" class = "tg">
                                 <table id="pwmoutputtoggletable" class="table table-striped table-bordered "></table>
                             </div>
-
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-lg-5">
-                    <div class="box">
-                        <div class="box-header" data-original-title>
-                            <h2><i class="fa fa-user"></i><span class="break"></span>RPDG PLC OUTPUT TOGGLE TEST</h2>
-                            <div class="box-icon">
-                                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-down"></i></a>
-                            </div>
+            <div class="col-lg-6">
+
+                <div class="portlet"><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            RPDG PLC OUTPUT TOGGLE
+                        </h3>
+                        <div class="portlet-widgets">
+                            <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet3"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
                         </div>
-                        <div class="box-content collapse">
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="portlet3" class="panel-collapse collapse in">
+                        <div class="portlet-body">
                             <div id="plcoutputtoggletablediv" class = "tg">
                                 <table id="plcoutputtoggletable" class="table table-striped table-bordered "></table>
                             </div>
@@ -264,31 +332,46 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+        </div>
+        <!-- end row-->
 
 
+        <div class="row">
+            <div class="col-lg-12">
 
-
-
-
-
-                <div class="col-lg-10">
-                    <div class="box">
-                        <div class="box-header" data-original-title>
-                            <h2><i class="fa fa-user"></i><span class="break"></span>Output Devices</h2>
-                            <div class="box-icon">
-
-                                <a href="enoceanconfig" >Wireless(enocean)</a>
-                                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
-
-                            </div>
+                <div class="portlet"><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            Output Devices
+                        </h3>
+                        <div class="portlet-widgets">
+                            <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet_od"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
                         </div>
-                        <div class="box-content">
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="portlet_od" class="panel-collapse collapse in">
+                        <div class="portlet-body">
 
                             <div id="fixturetablediv" class = "tg"></div>
-                            <table id="fixturetable" class="table table-striped table-bordered "></table>
-                            <br>
-                            <br>
+                            <table id="fixturetable" class="table table-bordered ">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Interface</th>
+                                    <th>Starting Output ID</th>
+                                    <th>Image</th>
+                                </tr>
+                                </thead>
 
+
+                            </table>
 
                             <div id="fixotpsrow1" class="row_7_holder">
 
@@ -349,238 +432,613 @@
                             </div>
 
                             <br>
-                            <!--div id="inputsheader">
-                                <label>Bound Inputs</label>
-                            </div>
-                            <br>
-                            <div id="boundinputs">
-
-                            </div-->
-                            <br>
 
                             <div id="fixtureparamstable" class = "tg"></div>
 
                             <input type="button" id = "btsavefixture" class="btn btn-large btn-success" onclick=saveNewFixture() value="SAVE FIXURE"/>
+                            <input type="button" id = "btdelfixture"  class="btn btn-large btn-warning" onclick="deleteFixture()" value="Delete"/>
 
                         </div>
+                    </div>
+                </div>
+            </div>
 
+        </div>  <!-- end row -->
+
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="portlet"><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            Wet / Dry Contact Inputs
+                        </h3>
+                        <div class="portlet-widgets">
+                            <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet_wdc"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="portlet_wdc" class="panel-collapse collapse in">
+                        <div class="portlet-body">
+                            <div id="wetdrycontactdiv" class = "tg"></div>
+                            <table id="wetdrycontacttable" class="table  table-bordered "></table>
+                            <br>
+                            <br>
+
+                            <label>Name: </label><input id="contactname" type="text" />
+                            &nbsp;
+                            &nbsp;<label> Interface</label>
+                            <select id="contactinputinterface" class="btn btn-large btn-primary">
+                                <option value="rpdg">RPDG</option>
+                                <option value="enocean">Enocean</option>
+                                <!--option value="synapse">Synapse</option-->
+                            </select>
+
+                            <label>Input Number: </label>
+                            <select id="contact_inputnum" class="btn btn-large btn-primary">
+                            </select>
+
+
+                                <label>Type: </label>
+                                <input type="radio" name="contacttype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >Momentary
+                                <input type="radio" name="contacttype" value="maintained" onclick="enableDisableInputActionDropDowns()" >Maintained
+
+                            <br>
+                            <br>
+                            <div id = "active_action_div" class = "aa_holder" >
+
+                                <div id = "aa_part1" class = "aa_part1" >
+                                    <label> On Active Edge Do</label>
+                                    <select id="active_action_sel_part1" class="btn btn-large btn-primary" onchange="on_aa_part1_change()">
+                                        <option value="action_none">No Action</option>
+                                        <option value="action_message">Send Message</option>
+                                        <option value="action_scene">Invoke Scene</option>
+                                        <option value="action_scene_list">Walk Scene List</option>
+                                    </select>
+                                </div>
+                                &nbsp;
+                                &nbsp;<div id = "aa_part2" class = "aa_part2" >
+                                <label id="active_action_label_part_2" for="active_action_sel_part2"> Message: </label>
+                                <select id="active_action_sel_part2" class="btn btn-large btn-primary" onchange="on_aa_part2_change()"></select>
+                            </div>
+
+                                <div id = "aa_part3" class="aa_part3">
+                                    <label id="active_action_label_part_3" for="active_action_sel_part3"> Destination: </label>
+                                    <select id="active_action_sel_part3" class="btn btn-large btn-primary"></select>
+                                </div>
+
+                                <div id = "aa_part4" class="aa_part4">
+                                    <label id="active_action_label_part_4" for="active_action_sel_part4"> Delay(min): </label>
+                                    <select id="active_action_sel_part4" class="btn btn-large btn-primary">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="60">60</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                            <br>
+                            <div id = "inactive_action_div" class = "ina_holder" >
+
+                                <div id = "ina_part1" class = "ina_part1" >
+                                    <label> On InActive Edge Do</label>
+                                    <select id="inactive_action_sel_part1" class="btn btn-large btn-primary" onchange="on_inactive_part1_change()">
+                                        <option value="action_none">No Action</option>
+                                        <option value="action_message">Send Message</option>
+                                        <option value="action_scene">Invoke Scene</option>
+                                        <option value="action_scene_list">Walk Scene List</option>
+                                    </select>
+                                </div>
+                                &nbsp;
+                                &nbsp;<div id = "ina_part2" class = "ina_part2" >
+                                <label id="inactive_action_label_part_2" for="inactive_action_sel_part2"> Message: </label>
+                                <select id="inactive_action_sel_part2" class="btn btn-large btn-primary" onchange="on_ina_part2_change()"></select>
+                            </div>
+
+                                <div id = "ina_part3" class="ina_part3">
+                                    <label id="inactive_action_label_part_3" for="inactive_action_sel_part3"> Destination: </label>
+                                    <select id="inactive_action_sel_part3" class="btn btn-large btn-primary"></select>
+                                </div>
+
+                                <div id = "ina_part4" class="ina_part4">
+                                    <label id="inactive_action_label_part_4" for="inactive_action_sel_part4"> Delay(min): </label>
+                                    <select id="inactive_action_sel_part4" class="btn btn-large btn-primary" >
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                        <option value="20">20</option>
+                                        <option value="30">30</option>
+                                        <option value="60">60</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+
+
+                            <br>
+                            <br>
+                            <input type="button" id = "btsaveinputcontactobj" class="btn btn-large btn-success" onclick=saveNewContactInputObj() value="Save Contact Configuration"/>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="portlet"><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            Level Inputs
+                        </h3>
+                        <div class="portlet-widgets">
+                            <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet_li"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="portlet_li" class="panel-collapse collapse in">
+                        <div class="portlet-body">
+
+                            <div id="levelinputdiv" class = "tg"></div>
+                            <table id = "levelinputstable"  border=2 class="table table-bordered "></table>
+
+                            <label>Name: </label><input id="levelinputname" type="text" />
+                            &nbsp;
+                            <label>Type: </label>
+                            <select id="levelinputtype" class="btn btn-large btn-primary">
+                                <option value="dimmer">Dimmer</option>
+                                <option value="daylight">DayLight Sensor</option>
+                            </select>
+
+                            <label> Interface</label>
+                            <select id="levelinputinterface" class="btn btn-large btn-primary">
+                                <option value="rpdg">RPDG</option>
+                                <option value="enocean">Enocean</option>
+                                <!--option value="synapse">Synapse</option-->
+                            </select>
+
+                            <label> Input Number</label>
+                            <select id="levelinput_inputs" class="btn btn-large btn-primary">
+                            </select>
+
+
+                            <label>Active Drive Level</label>
+                            <select id="levelinput_drive" class="btn btn-large btn-primary">
+                                <option value="0">0</option>
+                                <option value=".25">.25</option>
+                                <option value=".50">.50</option>
+                                <option value=".75">.75</option>
+                                <option value=".85">.85</option>
+                                <option value=".90">.90</option>
+                                <option value=".95">.95</option>
+                                <option value="1">1</option>
+                                <option value="1.1">1.1</option>
+                                <option value="1.2">1.2</option>
+                                <option value="1.25">1.25</option>
+                                <option value="1.3">1.3</option>
+                                <option value="1.4">1.4</option>
+                                <option value="1.5">1.5</option>
+                                <option value="1.6">1.6</option>
+                                <option value="1.7">1.7</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="3.5">3.5</option>
+                                <option value="4">4</option>
+                                <option value="4.5">4.5</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="16">16</option>
+                                <option value="32">32</option>
+                                <option value="64">64</option>
+                            </select>
+
+
+
+                            <label> Group Assignment</label>
+                            <select id="groupassignment" class="btn btn-large btn-primary">
+                            </select>
+                            <br>
+                            <br>
+                            <input type="button" id = "btsavelevelinput" class="btn btn-large btn-success" onclick=saveNewLevelInput() value="Save Input"/>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 
-    <div id="inputconfigheader" class="col-sm-11">
+</div>  <!-- end wrapper -->
 
 
-        <div class="col-lg-10">
-            <div class="box">
-                <div class="box-header" data-original-title>
-                    <h2><i class="fa fa-user"></i><span class="break"></span>Wet & Dry Contact Inputs</h2>
-                    <div class="box-icon">
-                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+<!--div class="tab-content">
+    <div class="tab-pane active" id="tab1">
+        <p>
+        <div id="wizard" class="col-sm-11">
+
+
+            <!--div class="col-lg-10">
+                <div class="box">
+                    <div class="box-header" data-original-title>
+                        <h2><i class="fa fa-user"></i><span class="break"></span>Site Information</h2>
+                        <div class="box-icon">
+                            <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-down"></i></a>
+                        </div>
+                    </div>
+                    <div class="box-content collapse">
+                        <div id="siteinfo_1" class="row_7part1">
+                            <label>Location: </label>
+                            <label>ZipCode: </label> <input id="sitezip" type="text" />
+                            <label>Latitude: </label> <input id="sitelatt" type="text" />
+                            <label>Longitude: </label> <input id="sitelong" type="text" />
+                        </div>
+
+                        <input type="button" id = "btsavesiteinfo" class="btn btn-large btn-success" onclick=saveSiteInfo() value="Save Settings"/>
+
                     </div>
                 </div>
-                <div class="box-content">
-                    <div id="wetdrycontactdiv" class = "tg"></div>
-                    <table id="wetdrycontacttable" class="table table-striped table-bordered "></table>
-                    <br>
-                    <br>
+            </div-->
 
-                    <label>Name: </label><input id="contactname" type="text" />
-                    &nbsp;
-                    &nbsp;<label> Interface</label>
-                    <select id="contactinputinterface" class="btn btn-large btn-primary">
-                        <option value="rpdg">RPDG</option>
-                        <option value="enocean">Enocean</option>
-                        <!--option value="synapse">Synapse</option-->
-                    </select>
-
-                    <label>Input Number: </label>
-                    <select id="contact_inputnum" class="btn btn-large btn-primary">
-                    </select>
-
-                    <label>Type: </label>
-                    <input type="radio" name="contacttype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >Momentary
-                    <input type="radio" name="contacttype" value="maintained" onclick="enableDisableInputActionDropDowns()" >Maintained
-
-                    <br>
-                    <br>
-                    <div id = "active_action_div" class = "aa_holder" >
-
-                        <div id = "aa_part1" class = "aa_part1" >
-                            <label> On Active Edge Do</label>
-                            <select id="active_action_sel_part1" class="btn btn-large btn-primary" onchange="on_aa_part1_change()">
-                                <option value="action_none">No Action</option>
-                                <option value="action_message">Send Message</option>
-                                <option value="action_scene">Invoke Scene</option>
-                                <option value="action_scene_list">Walk Scene List</option>
-                            </select>
-                        </div>
-                        &nbsp;
-                        &nbsp;<div id = "aa_part2" class = "aa_part2" >
-                        <label id="active_action_label_part_2" for="active_action_sel_part2"> Message: </label>
-                        <select id="active_action_sel_part2" class="btn btn-large btn-primary" onchange="on_aa_part2_change()"></select>
-                    </div>
-
-                        <div id = "aa_part3" class="aa_part3">
-                            <label id="active_action_label_part_3" for="active_action_sel_part3"> Destination: </label>
-                            <select id="active_action_sel_part3" class="btn btn-large btn-primary"></select>
-                        </div>
-
-                        <div id = "aa_part4" class="aa_part4">
-                            <label id="active_action_label_part_4" for="active_action_sel_part4"> Delay(min): </label>
-                            <select id="active_action_sel_part4" class="btn btn-large btn-primary">
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="60">60</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <br>
-                    <div id = "inactive_action_div" class = "ina_holder" >
-
-                        <div id = "ina_part1" class = "ina_part1" >
-                            <label> On InActive Edge Do</label>
-                            <select id="inactive_action_sel_part1" class="btn btn-large btn-primary" onchange="on_inactive_part1_change()">
-                                <option value="action_none">No Action</option>
-                                <option value="action_message">Send Message</option>
-                                <option value="action_scene">Invoke Scene</option>
-                                <option value="action_scene_list">Walk Scene List</option>
-                            </select>
-                        </div>
-                        &nbsp;
-                        &nbsp;<div id = "ina_part2" class = "ina_part2" >
-                        <label id="inactive_action_label_part_2" for="inactive_action_sel_part2"> Message: </label>
-                        <select id="inactive_action_sel_part2" class="btn btn-large btn-primary" onchange="on_ina_part2_change()"></select>
-                    </div>
-
-                        <div id = "ina_part3" class="ina_part3">
-                            <label id="inactive_action_label_part_3" for="inactive_action_sel_part3"> Destination: </label>
-                            <select id="inactive_action_sel_part3" class="btn btn-large btn-primary"></select>
-                        </div>
-
-                        <div id = "ina_part4" class="ina_part4">
-                            <label id="inactive_action_label_part_4" for="inactive_action_sel_part4"> Delay(min): </label>
-                            <select id="inactive_action_sel_part4" class="btn btn-large btn-primary" >
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="60">60</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-
-
-                    <br>
-                    <br>
-                    <input type="button" id = "btsaveinputcontactobj" class="btn btn-large btn-success" onclick=saveNewContactInputObj() value="Save Contact Configuration"/>
-
-                </div>
+<!--div class="col-lg-5">
+    <div class="box">
+        <div class="box-header" data-original-title>
+            <h2><i class="fa fa-user"></i><span class="break"></span>RPDG PWM OUTPUT TOGGLE TEST</h2>
+            <div class="box-icon">
+                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-down"></i></a>
             </div>
         </div>
+        <div class="box-content collapse">
+            <div id="pwmoutputtoggletablediv" class = "tg">
+                <table id="pwmoutputtoggletable" class="table table-striped table-bordered "></table>
+            </div>
+
+        </div>
+    </div>
+</div-->
+
+<!--div class="col-lg-5">
+    <div class="box">
+        <div class="box-header" data-original-title>
+            <h2><i class="fa fa-user"></i><span class="break"></span>RPDG PLC OUTPUT TOGGLE TEST</h2>
+            <div class="box-icon">
+                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-down"></i></a>
+            </div>
+        </div>
+        <div class="box-content collapse">
+            <div id="plcoutputtoggletablediv" class = "tg">
+                <table id="plcoutputtoggletable" class="table table-striped table-bordered "></table>
+            </div>
+
+        </div>
+    </div>
+</div-->
 
 
-        <div class="col-lg-10">
-            <div class="box">
-                <div class="box-header" data-original-title>
-                    <h2><i class="fa fa-user"></i><span class="break"></span>Level Inputs</h2>
-                    <div class="box-icon">
-                        <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
-                    </div>
+
+
+
+
+
+<!--div class="col-lg-10">
+    <div class="box">
+        <div class="box-header" data-original-title>
+            <h2><i class="fa fa-user"></i><span class="break"></span>Output Devices</h2>
+            <div class="box-icon">
+
+                <a href="enoceanconfig" >Wireless(enocean)</a>
+                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+
+            </div>
+        </div>
+        <div class="box-content">
+
+            <div id="fixturetablediv" class = "tg"></div>
+            <table id="fixturetable" class="table table-striped table-bordered "></table>
+            <br>
+            <br>
+
+
+            <div id="fixotpsrow1" class="row_7_holder">
+
+                <div id="fixopts1_1" class="row_7part1">
+                    <label>Name: </label><input id="fixturename" type="text" />
                 </div>
-                <div class="box-content">
-                    <div id="levelinputdiv" class = "tg"></div>
-                    <table id = "levelinputstable"  border=2 class="table table-striped table-bordered "></table>
 
-                    <label>Name: </label><input id="levelinputname" type="text" />
-                    &nbsp;
+                <div id="fixopts1_2" class="row_7part2">
                     <label>Type: </label>
-                    <select id="levelinputtype" class="btn btn-large btn-primary">
-                        <option value="dimmer">Dimmer</option>
-                        <option value="daylight">DayLight Sensor</option>
+                    <select id="fixturetype" class="btn btn-large btn-primary" onchange="updateAvalibleStartingOutputNumbers()">
+                        <option value="on_off">ON/OFF</option>
+                        <option value="cct">CCT</option>
+                        <option value="rgbw">RGBW</option>
+                        <option value="dim">DIMMABLE</option>
                     </select>
+                </div>
 
+                <div id="fixopts1_3" class="row_7part3">
                     <label> Interface</label>
-                    <select id="levelinputinterface" class="btn btn-large btn-primary">
-                        <option value="rpdg">RPDG</option>
+                    <select id="interface" class="btn btn-large btn-primary">
+                        <option value="rpdg-pwm">RPDG-PWM</option>
+                        <option value="rpdg-plc">RPDG-PLC</option>
                         <option value="enocean">Enocean</option>
-                        <!--option value="synapse">Synapse</option-->
+                        <option value="synapse">Synapse</option>
                     </select>
+                </div>
 
-                    <label> Input Number</label>
-                    <select id="levelinput_inputs" class="btn btn-large btn-primary">
+                <div id="fixopts1_4" class="row_7part4">
+                    <label> Starting Output Number</label>
+                    <select id="starting_output" class="btn btn-large btn-primary">
                     </select>
-
-
-                    <label>Active Drive Level</label>
-                    <select id="levelinput_drive" class="btn btn-large btn-primary">
-                        <option value="0">0</option>
-                        <option value=".25">.25</option>
-                        <option value=".50">.50</option>
-                        <option value=".75">.75</option>
-                        <option value=".85">.85</option>
-                        <option value=".90">.90</option>
-                        <option value=".95">.95</option>
-                        <option value="1">1</option>
-                        <option value="1.1">1.1</option>
-                        <option value="1.2">1.2</option>
-                        <option value="1.25">1.25</option>
-                        <option value="1.3">1.3</option>
-                        <option value="1.4">1.4</option>
-                        <option value="1.5">1.5</option>
-                        <option value="1.6">1.6</option>
-                        <option value="1.7">1.7</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="3.5">3.5</option>
-                        <option value="4">4</option>
-                        <option value="4.5">4.5</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="16">16</option>
-                        <option value="32">32</option>
-                        <option value="64">64</option>
-                    </select>
-
-
-
-                    <label> Group Assignment</label>
-                    <select id="groupassignment" class="btn btn-large btn-primary">
-                    </select>
-                    <br>
-                    <br>
-                    <input type="button" id = "btsavelevelinput" class="btn btn-large btn-success" onclick=saveNewLevelInput() value="Save Input"/>
 
                 </div>
+
+                <div id="fixopts1_5" class="row_7part5">
+                    <label>Candle Dim</label>
+                    <input type="checkbox"  id="candledim"  >
+                </div>
+
+                <div id="fixopts1_6" class="row_7part6">
+                    <label>Min: </label><input id="minctemp" name="minctemp" type="text" />
+                </div>
+                <div id="gap" class="row_7gap"></div>
+
+                <div id="fixopts1_7" class="row_7part7">
+                    <label>Max: </label><input id="maxctemp" type="text" />
+                </div>
+
+                <div id="fixopts1_8" class="row_7part8">
+                    <label>Common Anode: </label>
+                    <input id="commonanode" type="checkbox" />
+                </div>
+
+                <div id="fixopts1_9" class="row_7part9">
+                    <label>12 Volt Device: </label>
+                    <input id="twelvevolt" type="checkbox" />
+                </div>
+            </div>
+
+            <br>
+
+            <br>
+
+            <div id="fixtureparamstable" class = "tg"></div>
+
+            <input type="button" id = "btsavefixture" class="btn btn-large btn-success" onclick=saveNewFixture() value="SAVE FIXURE"/>
+
+        </div>
+
+    </div>
+</div-->
+<!--/div>
+</div>
+</div-->
+
+<!--div id="inputconfigheader" class="col-sm-11">
+
+
+    <div class="col-lg-10">
+        <div class="box">
+            <div class="box-header" data-original-title>
+                <h2><i class="fa fa-user"></i><span class="break"></span>Wet & Dry Contact Inputs</h2>
+                <div class="box-icon">
+                    <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div id="wetdrycontactdiv" class = "tg"></div>
+                <table id="wetdrycontacttable" class="table table-striped table-bordered "></table>
+                <br>
+                <br>
+
+                <label>Name: </label><input id="contactname" type="text" />
+                &nbsp;
+                &nbsp;<label> Interface</label>
+                <select id="contactinputinterface" class="btn btn-large btn-primary">
+                    <option value="rpdg">RPDG</option>
+                    <option value="enocean">Enocean</option>
+
+                </select>
+
+                <label>Input Number: </label>
+                <select id="contact_inputnum" class="btn btn-large btn-primary">
+                </select>
+
+                <label>Type: </label>
+                <input type="radio" name="contacttype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >Momentary
+                <input type="radio" name="contacttype" value="maintained" onclick="enableDisableInputActionDropDowns()" >Maintained
+
+                <br>
+                <br>
+                <div id = "active_action_div" class = "aa_holder" >
+
+                    <div id = "aa_part1" class = "aa_part1" >
+                        <label> On Active Edge Do</label>
+                        <select id="active_action_sel_part1" class="btn btn-large btn-primary" onchange="on_aa_part1_change()">
+                            <option value="action_none">No Action</option>
+                            <option value="action_message">Send Message</option>
+                            <option value="action_scene">Invoke Scene</option>
+                            <option value="action_scene_list">Walk Scene List</option>
+                        </select>
+                    </div>
+                    &nbsp;
+                    &nbsp;<div id = "aa_part2" class = "aa_part2" >
+                    <label id="active_action_label_part_2" for="active_action_sel_part2"> Message: </label>
+                    <select id="active_action_sel_part2" class="btn btn-large btn-primary" onchange="on_aa_part2_change()"></select>
+                </div>
+
+                    <div id = "aa_part3" class="aa_part3">
+                        <label id="active_action_label_part_3" for="active_action_sel_part3"> Destination: </label>
+                        <select id="active_action_sel_part3" class="btn btn-large btn-primary"></select>
+                    </div>
+
+                    <div id = "aa_part4" class="aa_part4">
+                        <label id="active_action_label_part_4" for="active_action_sel_part4"> Delay(min): </label>
+                        <select id="active_action_sel_part4" class="btn btn-large btn-primary">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="60">60</option>
+                        </select>
+                    </div>
+
+                </div>
+                <br>
+                <div id = "inactive_action_div" class = "ina_holder" >
+
+                    <div id = "ina_part1" class = "ina_part1" >
+                        <label> On InActive Edge Do</label>
+                        <select id="inactive_action_sel_part1" class="btn btn-large btn-primary" onchange="on_inactive_part1_change()">
+                            <option value="action_none">No Action</option>
+                            <option value="action_message">Send Message</option>
+                            <option value="action_scene">Invoke Scene</option>
+                            <option value="action_scene_list">Walk Scene List</option>
+                        </select>
+                    </div>
+                    &nbsp;
+                    &nbsp;<div id = "ina_part2" class = "ina_part2" >
+                    <label id="inactive_action_label_part_2" for="inactive_action_sel_part2"> Message: </label>
+                    <select id="inactive_action_sel_part2" class="btn btn-large btn-primary" onchange="on_ina_part2_change()"></select>
+                </div>
+
+                    <div id = "ina_part3" class="ina_part3">
+                        <label id="inactive_action_label_part_3" for="inactive_action_sel_part3"> Destination: </label>
+                        <select id="inactive_action_sel_part3" class="btn btn-large btn-primary"></select>
+                    </div>
+
+                    <div id = "ina_part4" class="ina_part4">
+                        <label id="inactive_action_label_part_4" for="inactive_action_sel_part4"> Delay(min): </label>
+                        <select id="inactive_action_sel_part4" class="btn btn-large btn-primary" >
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="60">60</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+
+                <br>
+                <br>
+                <input type="button" id = "btsaveinputcontactobj" class="btn btn-large btn-success" onclick=saveNewContactInputObj() value="Save Contact Configuration"/>
+
             </div>
         </div>
-        </p>
+    </div-->
+
+
+<!--div class="col-lg-10">
+    <div class="box">
+        <div class="box-header" data-original-title>
+            <h2><i class="fa fa-user"></i><span class="break"></span>Level Inputs</h2>
+            <div class="box-icon">
+                <a href="table.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+            </div>
+        </div>
+        <div class="box-content">
+            <div id="levelinputdiv" class = "tg"></div>
+            <table id = "levelinputstable"  border=2 class="table table-striped table-bordered "></table>
+
+            <label>Name: </label><input id="levelinputname" type="text" />
+            &nbsp;
+            <label>Type: </label>
+            <select id="levelinputtype" class="btn btn-large btn-primary">
+                <option value="dimmer">Dimmer</option>
+                <option value="daylight">DayLight Sensor</option>
+            </select>
+
+            <label> Interface</label>
+            <select id="levelinputinterface" class="btn btn-large btn-primary">
+                <option value="rpdg">RPDG</option>
+                <option value="enocean">Enocean</option>
+
+            </select>
+
+            <label> Input Number</label>
+            <select id="levelinput_inputs" class="btn btn-large btn-primary">
+            </select>
+
+
+            <label>Active Drive Level</label>
+            <select id="levelinput_drive" class="btn btn-large btn-primary">
+                <option value="0">0</option>
+                <option value=".25">.25</option>
+                <option value=".50">.50</option>
+                <option value=".75">.75</option>
+                <option value=".85">.85</option>
+                <option value=".90">.90</option>
+                <option value=".95">.95</option>
+                <option value="1">1</option>
+                <option value="1.1">1.1</option>
+                <option value="1.2">1.2</option>
+                <option value="1.25">1.25</option>
+                <option value="1.3">1.3</option>
+                <option value="1.4">1.4</option>
+                <option value="1.5">1.5</option>
+                <option value="1.6">1.6</option>
+                <option value="1.7">1.7</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="3.5">3.5</option>
+                <option value="4">4</option>
+                <option value="4.5">4.5</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="16">16</option>
+                <option value="32">32</option>
+                <option value="64">64</option>
+            </select>
+
+
+
+            <label> Group Assignment</label>
+            <select id="groupassignment" class="btn btn-large btn-primary">
+            </select>
+            <br>
+            <br>
+            <input type="button" id = "btsavelevelinput" class="btn btn-large btn-success" onclick=saveNewLevelInput() value="Save Input"/>
+
+        </div>
     </div>
-    </div>
-</form>
+</div>
+</p>
+</div-->
+<!--/div-->
+<!--/form-->
 
 
-
-
-
-
-
-</body>
 
 
 <!-- The Modal -->
@@ -607,4 +1065,73 @@
     </div>
 
 </div>
+
+
+
+<!-- jQuery  -->
+<script src="minton_dark_hor/js/jquery.min.js"></script>
+<script src="minton_dark_hor/js/bootstrap.min.js"></script>
+<script src="minton_dark_hor/js/detect.js"></script>
+<script src="minton_dark_hor/js/fastclick.js"></script>
+<script src="minton_dark_hor/js/jquery.blockUI.js"></script>
+<script src="minton_dark_hor/js/waves.js"></script>
+<script src="minton_dark_hor/js/wow.min.js"></script>
+<script src="minton_dark_hor/js/jquery.nicescroll.js"></script>
+<script src="minton_dark_hor/js/jquery.scrollTo.min.js"></script>
+
+<!-- Datatables-->
+<script src="minton_dark_hor/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.bootstrap.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.buttons.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/buttons.bootstrap.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/jszip.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/pdfmake.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/vfs_fonts.js"></script>
+<script src="minton_dark_hor/plugins/datatables/buttons.html5.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/buttons.print.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.fixedHeader.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.keyTable.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/responsive.bootstrap.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.scroller.min.js"></script>
+
+
+<!-- Datatable init js -->
+<script src="minton_dark_hor/pages/datatables.init.js"></script>
+
+<!-- Counter Up  -->
+<script src="minton_dark_hor/plugins/waypoints/lib/jquery.waypoints.js"></script>
+<script src="minton_dark_hor/plugins/counterup/jquery.counterup.min.js"></script>
+
+<!-- circliful Chart -->
+<script src="minton_dark_hor/plugins/jquery-circliful/js/jquery.circliful.min.js"></script>
+<script src="minton_dark_hor/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
+
+<!-- skycons -->
+<script src="minton_dark_hor/plugins/skyicons/skycons.min.js" type="text/javascript"></script>
+
+<!-- Page js  -->
+<script src="minton_dark_hor/pages/jquery.dashboard.js"></script>
+
+<!-- Custom main Js -->
+<script src="minton_dark_hor/js/jquery.core.js"></script>
+<script src="minton_dark_hor/js/jquery.app.js"></script>
+
+<script src="bsmaster/assets/js/raphael.min.js"></script>
+<script src="bsmaster/assets/js/justgage.1.0.1.min.js"></script>
+<script src="bsmaster/assets/js/jquery.noty.min.js"></script>
+
+<script src="thirdparty/validate.min.js"></script>
+<script src="image-picker/image-picker.js"></script>
+
+<!--script src="thirdparty/dataTables.select.min.js"></script-->
+
+<script src="javascripts/crud_config.js"></script>
+<script src="javascripts/configuration.js"></script>
+<script src="javascripts/crud_override.js"></script>
+
+
+</body>
+
+
 </html>

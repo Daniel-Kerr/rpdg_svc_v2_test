@@ -228,7 +228,7 @@ function constructTrashCan()
 }
 function constructSceneListBox(currentdiv, scenelist, groupnum) {
     var fixcol = document.createElement("div");
-    fixcol.className = "col-lg-3";
+    fixcol.className = "col-lg-2";
     fixcol.id = "group_holder_"+groupnum;
 
     // if(scenelist.fixtures != undefined && scenelist.fixtures.length >= 4)
@@ -244,14 +244,14 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     fixboxheader.className = "box-header";
     fixbox.appendChild(fixboxheader);
 
+    var buttonholder = document.createElement("div");
+    buttonholder.className = "actionbuttons";
+    // fixboxheader.appendChild(buttonholder);
+
     // scene list name,
     var header = document.createElement("h2");
     header.innerHTML = scenelist.name;
     fixboxheader.appendChild(header);
-
-    var buttonholder = document.createElement("div");
-    buttonholder.className = "actionbuttons";
-    fixboxheader.appendChild(buttonholder);
 
     var btn_down = document.createElement("input");
     btn_down.className = "btn btn-xs btn-primary";
@@ -263,38 +263,37 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
         var scenelistobj = getSceneListByName(scenelistname);
         if (scenelistobj.scenes.length > 0) {
             var targetscene = undefined;
-                //switch curr back to unsel,
-                var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
-                $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
-                //if (scenelistobj.activeindex < scenelistobj.scenes.length -1) {
+            //switch curr back to unsel,
+            var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
+            $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
+            //if (scenelistobj.activeindex < scenelistobj.scenes.length -1) {
 
-                    var element = {};
-                    element.name = scenelistname;
-                    incrementscenelist(element, function (retval) {
-                        if (retval != undefined)  // as of 1/24/17, added version.
-                        {
-                            cachedconfig = retval;
-                            var scenelistobj = getSceneListByName(scenelistname);
+            var element = {};
+            element.name = scenelistname;
+            incrementscenelist(element, function (retval) {
+                if (retval != undefined)  // as of 1/24/17, added version.
+                {
+                    cachedconfig = retval;
+                    var scenelistobj = getSceneListByName(scenelistname);
 
 
-                            var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
-                            $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
+                    var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
+                    $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
 
-                            targetscene = scenelistobj.scenes[scenelistobj.activeindex];
-                            console.log("todo: invoke: " + targetscene);
+                    targetscene = scenelistobj.scenes[scenelistobj.activeindex];
+                    console.log("todo: invoke: " + targetscene);
 
-                        }
-                        else if (retval.error != undefined)
-                            noty({text: 'Error invoking ' + retval.error, type: 'error'});
-                    });
+                }
+                else if (retval.error != undefined)
+                    noty({text: 'Error invoking ' + retval.error, type: 'error'});
+            });
 
-             //   }
+            //   }
 
         }
 
     };
     buttonholder.appendChild(btn_down);
-
 
     var btn_up = document.createElement("input");
     btn_up.className = "btn btn-xs btn-primary";
@@ -309,60 +308,32 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
             //switch curr back to unsel,
             var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
             $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
-           // if (scenelistobj.activeindex < scenelistobj.scenes.length -1) {
-                var element = {};
-                element.name = scenelistname;
-                decrementscenelist(element, function (retval) {
-                    if (retval != undefined)  // as of 1/24/17, added version.
-                    {
-                        cachedconfig = retval;
-                        var scenelistobj = getSceneListByName(scenelistname);
+            // if (scenelistobj.activeindex < scenelistobj.scenes.length -1) {
+            var element = {};
+            element.name = scenelistname;
+            decrementscenelist(element, function (retval) {
+                if (retval != undefined)  // as of 1/24/17, added version.
+                {
+                    cachedconfig = retval;
+                    var scenelistobj = getSceneListByName(scenelistname);
 
 
-                        var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
-                        $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
+                    var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
+                    $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
 
-                        targetscene = scenelistobj.scenes[scenelistobj.activeindex];
-                        console.log("todo: invoke: " + targetscene);
+                    targetscene = scenelistobj.scenes[scenelistobj.activeindex];
+                    console.log("todo: invoke: " + targetscene);
 
-                    }
-                    else if (retval.error != undefined)
-                        noty({text: 'Error invoking ' + retval.error, type: 'error'});
-                });
+                }
+                else if (retval.error != undefined)
+                    noty({text: 'Error invoking ' + retval.error, type: 'error'});
+            });
 
-          //  }
+            //  }
         }
 
     };
     buttonholder.appendChild(btn_up);
-
-
-
-/*
-    var btnreset = document.createElement("input");
-    btnreset.className = "btn btn-xs btn-warn";
-    btnreset.type = "button";
-    btnreset.value = "Reset";
-    btnreset.setAttribute('scenelist', scenelist.name);
-    btnreset.onclick = function () {
-        var scenelistname = this.getAttribute('scenelist');
-        var scenelistobj = getSceneListByName(scenelistname);
-        if (scenelistobj.scenes.length > 0) {
-            if(current_sel_scene_map[scenelistname].selection != undefined)
-            {
-                //switch curr back to unsel,
-                var ctrl = current_sel_scene_map[scenelistname].controls[current_sel_scene_map[scenelistname].selection];
-                $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
-
-                current_sel_scene_map[scenelistname].selection = undefined;
-            }
-
-
-        }
-
-    };
-    buttonholder.appendChild(btnreset);
-    */
 
     var btndelete = document.createElement("input");
     btndelete.className = "btn btn-xs btn-danger";
@@ -382,9 +353,6 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
                 return;
             }
         }
-
-
-
 
         bootbox.confirm({
             message : "Please Confirm Delete of Scene List",
@@ -408,41 +376,6 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     };
     buttonholder.appendChild(btndelete);
 
-
-/*
-    var btnrollover = document.createElement("input");
-    btnrollover.className = "btn btn-xs btn-danger";
-    btnrollover.type = "checkbox";
-    btnrollover.value = "rollover";
-    btnrollover.setAttribute('scenelist', scenelist.name);
-    btnrollover.onclick = function () {
-
-        if (name != undefined) {
-            var scenelist = getSceneListByName(droppedOn[0].id);
-            if(scenelist != undefined) {
-                scenelist.rollover = this.checked();
-                saveConfigObject("scenelist", scenelist, function (retval) {
-                    if (retval != undefined)  // as of 1/24/17, added version.
-                    {
-                        cachedconfig = retval;
-                        refreshUpdatedConfig();
-
-                    }
-                    else
-                        noty({text: 'Error creating scene ', type: 'error'});
-                });
-            }
-        }
-
-
-
-
-    };
-    buttonholder.appendChild(btnrollover);
-    */
-
-
-
     var fixcontent = document.createElement("div");
     fixcontent.className = "box-content";
     fixbox.appendChild(fixcontent);
@@ -452,14 +385,7 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     dropzonediv.className = "dropzone2";
 
     dropzonediv.id = scenelist.name;
-    // dropzonediv.setAttribute(scenelist.name);
     fixcontent.appendChild(dropzonediv);
-
-
-
-    //   var fixboxfooter = document.createElement("div");
-    // fixboxfooter.className = "verticallistitem";
-    //  fixbox.appendChild(fixboxfooter);
 
 
     $('.dropzone2').droppable({
@@ -537,8 +463,17 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     }).disableSelection();
 
 
+
+
+    var fixboxfooter = document.createElement("div");
+    fixboxfooter.className = "box-footer";
+    fixbox.appendChild(fixboxfooter);
+    fixboxfooter.appendChild(buttonholder);
+
+
+
     current_sel_scene_map[scenelist.name] = {};
-  //  current_sel_scene_map[scenelist.name].selection = undefined;
+    //  current_sel_scene_map[scenelist.name].selection = undefined;
     current_sel_scene_map[scenelist.name].controls = [];
     // now add in the existing fixutres:
     for(var i = 0; i < scenelist.scenes.length; i++)

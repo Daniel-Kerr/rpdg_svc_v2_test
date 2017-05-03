@@ -16,6 +16,13 @@ var lastrgbcolor;
 $(document).ready(function() {
 
 
+    //$(".clickable-row").click(function() {
+    //    var k = 0;
+   //     k  = k + 1;
+        //window.location = $(this).data("href");
+  //  });
+
+
     $('input[type="range"]').rangeslider({
         polyfill : false,
         onInit : function() {
@@ -27,7 +34,8 @@ $(document).ready(function() {
     });
 
     // handler for fixture table,
-    $("#fixturetable").on("click", " tr", function(e) {
+  //  $('#fixturetable tbody tr').click(function() {
+    $("#fixturetable").on("click", " tbody > tr", function(e) {
 
         // 3/15/17, remove selected scene if on the table,
         if(selecteditem != undefined) {
@@ -49,8 +57,8 @@ $(document).ready(function() {
         }
 
 
-        if ($(this).hasClass('active')) {
-            $(this).removeClass('active');
+        if ($(this).hasClass('bg-success')) {
+            $(this).removeClass('bg-success');
         }
         else {
 
@@ -60,7 +68,8 @@ $(document).ready(function() {
             fixsetting.className="settingholder";
 
 
-            $(this).addClass('active').siblings().removeClass('active');
+            //$(this).addClass('active').siblings().removeClass('active');
+            $(this).addClass('bg-primary').siblings().removeClass('bg-primary');
 
             var row = $(this).find('td:first').text();
             var type = "";
@@ -394,13 +403,8 @@ function initStatusHandler(status)
 function updateFixturesTable() {
 
     var fixtures = cachedconfig.fixtures;
-    // var fixturescontainerdiv = document.getElementById("fixturetablediv");
-
     var oTable = document.getElementById("fixturetable");
     // build a table with all the known
-    // var oTable = document.createElement("TABLE");
-    //  oTable.id = "fixturetable";
-    // fixturescontainerdiv.appendChild(oTable);
 
     var oTHead = document.createElement("THEAD");
     var oTColGrp = document.createElement("colgroup");
@@ -410,7 +414,7 @@ function updateFixturesTable() {
 
     var slider;
     var i, j;
-    //oTable.className ="table  table-bordered";
+    oTable.className ="table table-bordered";
     // Insert a row into the header and set its background color.
     oRow = document.createElement("TR");
     oCell1 = document.createElement("TD");
@@ -418,12 +422,8 @@ function updateFixturesTable() {
     //oCell.colSpan = 2;
     oCell2 = document.createElement("TD");
     oCell2.innerHTML = "Type";
-    // oCell3 = document.createElement("TD");
-    // oCell3.innerHTML = "Output#'s";
-
     oRow.appendChild(oCell1);
     oRow.appendChild(oCell2);
-    //oRow.appendChild(oCell3);
     oTHead.appendChild(oRow);
 
     var coldef = document.createElement("col");
@@ -432,10 +432,6 @@ function updateFixturesTable() {
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
-    // coldef = document.createElement("col");
-    // coldef.className = "col-md-6";
-    // oTColGrp.appendChild(coldef);
-
     oTable.appendChild(oTHead);
     oTable.appendChild(oTColGrp);
     oTable.appendChild(oTBody);
@@ -444,6 +440,7 @@ function updateFixturesTable() {
     for (i=0; i< fixtures.length; i++)   {
         var oBody = oTBody;
         oRow = document.createElement("TR");
+      //  oRow.className = "clickable-row";
         oBody.appendChild(oRow);
 
         // column1 = Zone Label

@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>This is test page</title>
+
+
+
+
+
     <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
     <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
     <script src="bsmaster/assets/js/bootstrap.min.js"></script>
@@ -24,7 +29,6 @@
     <link href="stylesheets/nouislider.min.css" rel="stylesheet">
     <link href="stylesheets/jquery.steps.css" rel="stylesheet">
 
-    <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
     <style>
 
     </style>
@@ -91,11 +95,11 @@
 
                 $('#example tbody').on( 'click', 'tr', function () {
                     if ( $(this).hasClass('active') ) {
-                     //   $(this).removeClass('active');
+                        $(this).removeClass('active');
                     }
                     else {
-                     //   table.$('tr.active').removeClass('active');
-                     //   $(this).addClass('active');
+                        table.$('tr.active').removeClass('active');     // was using "active"
+                        $(this).addClass('active');
 
                         var row = $(this).find('td:first').text();
                         // alert('You clicked ' + row);
