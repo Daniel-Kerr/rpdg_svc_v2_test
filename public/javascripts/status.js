@@ -49,18 +49,15 @@ var bulb_icon_map = {};
 var daylight_limit_icon_map = {};
 function constructFixtureBox(currentdiv, fixture) {
     var fixcol = document.createElement("div");
-    fixcol.className = "col-sm-2";
+    fixcol.className = "col-lg-2";
     currentdiv.appendChild(fixcol);
 
     var fixbox = document.createElement("div");
     fixbox.className = "card-box";
     fixcol.appendChild(fixbox);
 
-   // var fixboxheader = document.createElement("div");
-  //  fixboxheader.className = "testme"; //"box-header";
-   // fixbox.appendChild(fixboxheader);
-
     var header = document.createElement("h4");
+    header.className = "text-dark  header-title m-t-0 m-b-10";
     header.innerHTML = fixture.assignedname;
     fixbox.appendChild(header);
 
@@ -114,13 +111,13 @@ function constructFixtureBox(currentdiv, fixture) {
     row2left.style = "width:70%; float: left";
     contentrow2.appendChild(row2left);
 
+
     var row2right = document.createElement("div");
     row2right.style = "float: left";
     var sunbox = document.createElement("img");
     sunbox.src = "images/handtinytrans.gif";
     sunbox.height="20";
     sunbox.width="20";
-    //sunbox.style = "float: right";
     daylight_limit_icon_map[fixture.assignedname] = sunbox;
     row2right.appendChild(sunbox);
     contentrow2.appendChild(row2right);
