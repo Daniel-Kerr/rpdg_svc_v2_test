@@ -443,7 +443,7 @@ function saveNewFixture(image) {
     var j = validate({name: fixname}, constraints);
     if(j != undefined && j.name != undefined && j.name.length > 0)
     {
-        noty({text: j.name[0], type: 'error', timeout:750});
+        $.Notification.notify('error','top left', 'Fixture Save Error', j.name[0]);
         return;
     }
 
@@ -458,11 +458,13 @@ function saveNewFixture(image) {
     if(interface == "rpdg-pwm" || interface == "rpdg-plc") {
         var outputcheck = outputAvalibleCheck(outputlist, selstart, seltype, fixname, interface);
         if (!outputcheck) {
-            noty({
-                text: "Output number conflict, or output limit issue, please check type and output number",
-                type: 'error',
-                timeout: 4000
-            });
+
+            $.Notification.notify('error','top left', 'Fixture Save Error', "Output number conflict, or output limit issue, please check type and output number");
+            //noty({
+            //    text: "Output number conflict, or output limit issue, please check type and output number",
+            //    type: 'error',
+            //    timeout: 4000
+           // });
             return;
         }
     }
@@ -472,21 +474,24 @@ function saveNewFixture(image) {
         var j = validate({minctemp: Number(document.getElementById("minctemp").value)}, constraints);
         if(j != undefined && j.minctemp != undefined && j.minctemp.length > 0)
         {
-            noty({text: j.minctemp[0], type: 'error', timeout:750});
+            $.Notification.notify('error','top left', 'Fixture Save Error', j.minctemp[0]);
+          // noty({text: j.minctemp[0], type: 'error', timeout:750});
             return;
         }
 
         var j = validate({maxctemp: Number(document.getElementById("maxctemp").value)}, constraints);
         if(j != undefined && j.maxctemp != undefined && j.maxctemp.length > 0)
         {
-            noty({text: j.maxctemp[0], type: 'error', timeout:750});
+            $.Notification.notify('error','top left', 'Fixture Save Error', j.maxctemp[0]);
+           // noty({text: j.maxctemp[0], type: 'error', timeout:750});
             return;
         }
 
 
         if((Number(document.getElementById("minctemp").value) > document.getElementById("maxctemp").value))
         {
-            noty({text: "Minimum Color temp must be < Maximum", type: 'error', timeout:1250});
+            $.Notification.notify('error','top left', 'Fixture Save Error', "Minimum Color temp must be < Maximum");
+           // noty({text: "Minimum Color temp must be < Maximum", type: 'error', timeout:1250});
             return;
         }
 
@@ -1183,7 +1188,7 @@ function saveNewContactInputObj() {
     var j = validate({name: objname}, constraints);
     if(j != undefined && j.name != undefined && j.name.length > 0)
     {
-        noty({text: j.name[0], type: 'error', timeout:750});
+        $.Notification.notify('error','top left', 'Contact Save Error',j.name[0]);
         return;
     }
 
@@ -1485,7 +1490,7 @@ function saveNewLevelInput() {
     var j = validate({name: objname}, constraints);
     if(j != undefined && j.name != undefined && j.name.length > 0)
     {
-        noty({text: j.name[0], type: 'error', timeout:750});
+        $.Notification.notify('error','top left', 'Level Input Save Error',j.name[0]);
         return;
     }
 
@@ -1738,7 +1743,8 @@ setInterval(function () {
                 // loadedconfig = retval;// for now ignore returned confg
             }
             else if (retval.error != undefined)
-                noty({text: 'Error saving config ' + retval.error, type: 'error', timeout:750});
+                $.Notification.notify('error','top left', 'Config Save Error',retval.error);
+              // noty({text: 'Error saving config ' + retval.error, type: 'error', timeout:750});
         });
     }
 

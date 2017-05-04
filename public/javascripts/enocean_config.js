@@ -160,7 +160,8 @@ function adddevice()
     var j = validate({name: devid}, constraints);
     if(j != undefined && j.name != undefined && j.name.length > 0)
     {
-        noty({text: j.name[0], type: 'error', timeout:750});
+        $.Notification.notify('error','top left', 'Error', j.name[0]);
+       // noty({text: j.name[0], type: 'error', timeout:750});
         return;
     }
 

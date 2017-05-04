@@ -141,7 +141,8 @@ function openNewSceneEditDlg()
 
                 if(scenename == "ALL_ON" || scenename == "ALL_OFF")
                 {
-                    noty({text: 'Error: scene name reserved  ', type: 'error'});
+                    $.Notification.notify('error','top left', 'Error',  "Reserved scene name");
+                   // noty({text: 'Error: scene name reserved  ', type: 'error'});
                     return ;
                 }
 
@@ -150,7 +151,8 @@ function openNewSceneEditDlg()
                 var j = validate({name: scenename}, constraints);
                 if(j != undefined && j.name != undefined && j.name.length > 0)
                 {
-                    noty({text: j.name[0], type: 'error', timeout:1000});
+                    $.Notification.notify('error','top left', 'Error',  j.name[0]);
+                   // noty({text: j.name[0], type: 'error', timeout:1000});
                     return false;
                 }
 
@@ -164,11 +166,13 @@ function openNewSceneEditDlg()
                         constructSceneBox(groups_div, scene, grpnum);
                     }
                     else
-                        noty({text: 'Error creating scene ', type: 'error'});
+                        $.Notification.notify('error','top left', 'Error',  'Error creating scene ');
+                       // noty({text: 'Error creating scene ', type: 'error'});
                 });
             }
             else
-                noty({text: 'Incomplete Name, please try again ', type: 'error'});
+                $.Notification.notify('error','top left', 'Error',  'Incomplete Name, please try again ');
+               // noty({text: 'Incomplete Name, please try again ', type: 'error'});
         }
     });
 
@@ -317,7 +321,8 @@ function filterAvalibleFixtures()
 
                     }
                     else if(retval.error != undefined)
-                        noty({text: 'Error saving config ' + retval.error, type: 'error'});
+                        $.Notification.notify('error','top left', 'Error',  'Error saving config ' + retval.error);
+                       // noty({text: 'Error saving config ' + retval.error, type: 'error'});
                 });
             }
         }
@@ -385,7 +390,8 @@ function constructSceneBox(currentdiv, scene, groupnum) {
                 cachedconfig = retval;
             }
             else if(retval.error != undefined)
-                noty({text: 'Error saving config ' + retval.error, type: 'error'});
+                $.Notification.notify('error','top left', 'Error',  'Error saving config ' + retval.error);
+                //noty({text: 'Error saving config ' + retval.error, type: 'error'});
         });
     };
     buttonholder.appendChild(capturesettings);
@@ -408,7 +414,8 @@ function constructSceneBox(currentdiv, scene, groupnum) {
                 cachedconfig = retval;
             }
             else if(retval.error != undefined)
-                noty({text: 'Error invoking ' + retval.error, type: 'error'});
+                $.Notification.notify('error','top left', 'Error',  'Error Inoking ' + retval.error);
+               // noty({text: 'Error invoking ' + retval.error, type: 'error'});
         });
     };
     buttonholder.appendChild(btinvokescene);
@@ -428,7 +435,8 @@ function constructSceneBox(currentdiv, scene, groupnum) {
         {
             if(cachedconfig.contactinputs[i].active_action.includes(scene.name) || cachedconfig.contactinputs[i].inactive_action.includes(scene.name))
             {
-                noty({text: 'Please reassign contact input: ' + cachedconfig.contactinputs[i].assignedname + " to a different scene ", type: 'error'});
+                $.Notification.notify('error','top left', 'Error',  'Please reassign contact input: ' + cachedconfig.contactinputs[i].assignedname + " to a different scene ");
+               // noty({text: 'Please reassign contact input: ' + cachedconfig.contactinputs[i].assignedname + " to a different scene ", type: 'error'});
                 return;
             }
         }
@@ -454,7 +462,8 @@ function constructSceneBox(currentdiv, scene, groupnum) {
                             filterAvalibleFixtures();
                         }
                         else
-                            noty({text: 'Error deleting group: ' + retval, type: 'error'});
+                            $.Notification.notify('error','top left', 'Error',  'Error deleting group: ' + retval);
+                           // noty({text: 'Error deleting group: ' + retval, type: 'error'});
                     });
                 }
             }});
@@ -600,7 +609,8 @@ function constructSceneBox(currentdiv, scene, groupnum) {
 
                     }
                     else if(retval.error != undefined)
-                        noty({text: 'Error saving fixture to group: ' + retval.error, type: 'error'});
+                        $.Notification.notify('error','top left', 'Error Saving', 'Error saving fixture to group: ' + retval.error);
+                      //  noty({text: 'Error saving fixture to group: ' + retval.error, type: 'error'});
                 });
             }
         }
@@ -661,7 +671,8 @@ function invokeAllOn()
             cachedconfig = retval;
         }
         else if(retval.error != undefined)
-            noty({text: 'Error invoking ' + retval.error, type: 'error'});
+            $.Notification.notify('error','top left', 'Error Inovking',  retval.error);
+          //  noty({text: 'Error invoking ' + retval.error, type: 'error'});
     });
 }
 
@@ -677,7 +688,8 @@ function invokeAll10()
             cachedconfig = retval;
         }
         else if(retval.error != undefined)
-            noty({text: 'Error invoking ' + retval.error, type: 'error'});
+            $.Notification.notify('error','top left', 'Error Inovking',  retval.error);
+            //noty({text: 'Error invoking ' + retval.error, type: 'error'});
     });
 }
 
@@ -692,7 +704,8 @@ function invokeAll50()
             cachedconfig = retval;
         }
         else if(retval.error != undefined)
-            noty({text: 'Error invoking ' + retval.error, type: 'error'});
+            $.Notification.notify('error','top left', 'Error Inovking',  retval.error);
+           // noty({text: 'Error invoking ' + retval.error, type: 'error'});
     });
 }
 
@@ -707,6 +720,7 @@ function invokeAllOff() {
             cachedconfig = retval;
         }
         else if(retval.error != undefined)
-            noty({text: 'Error invoking ' + retval.error, type: 'error'});
+            $.Notification.notify('error','top left', 'Error Inovking',  retval.error);
+            //noty({text: 'Error invoking ' + retval.error, type: 'error'});
     });
 }

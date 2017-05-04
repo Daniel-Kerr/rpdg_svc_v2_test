@@ -148,7 +148,8 @@ function openNewGroupEditDialog()
                 var j = validate({name: groupname}, constraints);
                 if(j != undefined && j.name != undefined && j.name.length > 0)
                 {
-                    noty({text: j.name[0], type: 'error', timeout:1000});
+                    $.Notification.notify('error','top left', 'Error',  j.name[0]);
+                  //  noty({text: j.name[0], type: 'error', timeout:1000});
                     return false;
                 }
 
@@ -161,11 +162,13 @@ function openNewGroupEditDialog()
                         constructGroupBox(groups_div, group1, grpnum);
                     }
                     else
-                        noty({text: 'Error creating group ', type: 'error'});
+                        $.Notification.notify('error','top left', 'Error',  'Error creating group ');
+                       // noty({text: 'Error creating group ', type: 'error'});
                 });
             }
             else
-                noty({text: 'Incomplete Name, please try again ', type: 'error'});
+                $.Notification.notify('error','top left', 'Error',  'Incomplete Name, please try again ');
+                //noty({text: 'Incomplete Name, please try again ', type: 'error'});
         }
     });
 
@@ -365,7 +368,8 @@ function filterAvalibleFixtures()
                         loadedconfig = retval;
                     }
                     else if(retval.error != undefined)
-                        noty({text: 'Error saving config ' + retval.error, type: 'error'});
+                        $.Notification.notify('error','top left', 'Error',  'Error saving config ' + retval.error);
+                        //noty({text: 'Error saving config ' + retval.error, type: 'error'});
                 });
 
 
@@ -426,7 +430,8 @@ function constructGroupBox(currentdiv, group,groupnum) {
         {
             if(loadedconfig.levelinputs[i].group == selected_group.name)
             {
-                noty({text: 'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group", type: 'error'});
+                $.Notification.notify('error','top left', 'Error',  'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group");
+              //  noty({text: 'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group", type: 'error'});
                 return;
             }
         }
@@ -435,7 +440,8 @@ function constructGroupBox(currentdiv, group,groupnum) {
         {
             if(loadedconfig.contactinputs[i].active_action.includes(selected_group.name) || loadedconfig.contactinputs[i].inactive_action.includes(selected_group.name))
             {
-                noty({text: 'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group", type: 'error'});
+                $.Notification.notify('error','top left', 'Error',  'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group");
+              //  noty({text: 'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group", type: 'error'});
                 return;
             }
         }
@@ -455,7 +461,8 @@ function constructGroupBox(currentdiv, group,groupnum) {
                             filterAvalibleFixtures();
                         }
                         else
-                            noty({text: 'Error deleting group: ' + retval, type: 'error'});
+                            $.Notification.notify('error','top left', 'Error', 'Error deleting group: ' + retval);
+                          //  noty({text: 'Error deleting group: ' + retval, type: 'error'});
                     });
                 }
             }});
@@ -572,7 +579,8 @@ function constructGroupBox(currentdiv, group,groupnum) {
                         loadedconfig = retval;
                     }
                     else if(retval.error != undefined)
-                        noty({text: 'Error saving fixture to group: ' + retval.error, type: 'error'});
+                        $.Notification.notify('error','top left', 'Error', 'Error saving fixture to group: ' + retval.error);
+                       // noty({text: 'Error saving fixture to group: ' + retval.error, type: 'error'});
                 });
 
                 if (selected_group.fixtures != undefined && selected_group.fixtures.length == 4)  // if going from 2-->3

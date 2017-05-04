@@ -78,7 +78,8 @@ function openNewSceneListEditDlg()
                     var j = validate({name: listname}, constraints);
                     if(j != undefined && j.name != undefined && j.name.length > 0)
                     {
-                        noty({text: j.name[0], type: 'error', timeout:1000});
+                        $.Notification.notify('error','top left', 'Error',   j.name[0]);
+                       // noty({text: j.name[0], type: 'error', timeout:1000});
                         return false;
                     }
 
@@ -90,11 +91,13 @@ function openNewSceneListEditDlg()
                             refreshUpdatedConfig();
                         }
                         else
-                            noty({text: 'Error creating scene ', type: 'error'});
+                            $.Notification.notify('error','top left', 'Error',  'Error creating scene ');
+                         //   noty({text: 'Error creating scene ', type: 'error'});
                     });
                 }
                 else
-                    noty({text: 'Incomplete Name, please try again ', type: 'error'});
+                    $.Notification.notify('error','top left', 'Error',   'Incomplete Name, please try again ');
+                   // noty({text: 'Incomplete Name, please try again ', type: 'error'});
             }
         }});
 
@@ -213,7 +216,8 @@ function constructTrashCan()
                                 refreshUpdatedConfig();
                             }
                             else
-                                noty({text: 'Error creating scene ', type: 'error'});
+                                $.Notification.notify('error','top left', 'Error',  'Error creating scene list ');
+                               // noty({text: 'Error creating scene ', type: 'error'});
                         });
                     }
                 }
@@ -285,10 +289,11 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
                 }
                 else if (retval.error != undefined)
-                    noty({text: 'Error invoking ' + retval.error, type: 'error'});
+                    $.Notification.notify('error','top left', 'Error',  'Error invoking ' + retval.error);
+                  //  noty({text: 'Error invoking ' + retval.error, type: 'error'});
             });
 
-            //   }
+
 
         }
 
@@ -326,7 +331,8 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
                 }
                 else if (retval.error != undefined)
-                    noty({text: 'Error invoking ' + retval.error, type: 'error'});
+                    $.Notification.notify('error','top left', 'Error',  'Error invoking ' + retval.error);
+                   // noty({text: 'Error invoking ' + retval.error, type: 'error'});
             });
 
             //  }
@@ -349,7 +355,8 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
         {
             if(cachedconfig.contactinputs[i].active_action.includes(scenelist.name) || cachedconfig.contactinputs[i].inactive_action.includes(scenelist.name))
             {
-                noty({text: 'Please reassign contact input: ' + cachedconfig.contactinputs[i].assignedname + " to a different scene list ", type: 'error'});
+                $.Notification.notify('error','top left', 'Error',  'Please reassign contact input: ' + cachedconfig.contactinputs[i].assignedname + " to a different scene list ");
+               // noty({text: 'Please reassign contact input: ' + cachedconfig.contactinputs[i].assignedname + " to a different scene list ", type: 'error'});
                 return;
             }
         }
@@ -368,7 +375,8 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
                             refreshUpdatedConfig();
                         }
                         else
-                            noty({text: 'Error deleting scenelist: ' + retval, type: 'error'});
+                            $.Notification.notify('error','top left', 'Error', 'Error deleting scenelist: ' + retval);
+                           // noty({text: 'Error deleting scenelist: ' + retval, type: 'error'});
                     });
                 }
             }});
@@ -417,7 +425,8 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
                         }
                         else
-                            noty({text: 'Error creating scene ', type: 'error'});
+                            $.Notification.notify('error','top left', 'Error', "Error creating scene list");
+                          //  noty({text: 'Error creating scene ', type: 'error'});
                     });
                 }
             }
@@ -454,7 +463,8 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
                             refreshUpdatedConfig();
                         }
                         else
-                            noty({text: 'Error creating scene ', type: 'error'});
+                            $.Notification.notify('error','top left', 'Error', "Error creating scene list");
+                           // noty({text: 'Error creating scene ', type: 'error'});
                     });
                 }
             }
