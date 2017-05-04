@@ -12,6 +12,7 @@ setInterval(function () {
 $(document).ready(function() {
 
 
+
     initFixtureStatusBoxes();
 });
 
