@@ -116,51 +116,46 @@ function filterAvalibleScenes()
     // 4/3/17,  add default "built in scenes",
     // var sceneobj = cachedconfig.scenes[i];
     var fixdiv = document.createElement("div");
-    fixdiv.className = "availiblescene";
+  //  fixdiv.className = "availiblescene";
+    fixdiv.className = "btn btn-md btn-primary availiblescene";
     fixturebucketdiv.appendChild(fixdiv);
     var debug_label = document.createElement("label");
     debug_label.innerHTML  = "ALL_ON";
     fixdiv.appendChild(debug_label);
 
     var fixdiv = document.createElement("div");
-    fixdiv.className = "availiblescene";
+    fixdiv.className = "btn btn-md btn-primary availiblescene";
     fixturebucketdiv.appendChild(fixdiv);
     var debug_label = document.createElement("label");
     debug_label.innerHTML  = "ALL_OFF";
     fixdiv.appendChild(debug_label);
 
     var fixdiv = document.createElement("div");
-    fixdiv.className = "availiblescene";
+    fixdiv.className = "btn btn-md btn-primary availiblescene";
     fixturebucketdiv.appendChild(fixdiv);
     var debug_label = document.createElement("label");
     debug_label.innerHTML  = "ALL_50";
     fixdiv.appendChild(debug_label);
 
     var fixdiv = document.createElement("div");
-    fixdiv.className = "availiblescene";
+    fixdiv.className = "btn btn-md btn-primary availiblescene";
     fixturebucketdiv.appendChild(fixdiv);
     var debug_label = document.createElement("label");
     debug_label.innerHTML  = "ALL_10";
     fixdiv.appendChild(debug_label);
 
-
-
     for(var i = 0; i < cachedconfig.scenes.length; i++) {
 
         var sceneobj = cachedconfig.scenes[i];
         var fixdiv = document.createElement("div");
-        fixdiv.className = "availiblescene";
+        fixdiv.className = "btn btn-md btn-primary availiblescene";
+
         fixturebucketdiv.appendChild(fixdiv);
         var debug_label = document.createElement("label");
         debug_label.innerHTML  = sceneobj.name; //.assignedname;
         fixdiv.appendChild(debug_label);
 
     }
-
-
-
-
-
 
     $('.availiblescene').draggable({
         appendTo: 'body',
@@ -269,8 +264,10 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
             var targetscene = undefined;
             //switch curr back to unsel,
             var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
-            $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
-            //if (scenelistobj.activeindex < scenelistobj.scenes.length -1) {
+         //   $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
+
+            $( ctrl ).removeClass( "btn-warning" ).addClass( "btn-primary" );
+
 
             var element = {};
             element.name = scenelistname;
@@ -282,7 +279,9 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
 
                     var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
-                    $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
+                   // $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
+
+                    $( ctrl ).removeClass( "btn-primary" ).addClass( "btn-warning" );
 
                     targetscene = scenelistobj.scenes[scenelistobj.activeindex];
                     console.log("todo: invoke: " + targetscene);
@@ -313,6 +312,7 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
             //switch curr back to unsel,
             var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
             $( ctrl ).removeClass( "verticallistitem_sel" ).addClass( "verticallistitem" );
+            $( ctrl ).removeClass( "btn-warning" ).addClass( "btn-primary" );
             // if (scenelistobj.activeindex < scenelistobj.scenes.length -1) {
             var element = {};
             element.name = scenelistname;
@@ -325,6 +325,7 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
 
                     var ctrl = current_sel_scene_map[scenelistname].controls[scenelistobj.activeindex];
                     $( ctrl ).removeClass( "verticallistitem" ).addClass( "verticallistitem_sel" );
+                    $( ctrl ).removeClass( "btn-primary" ).addClass( "btn-warning" );
 
                     targetscene = scenelistobj.scenes[scenelistobj.activeindex];
                     console.log("todo: invoke: " + targetscene);
@@ -490,7 +491,7 @@ function constructSceneListBox(currentdiv, scenelist, groupnum) {
     {
         var scenename = scenelist.scenes[i];
         var fixdiv = document.createElement("div");
-        fixdiv.className = "verticallistitem";
+        fixdiv.className = " btn btn-md btn-primary verticallistitem";
         dropzonediv.appendChild(fixdiv);
         var debug_label = document.createElement("label");
         debug_label.innerHTML = scenename;
