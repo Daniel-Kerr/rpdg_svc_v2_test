@@ -72,7 +72,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"100\",\n\t\t\"green\": \"100\",\n\t\t\"blue\": \"100\",\n\t\t\"white\": \"100\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"25\",\n\t\t\"green\": \"25\",\n\t\t\"blue\": \"25\",\n\t\t\"white\": \"25\"\n   }\n]"
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": 100,\n\t\t\"green\": 100,\n\t\t\"blue\": 100,\n\t\t\"white\": 100\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": 25,\n\t\t\"green\": 25,\n\t\t\"blue\": 25,\n\t\t\"white\": 25\n   }\n]"
 				},
 				"description": ""
 			},
@@ -112,7 +112,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"30\",\n\t\t\"green\": \"40\",\n\t\t\"blue\": \"50\",\n\t\t\"white\": \"60\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"60\",\n\t\t\"green\": \"50\",\n\t\t\"blue\": \"40\",\n\t\t\"white\": \"30\"\n   }\n]"
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": 30,\n\t\t\"green\": 40,\n\t\t\"blue\": 50,\n\t\t\"white\": 60\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": 60,\n\t\t\"green\": 50,\n\t\t\"blue\": 40,\n\t\t\"white\": 30\n   }\n]"
 				},
 				"description": ""
 			},
@@ -152,7 +152,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"0\",\n\t\t\"green\": \"0\",\n\t\t\"blue\": \"0\",\n\t\t\"white\": \"0\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"100\",\n\t\t\"green\": \"100\",\n\t\t\"blue\": \"100\",\n\t\t\"white\": \"100\"\n   }\n]"
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": 0,\n\t\t\"green\": 0,\n\t\t\"blue\": 0,\n\t\t\"white\": 0\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": 100,\n\t\t\"green\": 100,\n\t\t\"blue\": 100,\n\t\t\"white\": 100\n   }\n]"
 				},
 				"description": ""
 			},
@@ -192,7 +192,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"44\",\n    \t\"green\": \"65\",\n    \t\"blue\": \"25\",\n    \t\"white\": \"37\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"62\",\n    \t\"green\": \"49\",\n    \t\"blue\": \"9\",\n    \t\"white\": \"86\"\n   }\n]"
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": 44,\n    \t\"green\": 65,\n    \t\"blue\": 25,\n    \t\"white\": 37\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": 62,\n    \t\"green\": 49,\n    \t\"blue\": 9,\n    \t\"white\": 86\n   }\n]"
 				},
 				"description": ""
 			},
@@ -232,7 +232,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": \"0\",\n\t\t\"green\": \"0\",\n\t\t\"blue\": \"0\",\n\t\t\"white\": \"0\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": \"0\",\n\t\t\"green\": \"0\",\n\t\t\"blue\": \"0\",\n\t\t\"white\": \"0\"\n   }\n]"
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_1\",\n\t\t\"red\": 0,\n\t\t\"green\": 0,\n\t\t\"blue\": 0,\n\t\t\"white\": 0\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_RGBW_2\",\n\t\t\"red\": 0,\n\t\t\"green\": 0,\n\t\t\"blue\": 0,\n\t\t\"white\": 0\n   }\n]"
 				},
 				"description": ""
 			},
