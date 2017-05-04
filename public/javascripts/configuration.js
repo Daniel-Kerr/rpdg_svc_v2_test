@@ -328,9 +328,6 @@ function processConfig(configobj)
 
     getFixtureParameterOptions(cacheFixtureParamOptions);
 
-  //  updateFixturesTable();
-
-
 
     updateWetDryContactTable();
 
@@ -374,31 +371,7 @@ function processConfig(configobj)
     populateDropDown("groupassignment", getGroupNames());
 
     constructFixtureTable();
-    /*
-    // new stuff,
-    var dataset = transformFixtureToDataSet();
 
-    fixturetable = $('#fixturetable').DataTable( {
-        "aaData": dataset,
-        "pageLength": 5,
-        "bLengthChange": false,
-        "aoColumns": [
-            { "mData": 'assignedname'},
-            { "mData": 'type'},
-            { "mData": 'interfacename'},
-            { "mData": 'outputid', "bSortable": false},
-            { "mData": 'image', "bSortable": false,
-                "mRender": function (data, type, row) {
-                    //  var sens = data;
-                    //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
-                    var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
-                    return imgstring;
-
-                }
-            }
-        ]
-    } );
-*/
 
 }
 
@@ -409,9 +382,11 @@ function constructFixtureTable()
     var dataset = transformFixtureToDataSet();
     fixturetable = $('#fixturetable').DataTable( {
         "aaData": dataset,
+      /*  "dom": '<"top"i>rt<"bottom"flp><"clear">',  */
         "pageLength": 5,
         select: true,
         "bLengthChange": false,
+        "bInfo": false,
         "aoColumns": [
             { "mData": 'assignedname'},
             { "mData": 'type'},
@@ -429,197 +404,6 @@ function constructFixtureTable()
         ]
     } );
 }
-
-
-
-/*
-
-function updateFixturesTable() {
-
-    var fixtures = cachedconfig.fixtures;
-    var oTable = document.getElementById("fixturetable");
-    oTable.innerHTML = ""; //blank out table,
-
-    var oTHead = document.createElement("THEAD");
-    var oTColGrp = document.createElement("colgroup");
-    var oTBody = document.createElement("TBODY");
-    var oTFoot = document.createElement("TFOOT");
-    var oRow, oCell1, oCell2, oCell3, oCell4,
-        oCell5,oCell6,oCell7,oCell8, i,j;
-
-    oRow = document.createElement("TR");
-    oCell1 = document.createElement("TD");
-    oCell1.innerHTML = "Name";
-    //oCell.colSpan = 2;
-    oCell2 = document.createElement("TD");
-    oCell2.innerHTML = "Type";
-    oCell3 = document.createElement("TD");
-    oCell3.innerHTML = "Interface";
-    oCell4 = document.createElement("TD");
-    oCell4.innerHTML = "Starting Output#";
-    // oCell5 = document.createElement("TD");
-    // oCell5.innerHTML = "Bound Inputs";
-
-    oCell6 = document.createElement("TD");
-    oCell6.innerHTML = "Candle Dim";
-
-    oCell8 = document.createElement("TD");
-    oCell8.innerHTML = "Image";
-
-    oCell7 = document.createElement("TD");
-    oCell7.innerHTML = "Delete";
-
-    oRow.appendChild(oCell1);
-    oRow.appendChild(oCell2);
-    oRow.appendChild(oCell3);
-    oRow.appendChild(oCell4);
-    // oRow.appendChild(oCell5);
-    oRow.appendChild(oCell6);
-    oRow.appendChild(oCell8);
-    oRow.appendChild(oCell7);
-    //  oRow.appendChild(oCell8);
-    // oRow.appendChild(oCell9);
-
-    oTHead.appendChild(oRow);
-
-    var coldef = document.createElement("col");
-    coldef.className = "col-md-2";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    //  coldef = document.createElement("col");
-    //  coldef.className = "col-md-1";
-    //  oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    //   coldef = document.createElement("col");
-    //   coldef.className = "col-md-1";
-    //  oTColGrp.appendChild(coldef);
-    //   coldef = document.createElement("col");
-    // coldef.className = "col-md-1";
-    //  oTColGrp.appendChild(coldef);
-
-    oTable.appendChild(oTHead);
-    oTable.appendChild(oTColGrp);
-    oTable.appendChild(oTBody);
-
-    // Insert rows and cells into bodies.
-    for (i=0; i< fixtures.length; i++)   {
-        var oBody = oTBody;
-        oRow = document.createElement("TR");
-        oBody.appendChild(oRow);
-
-        // for (j=0; j<5; j++)     {
-        // column1 = Zone Label
-        var col1part = document.createElement("TD");
-        col1part.innerHTML = fixtures[i].assignedname;
-
-        var col2part = document.createElement("TD");
-        col2part.innerHTML = fixtures[i].type;
-
-        var col3part = document.createElement("TD");
-        col3part.innerHTML = fixtures[i].interfacename;
-
-        var col4part = document.createElement("TD");
-        col4part.innerHTML = fixtures[i].outputid;
-
-        // var col5part = document.createElement("TD");
-        // col5part.innerHTML = fixtures[i].boundinputs;
-
-        //var col5part = document.createElement("TD");
-        // col5part.innerHTML = fixtures[i].contactinputs;
-
-        var col6part = document.createElement("TD");
-        col6part.innerHTML = fixtures[i].candledim;
-
-
-        // image.
-        var col8part = document.createElement("TD");
-        var fiximage = document.createElement("img");
-        // fiximage.value="X";
-        fiximage.src =  fixtures[i].image; //"fixtureimg/1.jpg";
-        fiximage.height="30";
-        fiximage.width="30";
-        //  fiximage.setAttribute("index",i);
-        fiximage.addEventListener("click", setfixtureimage);
-        // fiximage.className = "btn btn-xs btn-danger";
-        col8part.appendChild(fiximage);
-
-
-
-
-        var col7part = document.createElement("TD");
-        var delbutton = document.createElement("input");
-        delbutton.value="X";
-        delbutton.setAttribute("index",i);
-        delbutton.addEventListener("click", deleteFixture);
-        delbutton.className = "btn btn-xs btn-danger";
-        col7part.appendChild(delbutton);
-
-        //oRow.appendChild(col0part);
-        oRow.appendChild(col1part);
-        oRow.appendChild(col2part);
-        oRow.appendChild(col3part);
-        oRow.appendChild(col4part);
-        //   oRow.appendChild(col5part);
-        oRow.appendChild(col6part);
-        oRow.appendChild(col8part);
-        oRow.appendChild(col7part);
-        //}   // end row create ..*************************
-    }
-
-    $("#tableOutput").html(oTable);
-
-    fixturetablediv.appendChild(oTable);
-}
-
-*/
-
-
-
-
-/*
- function populateBoundInputOptions() {
-
- availibleinputs = [];
- $('#boundinputs').empty();
-
- for(var i =0; i < cachedconfig.levelinputs.length; i++) {
- var name = cachedconfig.levelinputs[i].assignedname;
- var container = $('#boundinputs');
- var id = i + 1;
- var cb = $('<input />', {type: 'checkbox', id: 'bi' + id, value: name}).appendTo(container);
- $('<label />', {'for': 'bi' + id, text: name}).appendTo(container);
- $('<span />', {style:'display:inline-block', width: '30px'}).appendTo(container);
-
- availibleinputs.push(cb);
- }
-
- for(var i =0; i < cachedconfig.contactinputs.length; i++) {
- var name = cachedconfig.contactinputs[i].assignedname;
- var container = $('#boundinputs');
- var id = i + 1;
- var cb = $('<input />', {type: 'checkbox', id: 'bi' + id, value: name}).appendTo(container);
- $('<label />', {'for': 'bi' + id, text: name}).appendTo(container);
- $('<span />', {style:'display:inline-block', width: '30px'}).appendTo(container);
- availibleinputs.push(cb);
- }
- }
- */
 
 
 function buildassignment(start, type)

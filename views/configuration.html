@@ -22,39 +22,7 @@
     <link href="image-picker/image-picker.css" rel="stylesheet">
 
     <script src="minton_dark_hor/js/modernizr.min.js"></script>
-    <!--script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
-    <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
-    <script src="bsmaster/assets/js/bootstrap.min.js"></script>
 
-    <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
-    <script src="bsmaster/assets/js/jquery.ui.touch-punch.min.js"></script>
-
-    <script src="bsmaster/assets/js/custom.min.js"></script>
-    <script src="bsmaster/assets/js/core.min.js"></script>
-    <script src="bsmaster/assets/js/raphael.min.js"></script>
-    <script src="bsmaster/assets/js/justgage.1.0.1.min.js"></script>
-    <script src="bsmaster/assets/js/jquery.noty.min.js"></script>
-
-    <script src="thirdparty/bootstrap-toggle.js"></script>
-    <script src="thirdparty/validate.min.js"></script>
-    <script src="thirdparty/wNumb.js"></script>
-    <script src="thirdparty/nouislider.min.js"></script>
-    <script src="thirdparty/jquery.steps.js"></script>
-
-    <script src="javascripts/crud_config.js"></script>
-    <script src="javascripts/configuration.js"></script>
-    <script src="javascripts/crud_override.js"></script>
-
-    <script src="image-picker/image-picker.js"></script>
-    <link href="image-picker/image-picker.css" rel="stylesheet">
-
-    <link href="stylesheets/bootstrap-toggle.css" rel="stylesheet">
-    <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
-    <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
-    <link href="stylesheets/nouislider.min.css" rel="stylesheet">
-    <link href="stylesheets/jquery.steps.css" rel="stylesheet">
-    <!--script src="javascripts/client_rest.js"></script-->
 
     <link rel="icon" type="image/png" href="/images/RVLT_LOGO_FAV.png">
 
@@ -194,6 +162,10 @@
             cursor: pointer;
         }
 
+        .wirelesslink {
+            float: right;
+
+        }
 
         /* this is to override boostrap */
         /*.row_selected td {
@@ -346,7 +318,11 @@
                         <h3 class="portlet-title text-dark">
                             Output Devices
                         </h3>
+
                         <div class="portlet-widgets">
+                            <a href="enoceanconfig" >Wireless(enocean)</a>
+                            <span class="divider"></span>
+                            <span class="divider"></span>
                             <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
                             <span class="divider"></span>
                             <a data-toggle="collapse" data-parent="#accordion1" href="#portlet_od"><i class="ion-minus-round"></i></a>
@@ -484,9 +460,9 @@
                             </select>
 
 
-                                <label>Type: </label>
-                                <input type="radio" name="contacttype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >Momentary
-                                <input type="radio" name="contacttype" value="maintained" onclick="enableDisableInputActionDropDowns()" >Maintained
+                            <label>Type: </label>
+                            <input type="radio" name="contacttype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >Momentary
+                            <input type="radio" name="contacttype" value="maintained" onclick="enableDisableInputActionDropDowns()" >Maintained
 
                             <br>
                             <br>
