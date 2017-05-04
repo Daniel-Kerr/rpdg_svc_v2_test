@@ -705,10 +705,147 @@ function setfixtureimage()
 function cacheFixtureParamOptions(params)
 {
     global_paramoptions = params;
-    buildParamOptionsTable();
+   // buildParamOptionsTable();
+
+    constructDimmingOptionsBox();
+    constructOccVacOptionsBox();
+    constructDaylightOptionsBox();
 }
 
 
+function constructDimmingOptionsBox()
+{
+    var holder = document.getElementById("dimmopts");
+
+    var oTable = document.createElement("TABLE");
+    var oTBody = document.createElement("TBODY");
+    oTable.className = "table table-bordered";
+    for (var paramnum = 0; paramnum < 3; paramnum++)
+    {
+        var oRow = document.createElement("TR");  // build row element
+        oTBody.appendChild(oRow);
+
+        var parameter = global_paramoptions.parameters[paramnum];
+        var paramoptions = parameter.options;
+
+        var oCell1 = document.createElement("TD");
+        oCell1.innerHTML = parameter.name;
+        oRow.appendChild(oCell1);
+
+        var tempcell = document.createElement("TD");
+        var globalselector = document.createElement("select");
+        globalselector.id = "fixtureparam_" + paramnum;
+        globalselector.name = "fixtureparam_" + paramnum;
+        globalselector.className = "btn btn-large btn-primary";
+
+        globalselector.setAttribute(ATTR_PARAM,paramnum);
+        tempcell.appendChild(globalselector);
+        oRow.appendChild(tempcell);
+        setDropDownDataArray(globalselector,paramoptions);
+    }
+
+    oTable.appendChild(oTBody);
+    holder.appendChild(oTable);
+
+}
+
+
+function constructOccVacOptionsBox()
+{
+    var holder = document.getElementById("occvacopts");
+
+    var oTable = document.createElement("TABLE");
+    var oTBody = document.createElement("TBODY");
+    oTable.className = "table table-bordered";
+    for (var paramnum = 3; paramnum < 5; paramnum++)
+    {
+        var oRow = document.createElement("TR");  // build row element
+        oTBody.appendChild(oRow);
+
+        var parameter = global_paramoptions.parameters[paramnum];
+        var paramoptions = parameter.options;
+
+        var oCell1 = document.createElement("TD");
+        oCell1.innerHTML = parameter.name;
+        oRow.appendChild(oCell1);
+
+        var tempcell = document.createElement("TD");
+        var globalselector = document.createElement("select");
+        globalselector.id = "fixtureparam_" + paramnum;
+        globalselector.name = "fixtureparam_" + paramnum;
+        globalselector.className = "btn btn-large btn-primary";
+
+        globalselector.setAttribute(ATTR_PARAM,paramnum);
+        tempcell.appendChild(globalselector);
+        oRow.appendChild(tempcell);
+        setDropDownDataArray(globalselector,paramoptions);
+    }
+
+    oTable.appendChild(oTBody);
+    holder.appendChild(oTable);
+
+}
+
+
+
+function constructDaylightOptionsBox()
+{
+    var holder = document.getElementById("daylightopts");
+    var oTable = document.createElement("TABLE");
+    var oTBody = document.createElement("TBODY");
+    oTable.className = "table table-bordered";
+    for (var paramnum = 5; paramnum < global_paramoptions.parameters.length; paramnum++)
+    {
+        var oRow = document.createElement("TR");  // build row element
+        oTBody.appendChild(oRow);
+
+        var parameter = global_paramoptions.parameters[paramnum];
+        var paramoptions = parameter.options;
+
+        var oCell1 = document.createElement("TD");
+        oCell1.innerHTML = parameter.name;
+        oRow.appendChild(oCell1);
+
+        var tempcell = document.createElement("TD");
+        var globalselector = document.createElement("select");
+        globalselector.id = "fixtureparam_" + paramnum;
+        globalselector.name = "fixtureparam_" + paramnum;
+        globalselector.className = "btn btn-large btn-primary";
+
+        globalselector.setAttribute(ATTR_PARAM,paramnum);
+        tempcell.appendChild(globalselector);
+        oRow.appendChild(tempcell);
+        setDropDownDataArray(globalselector,paramoptions);
+
+
+        paramnum++;
+        if(paramnum < global_paramoptions.parameters.length) {
+
+            var parameter3 = global_paramoptions.parameters[paramnum];
+            var paramoptions3 = parameter3.options;
+
+            var oCell1 = document.createElement("TD");
+            oCell1.innerHTML = parameter3.name;
+            oRow.appendChild(oCell1);
+
+            var tempcell = document.createElement("TD");
+            var globalselector = document.createElement("select");
+            globalselector.id = "fixtureparam_" + paramnum;
+            globalselector.name ="fixtureparam_" + paramnum;
+            globalselector.className = "btn btn-large btn-primary";
+
+            // globalselector.addEventListener("change", onZoneOptionChanged);
+            globalselector.setAttribute(ATTR_PARAM, paramnum);
+            tempcell.appendChild(globalselector);
+            oRow.appendChild(tempcell);
+            setDropDownDataArray(globalselector, paramoptions3);
+        }
+    }
+    oTable.appendChild(oTBody);
+    holder.appendChild(oTable);
+}
+
+/*
 function buildParamOptionsTable() {
     // Declare global variables and create the header, footer, and caption.
     var oTable = document.createElement("TABLE");
@@ -798,7 +935,7 @@ function buildParamOptionsTable() {
     oTable.appendChild(oTBody);
     fixtureparamstable.appendChild(oTable);
 }
-
+*/
 
 function setDropDownDataArray(dropdown, elementarray)
 {
