@@ -9,6 +9,12 @@ setInterval(function () {
 }, 5000);
 
 
+$(document).ready(function() {
+
+
+    initFixtureStatusBoxes();
+});
+
 function initStatusHandler(config)
 {
     cachedconfig = config;
