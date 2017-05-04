@@ -749,6 +749,57 @@ function constructDimmingOptionsBox()
         setDropDownDataArray(globalselector,paramoptions);
     }
 
+
+    // manual ceiling / floor,  last 2 params
+    var index = global_paramoptions.parameters.length-2;
+    var oRow = document.createElement("TR");  // build row element
+    oTBody.appendChild(oRow);
+
+    var parameter = global_paramoptions.parameters[index];
+    var paramoptions = parameter.options;
+
+    var oCell1 = document.createElement("TD");
+    oCell1.innerHTML = parameter.name;
+    oRow.appendChild(oCell1);
+
+    var tempcell = document.createElement("TD");
+    var globalselector = document.createElement("select");
+    globalselector.id = "fixtureparam_" + index;
+    globalselector.name = "fixtureparam_" + index;
+    globalselector.className = "btn btn-large btn-primary";
+
+    globalselector.setAttribute(ATTR_PARAM,index);
+    tempcell.appendChild(globalselector);
+    oRow.appendChild(tempcell);
+    setDropDownDataArray(globalselector,paramoptions);
+
+
+
+     index = global_paramoptions.parameters.length-1;
+    var oRow = document.createElement("TR");  // build row element
+    oTBody.appendChild(oRow);
+
+    var parameter = global_paramoptions.parameters[index];
+    var paramoptions = parameter.options;
+
+    var oCell1 = document.createElement("TD");
+    oCell1.innerHTML = parameter.name;
+    oRow.appendChild(oCell1);
+
+    var tempcell = document.createElement("TD");
+    var globalselector = document.createElement("select");
+    globalselector.id = "fixtureparam_" + index;
+    globalselector.name = "fixtureparam_" + index;
+    globalselector.className = "btn btn-large btn-primary";
+
+    globalselector.setAttribute(ATTR_PARAM,index);
+    tempcell.appendChild(globalselector);
+    oRow.appendChild(tempcell);
+    setDropDownDataArray(globalselector,paramoptions);
+
+
+
+
     oTable.appendChild(oTBody);
     holder.appendChild(oTable);
 
@@ -799,7 +850,7 @@ function constructDaylightOptionsBox()
     var oTable = document.createElement("TABLE");
     var oTBody = document.createElement("TBODY");
     oTable.className = "table table-bordered";
-    for (var paramnum = 5; paramnum < global_paramoptions.parameters.length; paramnum++)
+    for (var paramnum = 5; paramnum < global_paramoptions.parameters.length-2; paramnum++)
     {
         var oRow = document.createElement("TR");  // build row element
         oTBody.appendChild(oRow);

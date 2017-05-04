@@ -23,7 +23,7 @@
         },
         {
             "name": "Dim Rate",
-           
+
             "options": [
                 {
                     "name": "Instant",
@@ -57,7 +57,7 @@
         },
         {
             "name": "Brighten Rate",
-           
+
             "options": [
                 {
                     "name": "Instant",
@@ -91,7 +91,7 @@
         },
         {
             "name": "Response to Occupancy Message",
-           
+
             "options": [
                 {
                     "name": "Ignore",
@@ -125,7 +125,7 @@
         },
         {
             "name": "Response to Vacancy Message",
-          
+
             "options": [
                 {
                     "name": "Ignore",
@@ -159,7 +159,7 @@
         },
         {
             "name": "ResponsetoDaylight 50+ fc message",
-           
+
             "options": [
                 {
                     "name": "Ignore",
@@ -193,7 +193,7 @@
         },
         {
             "name": "ResponsetoDaylight 40+ fc message",
-           
+
             "options": [
                 {
                     "name": "Ignore",
@@ -227,7 +227,7 @@
         },
         {
             "name": "ResponsetoDaylight 30+ fc message",
-           
+
             "options": [
                 {
                     "name": "Ignore",
@@ -261,7 +261,7 @@
         },
         {
             "name": "ResponsetoDaylight 20+ fc message",
-           
+
             "options": [
                 {
                     "name": "Ignore",
@@ -295,7 +295,7 @@
         },
         {
             "name": "ResponsetoDaylight 10+ fc message",
-           
+
             "options": [
                 {
                     "name": "Ignore",
@@ -329,7 +329,7 @@
         },
         {
             "name": "ResponsetoDaylight 0+ fc message",
-          
+
             "options": [
                 {
                     "name": "Ignore",
@@ -363,37 +363,7 @@
         },
         {
             "name": "Daylight Ceiling",
-          
-            "options": [
-                {
-                    "name": "Ignore",
-                    "value": -1
-                },
-                {
-                    "name": "60%",
-                    "value": 60
-                },
-                {
-                    "name": "70 %",
-                    "value": 10
-                },
-                {
-                    "name": "80 %",
-                    "value": 80
-                },
-                {
-                    "name": "90 %",
-                    "value": 90
-                },
-                {
-                    "name": "100 %",
-                    "value": 100
-                }
-            ]
-        },
-        {
-            "name": "Manual Ceiling",
-           
+
             "options": [
                 {
                     "name": "Ignore",
@@ -423,7 +393,7 @@
         },
         {
             "name": "Daylight Floor",
-          
+
             "options": [
                 {
                     "name": "Ignore",
@@ -452,8 +422,38 @@
             ]
         },
         {
+            "name": "Manual Ceiling",
+
+            "options": [
+                {
+                    "name": "Ignore",
+                    "value": -1
+                },
+                {
+                    "name": "60%",
+                    "value": 60
+                },
+                {
+                    "name": "70 %",
+                    "value": 10
+                },
+                {
+                    "name": "80 %",
+                    "value": 80
+                },
+                {
+                    "name": "90 %",
+                    "value": 90
+                },
+                {
+                    "name": "100 %",
+                    "value": 100
+                }
+            ]
+        },
+        {
             "name": "Manual Floor",
-            
+
             "options": [
                 {
                     "name": "Ignore",
