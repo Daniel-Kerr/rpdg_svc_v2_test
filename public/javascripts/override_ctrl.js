@@ -336,9 +336,24 @@ function processConfig(configobj)
     cachedconfig = configobj;
     updateFixturesTable();
     redrawScenes();
+
+    populateDropDown("scriptsel", ["alarmmode","???"]);
 }
 
+function runscript()
+{
+    var aa_p1 = $('#scriptsel').val();
 
+    var element = {};
+    element.script = aa_p1;
+    executescript(element, function(result) {
+
+        var k = 0;
+        k = k + 1;
+        //resutl of script here.
+    });
+
+}
 
 function setRGBWToHW()
 {
@@ -483,4 +498,23 @@ function validateuserinputs()
         }
     }
     return false;
+}
+
+
+
+
+function populateDropDown(dropdown, optionslist)
+{
+    var sel = document.getElementById(dropdown);
+    while (sel.options.length > 0) {
+        sel.remove(0);
+    }
+
+    for (var i = 0 ; i < optionslist.length; i += 1) {
+        var opt = document.createElement('option');
+        opt.setAttribute('value', optionslist[i]);
+        opt.appendChild(document.createTextNode(optionslist[i]));
+        sel.appendChild(opt);
+    }
+
 }

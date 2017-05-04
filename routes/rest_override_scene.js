@@ -48,7 +48,7 @@ router.post('/invokescene', function(req, res) {
     var code = 400;
     if(name != undefined)
     {
-         // bug 49,
+        // bug 49,
         if(global.currentconfig.getSceneByName(name) != undefined)
         {
             service.invokeScene(name, "wallstation");
@@ -60,6 +60,21 @@ router.post('/invokescene', function(req, res) {
             code = 200;
         }
     }
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(code).send(cfg);
+});
+
+
+router.post('/runscript', function(req, res) {
+
+    var name = req.body.script;
+    var code = 400;
+    if(name != undefined)
+    {
+        service.runScript(name);
+        code = 200;
+    }
+
     var cfg = JSON.stringify(global.currentconfig,null,2);
     res.status(code).send(cfg);
 });

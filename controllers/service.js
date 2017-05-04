@@ -78,7 +78,7 @@ var firmware_version = "???";
 
 function incommingUDPMessageHandler(messageobj)
 {
-   // stub for now,  but will act on group / scene messages ..
+    // stub for now,  but will act on group / scene messages ..
     // add filter to check for group id, ..etc, and if found,,,
     global.applogger.info(TAG, "UDP rx handler got message", JSON.stringify(messageobj));
 }
@@ -139,27 +139,27 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                             }
 
                             /*
-                            // look through all devices conntect and set to level (wallstation)
-                            for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
-                                var fixobj = global.currentconfig.fixtures[k];
-                                if (fixobj.isBoundToInput(dev.assignedname)) {
-                                    global.applogger.info(TAG, "(LEVEL INPUT) bound to this input", "wall station update" + fixobj.assignedname);
-                                    var reqobj = {};
-                                    reqobj.requesttype = "wallstation";
-                                    if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
-                                        // the input level is 0 - 10, so mult by 10, and round to int,
-                                        var targetlevel = level * 10;
-                                        reqobj.level = targetlevel.toFixed(0);
-                                        fixobj.setLevel(reqobj, true);
-                                    }
-                                    if (fixobj instanceof CCTFixture) {
-                                        // create request here iwthout a change to color temp,  tell driver to use last known,
-                                        var targetlevel = level * 10;
-                                        reqobj.brightness = targetlevel.toFixed(0);
-                                        fixobj.setLevel(reqobj, true);
-                                    }
-                                }
-                            } */
+                             // look through all devices conntect and set to level (wallstation)
+                             for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
+                             var fixobj = global.currentconfig.fixtures[k];
+                             if (fixobj.isBoundToInput(dev.assignedname)) {
+                             global.applogger.info(TAG, "(LEVEL INPUT) bound to this input", "wall station update" + fixobj.assignedname);
+                             var reqobj = {};
+                             reqobj.requesttype = "wallstation";
+                             if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
+                             // the input level is 0 - 10, so mult by 10, and round to int,
+                             var targetlevel = level * 10;
+                             reqobj.level = targetlevel.toFixed(0);
+                             fixobj.setLevel(reqobj, true);
+                             }
+                             if (fixobj instanceof CCTFixture) {
+                             // create request here iwthout a change to color temp,  tell driver to use last known,
+                             var targetlevel = level * 10;
+                             reqobj.brightness = targetlevel.toFixed(0);
+                             fixobj.setLevel(reqobj, true);
+                             }
+                             }
+                             } */
                         }
                         else if (dev.type == "daylight")  // check if input is a daylight sensor, and apply it, to global.
                         {
@@ -465,6 +465,13 @@ function constructPWMPolarityMask()
     return mask;
 }
 
+
+var activescript = undefined;
+function ScriptResultHandler(name, result)
+{
+    global.applogger.info(TAG, " Script: " + name + "  result: " + result, "");
+    activescript = undefined;
+}
 var service = module.exports =  {
 
 
@@ -509,9 +516,9 @@ var service = module.exports =  {
 
         module.exports.updatePWMPolarity();
         //global.applogger.info(TAG, "writing pwm pol mask now", "");
-       // var pwmpolmask = constructPWMPolarityMask();
-       //  global.applogger.info(TAG, "PWM polarity Mask: " + pwmpolmask.toString(16), "");
-       //rpdg.setPWMOutputPolarity(pwmpolmask);
+        // var pwmpolmask = constructPWMPolarityMask();
+        //  global.applogger.info(TAG, "PWM polarity Mask: " + pwmpolmask.toString(16), "");
+        //rpdg.setPWMOutputPolarity(pwmpolmask);
 
         //
         schedule_mgr.initManager();
@@ -531,8 +538,11 @@ var service = module.exports =  {
 
 
 
+        //var alarmmode = require('../scripts/alarmmode.js');
+        // alarmmode.run(ScriptResultHandler);
 
-
+        var k = 0;
+        k = k + 1;
 
     },
     getVersionObject: function()
@@ -642,7 +652,7 @@ var service = module.exports =  {
                     var inputobj = global.currentconfig.levelinputs[levelidx];
                     if (inputobj.type == "daylight") {
 
-                       // 4/26/17 -- changed to group ..a
+                        // 4/26/17 -- changed to group ..a
                         //var level = inputobj.value;
 
                         var groupname = inputobj.group; //req.body.name;
@@ -650,42 +660,42 @@ var service = module.exports =  {
                             var groupobj = global.currentconfig.getGroupByName(groupname);
                             if (groupobj != undefined) {
                                 if(groupobj.type == "brightness") {
-                                   var targetlevel = 0; // the level is irrelelevent since its a dl request type.. level * 10;
+                                    var targetlevel = 0; // the level is irrelelevent since its a dl request type.. level * 10;
                                     service.setGroupToBrightnessLevel(groupname, targetlevel, "daylight");
                                 }
-                               // removed 4/27/17
+                                // removed 4/27/17
                                 // else if(groupobj.type == "ctemp") {
                                 //    //scale color temp. between 2200 / 6500
                                 //    var scale = level / 10;
-                               //     var targetctemp = ((6500-2200) * scale) + 2200;
-                               //     service.setGroupToColorTemp(groupname,targetctemp,100);
-                               // }
+                                //     var targetctemp = ((6500-2200) * scale) + 2200;
+                                //     service.setGroupToColorTemp(groupname,targetctemp,100);
+                                // }
                             }
                         }
 
-                           /*
-                        // look through all fixtures connected to DL sensor.  and set to level (wallstation)
-                        for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
-                            var fixobj = global.currentconfig.fixtures[k];
-                            if (fixobj.isBoundToInput(inputobj.assignedname)) {
-                                global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", "daylight update" + fixobj.assignedname);
-                                var reqobj = {};
-                                reqobj.requesttype = "daylight";
+                        /*
+                         // look through all fixtures connected to DL sensor.  and set to level (wallstation)
+                         for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
+                         var fixobj = global.currentconfig.fixtures[k];
+                         if (fixobj.isBoundToInput(inputobj.assignedname)) {
+                         global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", "daylight update" + fixobj.assignedname);
+                         var reqobj = {};
+                         reqobj.requesttype = "daylight";
 
-                                if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
-                                    //global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", " fixture set level is :" + fixobj.level);
-                                    fixobj.setLevel(reqobj, true);
-                                }
-                                if (fixobj instanceof CCTFixture) {
-                                    // create request here iwthout a change to color temp,  tell driver to use last known,
-                                    fixobj.setLevel(reqobj, true);
-                                }
-                                if (fixobj instanceof RGBWFixture) {
-                                    // create request here iwthout a change to color temp,  tell driver to use last known,
-                                    fixobj.setLevel(reqobj, true);
-                                }
-                            }
-                        }*/
+                         if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
+                         //global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", " fixture set level is :" + fixobj.level);
+                         fixobj.setLevel(reqobj, true);
+                         }
+                         if (fixobj instanceof CCTFixture) {
+                         // create request here iwthout a change to color temp,  tell driver to use last known,
+                         fixobj.setLevel(reqobj, true);
+                         }
+                         if (fixobj instanceof RGBWFixture) {
+                         // create request here iwthout a change to color temp,  tell driver to use last known,
+                         fixobj.setLevel(reqobj, true);
+                         }
+                         }
+                         }*/
                         // }
                         // }
                     }  // end if daylight type.
@@ -1170,6 +1180,19 @@ var service = module.exports =  {
         {
             var k = [];
             return k;
+        }
+    },
+    runScript : function(name)
+    {
+        if(activescript != undefined)  // if not undefinded it needs to be canceled.
+        {
+            activescript.cancel();
+            activescript = undefined;
+        }
+        activescript = require('../scripts/' + name + '.js');
+        if(activescript != undefined)
+        {
+            activescript.run(ScriptResultHandler);
         }
     }
 };
