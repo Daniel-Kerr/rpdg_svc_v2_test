@@ -40,7 +40,7 @@
 			"response": []
 		},
 		{
-			"name": "Disable HW polling copy",
+			"name": "Disable HW polling",
 			"request": {
 				"url": "http://localhost:3000/tester/enablerpdgpolling",
 				"method": "POST",
@@ -332,34 +332,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-09T10:30:00-07:00\"\n}"
+					"raw": "{\n\t\"timestring\": \"2017-05-09T07:30:00-07:00\"\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "invoke_wet_vac copy",
-			"request": {
-				"url": "http://localhost:3000/tester/setinputlevel",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"0\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "invoke_wet_occ copy",
+			"name": "invoke_wet_occ1",
 			"event": [
 				{
 					"listen": "test",
@@ -369,17 +349,19 @@
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;",
-							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 75;",
-							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;",
-							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 25;",
-							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
-							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool == 75;",
-							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm === 0;",
-							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool == 100;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level == 100;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level == 100;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level == 100;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level === 0;"
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 100;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
 						]
 					}
 				}
@@ -403,7 +385,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "invoke_wet_occ2",
 			"event": [
 				{
 					"listen": "test",
@@ -412,48 +394,26 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;",
 							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
-							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;",
 							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
-							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 100;",
 							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
-							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 100;",
 							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
 							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
 							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
-							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 100;",
 							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
 						]
 					}
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Set Virtual Time",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"url": "http://localhost:3000/tester/setinputlevel",
 				"method": "POST",
 				"header": [
 					{
@@ -464,14 +424,60 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-09T11:30:00-07:00\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": \"1\"\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "setDimmerLevel_Input_3_Volts_5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 50;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 50;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 50;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 50;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"3\",\n\t\"levelvolts\": 5\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_Input_4_Volts_5",
 			"event": [
 				{
 					"listen": "test",
@@ -488,10 +494,10 @@
 							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 50;",
 							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 50;",
 							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 50;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 50;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 50;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 50;",
 							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 50;",
 							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 50;"
 						]
@@ -499,29 +505,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Set Virtual Time",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"url": "http://localhost:3000/tester/setinputlevel",
 				"method": "POST",
 				"header": [
 					{
@@ -532,14 +516,60 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-09T16:30:00-07:00\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"4\",\n\t\"levelvolts\": 5\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "invoke_wet_vac1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 50;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 50;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 50;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 50;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 50;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac2",
 			"event": [
 				{
 					"listen": "test",
@@ -567,10 +597,19 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": \"0\"\n}"
+				},
 				"description": ""
 			},
 			"response": []
@@ -607,7 +646,7 @@
 			"response": []
 		},
 		{
-			"name": "setDimmerLevel_Input_3_Volts_10 copy",
+			"name": "invoke_wet_occ1",
 			"event": [
 				{
 					"listen": "test",
@@ -616,15 +655,420 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 60;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 60;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 60;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 60;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 60;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 60;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 60;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 60;",
-							"tests[\"Value of fixture 9 is correct\"] = jsonData.fixtures[8].level == 60;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 100;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_occ2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 100;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 100;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 100;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Virtual Time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-05-09T22:30:00-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_occ1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_occ2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"1\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"2\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Virtual Time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-05-09T11:30:00-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_Input_3_Volts_10",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
 						]
 					}
 				}
@@ -648,7 +1092,7 @@
 			"response": []
 		},
 		{
-			"name": "setDimmerLevel_Input_4_Volts_10 copy",
+			"name": "setDimmerLevel_Input_4_Volts_10",
 			"event": [
 				{
 					"listen": "test",
@@ -657,15 +1101,20 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 60;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 60;",
-							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 60;",
-							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 60;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 60;",
-							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 60;",
-							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 60;",
-							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 60;",
-							"tests[\"Value of fixture 9 is correct\"] = jsonData.fixtures[8].level == 60;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 100;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 100;"
 						]
 					}
 				}
@@ -689,7 +1138,7 @@
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "setDimmerLevel_Input_3_Volts_0",
 			"event": [
 				{
 					"listen": "test",
@@ -698,48 +1147,26 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 10;",
-							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 10;",
-							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 10;",
-							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 10;",
-							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 10;",
-							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 10;",
-							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 10;",
-							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool == 10;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;",
-							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 10;",
-							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 10;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 100;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 100;"
 						]
 					}
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Set Virtual Time",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"url": "http://localhost:3000/tester/setinputlevel",
 				"method": "POST",
 				"header": [
 					{
@@ -750,14 +1177,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-09T20:30:00-07:00\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"3\",\n\t\"levelvolts\": 0\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "setDimmerLevel_Input_4_Volts_0",
 			"event": [
 				{
 					"listen": "test",
@@ -785,10 +1212,19 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"4\",\n\t\"levelvolts\": 0\n}"
+				},
 				"description": ""
 			},
 			"response": []
@@ -818,14 +1254,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-010T16:30:00-07:00\"\n}"
+					"raw": "{\n\t\"timestring\": \"2017-05-09T15:00:00-07:00\"\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "setDimmerLevel_Input_3_Volts_10",
 			"event": [
 				{
 					"listen": "test",
@@ -834,48 +1270,26 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 50;",
-							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 50;",
-							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;",
-							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 50;",
-							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 50;",
-							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 50;",
-							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 50;",
-							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool == 50;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;",
-							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 50;",
-							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 50;"
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 100;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
 						]
 					}
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Set Virtual Time",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"url": "http://localhost:3000/tester/setinputlevel",
 				"method": "POST",
 				"header": [
 					{
@@ -886,14 +1300,60 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-010T16:30:00-07:00\"\n}"
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"3\",\n\t\"levelvolts\": 10\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "Get Status",
+			"name": "setDimmerLevel_Input_4_Volts_10",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 100;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"4\",\n\t\"levelvolts\": 10\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setDimmerLevel_Input_3_Volts_0",
 			"event": [
 				{
 					"listen": "test",
@@ -921,16 +1381,56 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"3\",\n\t\"levelvolts\": 0\n}"
+				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "Enable HW polling copy",
+			"name": "setDimmerLevel_Input_4_Volts_0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"rpdg\",\n\t\"type\": \"levelinput\",\n\t\"inputid\": \"4\",\n\t\"levelvolts\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Enable HW polling",
 			"request": {
 				"url": "http://localhost:3000/tester/enablerpdgpolling",
 				"method": "POST",
