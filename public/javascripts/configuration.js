@@ -174,8 +174,9 @@ $(document).ready(function() {
                     document.getElementById("fixtureparam_9").value = fixture.parameters.resptodl10;
                     document.getElementById("fixtureparam_10").value = fixture.parameters.resptodl0;
                     document.getElementById("fixtureparam_11").value = fixture.parameters.daylightceiling;
-                    document.getElementById("fixtureparam_12").value = fixture.parameters.manualceiling;
-                    document.getElementById("fixtureparam_13").value = fixture.parameters.daylightfloor;
+                    document.getElementById("fixtureparam_12").value = fixture.parameters.daylightfloor;
+
+                    document.getElementById("fixtureparam_13").value = fixture.parameters.manualceiling;
                     document.getElementById("fixtureparam_14").value =  fixture.parameters.manualfloor;
                 }
             }
@@ -578,20 +579,20 @@ function saveNewFixture(image) {
 
     var params = {};  // will contain current settings,
     params.dimoptions = document.getElementById("fixtureparam_0").value;
-    params.dimrate = document.getElementById("fixtureparam_1").value;;
-    params.brightenrate = document.getElementById("fixtureparam_2").value;;
+    params.dimrate = document.getElementById("fixtureparam_1").value;
+    params.brightenrate = document.getElementById("fixtureparam_2").value;
     params.resptoocc = document.getElementById("fixtureparam_3").value;
     params.resptovac = document.getElementById("fixtureparam_4").value;
-    params.resptodl50 = document.getElementById("fixtureparam_5").value;;
-    params.resptodl40 = document.getElementById("fixtureparam_6").value;;
-    params.resptodl30 = document.getElementById("fixtureparam_7").value;;
-    params.resptodl20 = document.getElementById("fixtureparam_8").value;;
-    params.resptodl10 = document.getElementById("fixtureparam_9").value;;
-    params.resptodl0 = document.getElementById("fixtureparam_10").value;;
-    params.daylightceiling = document.getElementById("fixtureparam_11").value;;
-    params.manualceiling = document.getElementById("fixtureparam_12").value;;
-    params.daylightfloor = document.getElementById("fixtureparam_13").value;;
-    params.manualfloor = document.getElementById("fixtureparam_14").value;;
+    params.resptodl50 = document.getElementById("fixtureparam_5").value;
+    params.resptodl40 = document.getElementById("fixtureparam_6").value;
+    params.resptodl30 = document.getElementById("fixtureparam_7").value;
+    params.resptodl20 = document.getElementById("fixtureparam_8").value;
+    params.resptodl10 = document.getElementById("fixtureparam_9").value;
+    params.resptodl0 = document.getElementById("fixtureparam_10").value;
+    params.daylightceiling = document.getElementById("fixtureparam_11").value;
+    params.daylightfloor = document.getElementById("fixtureparam_12").value;
+    params.manualceiling = document.getElementById("fixtureparam_13").value;
+    params.manualfloor = document.getElementById("fixtureparam_14").value;
 
     fixture.parameters = params;
 
