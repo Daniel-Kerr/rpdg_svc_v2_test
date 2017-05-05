@@ -1194,5 +1194,17 @@ var service = module.exports =  {
         {
             activescript.run(ScriptResultHandler);
         }
+    },
+    setVirtualTime : function(timestring)
+    {
+        if(timestring != undefined) {
+            global.virtualbasetime = moment(timestring);
+            global.virtualtimeset = moment();
+        }
+        else
+        {
+            global.virtualbasetime = undefined;
+        }
+        currentschedule_eventbundle = undefined; //reset,  5/5/17
     }
 };

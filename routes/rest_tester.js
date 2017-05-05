@@ -68,15 +68,15 @@ global.virtualtimeset = undefined;
 router.post('/setvirtualdatetime', function(req, res) {
 
     var ts = req.body.timestring;
-    global.virtualbasetime = moment(ts);
-    global.virtualtimeset = moment();
+    service.setVirtualTime(ts);
     res.status(200).send("OK");
 
 });
 
 router.post('/clearvirtualdatetime', function(req, res) {
 
-    global.virtualbasetime = undefined;
+
+    service.setVirtualTime();
     res.status(200).send("OK");
 
 });
