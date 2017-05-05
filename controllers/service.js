@@ -584,7 +584,7 @@ var service = module.exports =  {
 
             if (global.virtualbasetime != undefined) {
                 var deltams = now - global.virtualtimeset;
-                global.applogger.info(TAG, "time check", deltams);
+                //global.applogger.info(TAG, "time check", deltams);
                 var bla = global.virtualbasetime.clone();
                 now = bla.add(deltams, 'ms');  // < ----- set now to virtual time,
                 currenthour = now.hour();
@@ -663,41 +663,9 @@ var service = module.exports =  {
                                     var targetlevel = 0; // the level is irrelelevent since its a dl request type.. level * 10;
                                     service.setGroupToBrightnessLevel(groupname, targetlevel, "daylight");
                                 }
-                                // removed 4/27/17
-                                // else if(groupobj.type == "ctemp") {
-                                //    //scale color temp. between 2200 / 6500
-                                //    var scale = level / 10;
-                                //     var targetctemp = ((6500-2200) * scale) + 2200;
-                                //     service.setGroupToColorTemp(groupname,targetctemp,100);
-                                // }
+
                             }
                         }
-
-                        /*
-                         // look through all fixtures connected to DL sensor.  and set to level (wallstation)
-                         for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
-                         var fixobj = global.currentconfig.fixtures[k];
-                         if (fixobj.isBoundToInput(inputobj.assignedname)) {
-                         global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", "daylight update" + fixobj.assignedname);
-                         var reqobj = {};
-                         reqobj.requesttype = "daylight";
-
-                         if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
-                         //global.applogger.info(TAG, "(DAYLIGHT INPUT) bound", " fixture set level is :" + fixobj.level);
-                         fixobj.setLevel(reqobj, true);
-                         }
-                         if (fixobj instanceof CCTFixture) {
-                         // create request here iwthout a change to color temp,  tell driver to use last known,
-                         fixobj.setLevel(reqobj, true);
-                         }
-                         if (fixobj instanceof RGBWFixture) {
-                         // create request here iwthout a change to color temp,  tell driver to use last known,
-                         fixobj.setLevel(reqobj, true);
-                         }
-                         }
-                         }*/
-                        // }
-                        // }
                     }  // end if daylight type.
                 }
             }
@@ -721,7 +689,7 @@ var service = module.exports =  {
                         if (currentschedule_eventbundle == undefined || eventbundle.date_time.diff(currentschedule_eventbundle.date_time) != 0) {
 
                             global.applogger.info(TAG, "**New or different Schedule Bundle Found**", eventbundle.date_time, "event count: " + eventbundle.events.length);
-                            global.applogger.info(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", "", "");
+                            global.applogger.info(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", "", "virtual time is : " + (global.virtualbasetime != undefined));
                             // for debug only
                             var eventidlist = "";
                             for (var i = 0; i < eventbundle.events.length; i++) {
