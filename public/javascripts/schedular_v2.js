@@ -93,6 +93,15 @@ function processConfig(configobj) {
         render:"bar"             //view mode
     });
 
+
+
+    scheduler.templates.timeline_cell_class = function(evs, date, section){
+        if(date.getHours() >= 12){
+            return "color-cell";
+        }
+        return "";
+    };
+
     scheduler.showLightbox = function(id) {
         var ev = scheduler.getEvent(id);
         scheduler.startLightbox(id, html("my_form"));
