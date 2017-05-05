@@ -133,6 +133,11 @@ $(document).ready(function() {
                         // document.getElementById("candledim").disabled = true;
                     }
 
+                    if(fixture.interfacename == "rpdg-pwm")
+                       show12VoltOption(true);
+                    else
+                        show12VoltOption(false);
+
 
                     if(fixture.type == "rgbw" || fixture.type == "cct")
                     {
@@ -319,6 +324,7 @@ function init()
 
     showCCTOptions(false);
     showCommonAnodeOption(false);
+    show12VoltOption(false);
 }
 
 
@@ -1055,8 +1061,10 @@ function updateAvalibleStartingOutputNumbers()
     }
 
     var iface = $('#interface').val();
+    show12VoltOption(false);
     if(iface == "rpdg-pwm")
     {
+        show12VoltOption(true);
         for (var i = 0 ; i < cachedinterfaceio.rpdg.pwmoutputs.length; i += 1) {
             var opt = document.createElement('option');
             opt.setAttribute('value', cachedinterfaceio.rpdg.pwmoutputs[i]);
@@ -2136,6 +2144,15 @@ function showCommonAnodeOption(show)
 
 
 
+function show12VoltOption(show)
+{
+    if(show)
+        $('#fixopts1_9').show();
+    else
+        $('#fixopts1_9').hide();
+}
+
+
 function showCCTOptions(show)
 {
     if(show) {
@@ -2148,7 +2165,6 @@ function showCCTOptions(show)
         $('#fixopts1_5').hide();
         $('#fixopts1_6').hide();
         $('#fixopts1_7').hide();
-        // $('#fixopts1_8').hide();
     }
 }
 
