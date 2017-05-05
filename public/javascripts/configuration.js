@@ -62,6 +62,8 @@ function transformFixtureToDataSet()
 
 var fixturetable = undefined;
 var selectedfixtureindex = -1;
+var selectedcontactinputindex = -1;
+var selectedlevelinputindex = -1;
 
 $(document).ready(function() {
 
@@ -70,6 +72,8 @@ $(document).ready(function() {
 
     $("#fixturetable").on("click", " tbody > tr", function(e) {
 
+        selectedlevelinputindex = -1;
+        selectedcontactinputindex = -1;
         // 3/15/17, remove any thing else that is highlighted,
         $('#wetdrycontacttable > tbody  > tr').each(function() {
             $(this).removeClass('bg-primary');
@@ -192,6 +196,9 @@ $(document).ready(function() {
     // start, click handler for contact input
     $("#wetdrycontacttable").on("click", " tbody > tr", function(e) {
 
+        selectedlevelinputindex = -1;
+        selectedcontactinputindex = -1;
+        selectedfixtureindex = -1;
         // 3/15/17, remove any thing else that is highlighted,
         $('#fixturetable > tbody  > tr').each(function() {
             $(this).removeClass('bg-primary');
@@ -217,6 +224,7 @@ $(document).ready(function() {
                 var ic = cachedconfig.contactinputs[i];
                 if (ic.assignedname == row) {
 
+                    selectedcontactinputindex = i;
                     document.getElementById("contactname").value = ic.assignedname;
 
                     SelectRadioButton("contacttype",ic.type);
@@ -226,18 +234,12 @@ $(document).ready(function() {
 
                     updateContactInputs_InputSel();
 
-
                     $("#contact_inputnum").val(ic.inputid).change();
-
                     // updateInputContactActionDropDowns();
                     updateInputContactActionDropDowns(ic);
                     enableDisableInputActionDropDowns();
-
-
-
                 }
             }
-
         }
     });
 
@@ -246,6 +248,9 @@ $(document).ready(function() {
     // start, click handler for contact input
     $("#levelinputstable").on("click", " tbody > tr", function(e) {
 
+        selectedlevelinputindex = -1;
+        selectedcontactinputindex = -1;
+        selectedfixtureindex = -1;
         // 3/15/17, remove any thing else that is highlighted,
         $('#fixturetable > tbody  > tr').each(function() {
             $(this).removeClass('bg-primary');
@@ -266,6 +271,10 @@ $(document).ready(function() {
             for(var i = 0; i < cachedconfig.levelinputs.length; i++) {
                 var ic = cachedconfig.levelinputs[i];
                 if (ic.assignedname == row) {
+
+
+                    selectedlevelinputindex = i;
+
                     $("#levelinputname").val(ic.assignedname);
                     $("#levelinputtype").val(ic.type);
                     $("#levelinputinterface").val(ic.interface);
@@ -583,9 +592,7 @@ function saveNewFixture(image) {
     saveConfigObject("fixture",fixture,function (retval) {
         cachedconfig = retval;
 
-       // updateFixturesTable();
         fixturetable.destroy();
-
         constructFixtureTable();
         /*
         var dataset = transformFixtureToDataSet();
@@ -644,37 +651,13 @@ function deleteFixture()
             fixturetable.destroy();
 
             constructFixtureTable();
-           /* var dataset = transformFixtureToDataSet();
-            fixturetable = $('#fixturetable').DataTable( {
-                "aaData": dataset,
-                "aoColumns": [
-                    { "mData": 'assignedname'},
-                    { "mData": 'type'},
-                    { "mData": 'interfacename'},
-                    { "mData": 'outputid', "bSortable": false},
-                    { "mData": 'image', "bSortable": false,
-                        "mRender": function (data, type, row) {
-                            //  var sens = data;
-                            //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
-                            var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
-                            return imgstring;
 
-                        }
-                    }
-                ]
-            } );*/
-          //  updateFixturesTable();
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
         });
     });
 
-
-
-
-    // var index =  Number(this.getAttribute('index'));
-    // deleteConfigObject("fixture",cachedconfig.fixtures[index],function (retval) {
-    //     cachedconfig = retval;
-    //     updateFixturesTable();
-    //  });
 }
 
 
@@ -1142,8 +1125,8 @@ function updateWetDryContactTable() {
     oCell5.innerHTML = "Active Action";
     oCell6 = document.createElement("TD");
     oCell6.innerHTML = "Inactive Action";
-    oCell7 = document.createElement("TD");
-    oCell7.innerHTML = "Delete";
+  //  oCell7 = document.createElement("TD");
+  //  oCell7.innerHTML = "Delete";
 
     oRow.appendChild(oCell1);
     oRow.appendChild(oCell2);
@@ -1151,7 +1134,7 @@ function updateWetDryContactTable() {
     oRow.appendChild(oCell4);
     oRow.appendChild(oCell5);
     oRow.appendChild(oCell6);
-    oRow.appendChild(oCell7);
+   // oRow.appendChild(oCell7);
     oTHead.appendChild(oRow);
 
     var coldef = document.createElement("col");
@@ -1172,9 +1155,9 @@ function updateWetDryContactTable() {
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
+   // coldef = document.createElement("col");
+   // coldef.className = "col-md-1";
+   // oTColGrp.appendChild(coldef);
 
     oTable.appendChild(oTHead);
     oTable.appendChild(oTColGrp);
@@ -1209,13 +1192,13 @@ function updateWetDryContactTable() {
             // col7part.innerHTML = wetdrycontactlist[i].inactive_action;
 
 
-            var col7part = document.createElement("TD");
-            var delbutton = document.createElement("input");
-            delbutton.value = "X";
-            delbutton.setAttribute("index", i);
-            delbutton.addEventListener("click", deleteInputContactItem);
-            delbutton.className = "btn btn-xs btn-danger";
-            col7part.appendChild(delbutton);
+          //  var col7part = document.createElement("TD");
+          //  var delbutton = document.createElement("input");
+          //  delbutton.value = "X";
+          //  delbutton.setAttribute("index", i);
+          //  delbutton.addEventListener("click", deleteInputContactItem);
+          //  delbutton.className = "btn btn-xs btn-danger";
+         //   col7part.appendChild(delbutton);
 
             oRow.appendChild(col1part);
             oRow.appendChild(col2part);
@@ -1223,7 +1206,7 @@ function updateWetDryContactTable() {
             oRow.appendChild(col4part);
             oRow.appendChild(col5part);
             oRow.appendChild(col6part);
-            oRow.appendChild(col7part);
+           // oRow.appendChild(col7part);
         }
     }
 
@@ -1243,12 +1226,8 @@ function saveNewContactInputObj() {
         return;
     }
 
-
-
-
     var contactinput = {};
     contactinput.assignedname = document.getElementById("contactname").value;
-
     contactinput.interface = $("#contactinputinterface").val();
 
     var inputnum = document.getElementById("contact_inputnum");
@@ -1260,7 +1239,6 @@ function saveNewContactInputObj() {
     var myRadio = $('input[name=contacttype]');
     var type = myRadio.filter(':checked').val();
     contactinput.type = type;
-
 
    // var type = $('input[name=contacttype]:checked', '#myForm').val();
    // contactinput.type = type;
@@ -1346,15 +1324,18 @@ function saveNewContactInputObj() {
 
 function deleteInputContactItem()
 {
-    var index =  Number(this.getAttribute('index'));
-    deleteConfigObject("contactinput",cachedconfig.contactinputs[index],function (retval) {
-        cachedconfig = retval;
-        updateWetDryContactTable();
-        //  populateBoundInputOptions();
-        updateFixturesTable();
+    if(selectedcontactinputindex > -1) {
+        var index = selectedcontactinputindex;
+        deleteConfigObject("contactinput", cachedconfig.contactinputs[index], function (retval) {
+            cachedconfig = retval;
+            updateWetDryContactTable();
 
-    });
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
+        });
 
+    }
 }
 
 
@@ -1453,18 +1434,18 @@ function updateLevelInputsTable() {
     oCell3 = document.createElement("TD");
     oCell3.innerHTML = "Interface";
     oCell4 = document.createElement("TD");
-    oCell4.innerHTML = "input id";
+    oCell4.innerHTML = "Input #";
     oCell5 = document.createElement("TD");
     oCell5.innerHTML = "Drive Level";
-    oCell6 = document.createElement("TD");
-    oCell6.innerHTML = "Delete";
+   // oCell6 = document.createElement("TD");
+   // oCell6.innerHTML = "Delete";
 
     oRow.appendChild(oCell1);
     oRow.appendChild(oCell2);
     oRow.appendChild(oCell3);
     oRow.appendChild(oCell4);
     oRow.appendChild(oCell5);
-    oRow.appendChild(oCell6);
+   // oRow.appendChild(oCell6);
     oTHead.appendChild(oRow);
 
     var coldef = document.createElement("col");
@@ -1482,9 +1463,9 @@ function updateLevelInputsTable() {
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
+  //  coldef = document.createElement("col");
+  //  coldef.className = "col-md-1";
+  //  oTColGrp.appendChild(coldef);
 
     oTable.appendChild(oTHead);
     oTable.appendChild(oTColGrp);
@@ -1512,26 +1493,26 @@ function updateLevelInputsTable() {
             var col5part = document.createElement("TD");
             col5part.innerHTML = levelinputlist[i].drivelevel;
 
-            var col6part = document.createElement("TD");
-            var delbutton = document.createElement("input");
-            delbutton.value = "X";
-            delbutton.setAttribute("index", i);
-            delbutton.addEventListener("click", deleteLevelInput);
-            delbutton.className = "btn btn-xs btn-danger";
-            col6part.appendChild(delbutton);
+          //  var col6part = document.createElement("TD");
+         //   var delbutton = document.createElement("input");
+         //   delbutton.value = "X";
+         ///   delbutton.setAttribute("index", i);
+          //  delbutton.addEventListener("click", deleteLevelInput);
+          //  delbutton.className = "btn btn-xs btn-danger";
+          //  col6part.appendChild(delbutton);
 
             oRow.appendChild(col1part);
             oRow.appendChild(col2part);
             oRow.appendChild(col3part);
             oRow.appendChild(col4part);
             oRow.appendChild(col5part);
-            oRow.appendChild(col6part);
+          //  oRow.appendChild(col6part);
         }
     }
 
     $("#tableOutput").html(oTable);
 
-    levelinputdiv.appendChild(oTable);
+   // levelinputdiv.appendChild(oTable);
 }
 
 
@@ -1566,14 +1547,17 @@ function saveNewLevelInput() {
 
 function deleteLevelInput()
 {
-    var index =  Number(this.getAttribute('index'));
-    deleteConfigObject("levelinput",cachedconfig.levelinputs[index],function (retval) {
-        cachedconfig = retval;
-        updateLevelInputsTable();
-        //   populateBoundInputOptions();
-        updateFixturesTable();
+    if(selectedlevelinputindex > -1) {
+        var index = selectedlevelinputindex; //Number(this.getAttribute('index'));
+        deleteConfigObject("levelinput", cachedconfig.levelinputs[index], function (retval) {
+            cachedconfig = retval;
+            updateLevelInputsTable();
 
-    });
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
+        });
+    }
 }
 
 
