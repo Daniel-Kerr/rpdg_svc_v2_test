@@ -296,7 +296,7 @@ function contactSwitchHandler(contactdef)
                 if (parts.length == 2) {
                     var scenename = parts[1];
                     global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  invoking scene: " +scenename);
-                    module.exports.invokeScene(scenename, "wetdrycontact");
+                    module.exports.invokeScene(scenename, "wallstation");
                 }
                 break;
 
@@ -323,7 +323,7 @@ function contactSwitchHandler(contactdef)
                         if(targetscene != undefined)
                         {
                             global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  invoking scene from list: " +targetscene);
-                            module.exports.invokeScene(targetscene, "wetdrycontact");
+                            module.exports.invokeScene(targetscene, "wallstation");
                         }
                     }
                 }
@@ -720,7 +720,16 @@ var service = module.exports =  {
                     if (eventbundle != undefined && eventbundle.events.length > 0) {
                         if (currentschedule_eventbundle == undefined || eventbundle.date_time.diff(currentschedule_eventbundle.date_time) != 0) {
 
-                            global.applogger.info(TAG, "Sched Event Bunlde INVOKE Start -- : ", "", "");
+                            global.applogger.info(TAG, "**New or different Schedule Bundle Found**", eventbundle.date_time, "event count: " + eventbundle.events.length);
+                            global.applogger.info(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", "", "");
+                            // for debug only
+                            var eventidlist = "";
+                            for (var i = 0; i < eventbundle.events.length; i++) {
+                                var event = eventbundle.events[i];
+                                eventidlist += event.id + " | ";
+                            }
+                            global.applogger.info(TAG, " ", " Bundle Event ID LIST: " + eventidlist, "", "");
+
                             currentschedule_eventbundle = eventbundle; // store it,
 
                             for (var i = 0; i < eventbundle.events.length; i++) {

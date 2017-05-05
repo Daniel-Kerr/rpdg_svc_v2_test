@@ -254,6 +254,7 @@ function constructSceneButtons()
             var targetscene = this.getAttribute('scene');
             var element = {};
             element.name = targetscene;
+            element.requesttype = "wallstation";
             invokescene(element, function (retval) {
                 if (retval != undefined)
                 {

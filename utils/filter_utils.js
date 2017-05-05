@@ -192,13 +192,13 @@ module.exports = {
                 currentstate = 'Vacant';
 
                 break;
-            case 'schedule':
-                ModifiedLevel = UserLevelRequestedPCT;
-                break;
-            case 'wetdrycontact':
-                ModifiedLevel = UserLevelRequestedPCT;
-                currentstate = 'Occupied';
-                break;
+           // case 'schedule':
+           //     ModifiedLevel = UserLevelRequestedPCT;
+           //     break;
+           // case 'wetdrycontact':
+           //     ModifiedLevel = UserLevelRequestedPCT;
+          //      currentstate = 'Occupied';
+          //      break;
            // case 'zero2teninput':
             //    currentstate = 'Occupied';
             //    break;

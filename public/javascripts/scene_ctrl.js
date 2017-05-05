@@ -408,6 +408,7 @@ function constructSceneBox(currentdiv, scene, groupnum) {
         var scenename = this.getAttribute('scene');
         var element = {};
         element.name = scenename;
+        element.requesttype = "wallstation";
         invokescene(element,function (retval) {
             if(retval != undefined)  // as of 1/24/17, added version.
             {
@@ -665,6 +666,7 @@ function invokeAllOn()
 {
     var element = {};
     element.name = "ALL_ON";
+    element.requesttype = "override";
     invokescene(element,function (retval) {
         if(retval != undefined)  // as of 1/24/17, added version.
         {
@@ -682,6 +684,7 @@ function invokeAll10()
 {
     var element = {};
     element.name = "ALL_10";
+    element.requesttype = "override";
     invokescene(element,function (retval) {
         if(retval != undefined)  // as of 1/24/17, added version.
         {
@@ -698,6 +701,7 @@ function invokeAll50()
 {
     var element = {};
     element.name = "ALL_50";
+    element.requesttype = "override";
     invokescene(element,function (retval) {
         if(retval != undefined)  // as of 1/24/17, added version.
         {
@@ -714,6 +718,7 @@ function invokeAll50()
 function invokeAllOff() {
     var element = {};
     element.name = "ALL_OFF";
+    element.requesttype = "override";
     invokescene(element,function (retval) {
         if(retval != undefined)  // as of 1/24/17, added version.
         {

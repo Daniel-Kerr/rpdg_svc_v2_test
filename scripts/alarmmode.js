@@ -24,6 +24,15 @@ exports.cancel = function() {
 }
 
 
+exports.setInputLevel = function(inputname, level)
+{
+    if(inputname == "xyz")
+    {
+
+    }
+}
+
+
 var service = require('../controllers/service.js');
 function runscript() {
 

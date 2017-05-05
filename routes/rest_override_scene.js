@@ -45,18 +45,24 @@ router.post('/setmultiplefixturelevels', function(req, res) {
 router.post('/invokescene', function(req, res) {
 
     var name = req.body.name;
+    var requesttype = "wallstation";
+
+    if(req.body.requesttype != undefined)
+        requesttype = req.body.requesttype;
+
+
     var code = 400;
     if(name != undefined)
     {
         // bug 49,
         if(global.currentconfig.getSceneByName(name) != undefined)
         {
-            service.invokeScene(name, "wallstation");
+            service.invokeScene(name, requesttype);
             code = 200;
         }
         else if(name == "ALL_ON" || name == "ALL_50" || name == "ALL_10" || name == "ALL_OFF")
         {
-            service.invokeScene(name, "wallstation");
+            service.invokeScene(name, requesttype);
             code = 200;
         }
     }
