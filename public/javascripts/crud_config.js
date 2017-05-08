@@ -55,6 +55,8 @@ var REST_GET_ENOCEAN_RX = "/config/enoceanrx";
 
 var REST_GET_SCRIPT_NAMES = "/config/getscriptnames";
 
+var REST_GET_GPS_FROM_ZIPCODE = "/config/getgpsfromzipcode";
+
 var REST_GET_VERSION = "/version";
 // config get / set,
 function getConfig(callback)
@@ -433,5 +435,26 @@ function getScriptNames(callback)
         type: "GET",
         dataType: "json",
         success: onDataReceived,
+    });
+}
+
+
+
+
+function getGPSCordFromZipcode(obj, callback) {
+
+    var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: REST_GET_GPS_FROM_ZIPCODE,
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
     });
 }

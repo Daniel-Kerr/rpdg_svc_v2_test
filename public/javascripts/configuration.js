@@ -2236,6 +2236,20 @@ function saveSiteInfo()
 }
 
 
+function gpsLookup()
+{
+    var element = {};
+    element.zip = document.getElementById("sitezip").value;
+    getGPSCordFromZipcode(element, function(data) {
+
+        if(data != undefined && data.location != undefined && data.location.length == 3)
+        {
+            document.getElementById("sitelatt").value = data.location[1];
+            document.getElementById("sitelong").value = data.location[2];
+        }
+    });
+}
+
 function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interface)
 {
     // filter out any already used outputs.

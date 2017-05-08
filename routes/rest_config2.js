@@ -881,4 +881,14 @@ router.get('/getscriptnames', function(req, res) {
 });
 
 
+router.post('/getgpsfromzipcode', function(req, res) {
+
+    var zip = req.body.zip;
+    var data = service.getGPSFromZipcode(zip, res);
+   // var element = {};
+   // element.location = data;
+   // res.status(200).send(element);
+});
+
+
 module.exports = router;

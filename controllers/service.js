@@ -557,6 +557,8 @@ var service = module.exports =  {
         }
 
 
+
+
     },
     getVersionObject: function()
     {
@@ -1200,5 +1202,51 @@ var service = module.exports =  {
     getScriptNames : function()
     {
         return availbilescripts;
+    },
+    getGPSFromZipcode : function(zipcode, res)
+    {
+        // zipcode to 2 gps.
+        var foundzip = false;
+        try {
+            var objectpath = 'utils/zipcode2gps.csv';
+            var target = path.resolve(objectpath);
+            if (fs.existsSync(target)) {
+
+                var lineReader = require('readline').createInterface({
+                    input: require('fs').createReadStream(target)
+                });
+
+                lineReader.on('line', function (line) {
+                    // console.log('Line from file:', line);
+                    var parts = line.split(',');
+                    if(parts.length == 3)
+                    {
+                        if(parts[0].trim() == zipcode)
+                        {
+                            foundzip = true;
+                            var element = {};
+                            element.location = parts;
+                            res.status(200).send(element);
+                            return;
+                        }
+                    }
+                }).on('close', function() {
+                    if(!foundzip)
+                    {
+                        console.log('ERROR zip code not found !!!!');
+                        res.status(400).send("error not found");
+                    }
+                  // console.log('Have a great day!');
+                  //  process.exit(0);
+                });
+
+
+
+            }
+        }catch (ex1)
+        {
+            global.applogger.info(TAG, " error reading file " + ex1, "");
+        }
+    //    res.status(200).send("not found");
     }
 };
