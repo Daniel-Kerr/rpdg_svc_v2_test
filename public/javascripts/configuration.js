@@ -2055,6 +2055,8 @@ function on_aa_part1_change()
             $('#active_action_label_part_2').text("Script");
             populateDropDown("active_action_sel_part2", scriptnames);
             $('#aa_part2').show();
+            $('#aa_part3').hide();
+            $('#aa_part4').hide();
             break;
         default:
             break;
@@ -2123,6 +2125,8 @@ function on_inactive_part1_change()
             $('#inactive_action_label_part_2').text("Script");
             populateDropDown("inactive_action_sel_part2", scriptnames);
             $('#ina_part2').show();
+            $('#ina_part3').hide();
+            $('#ina_part4').hide();
 
             break;
         default:
