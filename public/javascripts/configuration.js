@@ -12,6 +12,7 @@ var availibleinputs = [];
 var hostip = "";
 var cachedconfig = "";
 
+var rpdg_highvoltage = false;
 
 var selected_edit_fixture = undefined;
 
@@ -139,7 +140,7 @@ $(document).ready(function() {
                         show12VoltOption(false);
 
 
-                    if(fixture.type == "rgbw" || fixture.type == "cct")
+                    if((fixture.type == "rgbw" || fixture.type == "cct") && !rpdg_highvoltage )
                     {
                         showCommonAnodeOption(true);
                         document.getElementById("commonanode").checked = fixture.commonanode;
@@ -396,6 +397,14 @@ function processConfig(configobj)
 
         populateDropDown("active_action_sel_part5",scriptnames);
         populateDropDown("inactive_action_sel_part5",scriptnames);
+
+    });
+
+
+    getRPDGBoardInfo(function(data) {
+
+        rpdg_highvoltage = data.ishighvoltage;
+        //var k = data;
 
     });
 
@@ -1058,7 +1067,7 @@ function updateAvalibleStartingOutputNumbers()
         //  document.getElementById("candledim").disabled = true;
     }
 
-    if(seltype == "rgbw" || seltype == "cct") {
+    if((seltype == "rgbw" || seltype == "cct") && !rpdg_highvoltage) {
         showCommonAnodeOption(true);
         document.getElementById("commonanode").value = false;
     }

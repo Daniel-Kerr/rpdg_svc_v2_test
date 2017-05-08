@@ -41,7 +41,7 @@ var rxhandler = undefined;
 global.applogger.info(TAG,"I2C VALID: " + getI2cWire(), "");
 
 var CMD_GET_INFO = 0;
-var CMD_SETPWM = 1
+var CMD_SETPWM = 1;
 var CMD_SETPLC = 2;
 var CMD_SET_PWM_POLARITY = 3;  //pwm pol lv -- / dim edge ctrl on hw
 var CMD_SET_ZERO_2_TEN_DRIVE = 4;  //analog in drive level
@@ -56,6 +56,7 @@ exports.init = function(callback)
     global.applogger.info(TAG, "init", "");
     rxhandler = callback;
     startHWPolling();
+    read_HWInfo(); // 5/8/17
 }
 
 exports.setOutputToLevel = function(outputid, level, apply, options) {
@@ -104,10 +105,11 @@ exports.getPWMPower = function() {
     return watts;
 }
 
-exports.getRPDG_HWInfo = function() {
-    global.applogger.info(TAG, "****** attempting to read hw info from board ****** ", "");
-    read_HWInfo();
-}
+
+//exports.getRPDG_HWInfo = function() {
+//    global.applogger.info(TAG, "****** attempting to read hw info from board ****** ", "");
+//    read_HWInfo();
+//}
 
 
 exports.setZero2TenDrive = function(inputs)
@@ -189,6 +191,27 @@ exports.setPWMOutputPolarity = function(polconfig)
 exports.enableHardwarePolling = function(enable)
 {
     polling_enabled = enable;
+}
+
+
+exports.isHighVoltageBoard = function()
+{
+    if(boardtype.toLowerCase().includes("high"))
+        return true;
+    else
+        return false;
+}
+
+
+
+exports.getFWVersionNumber = function()
+{
+    try {
+        return parseFloat(fwversion);
+    } catch(ex)
+    {
+        return 0.0;
+    }
 }
 
 var tempcounter = 0;
@@ -579,16 +602,3 @@ function getI2cWire() {
 }
 
 
-function isHighVoltageBoard()
-{
-    if(boardtype.toLowerCase().includes("high"))
-        return true;
-    else
-        return false;
-}
-
-
-function getFWVersionNumber()
-{
-    return parseFloat(fwversion);
-}

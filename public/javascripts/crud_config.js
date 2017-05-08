@@ -57,6 +57,8 @@ var REST_GET_SCRIPT_NAMES = "/config/getscriptnames";
 
 var REST_GET_GPS_FROM_ZIPCODE = "/config/getgpsfromzipcode";
 
+var REST_GET_RPDG_BOARD_INFO = "/config/getrpdgboardinfo";
+
 var REST_GET_VERSION = "/version";
 // config get / set,
 function getConfig(callback)
@@ -458,3 +460,25 @@ function getGPSCordFromZipcode(obj, callback) {
         }
     });
 }
+
+
+
+
+function getRPDGBoardInfo(callback) {
+
+   // var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: REST_GET_RPDG_BOARD_INFO,
+        type: 'post',
+      //  data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}
+

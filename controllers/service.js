@@ -71,9 +71,11 @@ var upd_handler = undefined; //require('./udp_handler.js');
 
 
 var sw_version = "???";
-var firmware_version = "???";
+//var firmware_version = "???";
 
 
+// 5/8/17  post init hw init,
+var delayedHW_InitCount = 3;
 
 
 
@@ -467,6 +469,26 @@ function constructPWMPolarityMask()
 }
 
 
+
+function constructHV_PhaseDimMask()
+{
+    var fixlist = global.currentconfig.fixtures;
+    var mask = 0x00;
+    for(var i = 0 ; i <  fixlist.length; i++)
+    {
+        var fix = fixlist[i];
+        if(fix.interfacename == "rpdg-pwm") {
+            //global.applogger.info(TAG, " fixture dim opts : " + fix.parameters.dimoptions, "");
+            if(fix.parameters.dimoptions == "2") {
+                var baseidx = fix.outputid - 1; // zero based index.
+                mask |= (0x01 << baseidx);
+            }
+        }
+    }
+    return mask;
+}
+
+
 var activescript = undefined;
 function ScriptResultHandler(name, result)
 {
@@ -512,10 +534,10 @@ var service = module.exports =  {
 
 
         //setup the 0-10 v drive values for current config,
-        module.exports.updateRPDGInputDrive();
 
-
-        module.exports.updatePWMPolarity();
+      // 5/8/17 mvoed to timer loop on delay
+      //  module.exports.updateRPDGInputDrive();
+      //  module.exports.updatePWMPolarity();
         //global.applogger.info(TAG, "writing pwm pol mask now", "");
         // var pwmpolmask = constructPWMPolarityMask();
         //  global.applogger.info(TAG, "PWM polarity Mask: " + pwmpolmask.toString(16), "");
@@ -538,8 +560,11 @@ var service = module.exports =  {
         sw_version = data_utils.getVersionFromFile();
 
 
-        rpdg.getRPDG_HWInfo();
+        //  rpdg.getRPDG_HWInfo();
 
+        // firmware_version = rpdg.getFWVersionNumber();
+
+        //  global.applogger.info(TAG, "FW Version from Board: " + firmware_version, "");
         //var alarmmode = require('../scripts/alarmmode.js');
         // alarmmode.run(ScriptResultHandler);
 
@@ -566,14 +591,23 @@ var service = module.exports =  {
 
         var ele = {};
         ele.controller = sw_version;
-        ele.firmware = firmware_version;
+        var verstring = (rpdg.isHighVoltageBoard())?"HV-":"LV-";
+        ele.firmware = verstring + " " + rpdg.getFWVersionNumber(); // firmware_version;
         return ele;
     },
     updatePWMPolarity : function()
     {
-        var pwmpolmask = constructPWMPolarityMask();
-        global.applogger.info(TAG, "PWM polarity Mask: " + pwmpolmask.toString(16), "");
-        rpdg.setPWMOutputPolarity(pwmpolmask);
+        var mask = 0;
+        if(rpdg.isHighVoltageBoard()) {
+            mask = constructHV_PhaseDimMask();
+            global.applogger.info(TAG, "HV Phase Mask: " + mask.toString(16), "");
+        }
+        else
+        {
+            mask = constructPWMPolarityMask();
+            global.applogger.info(TAG, "PWM polarity Mask: " + mask.toString(16), "");
+        }
+        rpdg.setPWMOutputPolarity(mask);
     },
     setupHWInterface : function(fixturename)
     {
@@ -592,6 +626,16 @@ var service = module.exports =  {
 
         var BasePollingPeriod = 1000;        // Time interval in mSec that we do the most frequent checks.
         periodictimer = setInterval(function () {
+
+            if( delayedHW_InitCount > 0)
+            {
+                delayedHW_InitCount--;
+                if(delayedHW_InitCount <= 0) {
+                     global.applogger.info(TAG, "************** executing delayed hw init **************", "");
+                    module.exports.updateRPDGInputDrive();
+                    module.exports.updatePWMPolarity();
+                }
+            }
 
             // moved here so others can use virtual time.
             var now = moment();  // single "now " var.
@@ -1237,8 +1281,8 @@ var service = module.exports =  {
                         console.log('ERROR zip code not found !!!!');
                         res.status(400).send("error not found");
                     }
-                  // console.log('Have a great day!');
-                  //  process.exit(0);
+                    // console.log('Have a great day!');
+                    //  process.exit(0);
                 });
 
 
@@ -1248,6 +1292,10 @@ var service = module.exports =  {
         {
             global.applogger.info(TAG, " error reading file " + ex1, "");
         }
-    //    res.status(200).send("not found");
+        //    res.status(200).send("not found");
+    },
+    isHighVoltageBoard : function()
+    {
+        return rpdg.isHighVoltageBoard();
     }
 };

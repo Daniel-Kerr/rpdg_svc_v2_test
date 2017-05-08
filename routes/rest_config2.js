@@ -885,9 +885,17 @@ router.post('/getgpsfromzipcode', function(req, res) {
 
     var zip = req.body.zip;
     var data = service.getGPSFromZipcode(zip, res);
-   // var element = {};
-   // element.location = data;
-   // res.status(200).send(element);
+
+});
+
+
+router.post('/getrpdgboardinfo', function(req, res) {
+
+    var data = service.isHighVoltageBoard()
+    var element = {};
+    element.ishighvoltage = data;
+    element.fwversion = "??.??";
+    res.status(200).send(element);
 });
 
 
