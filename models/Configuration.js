@@ -40,6 +40,9 @@ var Configuration = function()
 
     Configuration.prototype.fromJson = function(obj) {
 
+        this.sitezip = obj.sitezip;
+        this.sitelatt = obj.sitelatt; //45.4736058;
+        this.sitelong = obj.sitelong; //-122.7349017;
 
         for (var i = 0; i < obj.fixtures.length; i++) {
             var fix = obj.fixtures[i];
