@@ -32,10 +32,23 @@ var pwm_current_amps = new Float32Array(8);
 var Zero_to_Ten_Volt_inputs = new Float32Array(4);  // as of 12/21/16, this is now voltage levels, not raw bits.
 var WetDryContacts = new Uint8Array(4);
 
+var boardtype = "??";
+var fwversion = "??";
+
 
 var rxhandler = undefined;
 
 global.applogger.info(TAG,"I2C VALID: " + getI2cWire(), "");
+
+var CMD_GET_INFO = 0;
+var CMD_SETPWM = 1
+var CMD_SETPLC = 2;
+var CMD_SET_PWM_POLARITY = 3;  //pwm pol lv -- / dim edge ctrl on hw
+var CMD_SET_ZERO_2_TEN_DRIVE = 4;  //analog in drive level
+var CMD_READ_ZERO_2_TENLEVEL = 5;
+var CMD_READ_WET_DRY_CONTACTS = 6;
+var CMD_READ_PWM_CURRENT = 7;  //
+
 
 
 exports.init = function(callback)
@@ -91,6 +104,11 @@ exports.getPWMPower = function() {
     return watts;
 }
 
+exports.getRPDG_HWInfo = function() {
+    global.applogger.info(TAG, "****** attempting to read hw info from board ****** ", "");
+    read_HWInfo();
+}
+
 
 exports.setZero2TenDrive = function(inputs)
 {
@@ -108,12 +126,12 @@ exports.setZero2TenDrive = function(inputs)
             // console.log("drive config sending to hw(byte0) :  " + config[0] );
             var wire = getI2cWire();
             if (wire != undefined) {
-                wire.writeBytes(3, config, function (err) {
+                wire.writeBytes(CMD_SET_ZERO_2_TEN_DRIVE, config, function (err) {
                     if (err != null)
                         global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
 
                 });
-                wire.writeBytes(3, config, function (err) {
+                wire.writeBytes(CMD_SET_ZERO_2_TEN_DRIVE, config, function (err) {
                     if (err != null)
                         global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
                 });
@@ -143,12 +161,12 @@ exports.setPWMOutputPolarity = function(polconfig)
             config[0] = polconfig;
             var wire = getI2cWire();
             if (wire != undefined) {
-                wire.writeBytes(2, config, function (err) {
+                wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
                     if (err != null)
                         global.applogger.error(TAG, "setPWMOutputPolarity",  err);
 
                 });
-                wire.writeBytes(2, config, function (err) {
+                wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
                     if (err != null)
                         global.applogger.error(TAG, "setPWMOutputPolarity",  err);
                 });
@@ -166,7 +184,6 @@ exports.setPWMOutputPolarity = function(polconfig)
         global.applogger.error(TAG, "setPWMOutputPolarity",  err);
     }
 }
-
 
 
 exports.enableHardwarePolling = function(enable)
@@ -197,6 +214,44 @@ function startHWPolling() {
 // ********************************************PRIVATE FUNCS ******************************************
 // *****************************************************************************************************
 
+function read_HWInfo() {
+    try {
+        //length,  then  byte 0 hw/ lv...etc,  2 bytes of version number of fw.
+        var wire = getI2cWire();
+        if (wire != undefined) {
+            wire.readBytes(CMD_GET_INFO, 4, function (err, res) {
+                if (res != null) {
+                    var length = res[0];
+                    var statebits = res[1];
+                    if(res[1] == 0)
+                        boardtype = "Low Voltage";
+                    else
+                        boardtype = "High Voltage";
+
+                    // mask in next two bytes
+                    var major = res[2];
+                    var minor = res[3];
+
+
+                    fwversion = major + "." + minor; //((res[2] << 8) | res[3]);
+                    printHWInfo();
+                }
+                else
+                {
+                    global.applogger.error(TAG, "read_HWInfo",  " res is null");
+                }
+
+                if (err != null)
+                    global.applogger.error(TAG, "read_HWInfo",  err);
+            });
+        }
+
+    } catch(err)
+    {
+        global.applogger.error(TAG, "read_HWInfo",  err);
+    }
+}
+
 /***
  * write the hw PLC outputs
  */
@@ -205,11 +260,11 @@ function setHW_PLC()
     try {
         var wire = getI2cWire();
         if(wire != undefined) {
-            wire.writeBytes(1, plc_output_switch, function (err) {
+            wire.writeBytes(CMD_SETPLC, plc_output_switch, function (err) {
                 if (err != null)
                     global.applogger.error(TAG, "Set PLC LEVELS:  ", err);
             });
-            wire.writeBytes(1, plc_output_switch, function (err) {
+            wire.writeBytes(CMD_SETPLC, plc_output_switch, function (err) {
 
                 if (err != null)
                     global.applogger.error(TAG, "Set PLC LEVELS:  ", err);
@@ -222,8 +277,6 @@ function setHW_PLC()
 
     printPLCOutputLevels();
 }
-
-
 
 
 function setHW_PWMLevels()
@@ -253,11 +306,11 @@ function setHW_PWMLevels()
 
         var wire = getI2cWire();
         if (wire != undefined) {
-            wire.writeBytes(0, zone_levels, function (err) {
+            wire.writeBytes(CMD_SETPWM, zone_levels, function (err) {
                 if (err != null)
                     global.applogger.error(TAG, "setHW_PWMLevels:",  err);
             });
-            wire.writeBytes(0, zone_levels, function (err) {
+            wire.writeBytes(CMD_SETPWM, zone_levels, function (err) {
                 if (err != null)
                     global.applogger.error(TAG, "setHW_PWMLevels:",  err);
             });
@@ -275,19 +328,12 @@ function setHW_PWMLevels()
 }
 
 
-
-
-
-
-
-
-
 function readHW_CurrentCounts()
 {
     try {
         var wire = getI2cWire();
         if(wire != undefined) {
-            wire.readBytes(2, 17, function (err, res) {
+            wire.readBytes(CMD_READ_PWM_CURRENT, 17, function (err, res) {
                 if (res != null) {
                     var length = res[0];
                     var index = 0;
@@ -330,7 +376,7 @@ function readHW_0to10inputs() {
         var wire = getI2cWire();
         if (wire != undefined) {
 
-            wire.readBytes(0, 9, function (err, res) {
+            wire.readBytes(CMD_READ_ZERO_2_TENLEVEL, 9, function (err, res) {
                 if (res != null) {
                     var length = res[0];
                     var index = 0;
@@ -381,7 +427,7 @@ function readHW_WetDryContactinputs() {
     try {
         var wire = getI2cWire();
         if (wire != undefined) {
-            wire.readBytes(1, 2, function (err, res) {
+            wire.readBytes(CMD_READ_WET_DRY_CONTACTS, 2, function (err, res) {
                 if (res != null) {
                     var length = res[0];
                     // console.log("got back resp " + res[0] + "    " +  res[1] );
@@ -489,6 +535,14 @@ function printWetDryContacts()
     }
 }
 
+
+
+function printHWInfo()
+{
+    global.applogger.info(TAG, "***** HW INFO FROM RPDG BOARD*****", "");
+    global.applogger.info(TAG, "Board Type: " + boardtype, "");
+    global.applogger.info(TAG, "FW Version: " + fwversion, "");
+}
 function printPLCOutputLevels()
 {
     if(global.loghw.plcoutputlevels) {
@@ -522,4 +576,19 @@ function getI2cWire() {
     }
 
     return undefined;
+}
+
+
+function isHighVoltageBoard()
+{
+    if(boardtype.toLowerCase().includes("high"))
+        return true;
+    else
+        return false;
+}
+
+
+function getFWVersionNumber()
+{
+    return parseFloat(fwversion);
 }

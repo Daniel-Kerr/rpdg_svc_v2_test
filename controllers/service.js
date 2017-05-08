@@ -538,6 +538,7 @@ var service = module.exports =  {
         sw_version = data_utils.getVersionFromFile();
 
 
+        rpdg.getRPDG_HWInfo();
 
         //var alarmmode = require('../scripts/alarmmode.js');
         // alarmmode.run(ScriptResultHandler);
