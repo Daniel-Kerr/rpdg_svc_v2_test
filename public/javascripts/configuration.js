@@ -389,8 +389,19 @@ function processConfig(configobj)
     constructFixtureTable();
 
 
+
+    getScriptNames(function (data) {
+        scriptnames = data;
+
+
+        populateDropDown("active_action_sel_part5",scriptnames);
+        populateDropDown("inactive_action_sel_part5",scriptnames);
+
+    });
+
 }
 
+var scriptnames = undefined;
 
 
 function constructFixtureTable()
@@ -1249,8 +1260,6 @@ function saveNewContactInputObj() {
     var type = myRadio.filter(':checked').val();
     contactinput.type = type;
 
-   // var type = $('input[name=contacttype]:checked', '#myForm').val();
-   // contactinput.type = type;
     var active_action = "";
 
     var aa_p1 = $('#active_action_sel_part1').val();
@@ -1276,6 +1285,11 @@ function saveNewContactInputObj() {
         case "action_scene_list":
             active_action += "scenelist_@@_"+ aa_p2 + "_@@_"+ aa_p3 + "_@@_"+aa_p4;
             break;
+
+        case "action_script":
+            active_action += "script_@@_"+ aa_p2;
+            break;
+
         default:
             break;
     }
@@ -1309,6 +1323,9 @@ function saveNewContactInputObj() {
                 break;
             case "action_scene_list":
                 inactive_action += "scenelist_@@_"+ ina_p2 + "_@@_"+ina_p3 + "_@@_"+ina_p4;
+                break;
+            case "action_script":
+                inactive_action += "script_@@_"+ ina_p2;
                 break;
             default:
                 break;
@@ -1847,6 +1864,17 @@ function updateInputContactActionDropDowns(inputcontactobj) {
 
                     break;
 
+                case "script":
+
+                    $('#active_action_sel_part1').val("action_script");
+                    on_aa_part1_change();
+
+                    if(parts.length == 2) {
+                        $('#active_action_sel_part2').val(parts[1]);
+                    }
+                    on_aa_part2_change();
+                    break;
+
                 default:
                     break;
 
@@ -1898,6 +1926,16 @@ function updateInputContactActionDropDowns(inputcontactobj) {
                     on_ina_part2_change();
                     break;
 
+                case "script":
+
+                    $('#inactive_action_sel_part1').val("action_script");
+                    on_inactive_part1_change();
+
+                    if(parts.length == 2) {
+                        $('#inactive_action_sel_part2').val(parts[1]);
+                    }
+                    on_ina_part2_change();
+                    break;
                 default:
                     break;
 
@@ -2012,6 +2050,12 @@ function on_aa_part1_change()
             $('#aa_part3').show();
             $('#aa_part4').show();
             break;
+
+        case "action_script":
+            $('#active_action_label_part_2').text("Script");
+            populateDropDown("active_action_sel_part2", scriptnames);
+            $('#aa_part2').show();
+            break;
         default:
             break;
     }
@@ -2071,6 +2115,14 @@ function on_inactive_part1_change()
             $('#ina_part2').show();
             $('#ina_part3').show();
             $('#ina_part4').show();
+
+            break;
+
+        case "action_script":
+
+            $('#inactive_action_label_part_2').text("Script");
+            populateDropDown("inactive_action_sel_part2", scriptnames);
+            $('#ina_part2').show();
 
             break;
         default:

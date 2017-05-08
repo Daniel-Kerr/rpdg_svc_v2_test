@@ -53,6 +53,7 @@ var currentschedule_eventbundle = undefined;
 //var reinit_schedule_countdown = -1;
 
 
+var availbilescripts = [];
 
 
 var dim_bright_request_map = {};
@@ -541,8 +542,20 @@ var service = module.exports =  {
         //var alarmmode = require('../scripts/alarmmode.js');
         // alarmmode.run(ScriptResultHandler);
 
-        var k = 0;
-        k = k + 1;
+        //var bla = module.exports.getScriptNames();
+        //setup scripts dir,
+        var pk = path.resolve('scripts');
+        try {
+            fs.readdir(pk, function (err, items) {
+                for (var i = 0; i < items.length; i++) {
+                    availbilescripts.push(items[i]);
+                }
+            });
+        } catch(ex1)
+        {
+
+        }
+
 
     },
     getVersionObject: function()
@@ -1183,5 +1196,9 @@ var service = module.exports =  {
             global.virtualbasetime = undefined;
         }
         currentschedule_eventbundle = undefined; //reset,  5/5/17
+    },
+    getScriptNames : function()
+    {
+        return availbilescripts;
     }
 };

@@ -872,5 +872,13 @@ router.get('/enoceanrx', function(req, res) {
 });
 
 
+router.get('/getscriptnames', function(req, res) {
+
+    var que = service.getScriptNames();
+    var element = {};
+    element.scripts = que;
+    res.status(200).send(que);
+});
+
 
 module.exports = router;
