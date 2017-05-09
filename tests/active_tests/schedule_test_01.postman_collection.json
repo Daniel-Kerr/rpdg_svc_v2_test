@@ -40,7 +40,7 @@
 			"response": []
 		},
 		{
-			"name": "Add Schedule Item",
+			"name": "Delete All Schedule Items",
 			"event": [
 				{
 					"listen": "test",
@@ -48,6 +48,37 @@
 						"type": "text/javascript",
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/schedule/deleteall",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n       \n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Schedule Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -78,7 +109,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -109,7 +140,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -140,7 +171,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -171,7 +202,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -202,7 +233,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -270,7 +303,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -338,7 +373,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -406,7 +443,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -474,7 +513,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -542,7 +583,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -610,7 +653,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}

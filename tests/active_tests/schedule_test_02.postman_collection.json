@@ -40,7 +40,7 @@
 			"response": []
 		},
 		{
-			"name": "Add Schedule Item",
+			"name": "Delete All Schedule Items",
 			"event": [
 				{
 					"listen": "test",
@@ -48,6 +48,57 @@
 						"type": "text/javascript",
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/schedule/deleteall",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n       \n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Schedule Mode",
+			"request": {
+				"url": "http://localhost:3000/schedule/setschedulemode",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"enable\": true\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Schedule Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -64,7 +115,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"ids\": 1492190693862,\n        \"1492190693862_!nativeeditor_status\": \"inserted\",\n        \"1492190693862_text\": \"scene: ALL_ON\",\n        \"1492190693862_start_date\": \"05/09/2017 013:00\",\n        \"1492190693862_end_date\": \"05/09/2017 15:00\",\n        \"1492190693862_resource_id\": \"Scene\",\n        \"1492190693862_action\": \"scene\",\n        \"1492190693862_timebase\": \"absolute\",\n        \"1492190693862_repeat\": \"none\"\n}"
+					"raw": "{\n        \"ids\": 1492190693862,\n        \"1492190693862_!nativeeditor_status\": \"inserted\",\n        \"1492190693862_text\": \"scene: ALL_ON\",\n        \"1492190693862_start_date\": \"05/09/2017 13:00\",\n        \"1492190693862_end_date\": \"05/09/2017 15:00\",\n        \"1492190693862_resource_id\": \"Scene\",\n        \"1492190693862_action\": \"scene\",\n        \"1492190693862_timebase\": \"absolute\",\n        \"1492190693862_repeat\": \"none\"\n}"
 				},
 				"description": ""
 			},
@@ -78,7 +129,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -109,7 +160,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -140,7 +191,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -171,7 +222,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -202,75 +253,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/tester/setvirtualdatetime",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-09T10:30:00-07:00\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Get Status",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
-							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
-							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
-							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
-							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
-							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
-							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
-							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
-							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
-							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Set Virtual Time",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -358,7 +343,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -426,7 +413,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -444,74 +433,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"timestring\": \"2017-05-09T19:30:00-07:00\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Get Status",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 50;",
-							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 50;",
-							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;",
-							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 50;",
-							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 50;",
-							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 50;",
-							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 50;",
-							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
-							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
-							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
-							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
-							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;",
-							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 50;",
-							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 50;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/getconfig",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Set Virtual Time",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/tester/setvirtualdatetime",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-09T20:30:00-07:00\"\n}"
 				},
 				"description": ""
 			},
@@ -582,7 +503,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -599,7 +522,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-010T16:30:00-07:00\"\n}"
+					"raw": "{\n\t\"timestring\": \"2017-05-10T16:30:00-07:00\"\n}"
 				},
 				"description": ""
 			},
@@ -622,7 +545,7 @@
 							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 50;",
 							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 50;",
 							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 50;",
-							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool == 50;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
 							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
 							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
 							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
@@ -650,7 +573,9 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
 						]
 					}
 				}
@@ -667,7 +592,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-010T16:30:00-07:00\"\n}"
+					"raw": "{\n\t\"timestring\": \"2017-05-10T20:30:00-07:00\"\n}"
 				},
 				"description": ""
 			},
