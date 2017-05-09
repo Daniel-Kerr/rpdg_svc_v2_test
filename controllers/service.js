@@ -77,6 +77,8 @@ var sw_version = "???";
 // 5/8/17  post init hw init,
 var delayedHW_InitCount = 3;
 
+var reInitSchedMgrCount = 0; // counter used to periodically reinit the sched mgr.  cache. list
+
 
 
 function incommingUDPMessageHandler(messageobj)
@@ -733,12 +735,21 @@ var service = module.exports =  {
             }
             // ****************************************END DL POLLING ******************************************
 
+            reInitSchedMgrCount++;
+            if(reInitSchedMgrCount > 120*60)  //for now every 2 hours,  == 120 min,
+            {
+                global.applogger.info(TAG, "%%%% Periodic Sched Init Call %%%%", "", "", "");
+                schedule_mgr.requestScheduleCacheReset(now);
+                reInitSchedMgrCount = 0;
+            }
+
+
 
             // 3/17/17/    Schedule manage polling,*******************************************************************
             //********************************************************************************************************
             if(persistantstore != undefined && persistantstore.schedulemode != undefined && persistantstore.schedulemode) {
 
-                if (schedule_mgr.scheduleCacheReset())
+                if (schedule_mgr.scheduleCacheReset()) // if its just been reinitilzed,  set the current event bundle.. to null,
                     currentschedule_eventbundle = undefined;
 
 
@@ -1232,7 +1243,7 @@ var service = module.exports =  {
             activescript.cancel();
             activescript = undefined;
         }
-        activescript = require('../scripts/' + name + '.js');
+        activescript = require('../scripts/' + name);
         if(activescript != undefined)
         {
             activescript.run(ScriptResultHandler);
@@ -1307,5 +1318,10 @@ var service = module.exports =  {
     isHighVoltageBoard : function()
     {
         return rpdg.isHighVoltageBoard();
+    },
+    isScriptRunning : function()
+    {
+        return activescript != undefined;
     }
+
 };

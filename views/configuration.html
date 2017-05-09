@@ -131,6 +131,11 @@
             display: inline-block;
         }
 
+        .ilb_10 {
+            width: 15%;
+            display: inline-block;
+        }
+
 
         /* The Modal (background) */
         .modal {
@@ -520,8 +525,19 @@
 
                             <form id="wdcform">
                                 <label>Type: </label>
-                                <input type="radio" name="contacttype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >Momentary
-                                <input type="radio" name="contacttype" value="maintained" onclick="enableDisableInputActionDropDowns()" >Maintained
+
+                                <div class="radio radio-primary ilb_10">
+                                    <input type="radio"  id="momentary" name="contacttype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >
+                                    <label for="momentary">
+                                        Momentary
+                                    </label>
+                                </div>
+                                <div class="radio radio-primary ilb_10">
+                                    <input type="radio"  id="maintained" name="contacttype" value="maintained" onclick="enableDisableInputActionDropDowns()" >
+                                    <label for="maintained">
+                                        Maintained
+                                    </label>
+                                </div>
                             </form>
                             <br>
                             <br>

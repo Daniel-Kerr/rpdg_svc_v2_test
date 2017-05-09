@@ -85,4 +85,11 @@ router.post('/runscript', function(req, res) {
     res.status(code).send(cfg);
 });
 
+
+router.get('/scriptrunning', function(req, res, next) {
+
+    res.status(200).send(service.isScriptRunning());
+
+});
+
 module.exports = router;

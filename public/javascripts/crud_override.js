@@ -12,6 +12,8 @@ var REST_DEC_SCENE_LIST = "/scenelist/decrementscenelist";
 
 var REST_RUN_SCRIPT = "/override_scene/runscript";
 
+var REST_GET_SCRIPT_IS_RUNNING = "/override_scene/scriptrunning";
+
 function setFixtureLevel2(element, callback)
 {
     var dataset = JSON.stringify(element);
@@ -112,3 +114,18 @@ function executescript(element, callback)
 }
 
 
+
+
+function getScriptRunStatus(callback)
+{
+    function onDataReceived(series) {
+        if(series != null)
+            callback(series);
+    }
+    $.ajax({
+        url: REST_GET_SCRIPT_IS_RUNNING,
+        type: "GET",
+        dataType: "json",
+        success: onDataReceived,
+    });
+}
