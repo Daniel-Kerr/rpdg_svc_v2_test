@@ -125,10 +125,10 @@ var RGBWFixture = function(name, interface, outputid)
 
         var logobj = {};
         logobj.date = new moment().toISOString();
-        logobj.red = this.red.toFixed();
-        logobj.green = this.green.toFixed();
-        logobj.blue = this.blue.toFixed();
-        logobj.white = this.white.toFixed();
+        logobj.red = Number(this.red).toFixed();
+        logobj.green = Number(this.green).toFixed();
+        logobj.blue = Number(this.blue).toFixed();
+        logobj.white = Number(this.white).toFixed();
         data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
     };
 
