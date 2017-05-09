@@ -13,6 +13,21 @@ var loading = false; // used for blocking plc controls from going to hw.
 var lastrgbcolor;
 
 
+// timer added to peridoically fetch the status of script running,
+setInterval(function () {
+
+    getScriptRunStatus(function(data) {
+
+        if(data)
+        {
+            document.getElementById("scriptstatus").innerHTML = "Script Running";
+        }
+        else
+            document.getElementById("scriptstatus").innerHTML = "Idle";
+    });
+
+}, 5000);
+
 $(document).ready(function() {
 
 
@@ -337,7 +352,14 @@ function processConfig(configobj)
     updateFixturesTable();
     redrawScenes();
 
-    populateDropDown("scriptsel", ["alarmmode","???"]);
+  //  populateDropDown("scriptsel", ["alarmmode","???"]);
+
+
+    getScriptNames(function (data) {
+        scriptnames = data;
+
+        populateDropDown("scriptsel",scriptnames);
+    });
 }
 
 function runscript()
