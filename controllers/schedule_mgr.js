@@ -47,6 +47,9 @@ var HTML_TEXT_COLOR_DARK = '#111111';
 
 var dirtyschedulecountdown = -1; // used to reinit, moved from service .
 
+
+var referencedate = undefined;  //used for
+
 function requireUncached(module){
     delete require.cache[require.resolve(module)]
     return require(module)
@@ -55,7 +58,7 @@ function requireUncached(module){
 
 function printpendingevents()
 {
-    global.applogger.info(TAG, "*************** Schedule Event List" ,new Date().toString() + "**********************");
+    global.applogger.info(TAG, "*************** Current Schedule Event List" ,"**********************");
     for(var i = 0 ; i < pending_events.length; i++)
     {
         var event = pending_events[i];
@@ -63,7 +66,7 @@ function printpendingevents()
         if(event.repeat != 'none')
             id = event.base_id;
 
-        global.applogger.info(TAG, "EVENT: " + id + "    " + event.start_date + " :title " + event.text + "   repeate: " + event.repeat);
+        global.applogger.info(TAG, "EVENT: " + id + "  " + event.start_date + " :title " + event.text + "   repeat: " + event.repeat);
     }
 }
 
@@ -124,7 +127,7 @@ function writeEventListToFile(eventlist, schedfile)
         else {
             //console.log("The file was saved!");
         }
-        module.exports.requestScheduleCacheReset();
+        module.exports.requestScheduleCacheReset(new Date());
     });
 }
 
@@ -241,6 +244,126 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
 }
 
 
+function initManager() {
+
+    if(referencedate != undefined) {
+        global.applogger.info(TAG, "Running Sched Init : ref date ", referencedate.toISOString(), "");
+
+        if (!fs.existsSync(SCHEDULE_FILE_ONETIME)) {
+            createBlankFile(SCHEDULE_FILE_ONETIME);
+        }
+
+        if (!fs.existsSync(SCHEDULE_FILE_DAILY)) {
+            createBlankFile(SCHEDULE_FILE_DAILY);
+        }
+
+        if (!fs.existsSync(SCHEDULE_FILE_WEEKLY)) {
+            createBlankFile(SCHEDULE_FILE_WEEKLY);
+        }
+
+        // build a memory cached list of the next 10 events.
+        pending_events = []; //clear it,
+
+        var target = path.resolve(SCHEDULE_FILE_ONETIME);
+        var file_contents = requireUncached(target);
+        for (var idx = 0; idx < file_contents.length; idx++) {
+
+            var eventobj = file_contents[idx];
+
+            if (eventobj.timebase == "before_ss" || eventobj.timebase == "after_ss" ||
+                eventobj.timebase == "before_sr" || eventobj.timebase == "after_sr") {
+                var k = calculateCalendarTimeFromSunTime(eventobj);
+                eventobj.start_date = k.toString("MM/dd/yyyy HH:mm");
+                var end = new Date(k);
+                end.setHours(end.getHours() + 2);
+                eventobj.end_date = end.toString("MM/dd/yyyy HH:mm");
+            }
+
+            pending_events.push(eventobj);
+        }
+
+
+        //  daily, *******************************************************
+        // for this we will generate an event for the last 2 days.
+        var target = path.resolve(SCHEDULE_FILE_DAILY);
+
+        var stopdate = new Date(referencedate.getTime()); // new Date();
+
+        stopdate.setDate(stopdate.getDate() + 1);
+        var file_contents = requireUncached(target);
+        for (var idx = 0; idx < file_contents.length; idx++) {
+
+            var dailyevent = file_contents[idx];
+
+            var currdt = new Date(referencedate.getTime()); //new Date();
+
+            currdt.setDate(currdt.getDate() - 2);    // today minus 2 days,
+
+            while (1) {
+
+                if (currdt.getTime() > stopdate.getTime())
+                    break;
+
+                var eventobj = generateEventObjectAtTimeFromObj(currdt, dailyevent, "#55DD44");  // this calls sr ss
+                pending_events.push(eventobj);
+                currdt.addHours(24);
+            }
+        }
+
+
+        // weekly *****************************************
+
+        // for this we will generate an event for the last +/- weeks
+        var target = path.resolve(SCHEDULE_FILE_WEEKLY);
+
+        var stopdate = new Date(referencedate.getTime()); //new Date();
+        stopdate.setDate(stopdate.getDate() + 12);
+        var file_contents = requireUncached(target);
+        for (var idx = 0; idx < file_contents.length; idx++) {
+
+            var weeklyevent = file_contents[idx];
+
+            var currdt = new Date(referencedate.getTime()); //new Date();
+            currdt.addHours(-24 * 12);  // start 12 days
+
+            // currdt.setDate(currdt.getDate()-2);    // today minus 2 days,
+            var k = new Date(weeklyevent.start_date);
+            var dayofweek = k.getDay();  // sunday = 0,
+
+            while (1) {
+                var test = currdt.getDay();
+                if (test == dayofweek)
+                    break;
+
+                currdt.addHours(24);
+            }
+
+            while (1) {
+                if (currdt.getTime() > stopdate.getTime())
+                    break;
+
+                var eventobj = generateEventObjectAtTimeFromObj(currdt, weeklyevent, "#667722");
+                pending_events.push(eventobj);
+                currdt.addHours(24 * 7);  //advance 1 week,
+            }
+        }
+
+
+        // SORT EVENTS
+        pending_events.sort(function (a, b) {
+            var dateA = new Date(a.start_date), dateB = new Date(b.start_date);
+            return dateA - dateB;
+        });
+        printpendingevents();
+
+        referencedate = undefined;
+    }
+    else
+    {
+        global.applogger.info(TAG, "Error, cant run sched re-init, no ref date. ", "", "");
+    }
+}
+
 // singleton pattern.
 var mgr = module.exports = {
 
@@ -325,132 +448,17 @@ var mgr = module.exports = {
             dirtyschedulecountdown-=1;
             if(dirtyschedulecountdown < 0)
             {
-                global.applogger.info(TAG, "---- Schedule Re init----", "");
-                module.exports.initManager();
+                global.applogger.info(TAG, "---- Schedule Re init Start----", "");
+                initManager();
                 return true;
             }
         }
         return false;
     },
-    requestScheduleCacheReset: function() {
+    requestScheduleCacheReset: function(reftime) {
         dirtyschedulecountdown = 5;  // this is in seconds.
-    },
-    initManager: function() {
+        referencedate = new Date(reftime.getTime());
 
-
-        if (!fs.existsSync(SCHEDULE_FILE_ONETIME)) {
-            createBlankFile(SCHEDULE_FILE_ONETIME);
-        }
-
-        if (!fs.existsSync(SCHEDULE_FILE_DAILY)) {
-            createBlankFile(SCHEDULE_FILE_DAILY);
-        }
-
-        if (!fs.existsSync(SCHEDULE_FILE_WEEKLY)) {
-            createBlankFile(SCHEDULE_FILE_WEEKLY);
-        }
-
-
-
-
-
-        // build a memory cached list of the next 10 events.
-        pending_events = []; //clear it,
-        // var file_contents = requireUncached('../datastore/schedule/onetime.json');
-
-        var target = path.resolve(SCHEDULE_FILE_ONETIME);
-        var file_contents = requireUncached(target);
-        for (var idx = 0; idx < file_contents.length; idx++) {
-
-            var eventobj = file_contents[idx];
-
-            if( eventobj.timebase == "before_ss" || eventobj.timebase == "after_ss" ||
-                eventobj.timebase == "before_sr" || eventobj.timebase == "after_sr")
-            {
-                var k = calculateCalendarTimeFromSunTime(eventobj);
-                eventobj.start_date = k.toString("MM/dd/yyyy HH:mm");
-                var end = new Date(k);
-                end.setHours(end.getHours()+2);
-                eventobj.end_date = end.toString("MM/dd/yyyy HH:mm");
-            }
-
-            pending_events.push(eventobj);
-        }
-
-
-
-        //  daily, *******************************************************
-        // for this we will generate an event for the last 2 days.
-        var target = path.resolve(SCHEDULE_FILE_DAILY);
-        var stopdate = new Date();
-        stopdate.setDate(stopdate.getDate()+1);
-        var file_contents = requireUncached(target);
-        for (var idx = 0; idx < file_contents.length; idx++) {
-
-            var dailyevent = file_contents[idx];
-            var currdt = new Date();
-            currdt.setDate(currdt.getDate()-2);    // today minus 2 days,
-
-            while(1) {
-
-                if(currdt.getTime() > stopdate.getTime())
-                    break;
-
-                var eventobj = generateEventObjectAtTimeFromObj(currdt, dailyevent, "#55DD44");  // this calls sr ss
-                pending_events.push(eventobj);
-                currdt.addHours(24);
-            }
-        }
-
-
-        // weekly *****************************************
-
-        // for this we will generate an event for the last +/- weeks
-        var target = path.resolve(SCHEDULE_FILE_WEEKLY);
-        var stopdate = new Date();
-        stopdate.setDate(stopdate.getDate()+12);
-        var file_contents = requireUncached(target);
-        for (var idx = 0; idx < file_contents.length; idx++) {
-
-            var weeklyevent = file_contents[idx];
-
-            var currdt = new Date();
-            currdt.addHours(-24*12);  // start 12 days
-
-            // currdt.setDate(currdt.getDate()-2);    // today minus 2 days,
-            var k = new Date(weeklyevent.start_date);
-            var dayofweek = k.getDay();  // sunday = 0,
-
-            while(1)
-            {
-                var test = currdt.getDay();
-                if(test == dayofweek)
-                    break;
-
-                currdt.addHours(24);
-            }
-
-            while(1)
-            {
-                if(currdt.getTime() > stopdate.getTime())
-                    break;
-
-                var eventobj = generateEventObjectAtTimeFromObj(currdt, weeklyevent,"#667722");
-                pending_events.push(eventobj);
-                currdt.addHours(24*7);  //advance 1 week,
-            }
-        }
-
-
-
-
-
-        // SORT EVENTS
-        pending_events.sort(function(a, b) {
-            var dateA = new Date(a.start_date), dateB = new Date(b.start_date);
-            return dateA - dateB;
-        });
-        printpendingevents();
     },
     removeSceneFromSchedule: function(scenename)
     {
@@ -628,7 +636,7 @@ var mgr = module.exports = {
         createBlankFile(SCHEDULE_FILE_ONETIME);
         createBlankFile(SCHEDULE_FILE_DAILY);
         createBlankFile(SCHEDULE_FILE_WEEKLY);
-        module.exports.requestScheduleCacheReset();
+        module.exports.requestScheduleCacheReset(new Date());
 
     },
 

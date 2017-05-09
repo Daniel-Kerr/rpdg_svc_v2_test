@@ -544,7 +544,9 @@ var service = module.exports =  {
         //rpdg.setPWMOutputPolarity(pwmpolmask);
 
         //
-        schedule_mgr.initManager();
+
+        schedule_mgr.requestScheduleCacheReset(new Date());
+       // schedule_mgr.initManager();
         // test code
         // module.exports.getEnoceanKnownContactInputs();
 
@@ -749,14 +751,18 @@ var service = module.exports =  {
                         if (currentschedule_eventbundle == undefined || eventbundle.date_time.diff(currentschedule_eventbundle.date_time) != 0) {
 
                             global.applogger.info(TAG, "**New or different Schedule Bundle Found**", eventbundle.date_time, "event count: " + eventbundle.events.length);
-                            global.applogger.info(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", "", "virtual time is : " + (global.virtualbasetime != undefined));
+                            global.applogger.info(TAG, "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", "", "virtual time is : " + (global.virtualbasetime != undefined));
                             // for debug only
                             var eventidlist = "";
                             for (var i = 0; i < eventbundle.events.length; i++) {
                                 var event = eventbundle.events[i];
-                                eventidlist += event.id + " | ";
+                                var id = event.id;
+                                if(event.repeat != 'none')
+                                    id = event.base_id;
+
+                                eventidlist += id + " | ";
                             }
-                            global.applogger.info(TAG, " ", " Bundle Event ID LIST: " + eventidlist, "", "");
+                            global.applogger.info(TAG, " ", "Event Bundle ID LIST: " + eventidlist, "", "");
 
                             currentschedule_eventbundle = eventbundle; // store it,
 
@@ -1234,14 +1240,18 @@ var service = module.exports =  {
     },
     setVirtualTime : function(timestring)
     {
+        global.applogger.info(TAG, "Setting Virtual Time to: " + timestring , "");
         if(timestring != undefined) {
             global.virtualbasetime = moment(timestring);
             global.virtualtimeset = moment();
+            schedule_mgr.requestScheduleCacheReset(global.virtualbasetime.toDate());
         }
         else
         {
             global.virtualbasetime = undefined;
+            schedule_mgr.requestScheduleCacheReset(new Date());  // 5/9/17
         }
+
         currentschedule_eventbundle = undefined; //reset,  5/5/17
     },
     getScriptNames : function()
