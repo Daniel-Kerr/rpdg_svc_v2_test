@@ -1,0 +1,605 @@
+{
+	"variables": [],
+	"info": {
+		"name": "enocean_input_test_02",
+		"_postman_id": "5fff4f64-7ae4-2cf0-0ef9-3748cada812c",
+		"description": "Using an EnOcean Input Device to walk up and down a Scene list.\n\n4 dimmable fixtures, 2 cct fixtures, 2 EnOcean controlled fixtures and 1 Occupancy group.\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_4dim_2cct_4plc_2eno_1group",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.148Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"75\",\n                \"resptovac\": \"10\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.159Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"50\",\n                \"resptovac\": \"25\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.185Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"25\",\n                \"resptovac\": \"50\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.205Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": false,\n            \"min\": \"2000\",\n            \"max\": \"6500\",\n            \"commonanode\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"75\",\n                \"resptovac\": \"10\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": \"6500\",\n            \"brightness\": 100,\n            \"lastuserequestedbrightness\": 100,\n            \"previouscolortemp\": \"6500\",\n            \"previousbrightness\": \"75\",\n            \"lastupdated\": \"2017-05-09T18:54:13.213Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 100,\n            \"boundinputs\": [],\n            \"status\": 0\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT_CD\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/ceiling_spotlight.jpg\",\n            \"candledim\": true,\n            \"min\": \"2000\",\n            \"max\": \"6500\",\n            \"commonanode\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": \"6500\",\n            \"brightness\": 100,\n            \"lastuserequestedbrightness\": 100,\n            \"previouscolortemp\": \"6500\",\n            \"previousbrightness\": \"100\",\n            \"lastupdated\": \"2017-05-09T18:54:13.217Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 100,\n            \"boundinputs\": [],\n            \"status\": 0\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.220Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"boundinputs\": [],\n            \"status\": 0\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"25\",\n                \"resptovac\": \"25\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.230Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"boundinputs\": [],\n            \"status\": 0\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.237Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"boundinputs\": [],\n            \"status\": 0\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"0\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.244Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"boundinputs\": [],\n            \"status\": 0\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_ENO_1\",\n            \"interface\": {},\n            \"interfacename\": \"enocean\",\n            \"outputid\": \"019D35B9\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.250Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_ENO_2\",\n            \"interface\": {},\n            \"interfacename\": \"enocean\",\n            \"outputid\": \"019D36B9\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"0\",\n                \"resptovac\": \"100\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 100,\n            \"lastuserequestedlevel\": 100,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-09T18:54:13.260Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [\n        {\n            \"assignedname\": \"Occ_Vac_All_1\",\n            \"type\": \"maintained\",\n            \"interface\": \"enocean\",\n            \"inputid\": \"0192d193\",\n            \"active_action\": \"scenelist_@@_Walk_List_01_@@_down_@@_yes\",\n            \"inactive_action\": \"scenelist_@@_Walk_List_01_@@_up_@@_yes\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-05-09T18:55:25.725Z\",\n            \"enabled\": true\n        }\n    ],\n    \"groups\": [\n        {\n            \"name\": \"All\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_1\",\n                \"TEST_FIX_Dim_2\",\n                \"TEST_FIX_Dim_3\",\n                \"TEST_FIX_Dim_4\",\n                \"TEST_FIX_CCT\",\n                \"TEST_FIX_CCT_CD\",\n                \"TEST_FIX_Plc_1\",\n                \"TEST_FIX_Plc_2\",\n                \"TEST_FIX_Plc_3\",\n                \"TEST_FIX_Plc_4\",\n                \"TEST_FIX_ENO_1\",\n                \"TEST_FIX_ENO_2\"\n            ]\n        }\n    ],\n    \"scenes\": [],\n    \"enocean\": [\n        {\n            \"enoceanid\": \"019D35B9\",\n            \"systemid\": \"10\"\n        },\n        {\n            \"enoceanid\": \"019D36B9\",\n            \"systemid\": \"12\"\n        }\n    ],\n    \"scenelists\": [\n        {\n            \"name\": \"Walk_List_01\",\n            \"scenes\": [\n                \"ALL_ON\",\n                \"ALL_50\",\n                \"ALL_10\",\n                \"ALL_OFF\"\n            ],\n            \"activeindex\": -1\n        }\n    ],\n    \"occupiedstate\": 0,\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Disable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"false\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setMultipleFixtures_20%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_1\",\n\t\t\"level\": \"20\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_2\",\n\t\t\"level\": \"20\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_3\",\n\t\t\"level\": \"20\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_4\",\n\t\t\"level\": \"20\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_CCT\",\n\t\t\"colortemp\": \"6500\",\n\t\t\"brightness\": \"20\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_CCT_CD\",\n\t\t\"colortemp\": \"6500\",\n\t\t\"brightness\": \"20\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Plc_1\",\n\t\t\"level\": \"100\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Plc_2\",\n\t\t\"level\": \"100\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Plc_3\",\n\t\t\"level\": \"100\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Plc_4\",\n\t\t\"level\": \"100\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_ENO_1\",\n\t\t\"level\": \"20\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_ENO_2\",\n\t\t\"level\": \"20\"\n\t}\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_occ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool == 100;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool == 100;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_occ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 50;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool == 50;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm == 25;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool == 25;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level == 50;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level == 50;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_occ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 10;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 10;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 10;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool == 10;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm == 9;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool == 1;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level == 10;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level == 10;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_occ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_occ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool == 100;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool == 100;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"1\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 10;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 10;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 10;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool == 10;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm == 9;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool == 1;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level == 10;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level == 10;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 50;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool == 50;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm == 25;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool == 25;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level == 50;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level == 50;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool == 100;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool == 100;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "invoke_wet_vac",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].hwwarm === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[4].hwcool === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[5].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[5].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[6].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[11].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setinputlevel",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"interface\": \"enocean\",\n\t\"type\": \"contactinput\",\n\t\"inputid\": \"0192d193\",\n\t\"levelvolts\": \"0\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "setMultipleFixtures_0%",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_1\",\n\t\t\"level\": \"0\"\n    },\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_2\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_3\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Dim_4\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_CCT\",\n\t\t\"colortemp\": \"6500\",\n\t\t\"brightness\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_CCT_CD\",\n\t\t\"colortemp\": \"6500\",\n\t\t\"brightness\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_Plc_1\",\n\t\t\"level\": \"0\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Plc_2\",\n\t\t\"level\": \"0\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Plc_3\",\n\t\t\"level\": \"0\"\n\t},\t\n\t{\n\t\t\"name\": \"TEST_FIX_Plc_4\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_ENO_1\",\n\t\t\"level\": \"0\"\n\t},\n\t{\n\t\t\"name\": \"TEST_FIX_ENO_2\",\n\t\t\"level\": \"0\"\n\t}\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Enable HW polling",
+			"request": {
+				"url": "http://localhost:3000/tester/enablerpdgpolling",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"polling\": \"true\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
