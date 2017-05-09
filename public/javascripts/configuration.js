@@ -1029,7 +1029,7 @@ function setDropDownDataArray(dropdown, elementarray)
 
 function enableDisableInputActionDropDowns()
 {
-    var type = $('input[name=contacttype]:checked', '#myForm').val();
+    var type = $('input[name=contacttype]:checked', '#wdcform').val();
     if(type == "momentary") {
         $("#inactive_action_sel_part1").val("action_none").change();
         $('#inactive_action_sel_part1').prop('disabled', true);

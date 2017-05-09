@@ -518,10 +518,11 @@
                             </select>
 
 
-                            <label>Type: </label>
-                            <input type="radio" name="contacttype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >Momentary
-                            <input type="radio" name="contacttype" value="maintained" onclick="enableDisableInputActionDropDowns()" >Maintained
-
+                            <form id="wdcform">
+                                <label>Type: </label>
+                                <input type="radio" name="contacttype" value="momentary" checked="true" onclick="enableDisableInputActionDropDowns()" >Momentary
+                                <input type="radio" name="contacttype" value="maintained" onclick="enableDisableInputActionDropDowns()" >Maintained
+                            </form>
                             <br>
                             <br>
                             <div id = "active_action_div" class = "aa_holder" >
