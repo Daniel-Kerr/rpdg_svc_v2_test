@@ -71,26 +71,6 @@
 			"response": []
 		},
 		{
-			"name": "Set Schedule Mode",
-			"request": {
-				"url": "http://localhost:3000/schedule/setschedulemode",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"enable\": true\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
 			"name": "Add Schedule Item",
 			"event": [
 				{
@@ -98,7 +78,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -129,7 +109,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -160,7 +140,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -191,7 +171,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -222,7 +202,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -255,7 +235,7 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var t = new Date().getTime();",
-							"while (new Date().getTime() < t + 5500);"
+							"while (new Date().getTime() < t + 5000);"
 						]
 					}
 				}
@@ -272,7 +252,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-09T11:30:00-07:00\"\n}"
+					"raw": "{\n  \"timestring\": \"2017-05-09T11:30:00-07:00\"\n}"
 				},
 				"description": ""
 			},
@@ -329,7 +309,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"enable\": false\n}"
+					"raw": "{\n  \"enable\": false\n}"
 				},
 				"description": ""
 			},
@@ -345,7 +325,7 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var t = new Date().getTime();",
-							"while (new Date().getTime() < t + 5500);"
+							"while (new Date().getTime() < t + 5000);"
 						]
 					}
 				}
@@ -362,7 +342,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-09T16:30:00-07:00\"\n}"
+					"raw": "{\n  \"timestring\": \"2017-05-09T16:30:00-07:00\"\n}"
 				},
 				"description": ""
 			},
@@ -415,7 +395,7 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var t = new Date().getTime();",
-							"while (new Date().getTime() < t + 5500);"
+							"while (new Date().getTime() < t + 5000);"
 						]
 					}
 				}
@@ -432,7 +412,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-09T19:30:00-07:00\"\n}"
+					"raw": "{\n  \"timestring\": \"2017-05-09T19:30:00-07:00\"\n}"
 				},
 				"description": ""
 			},
@@ -489,7 +469,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"enable\": true\n}"
+					"raw": "{\n  \"enable\": true\n}"
 				},
 				"description": ""
 			},
@@ -505,7 +485,7 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var t = new Date().getTime();",
-							"while (new Date().getTime() < t + 5500);"
+							"while (new Date().getTime() < t + 5000);"
 						]
 					}
 				}
@@ -522,7 +502,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-10T16:30:00-07:00\"\n}"
+					"raw": "{\n  \"timestring\": \"2017-05-10T16:30:00-07:00\"\n}"
 				},
 				"description": ""
 			},
@@ -575,7 +555,7 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var t = new Date().getTime();",
-							"while (new Date().getTime() < t + 5500);"
+							"while (new Date().getTime() < t + 5000);"
 						]
 					}
 				}
@@ -592,7 +572,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-05-10T20:30:00-07:00\"\n}"
+					"raw": "{\n  \"timestring\": \"2017-05-10T20:30:00-07:00\"\n}"
 				},
 				"description": ""
 			},
@@ -660,7 +640,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"timestring\": \"2017-04-06T08:02:17-07:00\"\n}"
+					"raw": "{\n  \"timestring\": \"2017-04-06T08:02:17-07:00\"\n}"
 				},
 				"description": ""
 			},
