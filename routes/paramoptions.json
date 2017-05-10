@@ -4,20 +4,16 @@
             "name": "Dimming Options",
             "options": [
                 {
-                    "name": "Don't Dim",
+                    "name": "0-10V DC Diming",
                     "value": 0
                 },
                 {
-                    "name": "Low Voltage Dimming",
+                    "name": "Forward Phase Dimming",
                     "value": 1
                 },
                 {
-                    "name": "Forward Phase Dimming",
-                    "value": 2
-                },
-                {
                     "name": "Reverse Phase Dimming",
-                    "value": 3
+                    "value": 2
                 }
             ]
         },

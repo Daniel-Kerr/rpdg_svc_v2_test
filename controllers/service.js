@@ -481,7 +481,7 @@ function constructHV_PhaseDimMask()
         var fix = fixlist[i];
         if(fix.interfacename == "rpdg-pwm") {
             //global.applogger.info(TAG, " fixture dim opts : " + fix.parameters.dimoptions, "");
-            if(fix.parameters.dimoptions == "2") {
+            if(fix.parameters.dimoptions == "1") {
                 var baseidx = fix.outputid - 1; // zero based index.
                 mask |= (0x01 << baseidx);
             }
@@ -489,6 +489,25 @@ function constructHV_PhaseDimMask()
     }
     return mask;
 }
+
+
+function constructHV_DimModeMask()
+{
+    var fixlist = global.currentconfig.fixtures;
+    var mask = 0x00;
+    for(var i = 0 ; i <  fixlist.length; i++)
+    {
+        var fix = fixlist[i];
+        if(fix.interfacename == "rpdg-pwm") {
+            if(fix.parameters.dimoptions == "0") {
+                var baseidx = fix.outputid - 1; // zero based index.
+                mask |= (0x01 << baseidx);
+            }
+        }
+    }
+    return mask;
+}
+
 
 
 var activescript = undefined;
@@ -604,7 +623,12 @@ var service = module.exports =  {
         var mask = 0;
         if(rpdg.isHighVoltageBoard()) {
             mask = constructHV_PhaseDimMask();
-            global.applogger.info(TAG, "HV Phase Mask: " + mask.toString(16), "");
+            global.applogger.info(TAG, "HV Phase Direction Mask: " + mask.toString(16), "");
+
+            //5/10/17
+            var dimmodemask = constructHV_DimModeMask();
+            global.applogger.info(TAG, "HV Dim Mode Phase Mask: " + dimmodemask.toString(16), "");
+            rpdg.setHVDimMode(dimmodemask);
         }
         else
         {
@@ -612,6 +636,7 @@ var service = module.exports =  {
             global.applogger.info(TAG, "PWM polarity Mask: " + mask.toString(16), "");
         }
         rpdg.setPWMOutputPolarity(mask);
+
     },
     setupHWInterface : function(fixturename)
     {

@@ -48,6 +48,7 @@ var CMD_SET_ZERO_2_TEN_DRIVE = 4;  //analog in drive level
 var CMD_READ_ZERO_2_TENLEVEL = 5;
 var CMD_READ_WET_DRY_CONTACTS = 6;
 var CMD_READ_PWM_CURRENT = 7;  //
+var CMD_SET_HV_DIM_MODE = 8;   // 8 bit bit mask, for setting between 0-10 v dim / vs  phase dimming, (fwd/ revers),
 
 
 
@@ -188,6 +189,37 @@ exports.setPWMOutputPolarity = function(polconfig)
 }
 
 
+
+
+// bitfield:  1 = phase dim , / 0  = 0-10 volt dc dim,
+exports.setHVDimMode = function(dimmodemask)
+{
+    try {
+        global.applogger.info(TAG, "setHVDimMode ", "sending output config to hw");
+        var config = new Uint8Array(1);
+        config[0] = dimmodemask;
+        var wire = getI2cWire();
+        if (wire != undefined) {
+            wire.writeBytes(CMD_SET_HV_DIM_MODE, config, function (err) {
+                if (err != null)
+                    global.applogger.error(TAG, "setHVDimMode",  err);
+
+            });
+            wire.writeBytes(CMD_SET_HV_DIM_MODE, config, function (err) {
+                if (err != null)
+                    global.applogger.error(TAG, "setHVDimMode",  err);
+            });
+        }
+        else {
+            global.applogger.info(TAG, "setHVDimMode", "no i2c hw");
+        }
+
+    } catch (err)
+    {
+        global.applogger.error(TAG, "setHVDimMode",  err);
+    }
+}
+
 exports.enableHardwarePolling = function(enable)
 {
     polling_enabled = enable;
@@ -196,6 +228,10 @@ exports.enableHardwarePolling = function(enable)
 
 exports.isHighVoltageBoard = function()
 {
+    if(getI2cWire() == undefined)
+        return true;
+
+
     if(boardtype.toLowerCase().includes("high"))
         return true;
     else

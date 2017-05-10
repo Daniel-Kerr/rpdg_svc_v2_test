@@ -430,11 +430,8 @@ function constructFixtureTable()
             { "mData": 'outputid', "bSortable": false},
             { "mData": 'image', "bSortable": false,
                 "mRender": function (data, type, row) {
-                    //  var sens = data;
-                    //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
                     var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
                     return imgstring;
-
                 }
             }
         ]
@@ -2186,6 +2183,10 @@ function on_ina_part2_change()
 function populateDropDown(dropdown, optionslist)
 {
     var sel = document.getElementById(dropdown);
+
+    if(sel == undefined)
+        return;
+
     while (sel.options.length > 0) {
         sel.remove(0);
     }
