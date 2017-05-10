@@ -736,10 +736,10 @@ var service = module.exports =  {
             // ****************************************END DL POLLING ******************************************
 
             reInitSchedMgrCount++;
-            if(reInitSchedMgrCount > 120*60)  //for now every 2 hours,  == 120 min,
+            if(reInitSchedMgrCount > 60*60)  //for now every X hours,  == 120 min,
             {
                 global.applogger.info(TAG, "%%%% Periodic Sched Init Call %%%%", "", "", "");
-                schedule_mgr.requestScheduleCacheReset(now);
+                schedule_mgr.requestScheduleCacheReset(now.toDate());
                 reInitSchedMgrCount = 0;
             }
 

@@ -94,6 +94,33 @@ var RGBWFixture = function(name, interface, outputid)
             white = modpct;  // modify the req obj.
         }
 
+
+        // ******************************** bogus data point entry ,  to make nice graph bug 258 ******************
+        // place bogus data point into log for obj, with current datetime, but last level.
+        var now = moment();
+        if(this.lastupdated != undefined)
+        {
+            var deltamin = now.diff(moment(this.lastupdated),'minutes');
+            if(deltamin >= 60)   // 60 min,
+            {
+                var logobj = {};
+                var backtime = now.subtract(1, "minutes");
+                var logobj = {};
+                logobj.date = backtime.toISOString();
+                logobj.red = Number(this.red).toFixed();
+                logobj.green = Number(this.green).toFixed();
+                logobj.blue = Number(this.blue).toFixed();
+                logobj.white = Number(this.white).toFixed();
+                data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
+            }
+        }
+        // ***************************************************************************************************
+
+
+
+
+
+
         // for common anode, we need the range to be inverted,
         // for 12 V device range is 50%, on high side, meaning
         // 50 - 100,

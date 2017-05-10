@@ -90,15 +90,35 @@ var DimFixture = function(name, interface, outputid)
                 var modpct = returndataobj.modifiedlevel;
                 requestobj.level = modpct;
                 this.previousvalue = Number(this.value);
+
+
+                // ******************************** bogus data point entry ,  to make nice graph bug 258 ******************
+                // place bogus data point into log for obj, with current datetime, but last level.
+                var now = moment();
+                if(this.lastupdated != undefined)
+                {
+                    var deltamin = now.diff(moment(this.lastupdated),'minutes');
+                    if(deltamin >= 60)   // 60 min,
+                    {
+                        var logobj = {};
+                        var backtime = now.subtract(1, "minutes");
+                        logobj.date = backtime.toISOString();
+                        logobj.level = this.level.toFixed();
+                        data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
+                    }
+                }
+                // ***************************************************************************************************
+
+
                 this.level = Number(requestobj.level);
-                this.lastupdated = moment();
+                this.lastupdated = now; //moment();
 
                 var outlevel = this.calculateOutputLevel(this.level);
                 this.interface.setOutputToLevel(this.outputid, outlevel, apply);
 
 
                 var logobj = {};
-                logobj.date = new moment().toISOString();
+                logobj.date = now.toISOString();
                 logobj.level = this.level.toFixed();
                 data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
             }
@@ -198,18 +218,37 @@ var DimFixture = function(name, interface, outputid)
         if(requestlevel > -1)
         {
 
-
-            //requestlevel = modpct;
             fixobj.previousvalue = Number(fixobj.value);
+
+
+            // ******************************** bogus data point entry ,  to make nice graph bug 258 ******************
+            // place bogus data point into log for obj, with current datetime, but last level.
+            var now = moment();
+            if(fixobj.lastupdated != undefined)
+            {
+                var deltamin = now.diff(moment(fixobj.lastupdated),'minutes');
+                if(deltamin >= 60)   // 60 min,
+                {
+                    var logobj = {};
+                    var backtime = now.subtract(1, "minutes");
+                    logobj.date = backtime.toISOString();
+                    logobj.level = fixobj.level.toFixed();
+                    data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
+                }
+            }
+            // ***************************************************************************************************
+
+
+
             fixobj.level = Number(requestlevel);
-            fixobj.lastupdated = moment();
+            fixobj.lastupdated = now;
 
             var outlevel = fixobj.calculateOutputLevel(fixobj.level);
 
             fixobj.interface.setOutputToLevel(fixobj.outputid, outlevel, true);
 
             var logobj = {};
-            logobj.date = new moment().toISOString();
+            logobj.date = now.toISOString();
             logobj.level = fixobj.level.toFixed();
             data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
         }

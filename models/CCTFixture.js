@@ -115,6 +115,26 @@ var CCTFixture = function(name, interface, outputid)
 
         else {
 
+            // ******************************** bogus data point entry ,  to make nice graph bug 258 ******************
+            // place bogus data point into log for obj, with current datetime, but last level.
+            var now = moment();
+            if(this.lastupdated != undefined)
+            {
+                var deltamin = now.diff(moment(this.lastupdated),'minutes');
+                if(deltamin >= 60)   // 60 min,
+                {
+                    var logobj = {};
+                    var backtime = now.subtract(1, "minutes");
+                    logobj.date = backtime.toISOString();
+                    logobj.brightness = Number(this.brightness).toFixed();
+                    logobj.colortemp = this.colortemp;
+                    data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
+                }
+            }
+            // ***************************************************************************************************
+
+
+
 
             this.previouscolortemp = this.colortemp;
             this.colortemp = colortemp;
@@ -123,6 +143,7 @@ var CCTFixture = function(name, interface, outputid)
             this.interface.setOutputToLevel(Number(this.outputid), warmvalueout, apply);
 
             this.previousbrightness = this.brightness;
+
             this.brightness = brightness;
             var bchannel = Number(this.outputid) + 1;
             this.hwwarm = warmcoolvals[0];
@@ -132,10 +153,10 @@ var CCTFixture = function(name, interface, outputid)
 
             this.interface.setOutputToLevel(bchannel, coolvalueout, apply);
 
-            this.lastupdated = moment();
+            this.lastupdated = now;
 
             var logobj = {};
-            logobj.date = new moment().toISOString();
+            logobj.date = now.toISOString();
             logobj.brightness = Number(this.brightness).toFixed();
             logobj.colortemp = this.colortemp;
             data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
@@ -270,6 +291,28 @@ var CCTFixture = function(name, interface, outputid)
         // color temp calculation
         var warmcoolvals = filter_utils.CalculateCCTAndDimLevels(fixobj.min, fixobj.max, colortemp, requestlevel, fixobj.candledim);
 
+
+
+        // ******************************** bogus data point entry ,  to make nice graph bug 258 ******************
+        // place bogus data point into log for obj, with current datetime, but last level.
+        var now = moment();
+        if(fixobj.lastupdated != undefined)
+        {
+            var deltamin = now.diff(moment(fixobj.lastupdated),'minutes');
+            if(deltamin >= 60)   // 60 min,
+            {
+                var logobj = {};
+                var backtime = now.subtract(1, "minutes");
+                logobj.date = backtime.toISOString();
+                logobj.brightness = Number(fixobj.brightness).toFixed();
+                logobj.colortemp = fixobj.colortemp;
+                data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);
+            }
+        }
+        // ***************************************************************************************************
+
+
+
         fixobj.previouscolortemp = fixobj.colortemp;
         fixobj.colortemp = colortemp;
 
@@ -285,11 +328,11 @@ var CCTFixture = function(name, interface, outputid)
 
         var coolvalueout = fixobj.calculateOutputLevel(warmcoolvals[1]);
         fixobj.interface.setOutputToLevel(bchannel, coolvalueout, true);
-        fixobj.lastupdated = moment();
+        fixobj.lastupdated = now;
 
 
         var logobj = {};
-        logobj.date = new moment().toISOString();
+        logobj.date = now.toISOString();
         logobj.brightness = Number(fixobj.brightness).toFixed();
         logobj.colortemp = fixobj.colortemp;
         data_utils.appendOutputObjectLogFile(fixobj.assignedname, logobj);

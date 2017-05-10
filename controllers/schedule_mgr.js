@@ -456,8 +456,14 @@ var mgr = module.exports = {
         return false;
     },
     requestScheduleCacheReset: function(reftime) {
-        dirtyschedulecountdown = 5;  // this is in seconds.
-        referencedate = new Date(reftime.getTime());
+        if (reftime != undefined) {
+            dirtyschedulecountdown = 5;  // this is in seconds.
+            referencedate = new Date(reftime.getTime());
+        }
+        else
+        {
+            global.applogger.info(TAG, "error trying to schedule cache reset, bad reftime", "");
+        }
 
     },
     removeSceneFromSchedule: function(scenename)

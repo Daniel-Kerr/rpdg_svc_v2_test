@@ -20,7 +20,7 @@ var OnOffFixture = function()
     this.outputid = "";
     this.image = "";
     this.candledim = false;
- //   this.boundinputs = [];
+    //   this.boundinputs = [];
     this.twelvevolt = false;
     this.parameters = new FixtureParameters();
 
@@ -47,8 +47,8 @@ var OnOffFixture = function()
         if(obj.parameters != undefined )
             this.parameters.fromJson(obj.parameters);
 
-       // if(obj.boundinputs != undefined)
-       //     this.boundinputs = obj.boundinputs;
+        // if(obj.boundinputs != undefined)
+        //     this.boundinputs = obj.boundinputs;
     };
 
     OnOffFixture.prototype.create = function(name, interface, interfacename, outputid, params)
@@ -89,7 +89,6 @@ var OnOffFixture = function()
         }
         else
             filterblocked = true;
-        // }
 
 
         if(filterblocked)
@@ -100,19 +99,38 @@ var OnOffFixture = function()
         if(requestobj.level > 0)
             modlevel = 100;
 
-        this.previousvalue= Number(this.value);
+
+
+        // ******************************** bogus data point entry ,  to make nice graph bug 258 ******************
+        // place bogus data point into log for obj, with current datetime, but last level.
+        var now = moment();
+        if(this.lastupdated != undefined)
+        {
+            var deltamin = now.diff(moment(this.lastupdated),'minutes');
+            if(deltamin >= 60)   // 60 min,
+            {
+                var logobj = {};
+                var backtime = now.subtract(1, "minutes");
+                logobj.date = backtime.toISOString();
+                logobj.level = this.level.toFixed();
+                data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
+            }
+        }
+        // ***************************************************************************************************
+
+
+        this.previousvalue= Number(this.level);
         this.level = Number(modlevel);
-        this.lastupdated = moment();
+
+        this.lastupdated = now;
 
         var options = (this.interfacename.includes("plc"))?"plc":undefined;
-
         var outlevel = this.calculateOutputLevel(this.level);
-
         this.interface.setOutputToLevel(this.outputid, outlevel, apply, options);
 
 
         var logobj = {};
-        logobj.date = new moment().toISOString();
+        logobj.date = now.toISOString();
         logobj.level = this.level.toFixed();
         data_utils.appendOutputObjectLogFile(this.assignedname, logobj);
     };
