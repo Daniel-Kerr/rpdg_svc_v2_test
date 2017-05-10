@@ -735,19 +735,24 @@ var service = module.exports =  {
             }
             // ****************************************END DL POLLING ******************************************
 
-            reInitSchedMgrCount++;
-            if(reInitSchedMgrCount > 60*60)  //for now every X hours,  == 120 min,
-            {
-                global.applogger.info(TAG, "%%%% Periodic Sched Init Call %%%%", "", "", "");
-                schedule_mgr.requestScheduleCacheReset(now.toDate());
-                reInitSchedMgrCount = 0;
-            }
+
 
 
 
             // 3/17/17/    Schedule manage polling,*******************************************************************
             //********************************************************************************************************
             if(persistantstore != undefined && persistantstore.schedulemode != undefined && persistantstore.schedulemode) {
+
+                reInitSchedMgrCount++;
+                if(reInitSchedMgrCount > 120*60)  //for now every X hours,minutes
+                {
+                    global.applogger.info(TAG, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", "", "");
+                    global.applogger.info(TAG, "^^^^^^^^^^^^^ Periodic Sched Init Call ^^^^^^^^^^^^^^^^^^", "", "");
+                    global.applogger.info(TAG, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", "", "");
+                    schedule_mgr.requestScheduleCacheReset(now.toDate());
+                    reInitSchedMgrCount = 0;
+                }
+
 
                 if (schedule_mgr.scheduleCacheReset()) // if its just been reinitilzed,  set the current event bundle.. to null,
                     currentschedule_eventbundle = undefined;

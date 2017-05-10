@@ -206,6 +206,17 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
     var end = new Date(starttime);
     end.setHours(end.getHours()+2);
 
+    // 5/10/17   limit end time to wihtin the day.  to avoid gui span in month view.
+    if((starttime.getHours() == 22 && starttime.getMinutes() > 0)|| starttime.getHours() == 23) // if > 10:00 PM
+    {
+        //var modend = new Date(ev.start_date);
+        //get time between midnight and start, calc and set to window -1,
+        end = new Date(starttime);
+        end.setHours(23);
+        end.setMinutes(59);
+
+    }
+
 
 
     eventobj.end_date = end.toString("MM/dd/yyyy HH:mm");
@@ -238,6 +249,16 @@ function generateEventObjectAtTimeFromObj(time, obj, color)
         eventobj.start_date = k.toString("MM/dd/yyyy HH:mm");
         var end = new Date(k);
         end.setHours(end.getHours()+2);
+
+        // 5/10/17   limit end time to wihtin the day.  to avoid gui span in month view.
+        if((k.getHours() == 22 && k.getMinutes() > 0)|| k.getHours() == 23) // if > 10:00 PM
+        {
+            end = new Date(k);
+            end.setHours(23);
+            end.setMinutes(59);
+        }
+
+
         eventobj.end_date = end.toString("MM/dd/yyyy HH:mm");
     }
     return eventobj;

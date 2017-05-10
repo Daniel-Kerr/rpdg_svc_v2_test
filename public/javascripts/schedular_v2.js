@@ -234,6 +234,20 @@ function processConfig(configobj) {
 }
 
 
+var delayedrefresh = undefined;
+function delayedRefreshSchedule()
+{
+    delayedrefresh = setInterval(function () {
+        scheduler.clearAll();
+        scheduler.load("schedule/getschedule2", "json", function () {
+        });
+        clearInterval(delayedrefresh);
+        delayedrefresh = undefined;
+    }, 1000);
+}
+
+
+
 function show (elements, specifiedDisplay) {
     elements = elements.length ? elements : [elements];
     for (var index = 0; index < elements.length; index++) {
@@ -324,10 +338,11 @@ function save_form() {
     scheduler.endLightbox(true, html("my_form"));
 
     if(ev.repeat != "none" || ev.timebase == "before_ss" || ev.timebase == "after_ss" || ev.timebase == "before_sr" || ev.timebase == "after_sr") {
-        scheduler.clearAll();
-        scheduler.load("schedule/getschedule2", "json", function () {
 
-        });
+        delayedRefreshSchedule();
+       // scheduler.clearAll();
+       // scheduler.load("schedule/getschedule2", "json", function () {
+       // });
     }
     else {
         // only covers absolute no repeast ,  becuase we dont reload.
