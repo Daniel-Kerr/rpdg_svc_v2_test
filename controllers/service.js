@@ -744,10 +744,10 @@ var service = module.exports =  {
             if(persistantstore != undefined && persistantstore.schedulemode != undefined && persistantstore.schedulemode) {
 
                 reInitSchedMgrCount++;
-                if(reInitSchedMgrCount > 120*60)  //for now every X hours,minutes
+                if(reInitSchedMgrCount > 15*60)  //for now every X hours,minutes
                 {
                     global.applogger.info(TAG, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", "", "");
-                    global.applogger.info(TAG, "^^^^^^^^^^^^^ Periodic Sched Init Call ^^^^^^^^^^^^^^^^^^", "", "");
+                    global.applogger.info(TAG, "^^^^^^^^^^^^^ Periodic Sched Re-Init Call ^^^^^^^^^^^^^^^^^^", "", "");
                     global.applogger.info(TAG, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", "", "");
                     schedule_mgr.requestScheduleCacheReset(now.toDate());
                     reInitSchedMgrCount = 0;

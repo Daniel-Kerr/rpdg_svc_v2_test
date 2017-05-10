@@ -304,7 +304,7 @@ function setHW_PLC()
 
 function setHW_PWMLevels()
 {
-    // global.applogger.error(TAG, "trying to set pwm levels in hw", "");
+   //  global.applogger.error(TAG, "trying to set pwm levels in hw", "");
     try {
         var zone_levels = new Uint8Array(16);  // convert pct to level values (16 bit).
         var zoneidx = 0;

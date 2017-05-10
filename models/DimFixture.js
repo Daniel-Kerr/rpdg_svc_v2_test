@@ -58,6 +58,7 @@ var DimFixture = function(name, interface, outputid)
 
     this.setLevel = function(requestobj, apply){
 
+
         if(requestobj.requesttype == "override" || requestobj.requesttype == "wallstation" || requestobj.requesttype == "wetdrycontact")
         {
             this.lastuserequestedlevel = requestobj.level;
@@ -161,6 +162,8 @@ var DimFixture = function(name, interface, outputid)
 
     this.startAutoAdjustTimer = function(fixture, targetlevel, requesttype)
     {
+        //global.applogger.info(TAG, "**** DEBUG ***" , "call to start the auto adjust tmier");
+
         autoadjustrequesttype = requesttype;
         autoadjuststartlevel = fixture.level;
         autoadjusttargetlevel = targetlevel;
