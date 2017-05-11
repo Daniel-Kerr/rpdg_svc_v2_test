@@ -89,8 +89,8 @@ $(document).ready(function() {
         }
         else {
 
-           // fixturetable.$('tr.active').removeClass('active');
-           // $(this).addClass('active');
+            // fixturetable.$('tr.active').removeClass('active');
+            // $(this).addClass('active');
 
             //$(this).addClass('active').siblings().removeClass('active');
             $(this).addClass('bg-primary').siblings().removeClass('bg-primary');
@@ -135,7 +135,7 @@ $(document).ready(function() {
                     }
 
                     if(fixture.interfacename == "rpdg-pwm")
-                       show12VoltOption(true);
+                        show12VoltOption(true);
                     else
                         show12VoltOption(false);
 
@@ -408,6 +408,8 @@ function processConfig(configobj)
 
     });
 
+    onLevelInputTypeChanged(); //init the active drive gui layout...
+
 }
 
 var scriptnames = undefined;
@@ -418,7 +420,7 @@ function constructFixtureTable()
     var dataset = transformFixtureToDataSet();
     fixturetable = $('#fixturetable').DataTable( {
         "aaData": dataset,
-      /*  "dom": '<"top"i>rt<"bottom"flp><"clear">',  */
+        /*  "dom": '<"top"i>rt<"bottom"flp><"clear">',  */
         "pageLength": 5,
         select: true,
         "bLengthChange": false,
@@ -466,8 +468,8 @@ function buildassignment(start, type)
 function saveNewFixture(image) {
 
     selected_edit_fixture = undefined;
-  //  var startout = document.getElementById("starting_output");
-  //  var type = document.getElementById("fixturetype");
+    //  var startout = document.getElementById("starting_output");
+    //  var type = document.getElementById("fixturetype");
     var selstart =  $("#starting_output").val(); //startout.options[startout.selectedIndex].value;
     var seltype = $("#fixturetype").val();  //type.options[type.selectedIndex].value;
     // start of validation code.
@@ -497,7 +499,7 @@ function saveNewFixture(image) {
             //    text: "Output number conflict, or output limit issue, please check type and output number",
             //    type: 'error',
             //    timeout: 4000
-           // });
+            // });
             return;
         }
     }
@@ -508,7 +510,7 @@ function saveNewFixture(image) {
         if(j != undefined && j.minctemp != undefined && j.minctemp.length > 0)
         {
             $.Notification.notify('error','top left', 'Fixture Save Error', j.minctemp[0]);
-          // noty({text: j.minctemp[0], type: 'error', timeout:750});
+            // noty({text: j.minctemp[0], type: 'error', timeout:750});
             return;
         }
 
@@ -516,7 +518,7 @@ function saveNewFixture(image) {
         if(j != undefined && j.maxctemp != undefined && j.maxctemp.length > 0)
         {
             $.Notification.notify('error','top left', 'Fixture Save Error', j.maxctemp[0]);
-           // noty({text: j.maxctemp[0], type: 'error', timeout:750});
+            // noty({text: j.maxctemp[0], type: 'error', timeout:750});
             return;
         }
 
@@ -524,7 +526,7 @@ function saveNewFixture(image) {
         if((Number(document.getElementById("minctemp").value) > document.getElementById("maxctemp").value))
         {
             $.Notification.notify('error','top left', 'Fixture Save Error', "Minimum Color temp must be < Maximum");
-           // noty({text: "Minimum Color temp must be < Maximum", type: 'error', timeout:1250});
+            // noty({text: "Minimum Color temp must be < Maximum", type: 'error', timeout:1250});
             return;
         }
 
@@ -619,25 +621,25 @@ function saveNewFixture(image) {
         fixturetable.destroy();
         constructFixtureTable();
         /*
-        var dataset = transformFixtureToDataSet();
-        fixturetable = $('#fixturetable').DataTable( {
-            "aaData": dataset,
-            "aoColumns": [
-                { "mData": 'assignedname'},
-                { "mData": 'type'},
-                { "mData": 'interfacename'},
-                { "mData": 'outputid', "bSortable": false},
-                { "mData": 'image', "bSortable": false,
-                    "mRender": function (data, type, row) {
-                        //  var sens = data;
-                        //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
-                        var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
-                        return imgstring;
+         var dataset = transformFixtureToDataSet();
+         fixturetable = $('#fixturetable').DataTable( {
+         "aaData": dataset,
+         "aoColumns": [
+         { "mData": 'assignedname'},
+         { "mData": 'type'},
+         { "mData": 'interfacename'},
+         { "mData": 'outputid', "bSortable": false},
+         { "mData": 'image', "bSortable": false,
+         "mRender": function (data, type, row) {
+         //  var sens = data;
+         //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
+         var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
+         return imgstring;
 
-                    }
-                }
-            ]
-        } );*/
+         }
+         }
+         ]
+         } );*/
     });
 }
 
@@ -717,7 +719,7 @@ function setfixtureimage()
 function cacheFixtureParamOptions(params)
 {
     global_paramoptions = params;
-   // buildParamOptionsTable();
+    // buildParamOptionsTable();
 
     constructDimmingOptionsBox();
     constructOccVacOptionsBox();
@@ -782,7 +784,7 @@ function constructDimmingOptionsBox()
 
 
 
-     index = global_paramoptions.parameters.length-1;
+    index = global_paramoptions.parameters.length-1;
     var oRow = document.createElement("TR");  // build row element
     oTBody.appendChild(oRow);
 
@@ -909,96 +911,96 @@ function constructDaylightOptionsBox()
 }
 
 /*
-function buildParamOptionsTable() {
-    // Declare global variables and create the header, footer, and caption.
-    var oTable = document.createElement("TABLE");
-    // var oTHead = document.createElement("THEAD");
-    var oTColGrp = document.createElement("colgroup");
-    var oTBody = document.createElement("TBODY");
-    var oTFoot = document.createElement("TFOOT");
-    var oRow;
-    var i, j;
-    oTable.className = "table table-bordered";
-    oTable.appendChild(oTColGrp);
-    // now body.
-    for (var paramnum = 0; paramnum < global_paramoptions.parameters.length; paramnum++)
-    {
-        oRow = document.createElement("TR");  // build row element
-        oTBody.appendChild(oRow);
+ function buildParamOptionsTable() {
+ // Declare global variables and create the header, footer, and caption.
+ var oTable = document.createElement("TABLE");
+ // var oTHead = document.createElement("THEAD");
+ var oTColGrp = document.createElement("colgroup");
+ var oTBody = document.createElement("TBODY");
+ var oTFoot = document.createElement("TFOOT");
+ var oRow;
+ var i, j;
+ oTable.className = "table table-bordered";
+ oTable.appendChild(oTColGrp);
+ // now body.
+ for (var paramnum = 0; paramnum < global_paramoptions.parameters.length; paramnum++)
+ {
+ oRow = document.createElement("TR");  // build row element
+ oTBody.appendChild(oRow);
 
-        // first param
-        var parameter = global_paramoptions.parameters[paramnum];
-        var paramoptions = parameter.options;
+ // first param
+ var parameter = global_paramoptions.parameters[paramnum];
+ var paramoptions = parameter.options;
 
-        var oCell1 = document.createElement("TD");
-        oCell1.innerHTML = parameter.name;
-        oRow.appendChild(oCell1);
+ var oCell1 = document.createElement("TD");
+ oCell1.innerHTML = parameter.name;
+ oRow.appendChild(oCell1);
 
-        var tempcell = document.createElement("TD");
-        var globalselector = document.createElement("select");
-        globalselector.id = "fixtureparam_" + paramnum;
-        globalselector.name = "fixtureparam_" + paramnum;
-        globalselector.className = "btn btn-large btn-primary";
+ var tempcell = document.createElement("TD");
+ var globalselector = document.createElement("select");
+ globalselector.id = "fixtureparam_" + paramnum;
+ globalselector.name = "fixtureparam_" + paramnum;
+ globalselector.className = "btn btn-large btn-primary";
 
-        // globalselector.addEventListener("change", onZoneOptionChanged);
-        globalselector.setAttribute(ATTR_PARAM,paramnum);
-        tempcell.appendChild(globalselector);
-        oRow.appendChild(tempcell);
-        setDropDownDataArray(globalselector,paramoptions);
+ // globalselector.addEventListener("change", onZoneOptionChanged);
+ globalselector.setAttribute(ATTR_PARAM,paramnum);
+ tempcell.appendChild(globalselector);
+ oRow.appendChild(tempcell);
+ setDropDownDataArray(globalselector,paramoptions);
 
-        // second param for this row.
-        paramnum++;
-        if(paramnum < global_paramoptions.parameters.length) {
+ // second param for this row.
+ paramnum++;
+ if(paramnum < global_paramoptions.parameters.length) {
 
-            var parameter2 = global_paramoptions.parameters[paramnum];
-            var paramoptions2 = parameter2.options;
+ var parameter2 = global_paramoptions.parameters[paramnum];
+ var paramoptions2 = parameter2.options;
 
-            var oCell1 = document.createElement("TD");
-            oCell1.innerHTML = parameter2.name;
-            oRow.appendChild(oCell1);
+ var oCell1 = document.createElement("TD");
+ oCell1.innerHTML = parameter2.name;
+ oRow.appendChild(oCell1);
 
-            var tempcell = document.createElement("TD");
-            var globalselector = document.createElement("select");
-            globalselector.id = "fixtureparam_" + paramnum;
-            globalselector.name ="fixtureparam_" + paramnum;
-            globalselector.className = "btn btn-large btn-primary";
+ var tempcell = document.createElement("TD");
+ var globalselector = document.createElement("select");
+ globalselector.id = "fixtureparam_" + paramnum;
+ globalselector.name ="fixtureparam_" + paramnum;
+ globalselector.className = "btn btn-large btn-primary";
 
-            // globalselector.addEventListener("change", onZoneOptionChanged);
-            globalselector.setAttribute(ATTR_PARAM, paramnum);
-            tempcell.appendChild(globalselector);
-            oRow.appendChild(tempcell);
-            setDropDownDataArray(globalselector, paramoptions2);
-        }
+ // globalselector.addEventListener("change", onZoneOptionChanged);
+ globalselector.setAttribute(ATTR_PARAM, paramnum);
+ tempcell.appendChild(globalselector);
+ oRow.appendChild(tempcell);
+ setDropDownDataArray(globalselector, paramoptions2);
+ }
 
-        // 3rd item
-        paramnum++;
-        if(paramnum < global_paramoptions.parameters.length) {
+ // 3rd item
+ paramnum++;
+ if(paramnum < global_paramoptions.parameters.length) {
 
-            var parameter3 = global_paramoptions.parameters[paramnum];
-            var paramoptions3 = parameter3.options;
+ var parameter3 = global_paramoptions.parameters[paramnum];
+ var paramoptions3 = parameter3.options;
 
-            var oCell1 = document.createElement("TD");
-            oCell1.innerHTML = parameter3.name;
-            oRow.appendChild(oCell1);
+ var oCell1 = document.createElement("TD");
+ oCell1.innerHTML = parameter3.name;
+ oRow.appendChild(oCell1);
 
-            var tempcell = document.createElement("TD");
-            var globalselector = document.createElement("select");
-            globalselector.id = "fixtureparam_" + paramnum;
-            globalselector.name ="fixtureparam_" + paramnum;
-            globalselector.className = "btn btn-large btn-primary";
+ var tempcell = document.createElement("TD");
+ var globalselector = document.createElement("select");
+ globalselector.id = "fixtureparam_" + paramnum;
+ globalselector.name ="fixtureparam_" + paramnum;
+ globalselector.className = "btn btn-large btn-primary";
 
-            // globalselector.addEventListener("change", onZoneOptionChanged);
-            globalselector.setAttribute(ATTR_PARAM, paramnum);
-            tempcell.appendChild(globalselector);
-            oRow.appendChild(tempcell);
-            setDropDownDataArray(globalselector, paramoptions3);
-        }
-    }
+ // globalselector.addEventListener("change", onZoneOptionChanged);
+ globalselector.setAttribute(ATTR_PARAM, paramnum);
+ tempcell.appendChild(globalselector);
+ oRow.appendChild(tempcell);
+ setDropDownDataArray(globalselector, paramoptions3);
+ }
+ }
 
-    oTable.appendChild(oTBody);
-    fixtureparamstable.appendChild(oTable);
-}
-*/
+ oTable.appendChild(oTBody);
+ fixtureparamstable.appendChild(oTable);
+ }
+ */
 
 function setDropDownDataArray(dropdown, elementarray)
 {
@@ -1151,8 +1153,8 @@ function updateWetDryContactTable() {
     oCell5.innerHTML = "Active Action";
     oCell6 = document.createElement("TD");
     oCell6.innerHTML = "Inactive Action";
-  //  oCell7 = document.createElement("TD");
-  //  oCell7.innerHTML = "Delete";
+    //  oCell7 = document.createElement("TD");
+    //  oCell7.innerHTML = "Delete";
 
     oRow.appendChild(oCell1);
     oRow.appendChild(oCell2);
@@ -1160,7 +1162,7 @@ function updateWetDryContactTable() {
     oRow.appendChild(oCell4);
     oRow.appendChild(oCell5);
     oRow.appendChild(oCell6);
-   // oRow.appendChild(oCell7);
+    // oRow.appendChild(oCell7);
     oTHead.appendChild(oRow);
 
     var coldef = document.createElement("col");
@@ -1181,9 +1183,9 @@ function updateWetDryContactTable() {
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
-   // coldef = document.createElement("col");
-   // coldef.className = "col-md-1";
-   // oTColGrp.appendChild(coldef);
+    // coldef = document.createElement("col");
+    // coldef.className = "col-md-1";
+    // oTColGrp.appendChild(coldef);
 
     oTable.appendChild(oTHead);
     oTable.appendChild(oTColGrp);
@@ -1218,13 +1220,13 @@ function updateWetDryContactTable() {
             // col7part.innerHTML = wetdrycontactlist[i].inactive_action;
 
 
-          //  var col7part = document.createElement("TD");
-          //  var delbutton = document.createElement("input");
-          //  delbutton.value = "X";
-          //  delbutton.setAttribute("index", i);
-          //  delbutton.addEventListener("click", deleteInputContactItem);
-          //  delbutton.className = "btn btn-xs btn-danger";
-         //   col7part.appendChild(delbutton);
+            //  var col7part = document.createElement("TD");
+            //  var delbutton = document.createElement("input");
+            //  delbutton.value = "X";
+            //  delbutton.setAttribute("index", i);
+            //  delbutton.addEventListener("click", deleteInputContactItem);
+            //  delbutton.className = "btn btn-xs btn-danger";
+            //   col7part.appendChild(delbutton);
 
             oRow.appendChild(col1part);
             oRow.appendChild(col2part);
@@ -1232,7 +1234,7 @@ function updateWetDryContactTable() {
             oRow.appendChild(col4part);
             oRow.appendChild(col5part);
             oRow.appendChild(col6part);
-           // oRow.appendChild(col7part);
+            // oRow.appendChild(col7part);
         }
     }
 
@@ -1469,15 +1471,15 @@ function updateLevelInputsTable() {
     oCell4.innerHTML = "Input #";
     oCell5 = document.createElement("TD");
     oCell5.innerHTML = "Drive Level";
-   // oCell6 = document.createElement("TD");
-   // oCell6.innerHTML = "Delete";
+    // oCell6 = document.createElement("TD");
+    // oCell6.innerHTML = "Delete";
 
     oRow.appendChild(oCell1);
     oRow.appendChild(oCell2);
     oRow.appendChild(oCell3);
     oRow.appendChild(oCell4);
     oRow.appendChild(oCell5);
-   // oRow.appendChild(oCell6);
+    // oRow.appendChild(oCell6);
     oTHead.appendChild(oRow);
 
     var coldef = document.createElement("col");
@@ -1495,9 +1497,9 @@ function updateLevelInputsTable() {
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
-  //  coldef = document.createElement("col");
-  //  coldef.className = "col-md-1";
-  //  oTColGrp.appendChild(coldef);
+    //  coldef = document.createElement("col");
+    //  coldef.className = "col-md-1";
+    //  oTColGrp.appendChild(coldef);
 
     oTable.appendChild(oTHead);
     oTable.appendChild(oTColGrp);
@@ -1525,26 +1527,26 @@ function updateLevelInputsTable() {
             var col5part = document.createElement("TD");
             col5part.innerHTML = levelinputlist[i].drivelevel;
 
-          //  var col6part = document.createElement("TD");
-         //   var delbutton = document.createElement("input");
-         //   delbutton.value = "X";
-         ///   delbutton.setAttribute("index", i);
-          //  delbutton.addEventListener("click", deleteLevelInput);
-          //  delbutton.className = "btn btn-xs btn-danger";
-          //  col6part.appendChild(delbutton);
+            //  var col6part = document.createElement("TD");
+            //   var delbutton = document.createElement("input");
+            //   delbutton.value = "X";
+            ///   delbutton.setAttribute("index", i);
+            //  delbutton.addEventListener("click", deleteLevelInput);
+            //  delbutton.className = "btn btn-xs btn-danger";
+            //  col6part.appendChild(delbutton);
 
             oRow.appendChild(col1part);
             oRow.appendChild(col2part);
             oRow.appendChild(col3part);
             oRow.appendChild(col4part);
             oRow.appendChild(col5part);
-          //  oRow.appendChild(col6part);
+            //  oRow.appendChild(col6part);
         }
     }
 
     $("#tableOutput").html(oTable);
 
-   // levelinputdiv.appendChild(oTable);
+    // levelinputdiv.appendChild(oTable);
 }
 
 
@@ -1563,7 +1565,10 @@ function saveNewLevelInput() {
     levelinput.inputid = $("#levelinput_inputs").val();;
     levelinput.type = $("#levelinputtype").val();
     levelinput.interface = $("#levelinputinterface").val();
-    levelinput.drivelevel = $("#levelinput_drive").val();
+    if(levelinput.type == "dimmer")
+        levelinput.drivelevel = "0";
+    else
+        levelinput.drivelevel = $("#levelinput_drive").val();
 
     levelinput.group = $("#groupassignment").val();
 
@@ -1811,7 +1816,7 @@ setInterval(function () {
             }
             else if (retval.error != undefined)
                 $.Notification.notify('error','top left', 'Config Save Error',retval.error);
-              // noty({text: 'Error saving config ' + retval.error, type: 'error', timeout:750});
+            // noty({text: 'Error saving config ' + retval.error, type: 'error', timeout:750});
         });
     }
 
@@ -2209,6 +2214,27 @@ function showCommonAnodeOption(show)
         $('#fixopts1_8').hide();
 }
 
+
+function onLevelInputTypeChanged()
+{
+
+    var ltype = $('#levelinputtype').val();
+    if(ltype == "daylight")
+    {
+        showActiveDriveLevel(true);
+    }
+    else
+        showActiveDriveLevel(false);
+}
+
+
+function showActiveDriveLevel(show)
+{
+    if(show)
+        $('#active_drive').show();
+    else
+        $('#active_drive').hide();
+}
 
 
 function show12VoltOption(show)

@@ -26,6 +26,9 @@
 
     <link rel="icon" type="image/png" href="/images/RVLT_LOGO_FAV.png">
 
+
+
+
     <style>
 
         .row_7_holder {
@@ -390,6 +393,20 @@
                                     </select>
                                 </div>
 
+                                <!--stub for later, joe, bug. div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button id="selfixtype" type="button" class="btn waves-effect waves-light btn-primary dropdown-toggle" data-toggle="dropdown" style="overflow: hidden; position: relative;">Action <span class="caret"></span></button>
+                                        <ul class="dropdown-menu" id="testlist">
+                                            <li><a href="javascript:void(0)">ON/OFF</a></li>
+                                            <li><a href="javascript:void(0)">DIMMABLE</a></li>
+                                            <li><a href="javascript:void(0)">CCT</a></li>
+                                            <li><a href="javascript:void(0)">RGBW</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" id="example-input1-group3" name="example-input1-group3" class="form-control" placeholder="Username">
+                                </div-->
+
+
                                 <div id="fixopts1_3" class="row_7part3">
                                     <label> Interface</label>
                                     <select id="interface" class="btn btn-large btn-primary">
@@ -676,7 +693,7 @@
                                     </div>
                                     <div class="col-lg-3">
                                         <label>Type: </label>
-                                        <select id="levelinputtype" class="btn btn-large btn-primary">
+                                        <select id="levelinputtype" class="btn btn-large btn-primary" onchange="onLevelInputTypeChanged()">
                                             <option value="dimmer">Dimmer</option>
                                             <option value="daylight">DayLight Sensor</option>
                                         </select>
@@ -697,7 +714,7 @@
                                         <select id="levelinput_inputs" class="btn btn-large btn-primary">
                                         </select>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div id="active_drive" class="col-lg-3">
                                         <label>Active Drive Level</label>
                                         <select id="levelinput_drive" class="btn btn-large btn-primary">
                                             <option value="0">0</option>
@@ -859,6 +876,19 @@
     <script src="javascripts/crud_override.js"></script>
 
 
+    <!--script>
+        function getEventTarget(e) {
+            e = e || window.event;
+            return e.target || e.srcElement;
+        }
+
+        var ul = document.getElementById('testlist');
+        ul.onclick = function(event) {
+            var target = getEventTarget(event);
+           // alert(target.innerHTML);
+            document.getElementById('selfixtype').innerHTML = target.innerHTML;
+        };
+    </script-->
 </body>
 
 
