@@ -654,7 +654,7 @@ function deleteFixture()
     var element = {};
     element.requesttype = "override";
     element.name = cachedconfig.fixtures[index].assignedname;
-    if(cachedconfig.fixtures[index].type == "on_off" || cachedconfig.fixtures[index] == "dim")
+    if(cachedconfig.fixtures[index].type == "on_off" || cachedconfig.fixtures[index].type == "dim")
         element.level = 0;
     else if(cachedconfig.fixtures[index].type == "cct")
     {
