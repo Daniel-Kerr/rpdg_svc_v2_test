@@ -290,8 +290,16 @@ function updateLevelInputsTable() {
             var units = "";
             var val = "";
             if(levelinputlist[i].interface == "rpdg") {
-                var fc = voltageToFC(levelinputlist[i].value);
-                val = levelinputlist[i].value  + " Volts  /  " + fc + " (FC)";
+
+                if(levelinputlist[i].type == "dimmer")
+                {
+                    val = levelinputlist[i].value + " Volts";
+                }
+                else {
+
+                    var fc = voltageToFC(levelinputlist[i].value);
+                    val = levelinputlist[i].value + " Volts  /  " + fc + " (FC)";
+                }
             }
             else if(levelinputlist[i].interface == "enocean") {
                 val = levelinputlist[i].value  + " LUX";
