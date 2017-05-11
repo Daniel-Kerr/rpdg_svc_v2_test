@@ -1,394 +1,813 @@
 {
-	"id": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-	"name": "schedule_test_01",
-	"description": "Uses 6 dimmable, 1 CCT, 4 PLC, and 2 EnOcean devices to test a variety of absolute schedule items with the pre-built scenes.\n\nTest will add the items then adjust the virtual time to check that all fixtures have adjusted to the appropriate level per the schedule item. \n\nAlso testing Daily, Weekly and onetime events.",
-	"order": [
-		"9cea9124-6711-dfb8-7dde-22ad19bf0fe7",
-		"7a61bb6e-73c1-3fad-a895-7a183ceea3a8",
-		"6db306ca-29b7-cf25-3c0b-4416fc61169b",
-		"8c05f4f8-b9e6-315e-f1f6-a4c4bee47043",
-		"1c321248-14f1-ede0-a7bc-f6ceff6dca83",
-		"94bdc3a3-ee37-4ed9-14ab-cbcfb53356c0",
-		"e7ad2998-baf2-f27d-1d4f-679ef4f23593",
-		"9c4ea2ee-94f5-37f4-9a10-2b01661a6932",
-		"0a31ea13-d717-19da-b276-f74f241ac0be",
-		"78be2258-63b4-1068-53a9-bfead4840f8b",
-		"18bf6718-1074-fbba-4314-a9881477045e",
-		"8934da88-5655-f231-a23a-5752d321382b",
-		"ce2fa7b6-488a-f5bb-f8d1-a5ccbed1fb85",
-		"6bd47d89-e9e5-41af-d9c5-4d19c0ac7637",
-		"b3120b91-3365-d594-a1c8-8f8c2f3451fb",
-		"375659a6-fa63-9dee-51ab-c50073405dc4",
-		"ba0403ff-5f67-72b8-8d01-413c3475c84b",
-		"5b421b32-0f7a-cf9c-12cf-f5b08e032193",
-		"f5856af6-d25e-52bf-7736-aadecf709571",
-		"834fba30-11e6-7ca0-2396-985f309472ad",
-		"9442eaf8-1ec0-2679-fa50-5ede20625f4e",
-		"ca205edb-7469-d1f9-9688-ec6dd720f2a5",
-		"7c4543a9-4185-5bf2-d424-aef6e30230b4",
-		"7049e068-eeb5-d196-a04f-1d981336c37c"
-	],
-	"folders": [],
-	"timestamp": 0,
-	"owner": "1393659",
-	"public": false,
-	"requests": [
+	"variables": [],
+	"info": {
+		"name": "schedule_test_01",
+		"_postman_id": "2f7dea0d-415a-6ef5-c005-df4f0d8bbd61",
+		"description": "Uses 6 dimmable, 1 CCT, 4 PLC, and 2 EnOcean devices to test a variety of absolute schedule items with the pre-built scenes.\n\nTest will add the items then adjust the virtual time to check that all fixtures have adjusted to the appropriate level per the schedule item. \n\nAlso testing Daily, Weekly and onetime events.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
 		{
-			"id": "0a31ea13-d717-19da-b276-f74f241ac0be",
-			"name": "Set Virtual Time",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"timestring\": \"2017-05-09T07:30:00-07:00\"\n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar t = new Date().getTime();\nwhile (new Date().getTime() < t + 5500);",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/tester/setvirtualdatetime",
-			"responses": []
-		},
-		{
-			"id": "18bf6718-1074-fbba-4314-a9881477045e",
-			"name": "Set Virtual Time",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"timestring\": \"2017-05-09T11:01:00-07:00\"\n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar t = new Date().getTime();\nwhile (new Date().getTime() < t + 5500);",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/tester/setvirtualdatetime",
-			"responses": []
-		},
-		{
-			"id": "1c321248-14f1-ede0-a7bc-f6ceff6dca83",
-			"name": "Add Schedule Item",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n        \"ids\": 1492190693864,\n        \"1492190693864_!nativeeditor_status\": \"inserted\",\n        \"1492190693864_text\": \"scene: ALL_OFF\",\n        \"1492190693864_start_date\": \"05/09/2017 16:00\",\n        \"1492190693864_end_date\": \"05/09/2017 18:00\",\n        \"1492190693864_resource_id\": \"Scene\",\n        \"1492190693864_action\": \"scene\",\n        \"1492190693864_timebase\": \"absolute\",\n        \"1492190693864_repeat\": \"none\"\n}",
-			"tests": "//tests[\"Status code is 200\"] = responseCode.code === 200;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/schedule/getschedule2?editing=true",
-			"responses": []
-		},
-		{
-			"id": "375659a6-fa63-9dee-51ab-c50073405dc4",
-			"name": "Get Status",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "GET",
-			"headers": "",
-			"data": [],
-			"rawModeData": "",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;\ntests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;\ntests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;\ntests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;\ntests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;\ntests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;\ntests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;\ntests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;\ntests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;\ntests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;\ntests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;\ntests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;\ntests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;\ntests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/config/getconfig",
-			"responses": []
-		},
-		{
-			"id": "5b421b32-0f7a-cf9c-12cf-f5b08e032193",
-			"name": "Get Status",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "GET",
-			"headers": "",
-			"data": [],
-			"rawModeData": "",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 10;\ntests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 10;\ntests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 10;\ntests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 10;\ntests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 10;\ntests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 10;\ntests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 10;\ntests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;\ntests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;\ntests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;\ntests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;\ntests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;\ntests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 10;\ntests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 10;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/config/getconfig",
-			"responses": []
-		},
-		{
-			"id": "6bd47d89-e9e5-41af-d9c5-4d19c0ac7637",
-			"name": "Get Status",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "GET",
-			"headers": "",
-			"data": [],
-			"rawModeData": "",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;\ntests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 100;\ntests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;\ntests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 100;\ntests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 100;\ntests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 100;\ntests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 100;\ntests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;\ntests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;\ntests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;\ntests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;\ntests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;\ntests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 100;\ntests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 100;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/config/getconfig",
-			"responses": []
-		},
-		{
-			"id": "6db306ca-29b7-cf25-3c0b-4416fc61169b",
-			"headers": "",
-			"url": "http://localhost:3000/schedule/getschedule2?timeshift=420&from=2017-05-01&to=2017-07-01",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "GET",
-			"data": null,
-			"dataMode": "params",
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1494444642735,
-			"name": "getScheduleInWindowTime",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"isFromCollection": true,
-			"collectionRequestId": "c9183929-8254-c475-4760-1e70e7bdb0eb"
-		},
-		{
-			"id": "7049e068-eeb5-d196-a04f-1d981336c37c",
-			"name": "Delete All Schedule Items",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n       \n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/schedule/deleteall",
-			"responses": []
-		},
-		{
-			"id": "78be2258-63b4-1068-53a9-bfead4840f8b",
-			"name": "Get Status",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "GET",
-			"headers": "",
-			"data": [],
-			"rawModeData": "",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;\ntests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;\ntests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;\ntests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;\ntests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;\ntests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;\ntests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;\ntests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;\ntests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;\ntests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;\ntests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;\ntests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;\ntests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;\ntests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/config/getconfig",
-			"responses": []
-		},
-		{
-			"id": "7a61bb6e-73c1-3fad-a895-7a183ceea3a8",
-			"name": "Delete All Schedule Items",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n       \n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/schedule/deleteall",
-			"responses": []
-		},
-		{
-			"id": "7c4543a9-4185-5bf2-d424-aef6e30230b4",
-			"name": "Clear Virtual Time",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"timestring\": \"2017-04-06T08:02:17-07:00\"\n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/tester/clearvirtualdatetime",
-			"responses": []
-		},
-		{
-			"id": "834fba30-11e6-7ca0-2396-985f309472ad",
-			"name": "Get Status",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "GET",
-			"headers": "",
-			"data": [],
-			"rawModeData": "",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;\ntests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;\ntests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;\ntests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;\ntests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;\ntests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;\ntests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;\ntests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;\ntests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;\ntests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;\ntests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;\ntests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;\ntests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;\ntests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/config/getconfig",
-			"responses": []
-		},
-		{
-			"id": "8934da88-5655-f231-a23a-5752d321382b",
-			"name": "Get Status",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "GET",
-			"headers": "",
-			"data": [],
-			"rawModeData": "",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 50;\ntests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 50;\ntests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;\ntests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 50;\ntests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 50;\ntests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 50;\ntests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 50;\ntests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;\ntests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;\ntests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;\ntests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;\ntests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;\ntests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 50;\ntests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 50;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/config/getconfig",
-			"responses": []
-		},
-		{
-			"id": "8c05f4f8-b9e6-315e-f1f6-a4c4bee47043",
-			"name": "Add Schedule Item",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n        \"ids\": 1492190693862,\n        \"1492190693862_!nativeeditor_status\": \"inserted\",\n        \"1492190693862_text\": \"scene: ALL_ON\",\n        \"1492190693862_start_date\": \"05/09/2017 13:00\",\n        \"1492190693862_end_date\": \"05/09/2017 15:00\",\n        \"1492190693862_resource_id\": \"Scene\",\n        \"1492190693862_action\": \"scene\",\n        \"1492190693862_timebase\": \"absolute\",\n        \"1492190693862_repeat\": \"none\"\n}",
-			"tests": "//tests[\"Status code is 200\"] = responseCode.code === 200;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/schedule/getschedule2?editing=true",
-			"responses": []
-		},
-		{
-			"id": "9442eaf8-1ec0-2679-fa50-5ede20625f4e",
-			"name": "Set Virtual Time",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"timestring\": \"2017-05-10T16:30:00-07:00\"\n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar t = new Date().getTime();\nwhile (new Date().getTime() < t + 5500);",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/tester/setvirtualdatetime",
-			"responses": []
-		},
-		{
-			"id": "94bdc3a3-ee37-4ed9-14ab-cbcfb53356c0",
-			"name": "Add Schedule Item",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n        \"ids\": 1492190693863,\n        \"1492190693863_!nativeeditor_status\": \"inserted\",\n        \"1492190693863_text\": \"scene: ALL_10\",\n        \"1492190693863_start_date\": \"05/09/2017 19:00\",\n        \"1492190693863_end_date\": \"05/09/2017 21:00\",\n        \"1492190693863_resource_id\": \"Scene\",\n        \"1492190693863_action\": \"scene\",\n        \"1492190693863_timebase\": \"absolute\",\n        \"1492190693863_repeat\": \"weekly\"\n}",
-			"tests": "//tests[\"Status code is 200\"] = responseCode.code === 200;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/schedule/getschedule2?editing=true",
-			"responses": []
-		},
-		{
-			"id": "9c4ea2ee-94f5-37f4-9a10-2b01661a6932",
-			"name": "Add Schedule Item",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n        \"ids\": 1492190693866,\n        \"1492190693866_!nativeeditor_status\": \"inserted\",\n        \"1492190693866_text\": \"scene: ALL_OFF\",\n        \"1492190693866_start_date\": \"05/09/2017 21:00\",\n        \"1492190693866_end_date\": \"05/09/2017 23:00\",\n        \"1492190693866_resource_id\": \"Scene\",\n        \"1492190693866_action\": \"scene\",\n        \"1492190693866_timebase\": \"absolute\",\n        \"1492190693866_repeat\": \"daily\"\n}",
-			"tests": "//tests[\"Status code is 200\"] = responseCode.code === 200;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/schedule/getschedule2?editing=true",
-			"responses": []
-		},
-		{
-			"id": "9cea9124-6711-dfb8-7dde-22ad19bf0fe7",
 			"name": "SetConfig_6dim_1cct_4plc_2eno",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.030Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.038Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.056Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.068Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_5\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.075Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_6\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"6\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.084Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"7\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"min\": \"2000\",\n            \"max\": \"6500\",\n            \"commonanode\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": 2000,\n            \"brightness\": 0,\n            \"lastuserequestedbrightness\": 0,\n            \"previouscolortemp\": 2000,\n            \"previousbrightness\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"1\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-05-02T20:30:26.340Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"2\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-05-02T20:30:30.950Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"3\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-05-02T20:30:33.108Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"4\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-05-02T20:30:34.903Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_ENO_1\",\n            \"interface\": {},\n            \"interfacename\": \"enocean\",\n            \"outputid\": \"019D35B9\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_ENO_2\",\n            \"interface\": {},\n            \"interfacename\": \"enocean\",\n            \"outputid\": \"019D36B9\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [\n        {\n            \"enoceanid\": \"019D35B9\",\n            \"systemid\": \"10\"\n        },\n        {\n            \"enoceanid\": \"019D36B9\",\n            \"systemid\": \"12\"\n        }\n    ],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\n",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/config/setconfig",
-			"responses": []
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.030Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"2\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.038Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"3\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.056Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"4\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.068Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_5\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"5\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.075Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_6\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"6\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-05-02T20:28:18.084Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"cct\",\n            \"assignedname\": \"TEST_FIX_CCT\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"7\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"min\": \"2000\",\n            \"max\": \"6500\",\n            \"commonanode\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"colortemp\": 2000,\n            \"brightness\": 0,\n            \"lastuserequestedbrightness\": 0,\n            \"previouscolortemp\": 2000,\n            \"previousbrightness\": 0,\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": false,\n            \"hwwarm\": 0,\n            \"hwcool\": 0,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"1\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-05-02T20:30:26.340Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_2\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"2\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-05-02T20:30:30.950Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_3\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"3\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-05-02T20:30:33.108Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_4\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"4\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-05-02T20:30:34.903Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_ENO_1\",\n            \"interface\": {},\n            \"interfacename\": \"enocean\",\n            \"outputid\": \"019D35B9\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_ENO_2\",\n            \"interface\": {},\n            \"interfacename\": \"enocean\",\n            \"outputid\": \"019D36B9\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"1\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [\n        {\n            \"enoceanid\": \"019D35B9\",\n            \"systemid\": \"10\"\n        },\n        {\n            \"enoceanid\": \"019D36B9\",\n            \"systemid\": \"12\"\n        }\n    ],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		},
 		{
-			"id": "b3120b91-3365-d594-a1c8-8f8c2f3451fb",
-			"name": "Set Virtual Time",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"timestring\": \"2017-05-09T16:30:00-07:00\"\n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar t = new Date().getTime();\nwhile (new Date().getTime() < t + 5500);",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/tester/setvirtualdatetime",
-			"responses": []
+			"name": "getScheduleInWindowTime",
+			"request": {
+				"url": "http://localhost:3000/schedule/getschedule2?timeshift=420&from=2017-05-01&to=2017-07-01",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
 		},
 		{
-			"id": "ba0403ff-5f67-72b8-8d01-413c3475c84b",
-			"name": "Set Virtual Time",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"timestring\": \"2017-05-09T19:30:00-07:00\"\n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar t = new Date().getTime();\nwhile (new Date().getTime() < t + 5500);",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/tester/setvirtualdatetime",
-			"responses": []
+			"name": "Delete All Schedule Items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/schedule/deleteall",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n       \n}"
+				},
+				"description": ""
+			},
+			"response": []
 		},
 		{
-			"id": "ca205edb-7469-d1f9-9688-ec6dd720f2a5",
-			"name": "Get Status",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "GET",
-			"headers": "",
-			"data": [],
-			"rawModeData": "",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 50;\ntests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 50;\ntests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;\ntests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 50;\ntests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 50;\ntests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 50;\ntests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 50;\ntests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;\ntests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;\ntests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;\ntests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;\ntests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;\ntests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 50;\ntests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 50;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/config/getconfig",
-			"responses": []
-		},
-		{
-			"id": "ce2fa7b6-488a-f5bb-f8d1-a5ccbed1fb85",
-			"name": "Set Virtual Time",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"timestring\": \"2017-05-09T13:30:00-07:00\"\n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar t = new Date().getTime();\nwhile (new Date().getTime() < t + 5500);",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/tester/setvirtualdatetime",
-			"responses": []
-		},
-		{
-			"id": "e7ad2998-baf2-f27d-1d4f-679ef4f23593",
 			"name": "Add Schedule Item",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n        \"ids\": 1492190693865,\n        \"1492190693865_!nativeeditor_status\": \"inserted\",\n        \"1492190693865_text\": \"scene: ALL_50\",\n        \"1492190693865_start_date\": \"05/09/2017 09:00\",\n        \"1492190693865_end_date\": \"05/09/2017 11:00\",\n        \"1492190693865_resource_id\": \"Scene\",\n        \"1492190693865_action\": \"scene\",\n        \"1492190693865_timebase\": \"absolute\",\n        \"1492190693865_repeat\": \"daily\"\n}",
-			"tests": "//tests[\"Status code is 200\"] = responseCode.code === 200;",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/schedule/getschedule2?editing=true",
-			"responses": []
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/schedule/getschedule2?editing=true",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"ids\": 1492190693862,\n        \"1492190693862_!nativeeditor_status\": \"inserted\",\n        \"1492190693862_text\": \"scene: ALL_ON\",\n        \"1492190693862_start_date\": \"05/09/2017 13:00\",\n        \"1492190693862_end_date\": \"05/09/2017 15:00\",\n        \"1492190693862_resource_id\": \"Scene\",\n        \"1492190693862_action\": \"scene\",\n        \"1492190693862_timebase\": \"absolute\",\n        \"1492190693862_repeat\": \"none\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		},
 		{
-			"id": "f5856af6-d25e-52bf-7736-aadecf709571",
+			"name": "Add Schedule Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/schedule/getschedule2?editing=true",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"ids\": 1492190693864,\n        \"1492190693864_!nativeeditor_status\": \"inserted\",\n        \"1492190693864_text\": \"scene: ALL_OFF\",\n        \"1492190693864_start_date\": \"05/09/2017 16:00\",\n        \"1492190693864_end_date\": \"05/09/2017 18:00\",\n        \"1492190693864_resource_id\": \"Scene\",\n        \"1492190693864_action\": \"scene\",\n        \"1492190693864_timebase\": \"absolute\",\n        \"1492190693864_repeat\": \"none\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Schedule Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/schedule/getschedule2?editing=true",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"ids\": 1492190693863,\n        \"1492190693863_!nativeeditor_status\": \"inserted\",\n        \"1492190693863_text\": \"scene: ALL_10\",\n        \"1492190693863_start_date\": \"05/09/2017 19:00\",\n        \"1492190693863_end_date\": \"05/09/2017 21:00\",\n        \"1492190693863_resource_id\": \"Scene\",\n        \"1492190693863_action\": \"scene\",\n        \"1492190693863_timebase\": \"absolute\",\n        \"1492190693863_repeat\": \"weekly\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Schedule Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/schedule/getschedule2?editing=true",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"ids\": 1492190693865,\n        \"1492190693865_!nativeeditor_status\": \"inserted\",\n        \"1492190693865_text\": \"scene: ALL_50\",\n        \"1492190693865_start_date\": \"05/09/2017 09:00\",\n        \"1492190693865_end_date\": \"05/09/2017 11:00\",\n        \"1492190693865_resource_id\": \"Scene\",\n        \"1492190693865_action\": \"scene\",\n        \"1492190693865_timebase\": \"absolute\",\n        \"1492190693865_repeat\": \"daily\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Schedule Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/schedule/getschedule2?editing=true",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"ids\": 1492190693866,\n        \"1492190693866_!nativeeditor_status\": \"inserted\",\n        \"1492190693866_text\": \"scene: ALL_OFF\",\n        \"1492190693866_start_date\": \"05/09/2017 21:00\",\n        \"1492190693866_end_date\": \"05/09/2017 23:00\",\n        \"1492190693866_resource_id\": \"Scene\",\n        \"1492190693866_action\": \"scene\",\n        \"1492190693866_timebase\": \"absolute\",\n        \"1492190693866_repeat\": \"daily\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Set Virtual Time",
-			"description": "",
-			"collectionId": "9204e6ee-bc16-50c7-ec4e-d53eb9ad182d",
-			"method": "POST",
-			"headers": "Content-Type: application/json",
-			"dataMode": "raw",
-			"data": [],
-			"rawModeData": "{\n\t\"timestring\": \"2017-05-09T21:30:00-07:00\"\n}",
-			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;\nvar t = new Date().getTime();\nwhile (new Date().getTime() < t + 5500);",
-			"preRequestScript": "",
-			"url": "http://localhost:3000/tester/setvirtualdatetime",
-			"responses": []
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-05-09T07:30:00-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Virtual Time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-05-09T11:01:00-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 50;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 50;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 50;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 50;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 50;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Virtual Time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-05-09T13:30:00-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 100;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 100;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 100;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 100;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Virtual Time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-05-09T16:30:00-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Virtual Time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-05-09T19:30:00-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 10;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 10;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 10;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 10;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 10;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 10;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 10;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 10;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 10;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Virtual Time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-05-09T21:30:00-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level === 0;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level === 0;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm === 0;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level === 0;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level === 0;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level === 0;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level === 0;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level === 0;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Set Virtual Time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var t = new Date().getTime();",
+							"while (new Date().getTime() < t + 5500);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/setvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-05-10T16:30:00-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level == 50;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[1].level == 50;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[2].level == 50;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[3].level == 50;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[4].level == 50;",
+							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[5].level == 50;",
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[6].hwwarm == 50;",
+							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[6].hwcool === 0;",
+							"tests[\"Value of plc 1 is correct\"] = jsonData.fixtures[7].level == 100;",
+							"tests[\"Value of plc 2 is correct\"] = jsonData.fixtures[8].level == 100;",
+							"tests[\"Value of plc 3 is correct\"] = jsonData.fixtures[9].level == 100;",
+							"tests[\"Value of plc 4 is correct\"] = jsonData.fixtures[10].level == 100;",
+							"tests[\"Value of output 019D35B9 is correct\"] = jsonData.fixtures[11].level == 50;",
+							"tests[\"Value of output 019D36B9 is correct\"] = jsonData.fixtures[12].level == 50;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/getconfig",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Virtual Time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/tester/clearvirtualdatetime",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"timestring\": \"2017-04-06T08:02:17-07:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete All Schedule Items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/schedule/deleteall",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n       \n}"
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }

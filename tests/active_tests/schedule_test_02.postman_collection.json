@@ -40,6 +40,17 @@
 			"response": []
 		},
 		{
+			"name": "getScheduleInWindowTime",
+			"request": {
+				"url": "http://localhost:3000/schedule/getschedule2?timeshift=420&from=2017-05-01&to=2017-07-01",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Delete All Schedule Items",
 			"event": [
 				{
@@ -72,6 +83,17 @@
 		},
 		{
 			"name": "Set Schedule Mode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
 			"request": {
 				"url": "http://localhost:3000/schedule/setschedulemode",
 				"method": "POST",
@@ -98,7 +120,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -129,7 +151,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -160,7 +182,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -191,7 +213,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
@@ -222,7 +244,7 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							"//tests[\"Status code is 200\"] = responseCode.code === 200;"
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
 						]
 					}
 				}
