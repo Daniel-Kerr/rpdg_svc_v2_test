@@ -219,7 +219,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"ids\": 1492190693865,\n        \"1492190693865_!nativeeditor_status\": \"inserted\",\n        \"1492190693865_text\": \"disable: Occ_2\",\n        \"1492190693865_start_date\": \"05/09/2017 17:00\",\n        \"1492190693865_end_date\": \"05/09/2017 19:00\",\n        \"1492190693865_resource_id\": \"Input\",\n        \"1492190693865_action\": \"disable\",\n        \"1492190693865_timebase\": \"absolute\",\n        \"1492190693865_repeat\": \"daily\"\n}"
+					"raw": "{\n        \"ids\": 1492190693865,\n        \"1492190693865_!nativeeditor_status\": \"inserted\",\n        \"1492190693865_text\": \"disable: Occ_2\",\n        \"1492190693865_start_date\": \"05/09/2017 18:00\",\n        \"1492190693865_end_date\": \"05/09/2017 20:00\",\n        \"1492190693865_resource_id\": \"Input\",\n        \"1492190693865_action\": \"disable\",\n        \"1492190693865_timebase\": \"absolute\",\n        \"1492190693865_repeat\": \"daily\"\n}"
 				},
 				"description": ""
 			},
