@@ -1,8 +1,8 @@
 {
 	"variables": [],
 	"info": {
-		"name": "schedule_test_04",
-		"_postman_id": "18036d59-577c-46f8-c008-f60efe5c50b0",
+		"name": "schedule_test_04_old",
+		"_postman_id": "ad7209c3-1d1b-9122-9b47-89213f37f1b8",
 		"description": "Uses 6 dimmable, 1 CCT, 4 PLC, and 2 EnOcean devices to test a variety of absolute schedule items with the pre-built scenes.\n\nTest will add the items then adjust the virtual time to check that all fixtures have adjusted to the appropriate level per the schedule item. Also testing Daily, Weekly and onetime events.\n\nIn addition will be testing Enabling and Disabling Wet/Dry Contact Inputs to verify the proper reaction is achieved depending on time and day.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -45,7 +45,10 @@
 				"url": "http://localhost:3000/schedule/getschedule2?timeshift=420&from=2017-05-01&to=2017-07-01",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
