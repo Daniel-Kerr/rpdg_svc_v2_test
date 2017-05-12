@@ -79,6 +79,19 @@ var delayedHW_InitCount = 3;
 
 var reInitSchedMgrCount = 0; // counter used to periodically reinit the sched mgr.  cache. list
 
+//var israspberrypi = (process.arch == 'arm');
+//var led = undefined;
+//var button0 = undefined;
+/*if(israspberrypi) {
+    try {
+        global.applogger.info(TAG, "this is a pi, initing the led port", "","");
+        var Gpio = require('onoff').Gpio; // Constructor function for Gpio objects.
+        led = new Gpio(22, 'out');   // Export GPIO #14 as an output...iv;
+        button0 = new Gpio(4, 'in', 'both');
+    } catch (ex1) {
+        global.applogger.info(TAG, "error init led", "","");
+    }
+}*/
 
 
 function incommingUDPMessageHandler(messageobj)
@@ -556,9 +569,9 @@ var service = module.exports =  {
 
         //setup the 0-10 v drive values for current config,
 
-      // 5/8/17 mvoed to timer loop on delay
-      //  module.exports.updateRPDGInputDrive();
-      //  module.exports.updatePWMPolarity();
+        // 5/8/17 mvoed to timer loop on delay
+        //  module.exports.updateRPDGInputDrive();
+        //  module.exports.updatePWMPolarity();
         //global.applogger.info(TAG, "writing pwm pol mask now", "");
         // var pwmpolmask = constructPWMPolarityMask();
         //  global.applogger.info(TAG, "PWM polarity Mask: " + pwmpolmask.toString(16), "");
@@ -567,7 +580,7 @@ var service = module.exports =  {
         //
 
         schedule_mgr.requestScheduleCacheReset(new Date());
-       // schedule_mgr.initManager();
+        // schedule_mgr.initManager();
         // test code
         // module.exports.getEnoceanKnownContactInputs();
 
@@ -607,6 +620,12 @@ var service = module.exports =  {
 
 
 
+
+        // FOR DEV DEBUG
+
+      //  rpdg.resetTinsey();
+
+        // for dev
 
     },
     getVersionObject: function()
@@ -660,7 +679,7 @@ var service = module.exports =  {
             {
                 delayedHW_InitCount--;
                 if(delayedHW_InitCount <= 0) {
-                     global.applogger.info(TAG, "************** executing delayed hw init **************", "");
+                    global.applogger.info(TAG, "************** executing delayed hw init **************", "");
                     module.exports.updateRPDGInputDrive();
                     module.exports.updatePWMPolarity();
                 }
@@ -897,6 +916,16 @@ var service = module.exports =  {
             // end poll. for delayed vacancy. ************************************************************************
             // *******************************************************************************************************
 
+
+
+           // if(led != undefined)
+           //     led.writeSync(led.readSync() ^ 1); // 1 = on, 0 = off :)
+
+           // if(button0 != undefined)
+            //{
+           //     var btlevel = button0.readSync();
+            //    global.applogger.info(TAG, "Button 0 READ: ", btlevel ,"");
+            //}
 
 
             // ******************* SUN RISE *** SET CALC *****

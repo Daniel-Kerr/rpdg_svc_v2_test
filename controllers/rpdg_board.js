@@ -15,8 +15,20 @@ var nohw = data_utils.commandLineArgPresent("nohw");
 var ishv = data_utils.commandLineArgPresent("hv");
 var i2cwire = undefined;  // set at startup, for hw interface.
 
+
+var resetline = undefined;
 if(platform == "RaspberryPI" && !nohw) {
     var i2c = require('i2c');
+
+    try {
+        global.applogger.info(TAG, "Initilizing the GPIO handler tied to tinsey", "","");
+        var Gpio = require('onoff').Gpio; // Constructor function for Gpio objects.
+        resetline = new Gpio(11, 'out');   // Export GPIO #14 as an output...iv;
+
+    } catch (ex1) {
+        global.applogger.info(TAG, "error setting up the gpio", "","");
+    }
+
 }
 // for debug info.
 global.applogger.info(TAG,"Board TYPE: " + boardvolts + " Voltage Board", "");
@@ -161,27 +173,27 @@ exports.setPWMOutputPolarity = function(polconfig)
         global.applogger.info(TAG, "setPWMOutputPolarity ", "sending output config to hw");
         var config = new Uint8Array(1);
         //if(polconfig.length == 1) {
-            config[0] = polconfig;
-            var wire = getI2cWire();
-            if (wire != undefined) {
-                wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
-                    if (err != null)
-                        global.applogger.error(TAG, "setPWMOutputPolarity",  err);
+        config[0] = polconfig;
+        var wire = getI2cWire();
+        if (wire != undefined) {
+            wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
+                if (err != null)
+                    global.applogger.error(TAG, "setPWMOutputPolarity",  err);
 
-                });
-                wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
-                    if (err != null)
-                        global.applogger.error(TAG, "setPWMOutputPolarity",  err);
-                });
-            }
-            else {
-                global.applogger.info(TAG, "setPWMOutputPolarity", "no i2c hw");
-            }
-       // }
-       // else
+            });
+            wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
+                if (err != null)
+                    global.applogger.error(TAG, "setPWMOutputPolarity",  err);
+            });
+        }
+        else {
+            global.applogger.info(TAG, "setPWMOutputPolarity", "no i2c hw");
+        }
+        // }
+        // else
         //{
         //    global.applogger.info(TAG, "setPWMOutputPolarity ", "cant set,  no config info to set");
-       // }
+        // }
     } catch (err)
     {
         global.applogger.error(TAG, "setPWMOutputPolarity",  err);
@@ -252,8 +264,13 @@ exports.getFWVersionNumber = function()
 
 var tempcounter = 0;
 
-
 var polling_enabled = true;
+var reset_tinsy_counter = -1;
+
+exports.resetTinsey = function()
+{
+    reset_tinsy_counter = 0;
+}
 
 function startHWPolling() {
 
@@ -264,6 +281,34 @@ function startHWPolling() {
             readHW_0to10inputs();
             readHW_WetDryContactinputs();
             readHW_CurrentCounts();
+
+            // ****************************************TINSEY RESET CODE  *****************************
+            if(reset_tinsy_counter > -1)  //reset it active
+            {
+                if (reset_tinsy_counter == 0)  // 0 = start/active.
+                {
+                    global.applogger.info(TAG, "setting tinsy line LOW (reset start)", "");
+                    if (resetline != undefined) {
+                        global.applogger.info(TAG, "HW gpio line is valid ", "");
+                        resetline.writeSync(1);   // start.  lo
+                    }
+
+                    reset_tinsy_counter++;
+                }
+                else if(reset_tinsy_counter == 6)  // 3 = (300 ms)  go high again,
+                {
+                    global.applogger.info(TAG, "releasing tinsy line to HIGH (reset stop)",  "");
+                    if(resetline != undefined)
+                        resetline.writeSync(0);   // start.
+
+                    reset_tinsy_counter = -1;  //stop
+                }
+                else
+                    reset_tinsy_counter++;
+            }
+
+            // ***************************** END RESET CODE *************************
+
         }
         // global.applogger.info(TAG, "hw polling",  "timer fired");
     }, BasePollingPeriod);
@@ -637,4 +682,7 @@ function getI2cWire() {
     return undefined;
 }
 
+function resetTinsyProcessor()
+{
 
+}
