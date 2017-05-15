@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link href="minton_dark_hor/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/plugins/datatables/buttons.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/plugins/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/plugins/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/plugins/datatables/scroller.bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="minton_dark_hor/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/core.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/pages.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/menu.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/css/responsive.css" rel="stylesheet" type="text/css" />
+    <link href="minton_dark_hor/plugins/switchery/switchery.min.css" rel="stylesheet" />
+
+    <link href="image-picker/image-picker.css" rel="stylesheet">
+    <script src="minton_dark_hor/js/modernizr.min.js"></script>
+    <link href="stylesheets/rangeslider.css" rel="stylesheet">
+    <link href="stylesheets/bootstrap-toggle.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="/images/RVLT_LOGO_FAV.png">
+    <style>
+
+        /*   top fixture table and override setting control holder */
+        .table_scrollit {
+            overflow-y:scroll;
+            height:300px;
+            width:30%;
+            vertical-align: top;
+            display: inline-block;
+        }
+
+        /*   top override control divs */
+        .settingholder {
+            display: inline-block;
+            margin-left: 20px;
+            vertical-align: top;
+            width: 400px;
+            text-align: center;
+            height: 300px;
+
+        }
+
+        .gap {
+            display: inline-block;
+            width: 400px;
+            height: 5px;
+            padding: 4px;
+            margin: 4px;
+        }
+
+        .rgbrowcell {
+            margin-left: 10px;
+            width: 300px;
+            height: 300px;
+        }
+
+        .singlerow {
+
+            height: 80px;
+            margin-right: 10px;
+            margin-top: 50px;
+            width: 400px;
+            position: absolute;
+        }
+
+        .tophalf {
+            height: 50%;
+            width: 100%;
+        }
+
+        .bottomhalf {
+            height: 50%;
+            width: 100%;
+        }
+
+        .controllabel {
+            margin-top: 40px;
+            vertical-align:middle;
+            display: inline-block;
+            height: 20%;
+            width:20%;
+        }
+
+        .controlvalue {
+            margin-top: 40px;
+            vertical-align:middle;
+            display: inline-block;
+            height: 20%;
+            width:20%;
+
+        }
+
+        .controlholder {
+            margin-top: 40px;
+            display: inline-block;
+            vertical-align:middle;
+            height: 20%;
+            width: 60%;
+        }
+
+        /*
+        .bulbiconrow {
+            width: 100px;
+            height: 80px;
+            display: inline-block;
+        }  */
+
+
+        #movingitem {
+            width: 50px;
+            height: 80px;
+            display: inline-block;
+        }
+
+        /* block for availble fixture */
+        .availible_fix_holder {
+            width: 100%;
+            height: 200px;
+            float: left;
+        }
+
+        /* block for availble fixture */
+        /*
+        .gap_span_div {
+            width: 100%;
+            height: 500px;
+
+        }  */
+
+        .availiblefix_wrapperbox {
+            /*  background-color: red;   */
+            margin: 5px;
+            width: 100%;
+            /* height: 70%;  */
+            height: 150px;
+            overflow: auto;
+            white-space: nowrap;
+        }
+
+        .scene_holder_main {
+            margin: 5px;
+            width: 100%;
+            height: 200px;
+
+            overflow-y: scroll;
+
+        }
+
+        /*  avaible fixture holder  holds icon and label, */
+        .availiblefixture {
+
+            display: inline-block;
+            vertical-align: top;
+            width: 120px;
+            margin: 5px;
+            height: 120px;
+            cursor: default;
+        }
+
+        .fixture_icon_small {
+            width: 110px;
+            height: 110px;
+        }
+
+        .fixture_label {
+            width: 110px;
+            height: 20px;
+        }
+
+        .hor_spacer {
+            margin: 0px;
+            width: 100%;
+            height: 5px;
+            background-color: #000000;
+        }
+
+
+        .scene_dropzone {
+            width: 100%;
+            margin: 0 0;
+            border: 2px solid green;
+            height: 140px;
+            border-color: white;
+            overflow: auto;
+        }
+
+        /*  this div holds all the scenes   */
+        .scenes_hold_div {
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+        }
+
+        .background_main {
+            width: 100%;
+            height: 30%;
+        }
+
+        html, body {
+            height: 100%;
+        }
+        .fill-height {
+            min-height: 100%;
+            height:auto !important; /* cross-browser */
+            height: 100%; /* cross-browser */
+        }
+
+        .fill {
+            min-height: 100%;
+            height: 100%;
+        }
+
+        .actionbuttons {
+            position: absolute;
+            right: 2px;
+            width: 220px;
+            padding: 0px;
+        }
+
+        .custom-rpdg-nav {
+            font-size: 18px;
+
+        }
+
+        .brightness_grad {
+            background: linear-gradient(to right, black, white);
+            width: 100%;
+            height: 20px;
+        }
+
+        .ctemp_grad {
+            background: linear-gradient(to right, orange,yellow, #0099ff);
+            width: 100%;
+            height: 20px;
+        }
+
+    </style>
+</head>
+
+
+<body onload='init()'>
+
+
+<header id="topnav">
+
+    <!-- Navbar Start -->
+    <div class="navbar-custom">
+        <div class="container">
+            <div class="menu-extras">
+                <div class="menu-item">
+                    <!-- Mobile menu toggle-->
+                    <a class="navbar-toggle">
+                        <div class="lines">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </a>
+                    <!-- End mobile menu toggle-->
+                </div>
+            </div>
+            <div id="navigation">
+                <ul class="navigation-menu " >
+                    <li class="has-submenu"><a href="#" onclick=showOnlyTheseButtons("Scenes");><i class="md md-dashboard"></i>Scenes</a></li>
+                    <li class="has-submenu"><a href="#" onclick=showOnlyTheseButtons("Groups");><i class="md md-dashboard"></i>Groups</a></li>
+                    <li class="has-submenu"><a href="#" onclick=showOnlyTheseButtons("Fixtures");><i class="md md-dashboard"></i>Fixture Control</a></li>
+                    <li class="has-submenu"><a href="#" onclick=showOnlyTheseButtons("Status"); ><i class="md md-dashboard"></i>Status</a></li>
+                    <li class="has-submenu"><a href="#" onclick=showOnlyTheseButtons("Config"); ><i class="md md-dashboard"></i>Config</a></li>
+                    <li style="float: right;">
+                        <div >
+                            <a href="/status">
+                                <img src="/images/RVLT_LOGO.png" style="width:180px;height:40px;">
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div class="wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row" id="dynbuttonbar" >
+                </div>
+                <div id="controlscontent" class="controlscontentbox">
+                    <div id="BrightnessBar"  class="card-box">
+                        <h4 class="text-dark  header-title m-t-0 m-b-30">Brightness</h4>
+                        <input id="brightnesssliderobject" type="range" oninput="onBrightnessSliderChange(this.value)" onchange="onBrightnessSliderChange(this.value)" />
+                        <div class="brightness_grad" ></div>
+                    </div>
+
+                    <div id="CCTBar"  class="card-box">
+                        <h4 class="text-dark  header-title m-t-0 m-b-30">Color Temperatrue</h4>
+                        <input id="CCTsliderobject" type="range" oninput="onCCTSliderChange(this.value)" onchange="onCCTSliderChange(this.value)" />
+                        <div class="ctemp_grad" ></div>
+                    </div>
+
+                    <div id="ToggleButton"  class="card-box">
+                        <h4 class="text-dark  header-title m-t-0 m-b-30">Toggle Switch</h4>
+
+                            <label >OFF</label>
+                            <input checked data-plugin="switchery" data-color="#0099ff" data-size="large" id="ToggleObject" type="checkbox" oninput="onToggleButtonChange(this.checked)" onchange="onToggleButtonChange(this.checked)"/>
+                            <label >ON</label>
+                    </div>
+
+                    <div id="RGB_ColorWheel"  class="card-box">
+                        <h4 class="text-dark  header-title m-t-0 m-b-30">Color Picker</h4>
+                        <div class="wheel" id="colorWheelDemo"></div>
+                    </div>
+
+                    <div id="occ_vac_holder" class="vac_occ_div">
+
+                        <input type="button" class="headerbutton" onclick=onVacancy(); value="Send Vacancy" />
+                        <input type="button" class="headerbutton" onclick=onOccupancy(); value="Send Occupancy" />
+                    </div>
+
+                </div>
+
+
+                <div id="StatusPage" class="statuscontainer">
+
+                    <div id="outputsdiv" width="100%">
+                        <table align="center" >
+                            <tr >
+                                <td><div id="StatusBlock1" >   </div> </td>
+                                <td><div id="StatusBlock2" >   </div> </td>
+                                <td><div id="StatusBlock3" >   </div> </td>
+                                <td><div id="StatusBlock4" >   </div> </td>
+                            </tr>
+                            <tr>
+                                <td><div id="StatusBlock5" >   </div> </td>
+                                <td><div id="StatusBlock6" >   </div> </td>
+                                <td><div id="StatusBlock7" >   </div> </td>
+                                <td><div id="StatusBlock8" >   </div> </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+
+                    <div id="statusspace" class="status_gap">
+
+                        <label > Inputs Status</label>
+                    </div>
+
+                    <div id="inputsdiv" class="inputstatus">
+
+                        <div id="levelinputsdiv"  >
+                            <label color="white"> Level</label>
+
+                            <table id="levelinputstable" ></table>
+                        </div>
+
+
+                        <div id="holder1"></div>
+                        <div id="contactinputsdiv"  >
+                            <label > Contact</label>
+                            <table id="contactinputstable" ></table>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!--div id="ConfigPage" class="configcontainer" >
+
+                    <label>DayLight Polling Period </label>
+                    <select id="daylightpoll"  class="config_dlp" onchange="SetDaylightPolling()">
+                        <option value="1">1 sec</option>
+                        <option value="600">10 min</option>
+                        <option value="1200">20 min</option>
+                        <option value="1800">30 min</option>
+                        <option value="3600">60 min</option>
+                        <option value="7200">120 min</option>
+                    </select>
+                </div>
+            </div-->
+
+
+
+                <!--div id="dynbuttonbar" class="card-box table-responsive"-->
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- jQuery  -->
+<script src="minton_dark_hor/js/jquery.min.js"></script>
+<script src="minton_dark_hor/js/bootstrap.min.js"></script>
+<script src="minton_dark_hor/js/detect.js"></script>
+<script src="minton_dark_hor/js/fastclick.js"></script>
+<script src="minton_dark_hor/js/jquery.blockUI.js"></script>
+<script src="minton_dark_hor/js/waves.js"></script>
+<script src="minton_dark_hor/js/wow.min.js"></script>
+<script src="minton_dark_hor/js/jquery.nicescroll.js"></script>
+<script src="minton_dark_hor/js/jquery.scrollTo.min.js"></script>
+
+<script src="minton_dark_hor/plugins/switchery/switchery.min.js"></script>
+<!-- Datatables-->
+<script src="minton_dark_hor/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.bootstrap.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.buttons.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/buttons.bootstrap.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/jszip.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/pdfmake.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/vfs_fonts.js"></script>
+<script src="minton_dark_hor/plugins/datatables/buttons.html5.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/buttons.print.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.fixedHeader.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.keyTable.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/responsive.bootstrap.min.js"></script>
+<script src="minton_dark_hor/plugins/datatables/dataTables.scroller.min.js"></script>
+
+<script src="minton_dark_hor/plugins/notifyjs/dist/notify.min.js"></script>
+<script src="minton_dark_hor/plugins/notifications/notify-metro.js"></script>
+
+<!-- Datatable init js -->
+<script src="minton_dark_hor/pages/datatables.init.js"></script>
+
+<!-- Counter Up  -->
+<script src="minton_dark_hor/plugins/waypoints/lib/jquery.waypoints.js"></script>
+<script src="minton_dark_hor/plugins/counterup/jquery.counterup.min.js"></script>
+
+<!-- circliful Chart -->
+<script src="minton_dark_hor/plugins/jquery-circliful/js/jquery.circliful.min.js"></script>
+<script src="minton_dark_hor/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
+
+<!-- skycons -->
+<script src="minton_dark_hor/plugins/skyicons/skycons.min.js" type="text/javascript"></script>
+
+<!-- Page js  -->
+<script src="minton_dark_hor/pages/jquery.dashboard.js"></script>
+
+<!-- Custom main Js -->
+<script src="minton_dark_hor/js/jquery.core.js"></script>
+<script src="minton_dark_hor/js/jquery.app.js"></script>
+
+<script src="bsmaster/assets/js/raphael.min.js"></script>
+<script src="bsmaster/assets/js/justgage.1.0.1.min.js"></script>
+
+<script src="thirdparty/validate.min.js"></script>
+<script src="image-picker/image-picker.js"></script>
+
+<script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+
+<script src="thirdparty/bootstrap-slider.js"></script>
+<script src="thirdparty/jquery.validate.js"></script>
+<script src="thirdparty/wNumb.js"></script>
+<script src="thirdparty/iro.min.js"></script>
+<script src="thirdparty/bootstrap-toggle.js"></script>
+<script src="thirdparty/modernizr.js"></script>
+<script src="thirdparty/validate.min.js"></script>
+<script src="thirdparty/bootbox.min.js"></script>
+<script src="thirdparty/rangeslider.js"></script>
+
+<script src="javascripts/scene_ctrl.js"></script>
+<script src="javascripts/crud_config.js"></script>
+<script src="javascripts/crud_override.js"></script>
+
+<script src="javascripts/crud_groups.js"></script>
+<script src="javascripts/wallstation_main.js"></script>
+<script src="thirdparty/iro.min.js"></script>
+
+
+
+</body>
+</html>
+
+

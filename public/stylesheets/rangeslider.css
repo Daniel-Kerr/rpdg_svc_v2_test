@@ -10,7 +10,10 @@
 }
 
 .rangeslider {
+
   background: #e6e6e6;
+
+ /* background: linear-gradient(to right, #ff9933 , #0099ff);  */
   position: relative;
 }
 
@@ -30,8 +33,10 @@
   opacity: 0.4;
 }
 
+
 .rangeslider__fill {
-  background: #00ff00;
+  background: #0099ff;
+  /*background: linear-gradient(to right, orange, yellow, #0099ff);  */
   position: absolute;
 }
 .rangeslider--horizontal .rangeslider__fill {

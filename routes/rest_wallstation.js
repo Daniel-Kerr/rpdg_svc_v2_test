@@ -10,9 +10,10 @@ var service = require('../controllers/service');
 //global.test_mode =false;
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    res.sendFile(path.join( app.get('views') +'/wallstation_joe.html'));
+    res.sendFile(path.join( app.get('views') +'/wallstation_main.html'));
 
 });
+
 
 
 module.exports = router;
