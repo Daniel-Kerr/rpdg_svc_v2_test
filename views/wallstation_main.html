@@ -235,7 +235,91 @@
         .ctemp_grad {
             background: linear-gradient(to right, orange,yellow, #0099ff);
             width: 100%;
-            height: 20px;
+            height: 80px;
+        }
+        .padd_top {
+            margin-top: 20px;
+        }
+
+
+        .contentholder {
+            background-color: lightgrey;
+            height: 300px;
+            width: 300px;
+
+        }
+
+        .status_left {
+            background-color: blue;
+            height: 200px;
+            width: 100px;
+            vertical-align: top;
+            display: inline-block;
+        }
+
+        .status_right {
+          /*  background-color: red;  */
+            height: 200px;
+            width: 110px;
+            display: inline-block;
+        }
+
+        .imagehold {
+            background-color: yellow;
+            height: 100px;
+            width: 100px;
+
+        }
+
+        .powerhold {
+            background-color: green;
+            height: 50px;
+            width: 100%;
+        }
+        .daylighthold{
+            background-color: pink;
+            height: 50px;
+            width: 100%;
+        }
+
+
+        .level_holder {
+            display: inline-block;
+          /*  background-color: lightblue;  */
+            height: 190px;
+            margin-top: 5px;
+            margin-left: 10px;
+            width: 50px;
+
+        }
+        .level_bar {
+            height: 150px;
+            margin-top: 5px;
+            width: 100%;
+            background: linear-gradient(to top, black, lightyellow);
+        }
+
+        .color_temp_bar {
+            height: 150px;
+            margin-top: 5px;
+            width: 100%;
+            background: linear-gradient(to top, blue, white, darkorange);
+        }
+
+        .level_mark {
+            position: absolute;
+           /* margin-top: 20px;  */
+            width: 100px;
+            height: 3px;
+            background-color: black;
+        }
+
+
+        .level_label {
+            margin-top: 5px;
+            width: 50px;
+            height: 30px;
+            background-color: brown;
         }
 
     </style>
@@ -299,8 +383,10 @@
 
                     <div id="CCTBar"  class="card-box">
                         <h4 class="text-dark  header-title m-t-0 m-b-30">Color Temperatrue</h4>
-                        <input id="CCTsliderobject" type="range" oninput="onCCTSliderChange(this.value)" onchange="onCCTSliderChange(this.value)" />
-                        <div class="ctemp_grad" ></div>
+
+                        <div class="ctemp_grad" >
+                            <input id="CCTsliderobject" type="range" oninput="onCCTSliderChange(this.value)" onchange="onCCTSliderChange(this.value)" />
+                        </div>
                     </div>
 
                     <div id="ToggleButton"  class="card-box">
@@ -316,18 +402,19 @@
                         <div class="wheel" id="colorWheelDemo"></div>
                     </div>
 
-                    <div id="occ_vac_holder" class="vac_occ_div">
+                    <!--div id="occ_vac_holder" class="vac_occ_div">
 
                         <input type="button" class="headerbutton" onclick=onVacancy(); value="Send Vacancy" />
                         <input type="button" class="headerbutton" onclick=onOccupancy(); value="Send Occupancy" />
-                    </div>
+                    </div-->
 
                 </div>
 
 
-                <div id="StatusPage" class="statuscontainer">
+                <div id="StatusPage" class="row" >
 
-                    <div id="outputsdiv" width="100%">
+
+                    <!--div id="outputsdiv" width="100%">
                         <table align="center" >
                             <tr >
                                 <td><div id="StatusBlock1" >   </div> </td>
@@ -342,12 +429,12 @@
                                 <td><div id="StatusBlock8" >   </div> </td>
                             </tr>
                         </table>
-                    </div>
+                    </div-->
 
 
 
 
-                    <div id="statusspace" class="status_gap">
+                    <!--div id="statusspace" class="status_gap">
 
                         <label > Inputs Status</label>
                     </div>
@@ -366,7 +453,7 @@
                             <label > Contact</label>
                             <table id="contactinputstable" ></table>
                         </div>
-                    </div>
+                    </div-->
 
                 </div>
 

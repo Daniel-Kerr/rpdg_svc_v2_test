@@ -159,7 +159,7 @@ function updateDynButtonBar()
     hideDivID("ToggleButton");
     hideDivID("RGB_ColorWheel");
     hideDivID("StatusPage");
- //   hideDivID("occ_vac_holder");
+
 
     switch(top_menu_selection)
     {
@@ -178,19 +178,21 @@ function updateDynButtonBar()
         case "Status":
 
             hideDivID("controlscontent");
-            constructFixtureStatusBoxs();
-            updateLevelInputsTable();
-            updateContactInputsTable();
+
+            constructFixtureStatusBoxes();
+           // constructFixtureStatusBoxs();
+           // updateLevelInputsTable();
+            //updateContactInputsTable();
             showDivID("StatusPage","inline");
-          //  showDivID("levelinputsdiv","block");
+
 
             break;
-      /*  case "Config":
+        case "Config":
             //hideDivID("StatusPage");
             hideDivID("controlscontent");
             constructConfigItemsDiv();
             showDivID("ConfigPage","inline");
-            break;  */
+            break;
         default:
             break;
     }
@@ -1022,4 +1024,167 @@ function getDefaultCCTFixture()
         }
     }
     return undefined;
+}
+
+
+function constructFixtureStatusBoxes()
+{
+    var currentrow_div = document.getElementById("StatusPage");
+    for (var i = 0; i < cachedconfig.fixtures.length; i++) {
+        constructFixtureBox(currentrow_div, cachedconfig.fixtures[i]);
+    }
+}
+
+function constructFixtureBox(currentdiv, fixture) {
+    var fixcol = document.createElement("div");
+    fixcol.className = "col-lg-2";
+    currentdiv.appendChild(fixcol);
+
+    var fixbox = document.createElement("div");
+    fixbox.className = "card-box";
+    fixcol.appendChild(fixbox);
+
+    var header = document.createElement("h4");
+    header.className = "text-dark  header-title m-t-0 m-b-10";
+    header.innerHTML = fixture.assignedname;
+    fixbox.appendChild(header);
+
+    var fixcontent = document.createElement("div");
+    fixcontent.className = "box-content";
+    fixbox.appendChild(fixcontent);
+
+   // var contentholder = document.createElement("div");
+    //contentholder.className = "contentholder";
+   // fixcontent.appendChild(contentholder);
+
+    var statleft = document.createElement("div");
+    statleft.className = "status_left";
+    fixcontent.appendChild(statleft);
+
+    var statright = document.createElement("div");
+    statright.className = "status_right";
+    fixcontent.appendChild(statright);
+
+
+    var image_hold = document.createElement("div");
+    image_hold.className = "imagehold";
+    statleft.appendChild(image_hold);
+
+
+    var power_hold = document.createElement("div");
+    power_hold.className = "powerhold";
+    statleft.appendChild(power_hold);
+
+    var daylight_hold = document.createElement("div");
+    daylight_hold.className = "daylighthold";
+    statleft.appendChild(daylight_hold);
+
+
+    var image = document.createElement("img");
+    image.src = "fixtureimg/1.jpg";
+    image.width = "100";
+    image.height = "100";
+    image_hold.appendChild(image);
+
+
+  //  constructLevelIndicator(statright);
+    constructColorTempIndicators(statright, 84, 5670);
+
+
+
+
+
+}
+
+function constructLevelIndicator(parentdiv)
+{
+    var holder = document.createElement("div");
+    holder.className = "level_holder";
+    holder.style.width =  "100px";
+    parentdiv.appendChild(holder);
+
+    var bar = document.createElement("div");
+    bar.className = "level_bar";
+    holder.appendChild(bar);
+
+
+    var label = document.createElement("div");
+    label.className = "level_label";
+    holder.appendChild(label);
+
+    var lbval = document.createElement("label");
+    lbval.innerHTML = "40%"
+    label.appendChild(lbval);
+
+
+    var mark = document.createElement("div");
+    mark.className = "level_mark";
+    mark.style.marginTop =  "90px";
+    bar.appendChild(mark);
+}
+
+
+
+function constructColorTempIndicators(parentdiv, brightpct, colortemplevel)
+{
+    // main wrapper is 200px,
+    // level holder is 190 px high,
+    var holder = document.createElement("div");
+    holder.className = "level_holder";
+    holder.style.width =  "40px";
+    parentdiv.appendChild(holder);
+
+    var bar = document.createElement("div");
+    bar.className = "level_bar";
+    holder.appendChild(bar);
+
+    var label = document.createElement("div");
+    label.className = "level_label";
+    holder.appendChild(label);
+
+    var lbval = document.createElement("label");
+    lbval.innerHTML = brightpct + "%"; //"40%"
+    label.appendChild(lbval);
+
+    var mark = document.createElement("div");
+    mark.className = "level_mark";
+    var bla = 150 - ((brightpct * 150)/ 100);
+    mark.style.marginTop =  bla + "px"; //"90px";  //set level mark,, calc. based on 190 tall,
+    mark.style.width = "40px";
+    bar.appendChild(mark);
+
+   // *********************** COLOR TEMP IND ****************
+    // ******************************************************
+    var holder = document.createElement("div");
+    holder.className = "level_holder";
+    holder.style.width =  "40px";
+    parentdiv.appendChild(holder);
+
+    var bar = document.createElement("div");
+    bar.className = "color_temp_bar";
+    holder.appendChild(bar);
+
+    var label = document.createElement("div");
+    label.className = "level_label";
+    holder.appendChild(label);
+
+    var lbval = document.createElement("label");
+    lbval.innerHTML = colortemplevel + "k"; //"3470k"
+    label.appendChild(lbval);
+
+
+    var mark = document.createElement("div");
+    mark.className = "level_mark";
+   // mark.style.marginTop =  "90px";
+
+    var min = Number(2700);
+    var max = Number(6500);
+    var range = max-min;
+    var barval2 = ((Number(colortemplevel) - min)/range) * 100;
+
+    var bla = ((barval2 * 150)/ 100);
+    mark.style.marginTop =  bla + "px";//, calc. based on 150 tall,
+    mark.style.width = "40px";
+
+    bar.appendChild(mark);
 }
