@@ -1214,6 +1214,7 @@ function constructBrightnessBar(currentdiv) {
 
     var bright_guage = document.createElement("input");
     bright_guage.type = "range";
+    bright_guage.id = "brightctrl";
     bright_guage.onchange = function() {
         document.getElementById("brightvalue").innerHTML = this.value;
 
@@ -1225,16 +1226,22 @@ function constructBrightnessBar(currentdiv) {
             element.level = this.value;
             setFixtureLevel(element);
         }
-        /* break;
-         case "cct":
-         var element = {};
-         element.requesttype = "wallstation";
-         element.name = selected_fixture.assignedname;
-         element.brightness = value;
-         var ctempslider = document.getElementById("CCTsliderobject");
-         element.ctemp = ctempslider.value;;
-         setFixtureLevel(element);
-         break;  */
+         else if (selected_fixture.type == "cct") {
+            var element = {};
+            element.requesttype = "wallstation";
+            element.name = selected_fixture.assignedname;
+            element.brightness = this.value;
+            var ctempslider = document.getElementById("colortempctrl");
+            if(ctempslider != undefined) {
+
+                // convert pct to ctemp.
+                var min = Number(2700); //selected_fixture.min);
+                var max = Number(6500); //.max);
+                var ctempcalc = (min + (max-min)*(Number(ctempslider.value)/100));
+                element.ctemp = ctempcalc;
+                setFixtureLevel(element);
+            }
+        }
 
 
     }
@@ -1280,6 +1287,7 @@ function constructColorTempBar(currentdiv) {
 
     var bright_guage = document.createElement("input");
     bright_guage.type = "range";
+    bright_guage.id = "colortempctrl";
     bright_guage.onchange = function() {
 
         // ctemp to pct, ref only.
@@ -1293,6 +1301,16 @@ function constructColorTempBar(currentdiv) {
         var max = Number(6500); //.max);
         var ctempcalc = (min + (max-min)*(Number(this.value)/100));
         document.getElementById("colortempvalue").innerHTML = ctempcalc + " K";
+
+
+
+        var element = {};
+        element.requesttype = "wallstation";
+        element.name = selected_fixture.assignedname;
+        element.brightness = document.getElementById("brightctrl").value;
+
+        element.colortemp = ctempcalc; //(2000 + (4500*value/100));
+        setFixtureLevel(element);
 
     }
 
