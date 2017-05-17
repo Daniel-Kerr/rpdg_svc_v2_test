@@ -178,16 +178,8 @@ function updateDynButtonBar()
 
             break;
         case "Status":
-
-            //   hideDivID("controlscontent");
-
             constructFixtureStatusBoxes();
-            // constructFixtureStatusBoxs();
-            // updateLevelInputsTable();
-            //updateContactInputsTable();
             showDivID("StatusPage","inline");
-
-
             break;
         case "Config":
             //hideDivID("StatusPage");
@@ -994,6 +986,7 @@ function getDefaultCCTFixture()
 function constructFixtureStatusBoxes()
 {
     var currentrow_div = document.getElementById("StatusPage");
+    currentrow_div.innerHTML = "";
     for (var i = 0; i < cachedconfig.fixtures.length; i++) {
         constructFixtureStatusBox(currentrow_div, cachedconfig.fixtures[i],i);
     }
