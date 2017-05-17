@@ -412,8 +412,8 @@ function constructFixtureButtons()
 
             $('input[type="range"]').rangeslider({
                 polyfill : false,
-                 rangeClass: 'custom_slider_range',
-                  fillClass: 'custom_slider_fill',
+                rangeClass: 'custom_slider_range',
+                fillClass: 'custom_slider_fill',
                 onInit : function() {
                     //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
                 },
@@ -716,47 +716,47 @@ function onCCTSliderChange(value)
 
 /*
 
-function constructFixtureStatusBoxs()
-{
+ function constructFixtureStatusBoxs()
+ {
 
-    for(var k = 1; k <= 8; k++)
-    {
-        var div = document.getElementById("StatusBlock"+(k));
-        div.innerHTML = ""; // = 0;
-    }
+ for(var k = 1; k <= 8; k++)
+ {
+ var div = document.getElementById("StatusBlock"+(k));
+ div.innerHTML = ""; // = 0;
+ }
 
 
-    for (var i = 0 ; i < cachedconfig.fixtures.length; i++) {
-        var fixobj = cachedconfig.fixtures[i];
-        var divID = "StatusBlock"+(i+1);
+ for (var i = 0 ; i < cachedconfig.fixtures.length; i++) {
+ var fixobj = cachedconfig.fixtures[i];
+ var divID = "StatusBlock"+(i+1);
 
-        var level = undefined;
-        var colortemp = undefined;
-        switch(fixobj.type)
-        {
-            case "on_off":
-            case "dim":
-                level = fixobj.level;
-                break;
-            case "cct":
-                colortemp = fixobj.colortemp;
-                level = fixobj.brightness;
-                break;
+ var level = undefined;
+ var colortemp = undefined;
+ switch(fixobj.type)
+ {
+ case "on_off":
+ case "dim":
+ level = fixobj.level;
+ break;
+ case "cct":
+ colortemp = fixobj.colortemp;
+ level = fixobj.brightness;
+ break;
 
-            case "rgbw":
-                break;
+ case "rgbw":
+ break;
 
-            default:
-                break;
-        }
+ default:
+ break;
+ }
 
-        // createFixtureStatusTable(divID,fixobj.assignedname,fixobj.type,fixobj.image,
-        //     fixobj.powerwatts,level,colortemp,fixobj.daylightlimited);
+ // createFixtureStatusTable(divID,fixobj.assignedname,fixobj.type,fixobj.image,
+ //     fixobj.powerwatts,level,colortemp,fixobj.daylightlimited);
 
-    }  // end fixture for loop ,
+ }  // end fixture for loop ,
 
-}
-*/
+ }
+ */
 
 
 // **************************** END NEW CODE *********************************************
@@ -1216,6 +1216,27 @@ function constructBrightnessBar(currentdiv) {
     bright_guage.type = "range";
     bright_guage.onchange = function() {
         document.getElementById("brightvalue").innerHTML = this.value;
+
+
+        if (selected_fixture.type == "dim") {
+            var element = {};
+            element.requesttype = "wallstation";
+            element.name = selected_fixture.assignedname;
+            element.level = this.value;
+            setFixtureLevel(element);
+        }
+        /* break;
+         case "cct":
+         var element = {};
+         element.requesttype = "wallstation";
+         element.name = selected_fixture.assignedname;
+         element.brightness = value;
+         var ctempslider = document.getElementById("CCTsliderobject");
+         element.ctemp = ctempslider.value;;
+         setFixtureLevel(element);
+         break;  */
+
+
     }
 
     guageholder.appendChild(bright_guage);
