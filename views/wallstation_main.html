@@ -227,15 +227,34 @@
         }
 
         .brightness_grad {
+            border-radius: 10px;
             background: linear-gradient(to right, black, white);
             width: 100%;
-            height: 20px;
+            height: 40px;
+        }
+
+        .guage_value {
+            position: relative;
+         /*   background-color: red;  */
+            width: 100%;
+            height: 30px;
+            padding-top: 0px;
+        }
+
+        .guage_holder {
+            position: relative;
+      /*      background-color: green;   */
+            width: 100%;
+            height: 30px;
+            padding-top: 10px;
         }
 
         .ctemp_grad {
-            background: linear-gradient(to right, orange,yellow, #0099ff);
+            border-radius: 10px;
+            background: linear-gradient(to right, darkorange, white, blue);
+
             width: 100%;
-            height: 80px;
+            height: 40px;
         }
         .padd_top {
             margin-top: 20px;
@@ -243,14 +262,14 @@
 
 
         .contentholder {
-            background-color: lightgrey;
-            height: 300px;
-            width: 300px;
+         /*   background-color: lightgrey;   */
+            height: 200px;
+            width: 240px;
 
         }
 
         .status_left {
-            background-color: blue;
+         /*   background-color: blue;   */
             height: 200px;
             width: 100px;
             vertical-align: top;
@@ -258,52 +277,62 @@
         }
 
         .status_right {
-          /*  background-color: red;  */
+        /*    background-color: red;   */
             height: 200px;
-            width: 110px;
+            width: 130px;
             display: inline-block;
         }
 
         .imagehold {
-            background-color: yellow;
+        /*    background-color: yellow;  */
             height: 100px;
             width: 100px;
 
         }
 
         .powerhold {
-            background-color: green;
+          /*  background-color: green;  */
             height: 50px;
             width: 100%;
+            text-align:center;
         }
+
+        .powerlabel {
+            margin-top: 10px;
+        }
+
         .daylighthold{
-            background-color: pink;
+          /*  background-color: pink; */
             height: 50px;
             width: 100%;
+            text-align:center;
         }
+
+
+
 
 
         .level_holder {
             display: inline-block;
-          /*  background-color: lightblue;  */
+       /*     background-color: lightblue;   */
             height: 190px;
-            margin-top: 5px;
+            margin-top: 0px;
             margin-left: 10px;
             width: 50px;
 
         }
         .level_bar {
             height: 150px;
-            margin-top: 5px;
+            margin-top: 0px;
             width: 100%;
             background: linear-gradient(to top, black, lightyellow);
         }
 
         .color_temp_bar {
             height: 150px;
-            margin-top: 5px;
+            margin-top: 0px;
             width: 100%;
-            background: linear-gradient(to top, blue, white, darkorange);
+            background: linear-gradient(to top, darkorange, white, blue);
         }
 
         .level_mark {
@@ -317,11 +346,56 @@
 
         .level_label {
             margin-top: 5px;
-            width: 50px;
-            height: 30px;
-            background-color: brown;
+            width: 40px;
+            height: 20px;
+            text-align:center;
+         /*   background-color: brown;    */
         }
 
+        /*              RGBW level pars */
+
+
+        .red_bar {
+            height: 150px;
+            margin-top: 0px;
+            width: 100%;
+            background: linear-gradient(to top, black, red);
+        }
+
+        .green_bar {
+            height: 150px;
+            margin-top: 0px;
+            width: 100%;
+            background: linear-gradient(to top, black, green);
+        }
+
+        .blue_bar {
+            height: 150px;
+            margin-top: 0px;
+            width: 100%;
+            background: linear-gradient(to top, black, blue);
+        }
+
+        .white_bar {
+            height: 150px;
+            margin-top: 0px;
+            width: 100%;
+            background: linear-gradient(to top, black, white);
+        }
+
+        .custom_slider_fill {
+            background: #ff00ff;
+            position: absolute;
+        }
+
+        .custom_slider_range {
+            background: #00750000;
+            position: relative;
+        }
+
+       /* .custom_slider_offset {
+            margin-top: 20px;
+        }  */
     </style>
 </head>
 
@@ -374,65 +448,12 @@
             <div class="col-lg-12">
                 <div class="row" id="dynbuttonbar" >
                 </div>
-                <div id="controlscontent" class="controlscontentbox">
-                    <div id="BrightnessBar"  class="card-box">
-                        <h4 class="text-dark  header-title m-t-0 m-b-30">Brightness</h4>
-                        <input id="brightnesssliderobject" type="range" oninput="onBrightnessSliderChange(this.value)" onchange="onBrightnessSliderChange(this.value)" />
-                        <div class="brightness_grad" ></div>
-                    </div>
 
-                    <div id="CCTBar"  class="card-box">
-                        <h4 class="text-dark  header-title m-t-0 m-b-30">Color Temperatrue</h4>
-
-                        <div class="ctemp_grad" >
-                            <input id="CCTsliderobject" type="range" oninput="onCCTSliderChange(this.value)" onchange="onCCTSliderChange(this.value)" />
-                        </div>
-                    </div>
-
-                    <div id="ToggleButton"  class="card-box">
-                        <h4 class="text-dark  header-title m-t-0 m-b-30">Toggle Switch</h4>
-
-                            <label >OFF</label>
-                            <input checked data-plugin="switchery" data-color="#0099ff" data-size="large" id="ToggleObject" type="checkbox" oninput="onToggleButtonChange(this.checked)" onchange="onToggleButtonChange(this.checked)"/>
-                            <label >ON</label>
-                    </div>
-
-                    <div id="RGB_ColorWheel"  class="card-box">
-                        <h4 class="text-dark  header-title m-t-0 m-b-30">Color Picker</h4>
-                        <div class="wheel" id="colorWheelDemo"></div>
-                    </div>
-
-                    <!--div id="occ_vac_holder" class="vac_occ_div">
-
-                        <input type="button" class="headerbutton" onclick=onVacancy(); value="Send Vacancy" />
-                        <input type="button" class="headerbutton" onclick=onOccupancy(); value="Send Occupancy" />
-                    </div-->
+                <div class="row" id="controls" >
 
                 </div>
 
-
                 <div id="StatusPage" class="row" >
-
-
-                    <!--div id="outputsdiv" width="100%">
-                        <table align="center" >
-                            <tr >
-                                <td><div id="StatusBlock1" >   </div> </td>
-                                <td><div id="StatusBlock2" >   </div> </td>
-                                <td><div id="StatusBlock3" >   </div> </td>
-                                <td><div id="StatusBlock4" >   </div> </td>
-                            </tr>
-                            <tr>
-                                <td><div id="StatusBlock5" >   </div> </td>
-                                <td><div id="StatusBlock6" >   </div> </td>
-                                <td><div id="StatusBlock7" >   </div> </td>
-                                <td><div id="StatusBlock8" >   </div> </td>
-                            </tr>
-                        </table>
-                    </div-->
-
-
-
 
                     <!--div id="statusspace" class="status_gap">
 

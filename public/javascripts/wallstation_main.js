@@ -51,28 +51,29 @@ function voltageToFC (volts) {
 function init() {
     getConfig(processConfig);
 
+    /*
+     var cwheelvalues = "rgb(255,255,255)";
+     //convert from pct back to rgb 8 bit,
+     //var red = (selected_fixture.red * 255)/100;
+     // var green = (selected_fixture.green * 255)/100;
+     // var blue = (selected_fixture.blue * 255)/100;
 
-    var cwheelvalues = "rgb(255,255,255)";
-    //convert from pct back to rgb 8 bit,
-    //var red = (selected_fixture.red * 255)/100;
-    // var green = (selected_fixture.green * 255)/100;
-    // var blue = (selected_fixture.blue * 255)/100;
+     // cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
 
-    // cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
+     colorwheel_control = iro.ColorWheel("#colorWheelDemo", {
+     width: 300,
+     height: 300,
+     padding: 4,
+     sliderMargin: 24,
+     markerRadius: 4,
+     color: cwheelvalues,
+     CSS: {} // apply colors to any elements
+     });
 
-    colorwheel_control = iro.ColorWheel("#colorWheelDemo", {
-        width: 300,
-        height: 300,
-        padding: 4,
-        sliderMargin: 24,
-        markerRadius: 4,
-        color: cwheelvalues,
-        CSS: {} // apply colors to any elements
-    });
-
-    colorwheel_control.watch(function(color) {
-        startRGBWCallHWCallTimer(color);
-    });
+     colorwheel_control.watch(function(color) {
+     startRGBWCallHWCallTimer(color);
+     });
+     */
 }
 
 
@@ -124,15 +125,15 @@ function processConfig(configobj) {
 
 
 
-    $('input[type="range"]').rangeslider({
-        polyfill : false,
-        onInit : function() {
-            //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
-        },
-        onSlide : function( position, value ) {
-            //  this.output.html( value );
-        }
-    });
+    /* $('input[type="range"]').rangeslider({
+     polyfill : false,
+     onInit : function() {
+     //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+     },
+     onSlide : function( position, value ) {
+     //  this.output.html( value );
+     }
+     });  */
 
 }
 
@@ -142,7 +143,7 @@ function showOnlyTheseButtons (whichButtons) {
     // Hide all of them and then make visible the one chosen
 
     pending_menu_selection = whichButtons;
-   // top_menu_selection = whichButtons;
+    // top_menu_selection = whichButtons;
     getConfig(processConfig);
     //updateDynButtonBar();
 }
@@ -154,34 +155,35 @@ function updateDynButtonBar()
     scenebuttonholder.innerHTML = "";
 
     // clear content.
-    hideDivID("BrightnessBar");
-    hideDivID("CCTBar");
-    hideDivID("ToggleButton");
-    hideDivID("RGB_ColorWheel");
+    // hideDivID("BrightnessBar");
+    // hideDivID("CCTBar");
+    // hideDivID("ToggleButton");
+    // hideDivID("RGB_ColorWheel");
     hideDivID("StatusPage");
 
 
     switch(top_menu_selection)
     {
         case "Scenes":
-            showDivID("controlscontent","block");
+            // showDivID("controlscontent","block");
             constructSceneButtons();
             break;
         case "Groups":
-            showDivID("controlscontent","block");
+            //  showDivID("controlscontent","block");
             constructGroupButtons();
             break;
         case "Fixtures":
-            showDivID("controlscontent","block");
+            //  showDivID("controlscontent","block");
             constructFixtureButtons();
+
             break;
         case "Status":
 
-            hideDivID("controlscontent");
+            //   hideDivID("controlscontent");
 
             constructFixtureStatusBoxes();
-           // constructFixtureStatusBoxs();
-           // updateLevelInputsTable();
+            // constructFixtureStatusBoxs();
+            // updateLevelInputsTable();
             //updateContactInputsTable();
             showDivID("StatusPage","inline");
 
@@ -189,7 +191,7 @@ function updateDynButtonBar()
             break;
         case "Config":
             //hideDivID("StatusPage");
-            hideDivID("controlscontent");
+            //  hideDivID("controlscontent");
             constructConfigItemsDiv();
             showDivID("ConfigPage","inline");
             break;
@@ -365,7 +367,7 @@ function constructFixtureButtons()
     {
         var fixtureobj = cachedconfig.fixtures[i];
         var buttonholder = document.createElement("div");
-        buttonholder.className = "col-lg-1";
+        buttonholder.className = "col-md-2";
 
         groupbuttonholder.appendChild(buttonholder);
         var fixbutton = document.createElement("input");
@@ -374,65 +376,110 @@ function constructFixtureButtons()
         fixbutton.type = "button";
         fixbutton.className = "btn btn-large btn-success";
         fixbutton.setAttribute('fixture', fixtureobj.assignedname);
+        fixbutton.setAttribute('index', i);
+
         fixbutton.onclick = function(){
 
+
+            var ctrlsholder = document.getElementById("controls");
+            ctrlsholder.innerHTML = ""; // blank it out.
+
+
             var fixname = this.getAttribute('fixture');
+            var idx = this.getAttribute('index');
             selected_fixture = getFixtureByName(fixname);
-            hideDivID("BrightnessBar");
-            hideDivID("CCTBar");
-            hideDivID("RGB_ColorWheel");
-            hideDivID("ToggleButton");
 
-            switch(selected_fixture.type)
+            constructFixtureStatusBox(ctrlsholder, selected_fixture, idx );  //status box
+
+            if(selected_fixture.type == "on_off")
             {
-                case "on_off":
-                    showDivID("ToggleButton","block");
-                    var toggleswitch = document.getElementById("ToggleObject");
-                    toggleswitch.checked = (selected_fixture.level == 100)?true:false;
-                    break;
-                case "dim":
-                    showDivID("BrightnessBar","block");
-                    //..
-
-                    document.getElementById("brightnesssliderobject").value = selected_fixture.level;
-                    break;
-
-                case "cct":
-                    showDivID("BrightnessBar","block");
-                    showDivID("CCTBar","block");
-                    document.getElementById("brightnesssliderobject").value = selected_fixture.brightness;
-
-                    var min = Number(selected_fixture.min);
-                    var max = Number(selected_fixture.max);
-                    var range = max-min;
-                    var barval2 = ((Number(selected_fixture.colortemp) - min)/range) * 100;
-                  //  var ctempcalc = (min + (max-min)*(Number(value)/100));
-
-
-                    var barval = barval2; //((Number(selected_fixture.colortemp) - 2000)*100) / 4500;
-                   // var min = selected_fixture.min;
-                   // var max = selected_fixture.max;
-
-                    document.getElementById("CCTsliderobject").value = barval;
-                    break;
-                case "rgbw":
-                    showDivID("RGB_ColorWheel","block");
-                    // set rgb wheel to the correct value.
-                    var cwheelvalues = "rgb(255,255,255)";
-                    //convert from pct back to rgb 8 bit,
-                    var red = (selected_fixture.red * 255)/100;
-                    var green = (selected_fixture.green * 255)/100;
-                    var blue = (selected_fixture.blue * 255)/100;
-
-                    cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
-
-                    //var k = document.getElementById("colorWheelDemo");
-
-                    colorwheel_control.color.hexString = cwheelvalues;
-                    break;
-                default:
-                    break;
+                constructONOFFCtrl(ctrlsholder);
             }
+
+            if(selected_fixture.type == "dim" || selected_fixture.type == "cct") {
+                constructBrightnessBar(ctrlsholder);
+            }
+
+            if(selected_fixture.type == "cct") {
+                constructColorTempBar(ctrlsholder);
+            }
+
+            if(selected_fixture.type == "rgbw")
+            {
+                constructColorWheelControl(ctrlsholder);
+            }
+
+
+            $('input[type="range"]').rangeslider({
+                polyfill : false,
+                 rangeClass: 'custom_slider_range',
+                  fillClass: 'custom_slider_fill',
+                onInit : function() {
+                    //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+                },
+                onSlide : function( position, value ) {
+                    //  this.output.html( value );
+                }
+            });
+
+
+            /*       var fixname = this.getAttribute('fixture');
+             selected_fixture = getFixtureByName(fixname);
+             //  hideDivID("BrightnessBar");
+             //  hideDivID("CCTBar");
+             //  hideDivID("RGB_ColorWheel");
+             //  hideDivID("ToggleButton");
+
+             switch(selected_fixture.type)
+             {
+             case "on_off":
+             //  showDivID("ToggleButton","block");
+             var toggleswitch = document.getElementById("ToggleObject");
+             toggleswitch.checked = (selected_fixture.level == 100)?true:false;
+             break;
+             case "dim":
+             // showDivID("BrightnessBar","block");
+             //..
+
+             document.getElementById("brightnesssliderobject").value = selected_fixture.level;
+             break;
+
+             case "cct":
+             //   showDivID("BrightnessBar","block");
+             //   showDivID("CCTBar","block");
+             document.getElementById("brightnesssliderobject").value = selected_fixture.brightness;
+
+             var min = Number(selected_fixture.min);
+             var max = Number(selected_fixture.max);
+             var range = max-min;
+             var barval2 = ((Number(selected_fixture.colortemp) - min)/range) * 100;
+             //  var ctempcalc = (min + (max-min)*(Number(value)/100));
+
+
+             var barval = barval2; //((Number(selected_fixture.colortemp) - 2000)*100) / 4500;
+             // var min = selected_fixture.min;
+             // var max = selected_fixture.max;
+
+             document.getElementById("CCTsliderobject").value = barval;
+             break;
+             case "rgbw":
+             //   showDivID("RGB_ColorWheel","block");
+             // set rgb wheel to the correct value.
+             var cwheelvalues = "rgb(255,255,255)";
+             //convert from pct back to rgb 8 bit,
+             var red = (selected_fixture.red * 255)/100;
+             var green = (selected_fixture.green * 255)/100;
+             var blue = (selected_fixture.blue * 255)/100;
+
+             cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
+
+             //var k = document.getElementById("colorWheelDemo");
+
+             colorwheel_control.color.hexString = cwheelvalues;
+             break;
+             default:
+             break;
+             }  */
         }
         buttonholder.appendChild(fixbutton);
         var btnText = document.createTextNode(fixtureobj.assignedname);
@@ -564,18 +611,24 @@ function onToggleButtonChange(value)
 
 
 
-function processUpdatedConfig()
-{
-    constructFixtureStatusBoxs();
-  //  constructFixtureButtons();
-}
+//function processUpdatedConfig()
+//{
+//   constructFixtureStatusBoxs();
+//    //  constructFixtureButtons();
+//}
 
 
 function postSetFixtureHandler(config)
 {
     if (config != null) {
         cachedconfig = config;
-        constructFixtureStatusBoxs();
+
+        for (var i = 0 ; i < cachedconfig.fixtures.length; i++) {
+            var fixobj = cachedconfig.fixtures[i];
+
+            updateFixtureStatusBox(fixobj,i);
+        }
+
     }
 }
 
@@ -661,7 +714,7 @@ function onCCTSliderChange(value)
 }
 
 
-
+/*
 
 function constructFixtureStatusBoxs()
 {
@@ -697,103 +750,14 @@ function constructFixtureStatusBoxs()
                 break;
         }
 
-        createFixtureStatusTable(divID,fixobj.assignedname,fixobj.type,fixobj.image,
-            fixobj.powerwatts,level,colortemp,fixobj.daylightlimited);
+        // createFixtureStatusTable(divID,fixobj.assignedname,fixobj.type,fixobj.image,
+        //     fixobj.powerwatts,level,colortemp,fixobj.daylightlimited);
 
     }  // end fixture for loop ,
 
 }
+*/
 
-
-function createFixtureStatusTable(divID,fixtureName,fixtureType,fixtureImage,fixturePower,fixtureLevel,fixtureCCT, fixtureDLLimited) {
-    // Declare global variables and create the header, footer, and caption.
-   // console.log ("fixture image  is ", fixtureImage);
-    var oTable = document.createElement("TABLE");
-    var oTHead = document.createElement("TH");
-    var oRow1 = document.createElement("TR");
-    var oRow2 = document.createElement("TR");
-    var oRow3 = document.createElement("TR");
-    var oTDpicture = document.createElement("TD");
-    var oTDdimlevel = document.createElement("TD");
-    var oTDcctstatus = document.createElement("TD");
-    var oTDpowerlevel = document.createElement("TD");
-    var oTDdaylight = document.createElement("TD");
-    var oTDempty = document.createElement("TD");
-
-    oTHead.innerHTML = fixtureName;
-    oTHead.style.backgroundColor = "darkgrey";
-    oTHead.style.textAlign = "center";
-    oTHead.colspan = "7";
-    oTHead.rowspan = "1";
-
-
-    oTDpicture.innerHTML = "Picture";
-    oTDpicture.className = "picturediv";
-    var img = document.createElement('img');
-    img.src = fixtureImage;
-    img.style.width = "120px";
-    img.style.height = "120px";
-    //img.style.paddingRight = "10px";
-    oTDpicture.appendChild(img);
-    oTDpicture.id = "pic_" + fixtureName;
-
-    oTDdimlevel.innerHTML = "Level";
-    oTDdimlevel.className = "dimleveldiv";
-    var para = document.createElement("H2");                       // Create a <p> element
-    if (fixtureType != "rgbw") {
-        var p = document.createTextNode(fixtureLevel+ "%");}
-    else { var p = document.createTextNode("N/A");   }
-    para.appendChild(p);
-    oTDdimlevel.appendChild(para);
-    oTDdimlevel.id = "level_" + fixtureName;
-
-    //console.log ("fixtureType was ", fixtureType);
-    oTDcctstatus.innerHTML = "CCT Level ";
-    oTDcctstatus.className = "cctstatusdiv";
-    var para = document.createElement("H3");
-    if (fixtureType == "cct") {
-        var p = document.createTextNode(fixtureCCT+ "K");  }
-    else { var p = document.createTextNode("N/A");  }
-    para.appendChild(p);
-    oTDcctstatus.appendChild(para);
-    oTDcctstatus.id = "ctemp_" + fixtureName;
-
-    oTDpowerlevel.innerHTML = "Power Level";
-    var para = document.createElement("H1");                       // Create a <p> element
-    var p = document.createTextNode(fixturePower+ " W");
-    para.appendChild(p);
-    oTDpowerlevel.appendChild(para);
-    oTDpowerlevel.className = "powerleveldiv";
-
-    oTDpowerlevel.id = "power_" + fixtureName;
-
-    oTDdaylight.innerHTML = "Daylight Limited";
-    oTDdaylight.className = "daylightdiv";
-    var img = document.createElement('img');
-    if (fixtureDLLimited) {
-        img.src = "images/sun40x40.jpg";
-    } else {img.src = "/images/handtinytrans.gif"}
-    oTDdaylight.appendChild(img);
-    oTDdaylight.id = "dl_" + fixtureName;
-
-//Build the table smallest element to biggest
-    oRow1.appendChild(oTDpicture);
-    oRow1.appendChild(oTDdimlevel);
-    oRow1.appendChild(oTDpowerlevel);
-
-    oRow2.appendChild(oTDcctstatus);
-
-    oRow2.appendChild(oTDempty);
-    oRow2.appendChild(oTDdaylight);
-
-    oTHead.appendChild(oRow1);
-    oTHead.appendChild(oRow2);
-    oTable.appendChild(oTHead);
-    var x = document.getElementById(divID);
-    x.appendChild(oTable);
-
-
-}
 
 // **************************** END NEW CODE *********************************************
 
@@ -817,7 +781,7 @@ function hideDivID (DivID) {
 function SetDaylightPolling () {
 
     var selection = $('#daylightpoll').val();
-   // console.log ("seconds are: ", selection);
+    // console.log ("seconds are: ", selection);
     var element = {};
     element.interval = selection;
     var dataset = JSON.stringify(element);
@@ -924,8 +888,8 @@ function updateLevelInputsTable() {
         }
     }
 
-   // $("#tableOutput").html(oTable);
-     document.getElementById("levelinputsdiv").appendChild(oTable);
+    // $("#tableOutput").html(oTable);
+    document.getElementById("levelinputsdiv").appendChild(oTable);
 }
 
 
@@ -1031,13 +995,162 @@ function constructFixtureStatusBoxes()
 {
     var currentrow_div = document.getElementById("StatusPage");
     for (var i = 0; i < cachedconfig.fixtures.length; i++) {
-        constructFixtureBox(currentrow_div, cachedconfig.fixtures[i]);
+        constructFixtureStatusBox(currentrow_div, cachedconfig.fixtures[i],i);
     }
 }
 
-function constructFixtureBox(currentdiv, fixture) {
+function constructFixtureStatusBox(currentdiv, fixture, index) {
     var fixcol = document.createElement("div");
-    fixcol.className = "col-lg-2";
+    fixcol.className = "col-sm-4";
+    currentdiv.appendChild(fixcol);
+
+    var fixbox = document.createElement("div");
+    fixbox.className = "card-box";
+    fixbox.id = "fix"+index;
+
+    fixcol.appendChild(fixbox);
+
+    updateFixtureStatusBox(fixture,index);
+}
+
+function updateFixtureStatusBox(fixture, index)
+{
+    var cardboxdiv = document.getElementById("fix"+index);
+    if(cardboxdiv != undefined)
+    {
+
+        cardboxdiv.innerHTML = "";
+        var header = document.createElement("h4");
+        header.className = "text-dark  header-title m-t-0 m-b-10";
+        header.innerHTML = fixture.assignedname;
+        cardboxdiv.appendChild(header);
+
+        var fixcontent = document.createElement("div");
+        fixcontent.className = "contentholder";
+        cardboxdiv.appendChild(fixcontent);
+
+        var statleft = document.createElement("div");
+        statleft.className = "status_left";
+        fixcontent.appendChild(statleft);
+
+        var statright = document.createElement("div");
+        statright.className = "status_right";
+        fixcontent.appendChild(statright);
+
+        var image_hold = document.createElement("div");
+        image_hold.className = "imagehold";
+        statleft.appendChild(image_hold);
+
+        var power_hold = document.createElement("div");
+        power_hold.className = "powerhold";
+        statleft.appendChild(power_hold);
+
+        var lbval = document.createElement("label");
+        lbval.innerHTML = fixture.powerwatts + " Watts";
+        lbval.className = "powerlabel";
+        power_hold.appendChild(lbval);
+
+
+        var daylight_hold = document.createElement("div");
+        daylight_hold.className = "daylighthold";
+        statleft.appendChild(daylight_hold);
+
+
+        if(fixture.daylightlimited) {
+            var image = document.createElement("img");
+            image.src = "images/sun_1.gif";
+            image.style.marginTop = "5px";
+            image.width = "40";
+            image.height = "40";
+            daylight_hold.appendChild(image);
+        }
+
+        var image = document.createElement("img");
+        image.src = "fixtureimg/1.jpg";
+        image.width = "100";
+        image.height = "100";
+        image_hold.appendChild(image);
+
+        if(fixture.type == "on_off" || fixture.type == "dim")
+            constructDimmableIndicators(statright,fixture.level);
+        else if(fixture.type == "cct")
+            constructColorTempIndicators(statright, fixture.brightness, fixture.colortemp);
+        else if(fixture.type == "rgbw")
+            constructRGBWndicators(statright, fixture.red,fixture.green,fixture.blue,fixture.white);
+
+    }
+}
+
+
+function constructDimmableIndicators(parentdiv, brightpct)
+{
+    constructBasicLevelIndicator(parentdiv,100,190,brightpct,"level_bar", brightpct+"%");
+}
+
+function constructColorTempIndicators(parentdiv, brightpct, colortemplevel)
+{
+    constructBasicLevelIndicator(parentdiv,50,190,brightpct,"level_bar", brightpct+"%");
+    // calc ctemp as pct
+    var min = Number(2700);
+    var max = Number(6500);
+    var range = max-min;
+    var barval2 = ((Number(colortemplevel) - min)/range) * 100;
+    constructBasicLevelIndicator(parentdiv,50,190,barval2,"color_temp_bar", colortemplevel+"K");
+}
+
+
+
+function constructRGBWndicators(parentdiv, red, green, blue, white)
+{
+    constructBasicLevelIndicator(parentdiv,20,190,red,"red_bar", red+"%");
+    constructBasicLevelIndicator(parentdiv,20,190,green,"green_bar", green+"%");
+    constructBasicLevelIndicator(parentdiv,20,190,blue,"blue_bar", blue+"%");
+    constructBasicLevelIndicator(parentdiv,20,190,white,"white_bar", white+"%");
+}
+
+
+function constructBasicLevelIndicator(parentdiv, width, height, pct, barclass, labelval )
+{
+    // main wrapper is 200px,
+    // level holder is 190 px high,
+    var holder = document.createElement("div");
+    holder.className = "level_holder";
+    holder.style.width =  width+"px";
+    holder.style.height =  height+"px";
+    parentdiv.appendChild(holder);
+
+    var bar = document.createElement("div");
+    bar.className = barclass;
+    var bar_height = height-20;
+    bar.style.height =  bar_height+"px";  //
+    holder.appendChild(bar);
+
+    var label = document.createElement("div");
+    label.className = "level_label";
+    label.style.width = width+"px";
+    holder.appendChild(label);
+
+    var lbval = document.createElement("label");
+    lbval.innerHTML = labelval;
+    label.appendChild(lbval);
+
+    var mark = document.createElement("div");
+    mark.className = "level_mark";
+    var bla = bar_height - ((pct * bar_height)/ 100);
+    mark.style.marginTop =  bla + "px"; //"90px";  //set level mark,, calc. based on 150 tall,
+    mark.style.width =  width+"px";
+    bar.appendChild(mark);
+
+
+}
+
+
+
+
+
+function constructONOFFCtrl(currentdiv) {
+    var fixcol = document.createElement("div");
+    fixcol.className = "col-md-8";
     currentdiv.appendChild(fixcol);
 
     var fixbox = document.createElement("div");
@@ -1046,145 +1159,175 @@ function constructFixtureBox(currentdiv, fixture) {
 
     var header = document.createElement("h4");
     header.className = "text-dark  header-title m-t-0 m-b-10";
-    header.innerHTML = fixture.assignedname;
+    header.innerHTML = "Toggle Switch";
     fixbox.appendChild(header);
 
-    var fixcontent = document.createElement("div");
-    fixcontent.className = "box-content";
-    fixbox.appendChild(fixcontent);
-
-   // var contentholder = document.createElement("div");
-    //contentholder.className = "contentholder";
-   // fixcontent.appendChild(contentholder);
-
-    var statleft = document.createElement("div");
-    statleft.className = "status_left";
-    fixcontent.appendChild(statleft);
-
-    var statright = document.createElement("div");
-    statright.className = "status_right";
-    fixcontent.appendChild(statright);
-
-
-    var image_hold = document.createElement("div");
-    image_hold.className = "imagehold";
-    statleft.appendChild(image_hold);
-
-
-    var power_hold = document.createElement("div");
-    power_hold.className = "powerhold";
-    statleft.appendChild(power_hold);
-
-    var daylight_hold = document.createElement("div");
-    daylight_hold.className = "daylighthold";
-    statleft.appendChild(daylight_hold);
-
-
-    var image = document.createElement("img");
-    image.src = "fixtureimg/1.jpg";
-    image.width = "100";
-    image.height = "100";
-    image_hold.appendChild(image);
-
-
-  //  constructLevelIndicator(statright);
-    constructColorTempIndicators(statright, 84, 5670);
-
-
-
-
-
-}
-
-function constructLevelIndicator(parentdiv)
-{
-    var holder = document.createElement("div");
-    holder.className = "level_holder";
-    holder.style.width =  "100px";
-    parentdiv.appendChild(holder);
-
-    var bar = document.createElement("div");
-    bar.className = "level_bar";
-    holder.appendChild(bar);
-
-
-    var label = document.createElement("div");
-    label.className = "level_label";
-    holder.appendChild(label);
+    var content = document.createElement("div");
+    // guageholder.className = "guage_holder";
+    fixbox.appendChild(content);
 
     var lbval = document.createElement("label");
-    lbval.innerHTML = "40%"
-    label.appendChild(lbval);
+    lbval.innerHTML = "OFF";
+    content.appendChild(lbval);
 
+    var on_off_toggle = document.createElement("input");
+    on_off_toggle.type = "checkbox";
+    on_off_toggle.className="js-switch";
+    on_off_toggle.onchange = function() {
 
-    var mark = document.createElement("div");
-    mark.className = "level_mark";
-    mark.style.marginTop =  "90px";
-    bar.appendChild(mark);
+        var k = 0 ;
+
+    }
+    content.appendChild(on_off_toggle);
+
+    var elem = document.querySelector('.js-switch');
+    var switchery = new Switchery(elem, { color: '#0099ff' , secondaryColor: '#0099ff'});
+
+    var lbval = document.createElement("label");
+    lbval.innerHTML = "ON";
+    content.appendChild(lbval);
 }
 
 
 
-function constructColorTempIndicators(parentdiv, brightpct, colortemplevel)
-{
-    // main wrapper is 200px,
-    // level holder is 190 px high,
-    var holder = document.createElement("div");
-    holder.className = "level_holder";
-    holder.style.width =  "40px";
-    parentdiv.appendChild(holder);
+function constructBrightnessBar(currentdiv) {
+    var fixcol = document.createElement("div");
+    fixcol.className = "col-md-8";
+    currentdiv.appendChild(fixcol);
 
-    var bar = document.createElement("div");
-    bar.className = "level_bar";
-    holder.appendChild(bar);
+    var fixbox = document.createElement("div");
+    fixbox.className = "card-box";
+    fixcol.appendChild(fixbox);
 
-    var label = document.createElement("div");
-    label.className = "level_label";
-    holder.appendChild(label);
+    var header = document.createElement("h4");
+    header.className = "text-dark  header-title m-t-0 m-b-10";
+    header.innerHTML = "BRIGHTNESS";
+    fixbox.appendChild(header);
 
-    var lbval = document.createElement("label");
-    lbval.innerHTML = brightpct + "%"; //"40%"
-    label.appendChild(lbval);
+    var bright_grad = document.createElement("div");
+    bright_grad.className = "brightness_grad";
+    fixbox.appendChild(bright_grad);
 
-    var mark = document.createElement("div");
-    mark.className = "level_mark";
-    var bla = 150 - ((brightpct * 150)/ 100);
-    mark.style.marginTop =  bla + "px"; //"90px";  //set level mark,, calc. based on 190 tall,
-    mark.style.width = "40px";
-    bar.appendChild(mark);
+    var guageholder = document.createElement("div");
+    guageholder.className = "guage_holder";
+    bright_grad.appendChild(guageholder);
 
-   // *********************** COLOR TEMP IND ****************
-    // ******************************************************
-    var holder = document.createElement("div");
-    holder.className = "level_holder";
-    holder.style.width =  "40px";
-    parentdiv.appendChild(holder);
+    var bright_guage = document.createElement("input");
+    bright_guage.type = "range";
+    bright_guage.onchange = function() {
+        document.getElementById("brightvalue").innerHTML = this.value;
+    }
 
-    var bar = document.createElement("div");
-    bar.className = "color_temp_bar";
-    holder.appendChild(bar);
+    guageholder.appendChild(bright_guage);
 
-    var label = document.createElement("div");
-    label.className = "level_label";
-    holder.appendChild(label);
+    var bright_val = document.createElement("div");
+    bright_val.className = "guage_value";
+    fixbox.appendChild(bright_val);
 
-    var lbval = document.createElement("label");
-    lbval.innerHTML = colortemplevel + "k"; //"3470k"
-    label.appendChild(lbval);
+    var header = document.createElement("h3");
+    header.className = "text-primary counter";
+    header.style.textAlign = "center";
+    header.id = "brightvalue";
+    header.innerHTML = "44";
+    bright_val.appendChild(header);
+
+}
 
 
-    var mark = document.createElement("div");
-    mark.className = "level_mark";
-   // mark.style.marginTop =  "90px";
 
-    var min = Number(2700);
-    var max = Number(6500);
-    var range = max-min;
-    var barval2 = ((Number(colortemplevel) - min)/range) * 100;
+function constructColorTempBar(currentdiv) {
+    var fixcol = document.createElement("div");
+    fixcol.className = "col-md-8";
+    currentdiv.appendChild(fixcol);
 
-    var bla = ((barval2 * 150)/ 100);
-    mark.style.marginTop =  bla + "px";//, calc. based on 150 tall,
-    mark.style.width = "40px";
+    var fixbox = document.createElement("div");
+    fixbox.className = "card-box";
+    fixcol.appendChild(fixbox);
 
-    bar.appendChild(mark);
+    var header = document.createElement("h4");
+    header.className = "text-dark  header-title m-t-0 m-b-10";
+    header.innerHTML = "COLOR TEMPERATURE";
+    fixbox.appendChild(header);
+
+    var bright_grad = document.createElement("div");
+    bright_grad.className = "ctemp_grad";
+    fixbox.appendChild(bright_grad);
+
+    var guageholder = document.createElement("div");
+    guageholder.className = "guage_holder";
+    bright_grad.appendChild(guageholder);
+
+    var bright_guage = document.createElement("input");
+    bright_guage.type = "range";
+    bright_guage.onchange = function() {
+
+        // ctemp to pct, ref only.
+        //  var min = Number(selected_fixture.min);
+        // var max = Number(selected_fixture.max);
+        // var range = max-min;
+        // var barval2 = ((Number(selected_fixture.colortemp) - min)/range) * 100;
+
+        //pct to color temp .
+        var min = Number(2700); //selected_fixture.min);
+        var max = Number(6500); //.max);
+        var ctempcalc = (min + (max-min)*(Number(this.value)/100));
+        document.getElementById("colortempvalue").innerHTML = ctempcalc + " K";
+
+    }
+
+    guageholder.appendChild(bright_guage);
+
+
+    var bright_val = document.createElement("div");
+    bright_val.className = "guage_value";
+    fixbox.appendChild(bright_val);
+
+    var header = document.createElement("h3");
+    header.className = "text-primary counter";
+    header.style.textAlign = "center";
+    header.id = "colortempvalue";
+    header.innerHTML = "3500";
+    bright_val.appendChild(header);
+
+}
+
+
+
+function constructColorWheelControl(currentdiv) {
+    var fixcol = document.createElement("div");
+    fixcol.className = "col-md-8";
+    currentdiv.appendChild(fixcol);
+
+    var fixbox = document.createElement("div");
+    fixbox.className = "card-box";
+    fixcol.appendChild(fixbox);
+
+    var header = document.createElement("h4");
+    header.className = "text-dark  header-title m-t-0 m-b-10";
+    header.innerHTML = "Color Picker";
+    fixbox.appendChild(header);
+
+    //wheel.
+    var content = document.createElement("div");
+    content.className = "wheel";
+    content.id = "colorWheelDemo";
+    fixbox.appendChild(content);
+
+
+    var cwheelvalues = "rgb(255,255,255)";
+    colorwheel_control = iro.ColorWheel("#colorWheelDemo", {
+        width: 300,
+        height: 300,
+        padding: 4,
+        sliderMargin: 24,
+        markerRadius: 4,
+        color: cwheelvalues,
+        CSS: {} // apply colors to any elements
+    });
+
+    colorwheel_control.watch(function(color) {
+        startRGBWCallHWCallTimer(color);
+    });
+
+    //  content.appendChild(on_off_toggle);
 }
