@@ -154,36 +154,29 @@ function updateDynButtonBar()
     var scenebuttonholder = document.getElementById("dynbuttonbar");
     scenebuttonholder.innerHTML = "";
 
-    // clear content.
-    // hideDivID("BrightnessBar");
-    // hideDivID("CCTBar");
-    // hideDivID("ToggleButton");
-    // hideDivID("RGB_ColorWheel");
     hideDivID("StatusPage");
-
-
+    hideDivID("dynbuttonbar");
+    hideDivID("controls");
     switch(top_menu_selection)
     {
         case "Scenes":
-            // showDivID("controlscontent","block");
+            showDivID("dynbuttonbar","inline");
             constructSceneButtons();
             break;
         case "Groups":
-            //  showDivID("controlscontent","block");
+            showDivID("dynbuttonbar","inline");
             constructGroupButtons();
             break;
         case "Fixtures":
-            //  showDivID("controlscontent","block");
+            showDivID("controls","inline");
+            showDivID("dynbuttonbar","inline");
             constructFixtureButtons();
-
             break;
         case "Status":
             constructFixtureStatusBoxes();
             showDivID("StatusPage","inline");
             break;
         case "Config":
-            //hideDivID("StatusPage");
-            //  hideDivID("controlscontent");
             constructConfigItemsDiv();
             showDivID("ConfigPage","inline");
             break;
@@ -247,7 +240,8 @@ function constructSceneButtons()
     {
 
         var hdiv = document.createElement("div");
-        hdiv.className ="col-lg-1";
+        hdiv.className ="col-xs-4 col-sm-6 col-md-2 col-lg-2 top-buffer"; //"col-lg-1";
+
 
         var sceneobj = cachedconfig.scenes[i];
         var scenebutton = document.createElement("input");
@@ -312,7 +306,7 @@ function constructGroupButtons()
     for(var i = 0 ; i < cachedconfig.groups.length; i++)
     {
         var hdiv = document.createElement("div");
-        hdiv.className ="col-lg-1";
+        hdiv.className ="col-xs-4 col-sm-6 col-md-2 col-lg-2 top-buffer";
 
         var groupobj = cachedconfig.groups[i];
         var groupbutton = document.createElement("input");
@@ -354,12 +348,18 @@ function constructFixtureButtons()
     var groupbuttonholder = document.getElementById("dynbuttonbar");
     groupbuttonholder.innerHTML = "";
 
-    groupbuttonholder.style.display="inline";
     for(var i = 0 ; i < cachedconfig.fixtures.length; i++)
     {
         var fixtureobj = cachedconfig.fixtures[i];
         var buttonholder = document.createElement("div");
-        buttonholder.className = "col-md-2";
+        buttonholder.className = "col-xs-4 col-sm-6 col-md-2 col-lg-2 top-buffer";
+
+
+
+        var buttonframe = document.createElement("div");
+        buttonframe.className = "button_frame";
+
+        buttonholder.appendChild(buttonframe);
 
         groupbuttonholder.appendChild(buttonholder);
         var fixbutton = document.createElement("input");
@@ -473,13 +473,15 @@ function constructFixtureButtons()
              break;
              }  */
         }
-        buttonholder.appendChild(fixbutton);
+
+
+        buttonframe.appendChild(fixbutton);
         var btnText = document.createTextNode(fixtureobj.assignedname);
         fixbutton.appendChild(btnText);
     }
 }
 
-
+/*
 function onBrightnessSliderChange(value)
 {
     if(top_menu_selection == undefined)
@@ -578,8 +580,8 @@ function onBrightnessSliderChange(value)
             break;
     }
 }
-
-
+*/
+/*
 function onToggleButtonChange(value)
 {
     switch(top_menu_selection)
@@ -600,14 +602,7 @@ function onToggleButtonChange(value)
 
     }
 }
-
-
-
-//function processUpdatedConfig()
-//{
-//   constructFixtureStatusBoxs();
-//    //  constructFixtureButtons();
-//}
+*/
 
 
 function postSetFixtureHandler(config)
@@ -629,6 +624,8 @@ function setFixtureLevel(element)
     setFixtureLevel2(element,postSetFixtureHandler);
 }
 
+
+/*
 function onCCTSliderChange(value)
 {
     if(top_menu_selection == undefined)
@@ -704,57 +701,11 @@ function onCCTSliderChange(value)
             break;
     }
 }
+*/
+// **********************************************************************
 
 
-/*
-
- function constructFixtureStatusBoxs()
- {
-
- for(var k = 1; k <= 8; k++)
- {
- var div = document.getElementById("StatusBlock"+(k));
- div.innerHTML = ""; // = 0;
- }
-
-
- for (var i = 0 ; i < cachedconfig.fixtures.length; i++) {
- var fixobj = cachedconfig.fixtures[i];
- var divID = "StatusBlock"+(i+1);
-
- var level = undefined;
- var colortemp = undefined;
- switch(fixobj.type)
- {
- case "on_off":
- case "dim":
- level = fixobj.level;
- break;
- case "cct":
- colortemp = fixobj.colortemp;
- level = fixobj.brightness;
- break;
-
- case "rgbw":
- break;
-
- default:
- break;
- }
-
- // createFixtureStatusTable(divID,fixobj.assignedname,fixobj.type,fixobj.image,
- //     fixobj.powerwatts,level,colortemp,fixobj.daylightlimited);
-
- }  // end fixture for loop ,
-
- }
- */
-
-
-// **************************** END NEW CODE *********************************************
-
-
-// START OLD CODE ***********************
+// ***********************
 
 
 function showDivID (DivID, how) {
@@ -1166,11 +1117,24 @@ function constructONOFFCtrl(currentdiv) {
     var on_off_toggle = document.createElement("input");
     on_off_toggle.type = "checkbox";
     on_off_toggle.className="js-switch";
+
+
     on_off_toggle.onchange = function() {
 
-        var k = 0 ;
+        var level = (this.checked)?100:0;
+
+        if (selected_fixture.type == "on_off") {
+            var element = {};
+            element.requesttype = "wallstation";
+            element.name = selected_fixture.assignedname;
+            element.level = level;
+            setFixtureLevel(element);
+        }
 
     }
+
+    on_off_toggle.checked = (selected_fixture.level == 100);
+
     content.appendChild(on_off_toggle);
 
     var elem = document.querySelector('.js-switch');
