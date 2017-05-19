@@ -109,6 +109,7 @@ function updateDynButtonBar()
             constructSceneButtons();
             break;
         case "Groups":
+            showDivID("controls","inline");
             showDivID("dynbuttonbar","inline");
             constructGroupButtons();
             break;
@@ -243,6 +244,8 @@ function constructGroupButtons()
 {
     var groupbuttonholder = document.getElementById("dynbuttonbar");
     groupbuttonholder.innerHTML = "";
+    var ctrlsholder = document.getElementById("controls");
+    ctrlsholder.innerHTML = ""; // blank it out.
     for(var i = 0 ; i < cachedconfig.groups.length; i++)
     {
         var hdiv = document.createElement("div");
@@ -259,19 +262,75 @@ function constructGroupButtons()
 
             var grpname = this.getAttribute('group');
 
+            var ctrlsholder = document.getElementById("controls");
+            ctrlsholder.innerHTML = ""; // blank it out.
+
+
             selected_group = getGroupByName(grpname);
             if(selected_group.type == "brightness")
             {
-                showDivID("BrightnessBar","block");
-                hideDivID("CCTBar");
+                constructBrightnessBar(ctrlsholder, false);
+
             }
             else
             {
-                showDivID("BrightnessBar","block");
-                showDivID("CCTBar","block");
+                constructBrightnessBar(ctrlsholder, false);
+                constructColorTempBar(ctrlsholder,false);
             }
 
-            showDivID("occ_vac_holder","block");
+          //  showDivID("occ_vac_holder","block");
+
+
+            $('input[type="range"]').rangeslider({
+                polyfill : false,
+                rangeClass: 'custom_slider_range',
+                fillClass: 'custom_slider_fill',
+                onInit : function() {
+
+                },
+                onSlide : function( position, value ) {
+
+                    if(selected_group.type == "brightness") {
+
+                        var brightval = document.getElementById("brightctrl").value;
+                        document.getElementById("brightvalue").innerHTML = brightval;
+
+                        var element = {};
+                        element.name = selected_group.name;
+                        element.level = brightval;
+                        setGroupToLevel(element, function (retval) {
+                            if (retval != undefined) {
+                                cachedconfig = retval;
+                            }
+                        });
+
+                    }
+                    else
+                    {
+                        // color temp val change.
+                        var ctempvalpct = document.getElementById("colortempctrl").value;
+                        var brightval = document.getElementById("brightctrl").value;
+
+                        var min = Number(2700);
+                        var max = Number(6500);
+                        var ctempcalc = (min + (max-min)*(Number(ctempvalpct)/100));
+                        document.getElementById("colortempvalue").innerHTML = ctempcalc + " K";
+                        document.getElementById("brightvalue").innerHTML = brightval;
+
+                        var element = {};
+                        element.name = selected_group.name;
+                        element.ctemp = ctempcalc;
+                        element.brightness = brightval;  // this is ignored....
+                        setGroupToColorTemp(element, function (retval) {
+                            if (retval != undefined)
+                            {
+                                cachedconfig = retval;
+                            }
+
+                        });
+                    }
+                }
+            });
 
         }
 
@@ -332,11 +391,11 @@ function constructFixtureButtons()
             }
 
             if(selected_fixture.type == "dim" || selected_fixture.type == "cct") {
-                constructBrightnessBar(ctrlsholder);
+                constructBrightnessBar(ctrlsholder,true);
             }
 
             if(selected_fixture.type == "cct") {
-                constructColorTempBar(ctrlsholder);
+                constructColorTempBar(ctrlsholder,true);
             }
 
             if(selected_fixture.type == "rgbw")
@@ -889,7 +948,7 @@ function constructONOFFCtrl(currentdiv) {
 
 
 
-function constructBrightnessBar(currentdiv) {
+function constructBrightnessBar(currentdiv, forfixture) {
     var fixcol = document.createElement("div");
     fixcol.className = "col-md-8";
     currentdiv.appendChild(fixcol);
@@ -928,17 +987,24 @@ function constructBrightnessBar(currentdiv) {
     header.innerHTML = "44";
     bright_val.appendChild(header);
 
-    if (selected_fixture.type == "dim") {
-        bright_guage.value = selected_fixture.level;
-        header.innerHTML = selected_fixture.level;
+    if(forfixture) {
+        if (selected_fixture.type == "dim") {
+            bright_guage.value = selected_fixture.level;
+            header.innerHTML = selected_fixture.level;
+        }
+        else {
+            bright_guage.value = selected_fixture.brightness;
+            header.innerHTML = selected_fixture.brightness;
+        }
     }
-    else {
-        bright_guage.value = selected_fixture.brightness;
-        header.innerHTML = selected_fixture.brightness;
+    else
+    {
+        bright_guage.value = 50;
+        header.innerHTML = 50;
     }
 }
 
-function constructColorTempBar(currentdiv) {
+function constructColorTempBar(currentdiv, forfixture) {
     var fixcol = document.createElement("div");
     fixcol.className = "col-md-8";
     currentdiv.appendChild(fixcol);
@@ -980,14 +1046,25 @@ function constructColorTempBar(currentdiv) {
 
     // init
     // ctemp to pct, ref only.
-     var min = Number(selected_fixture.min);
-     var max = Number(selected_fixture.max);
-     var range = max-min;
-     var barval2 = ((Number(selected_fixture.colortemp) - min)/range) * 100;
 
 
-    ctemp_guage.value = barval2;
-    header.innerHTML = selected_fixture.colortemp;
+    if(forfixture) {
+        var min = Number(selected_fixture.min);
+        var max = Number(selected_fixture.max);
+        var range = max - min;
+        var barval2 = ((Number(selected_fixture.colortemp) - min) / range) * 100;
+
+
+        ctemp_guage.value = barval2;
+        header.innerHTML = selected_fixture.colortemp;
+    }
+    else
+    {
+        var range = 6500 - 3500;
+        var barval2 = ((Number(3500) - 2700) / range) * 100;
+        ctemp_guage.value = barval2;
+        header.innerHTML = 3500;
+    }
 
 }
 
