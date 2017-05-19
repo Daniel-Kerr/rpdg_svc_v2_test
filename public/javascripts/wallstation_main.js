@@ -1,13 +1,6 @@
 /**
  * Created by Nick on 3/23/2017.
  */
-// client code behind for wallstation support
-
-//var fixtureImagePath, fixtureImagePathfound;
-
-//var returnSceneList,returnGroupList;
-// this must be the same as the html that shows these
-///var mainMenuOptionDivList = ["SceneButtonArray","GroupButtonArray","FixtureButtonArray","StatusButtonArray"];
 var selected_group = undefined;
 var selected_fixture = undefined;
 var top_menu_selection = undefined;
@@ -15,6 +8,7 @@ var top_menu_selection = undefined;
 var rgbwsettimer; // timer used to send off override calls for rgb fixtures.
 var lastrgbcolor;
 var colorwheel_control;
+var pending_menu_selection = undefined;
 
 function resizeImg(img, height, width) {
     img.height = height;
@@ -50,32 +44,7 @@ function voltageToFC (volts) {
 
 function init() {
     getConfig(processConfig);
-
-    /*
-     var cwheelvalues = "rgb(255,255,255)";
-     //convert from pct back to rgb 8 bit,
-     //var red = (selected_fixture.red * 255)/100;
-     // var green = (selected_fixture.green * 255)/100;
-     // var blue = (selected_fixture.blue * 255)/100;
-
-     // cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
-
-     colorwheel_control = iro.ColorWheel("#colorWheelDemo", {
-     width: 300,
-     height: 300,
-     padding: 4,
-     sliderMargin: 24,
-     markerRadius: 4,
-     color: cwheelvalues,
-     CSS: {} // apply colors to any elements
-     });
-
-     colorwheel_control.watch(function(color) {
-     startRGBWCallHWCallTimer(color);
-     });
-     */
 }
-
 
 // RGB support
 
@@ -93,8 +62,6 @@ function setRGBWToHW()
     }
 }
 
-
-
 function startRGBWCallHWCallTimer(color)
 {
     // stop timer ,,
@@ -108,10 +75,6 @@ function startRGBWCallHWCallTimer(color)
 
 // end rgb support **********************************
 
-
-
-
-
 function processConfig(configobj) {
     cachedconfig = configobj;  // just so we can copy over groups on save.
 
@@ -121,31 +84,13 @@ function processConfig(configobj) {
         pending_menu_selection = undefined;
     }
     updateDynButtonBar();
-
-
-
-
-    /* $('input[type="range"]').rangeslider({
-     polyfill : false,
-     onInit : function() {
-     //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
-     },
-     onSlide : function( position, value ) {
-     //  this.output.html( value );
-     }
-     });  */
-
 }
 
 
-var pending_menu_selection = undefined;
 function showOnlyTheseButtons (whichButtons) {
     // Hide all of them and then make visible the one chosen
-
     pending_menu_selection = whichButtons;
-    // top_menu_selection = whichButtons;
     getConfig(processConfig);
-    //updateDynButtonBar();
 }
 
 function updateDynButtonBar()
@@ -177,7 +122,7 @@ function updateDynButtonBar()
             showDivID("StatusPage","inline");
             break;
         case "Config":
-            constructConfigItemsDiv();
+           // constructConfigItemsDiv();
             showDivID("ConfigPage","inline");
             break;
         default:
@@ -185,10 +130,10 @@ function updateDynButtonBar()
     }
 }
 
-function updateControlsContentRegion()
-{
-    showDivID("StatusPage","inline");
-}
+//function updateControlsContentRegion()
+//{
+ //   showDivID("StatusPage","inline");
+//}
 
 
 function onVacancy()
@@ -225,11 +170,6 @@ function onOccupancy()
         error: function (xhr, ajaxOptions, thrownError) {
         }
     });
-}
-
-function constructConfigItemsDiv()
-{
-
 }
 
 function constructSceneButtons()
@@ -348,6 +288,9 @@ function constructFixtureButtons()
     var groupbuttonholder = document.getElementById("dynbuttonbar");
     groupbuttonholder.innerHTML = "";
 
+    var ctrlsholder = document.getElementById("controls");
+    ctrlsholder.innerHTML = ""; // blank it out.
+
     for(var i = 0 ; i < cachedconfig.fixtures.length; i++)
     {
         var fixtureobj = cachedconfig.fixtures[i];
@@ -411,67 +354,56 @@ function constructFixtureButtons()
                 },
                 onSlide : function( position, value ) {
                     //  this.output.html( value );
+                   // var k = $("brightctrl");
+                    if(this.$element[0].id == "brightctrl")
+                    {
+                        document.getElementById("brightvalue").innerHTML = this.value;
+
+                        if (selected_fixture.type == "dim") {
+                            var element = {};
+                            element.requesttype = "wallstation";
+                            element.name = selected_fixture.assignedname;
+                            element.level = this.value;
+                            setFixtureLevel(element);
+                        }
+                        else if (selected_fixture.type == "cct") {
+                            var element = {};
+                            element.requesttype = "wallstation";
+                            element.name = selected_fixture.assignedname;
+                            element.brightness = this.value;
+                            var ctempslider = document.getElementById("colortempctrl");
+                            if(ctempslider != undefined) {
+
+                                // convert pct to ctemp.
+                                var min = Number(2700); //selected_fixture.min);
+                                var max = Number(6500); //.max);
+                                var ctempcalc = (min + (max-min)*(Number(ctempslider.value)/100));
+                                element.ctemp = ctempcalc;
+                                setFixtureLevel(element);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var min = Number(2700); //selected_fixture.min);
+                        var max = Number(6500); //.max);
+                        var ctempcalc = (min + (max-min)*(Number(this.value)/100));
+                        document.getElementById("colortempvalue").innerHTML = ctempcalc + " K";
+
+                        var element = {};
+                        element.requesttype = "wallstation";
+                        element.name = selected_fixture.assignedname;
+                        element.brightness = document.getElementById("brightctrl").value;
+
+                        element.colortemp = ctempcalc; //(2000 + (4500*value/100));
+                        setFixtureLevel(element);
+                    }
+
                 }
             });
 
 
-            /*       var fixname = this.getAttribute('fixture');
-             selected_fixture = getFixtureByName(fixname);
-             //  hideDivID("BrightnessBar");
-             //  hideDivID("CCTBar");
-             //  hideDivID("RGB_ColorWheel");
-             //  hideDivID("ToggleButton");
 
-             switch(selected_fixture.type)
-             {
-             case "on_off":
-             //  showDivID("ToggleButton","block");
-             var toggleswitch = document.getElementById("ToggleObject");
-             toggleswitch.checked = (selected_fixture.level == 100)?true:false;
-             break;
-             case "dim":
-             // showDivID("BrightnessBar","block");
-             //..
-
-             document.getElementById("brightnesssliderobject").value = selected_fixture.level;
-             break;
-
-             case "cct":
-             //   showDivID("BrightnessBar","block");
-             //   showDivID("CCTBar","block");
-             document.getElementById("brightnesssliderobject").value = selected_fixture.brightness;
-
-             var min = Number(selected_fixture.min);
-             var max = Number(selected_fixture.max);
-             var range = max-min;
-             var barval2 = ((Number(selected_fixture.colortemp) - min)/range) * 100;
-             //  var ctempcalc = (min + (max-min)*(Number(value)/100));
-
-
-             var barval = barval2; //((Number(selected_fixture.colortemp) - 2000)*100) / 4500;
-             // var min = selected_fixture.min;
-             // var max = selected_fixture.max;
-
-             document.getElementById("CCTsliderobject").value = barval;
-             break;
-             case "rgbw":
-             //   showDivID("RGB_ColorWheel","block");
-             // set rgb wheel to the correct value.
-             var cwheelvalues = "rgb(255,255,255)";
-             //convert from pct back to rgb 8 bit,
-             var red = (selected_fixture.red * 255)/100;
-             var green = (selected_fixture.green * 255)/100;
-             var blue = (selected_fixture.blue * 255)/100;
-
-             cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
-
-             //var k = document.getElementById("colorWheelDemo");
-
-             colorwheel_control.color.hexString = cwheelvalues;
-             break;
-             default:
-             break;
-             }  */
         }
 
 
@@ -480,129 +412,6 @@ function constructFixtureButtons()
         fixbutton.appendChild(btnText);
     }
 }
-
-/*
-function onBrightnessSliderChange(value)
-{
-    if(top_menu_selection == undefined)
-        return;
-
-    switch(top_menu_selection)
-    {
-        case "Scenes":
-
-            break;
-        case "Groups":
-            if(selected_group != undefined)
-            {
-                if(selected_group.type == "brightness")
-                {
-                    var element = {};
-                    element.name = selected_group.name;
-                    element.level = value;
-                    setGroupToLevel(element, function (retval) {
-                        if (retval != undefined)
-                        {
-                            cachedconfig = retval;
-                            constructFixtureStatusBoxs();
-                            // do update here.
-                        }
-                        // else if (retval.error != undefined)
-                        //  noty({text: 'Error invoking ' + retval.error, type: 'error'});
-                    });
-                }
-                else if(selected_group.type == "ctemp")
-                {
-                    var ctempslider = document.getElementById("CCTsliderobject");
-
-                    // per JOE H,  use any cct fixtures min / maxs to calc value to send over. well take first one in .ist
-                    var defcct = getDefaultCCTFixture();
-                    var min = 3000;
-                    var max = 6500;
-                    if(defcct != undefined)
-                    {
-                        min = Number(defcct.min);
-                        max = Number(defcct.max);
-                    }
-                    var ctempcalc = (min + (max-min)*(Number(ctempslider.value)/100));
-
-
-                    var element = {};
-                    element.name = selected_group.name;
-                    element.ctemp = ctempcalc;
-                    element.brightness = value;
-                    setGroupToColorTemp(element, function (retval) {
-                        if (retval != undefined)
-                        {
-                            cachedconfig = retval;
-                            constructFixtureStatusBoxs();
-                            // do update here.
-                        }
-                        // else if (retval.error != undefined)
-                        //  noty({text: 'Error invoking ' + retval.error, type: 'error'});
-                    });
-                }
-            }
-            break;
-        case "Fixtures":
-
-            switch(selected_fixture.type)
-            {
-                case "on_off":
-
-                    break;
-                case "dim":
-                    var element = {};
-                    element.requesttype = "wallstation";
-                    element.name =  selected_fixture.assignedname;
-                    element.level = value;
-                    setFixtureLevel(element);
-                    break;
-                case "cct":
-                    var element = {};
-                    element.requesttype = "wallstation";
-                    element.name = selected_fixture.assignedname;
-                    element.brightness = value;
-                    var ctempslider = document.getElementById("CCTsliderobject");
-                    element.ctemp = ctempslider.value;;
-                    setFixtureLevel(element);
-                    break;
-                case "rgbw":
-                    break;
-                default:
-                    break;
-
-            }
-            break;
-
-
-        default:
-            break;
-    }
-}
-*/
-/*
-function onToggleButtonChange(value)
-{
-    switch(top_menu_selection)
-    {
-        case "Fixtures":
-
-            if(selected_fixture != undefined && selected_fixture.type == "on_off")
-            {
-                var element = {};
-                element.requesttype = "wallstation";
-                element.name =  selected_fixture.assignedname;
-                element.level = (value)?100:0;
-                setFixtureLevel(element);
-            }
-            break;
-        default:
-            break;
-
-    }
-}
-*/
 
 
 function postSetFixtureHandler(config)
@@ -625,87 +434,7 @@ function setFixtureLevel(element)
 }
 
 
-/*
-function onCCTSliderChange(value)
-{
-    if(top_menu_selection == undefined)
-        return;
-
-    switch(top_menu_selection)
-    {
-        case "Scenes":
-            var k = 0;
-            k = k + 1;
-            break;
-        case "Groups":
-            if(selected_group != undefined)
-            {
-                if(selected_group.type == "ctemp")
-                {
-                    var brightslider = document.getElementById("brightnesssliderobject");
-                    var bright = brightslider.value;
-                    var element = {};
-                    element.name = selected_group.name;
-
-
-                    // per JOE H,  use any cct fixtures min / maxs to calc value to send over. well take first one in .ist
-                    var defcct = getDefaultCCTFixture();
-                    var min = 3000;
-                    var max = 6500;
-                    if(defcct != undefined)
-                    {
-                        min = Number(defcct.min);
-                        max = Number(defcct.max);
-                    }
-                    var ctempcalc = (min + (max-min)*(Number(value)/100));
-
-                    element.ctemp =  ctempcalc; //(2000 + (4500*value/100));
-                    element.brightness = bright;
-
-                    setGroupToColorTemp(element, function (retval) {
-                        if (retval != undefined)
-                        {
-                            cachedconfig = retval;
-                            constructFixtureStatusBoxs();
-                        }
-                        // else if (retval.error != undefined)
-                        //  noty({text: 'Error invoking ' + retval.error, type: 'error'});
-                    });
-                }
-            }
-            break;
-        case "Fixtures":
-            switch(selected_fixture.type)
-            {
-                case "cct":
-                    var element = {};
-                    element.requesttype = "wallstation";
-                    element.name = selected_fixture.assignedname;
-                    element.brightness = document.getElementById("brightnesssliderobject").value;
-
-                    var min = Number(selected_fixture.min);
-                    var max = Number(selected_fixture.max);
-                    var ctempcalc = (min + (max-min)*(Number(value)/100));
-
-
-                    element.colortemp = ctempcalc; //(2000 + (4500*value/100));
-                    setFixtureLevel(element);
-                    break;
-                default:
-                    break;
-
-            }
-            break;
-
-        default:
-            break;
-    }
-}
-*/
 // **********************************************************************
-
-
-// ***********************
 
 
 function showDivID (DivID, how) {
@@ -716,9 +445,6 @@ function hideDivID (DivID) {
     var elem=document.getElementById(DivID);
     elem.style.display="none";
 }
-
-
-
 
 
 function SetDaylightPolling () {
@@ -741,8 +467,6 @@ function SetDaylightPolling () {
         }
     });
 }
-
-
 
 
 function updateLevelInputsTable() {
@@ -934,8 +658,24 @@ function getDefaultCCTFixture()
 }
 
 
+
+function removeElement(id) {
+    var elem = document.getElementById(id);
+    if(elem != undefined)
+        return elem.parentNode.removeChild(elem);
+}
+
+function removeAllFixStatusBoxes()
+{
+    for (var i = 0; i < cachedconfig.fixtures.length; i++) {
+        removeElement("fix"+i);
+    }
+}
+
+
 function constructFixtureStatusBoxes()
 {
+    //  removeAllFixStatusBoxes();
     var currentrow_div = document.getElementById("StatusPage");
     currentrow_div.innerHTML = "";
     for (var i = 0; i < cachedconfig.fixtures.length; i++) {
@@ -943,7 +683,9 @@ function constructFixtureStatusBoxes()
     }
 }
 
+
 function constructFixtureStatusBox(currentdiv, fixture, index) {
+    removeElement("fix"+index);
     var fixcol = document.createElement("div");
     fixcol.className = "col-sm-4";
     currentdiv.appendChild(fixcol);
@@ -1172,36 +914,6 @@ function constructBrightnessBar(currentdiv) {
     var bright_guage = document.createElement("input");
     bright_guage.type = "range";
     bright_guage.id = "brightctrl";
-    bright_guage.onchange = function() {
-        document.getElementById("brightvalue").innerHTML = this.value;
-
-
-        if (selected_fixture.type == "dim") {
-            var element = {};
-            element.requesttype = "wallstation";
-            element.name = selected_fixture.assignedname;
-            element.level = this.value;
-            setFixtureLevel(element);
-        }
-         else if (selected_fixture.type == "cct") {
-            var element = {};
-            element.requesttype = "wallstation";
-            element.name = selected_fixture.assignedname;
-            element.brightness = this.value;
-            var ctempslider = document.getElementById("colortempctrl");
-            if(ctempslider != undefined) {
-
-                // convert pct to ctemp.
-                var min = Number(2700); //selected_fixture.min);
-                var max = Number(6500); //.max);
-                var ctempcalc = (min + (max-min)*(Number(ctempslider.value)/100));
-                element.ctemp = ctempcalc;
-                setFixtureLevel(element);
-            }
-        }
-
-
-    }
 
     guageholder.appendChild(bright_guage);
 
@@ -1216,9 +928,15 @@ function constructBrightnessBar(currentdiv) {
     header.innerHTML = "44";
     bright_val.appendChild(header);
 
+    if (selected_fixture.type == "dim") {
+        bright_guage.value = selected_fixture.level;
+        header.innerHTML = selected_fixture.level;
+    }
+    else {
+        bright_guage.value = selected_fixture.brightness;
+        header.innerHTML = selected_fixture.brightness;
+    }
 }
-
-
 
 function constructColorTempBar(currentdiv) {
     var fixcol = document.createElement("div");
@@ -1242,37 +960,11 @@ function constructColorTempBar(currentdiv) {
     guageholder.className = "guage_holder";
     bright_grad.appendChild(guageholder);
 
-    var bright_guage = document.createElement("input");
-    bright_guage.type = "range";
-    bright_guage.id = "colortempctrl";
-    bright_guage.onchange = function() {
+    var ctemp_guage = document.createElement("input");
+    ctemp_guage.type = "range";
+    ctemp_guage.id = "colortempctrl";
 
-        // ctemp to pct, ref only.
-        //  var min = Number(selected_fixture.min);
-        // var max = Number(selected_fixture.max);
-        // var range = max-min;
-        // var barval2 = ((Number(selected_fixture.colortemp) - min)/range) * 100;
-
-        //pct to color temp .
-        var min = Number(2700); //selected_fixture.min);
-        var max = Number(6500); //.max);
-        var ctempcalc = (min + (max-min)*(Number(this.value)/100));
-        document.getElementById("colortempvalue").innerHTML = ctempcalc + " K";
-
-
-
-        var element = {};
-        element.requesttype = "wallstation";
-        element.name = selected_fixture.assignedname;
-        element.brightness = document.getElementById("brightctrl").value;
-
-        element.colortemp = ctempcalc; //(2000 + (4500*value/100));
-        setFixtureLevel(element);
-
-    }
-
-    guageholder.appendChild(bright_guage);
-
+    guageholder.appendChild(ctemp_guage);
 
     var bright_val = document.createElement("div");
     bright_val.className = "guage_value";
@@ -1284,6 +976,18 @@ function constructColorTempBar(currentdiv) {
     header.id = "colortempvalue";
     header.innerHTML = "3500";
     bright_val.appendChild(header);
+
+
+    // init
+    // ctemp to pct, ref only.
+     var min = Number(selected_fixture.min);
+     var max = Number(selected_fixture.max);
+     var range = max-min;
+     var barval2 = ((Number(selected_fixture.colortemp) - min)/range) * 100;
+
+
+    ctemp_guage.value = barval2;
+    header.innerHTML = selected_fixture.colortemp;
 
 }
 
