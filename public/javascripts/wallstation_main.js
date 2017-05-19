@@ -811,7 +811,7 @@ function updateFixtureStatusBox(fixture, index)
         }
 
         var image = document.createElement("img");
-        image.src = "fixtureimg/1.jpg";
+        image.src = fixture.image; //"fixtureimg/1.jpg";
         image.width = "100";
         image.height = "100";
         image_hold.appendChild(image);
@@ -847,10 +847,10 @@ function constructColorTempIndicators(parentdiv, brightpct, colortemplevel)
 
 function constructRGBWndicators(parentdiv, red, green, blue, white)
 {
-    constructBasicLevelIndicator(parentdiv,20,190,red,"red_bar", red+"%");
-    constructBasicLevelIndicator(parentdiv,20,190,green,"green_bar", green+"%");
-    constructBasicLevelIndicator(parentdiv,20,190,blue,"blue_bar", blue+"%");
-    constructBasicLevelIndicator(parentdiv,20,190,white,"white_bar", white+"%");
+    constructBasicLevelIndicator(parentdiv,20,190,red,"red_bar", red);
+    constructBasicLevelIndicator(parentdiv,20,190,green,"green_bar", green);
+    constructBasicLevelIndicator(parentdiv,20,190,blue,"blue_bar", blue);
+    constructBasicLevelIndicator(parentdiv,20,190,white,"white_bar", white);
 }
 
 
