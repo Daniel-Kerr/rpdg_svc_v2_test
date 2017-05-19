@@ -120,10 +120,12 @@ function updateDynButtonBar()
             break;
         case "Status":
             constructFixtureStatusBoxes();
+            constructLevelInputStatusBox();
+            constructContactInputStatusBox();
             showDivID("StatusPage","inline");
             break;
         case "Config":
-           // constructConfigItemsDiv();
+            // constructConfigItemsDiv();
             showDivID("ConfigPage","inline");
             break;
         default:
@@ -133,7 +135,7 @@ function updateDynButtonBar()
 
 //function updateControlsContentRegion()
 //{
- //   showDivID("StatusPage","inline");
+//   showDivID("StatusPage","inline");
 //}
 
 
@@ -278,7 +280,7 @@ function constructGroupButtons()
                 constructColorTempBar(ctrlsholder,false);
             }
 
-          //  showDivID("occ_vac_holder","block");
+            //  showDivID("occ_vac_holder","block");
 
 
             $('input[type="range"]').rangeslider({
@@ -413,7 +415,7 @@ function constructFixtureButtons()
                 },
                 onSlide : function( position, value ) {
                     //  this.output.html( value );
-                   // var k = $("brightctrl");
+                    // var k = $("brightctrl");
                     if(this.$element[0].id == "brightctrl")
                     {
                         document.getElementById("brightvalue").innerHTML = this.value;
@@ -1107,4 +1109,176 @@ function constructColorWheelControl(currentdiv) {
     });
 
     //  content.appendChild(on_off_toggle);
+}
+
+
+
+
+function constructLevelInputStatusBox() {
+    var currentrow_div = document.getElementById("StatusPage");
+    removeElement("levelbox");
+    var levelcol = document.createElement("div");
+    levelcol.className = "col-sm-12";
+    currentrow_div.appendChild(levelcol);
+
+    var levelbox = document.createElement("div");
+    levelbox.className = "card-box";
+    levelcol.appendChild(levelbox);
+    levelbox.id = "levelbox";
+
+    updateLevelInputStatusBox();
+}
+
+
+
+
+function updateLevelInputStatusBox()
+{
+    var levelbox = document.getElementById("levelbox");
+    if(levelbox != undefined)
+    {
+        levelbox.innerHTML = "";
+        var header = document.createElement("h4");
+        header.className = "text-dark  header-title m-t-0 m-b-10";
+        header.innerHTML = "Level Inputs";
+        levelbox.appendChild(header);
+
+
+        for (var i = 0; i < cachedconfig.levelinputs.length; i++) {
+
+            var inputobj = cachedconfig.levelinputs[i];
+
+
+            var fixcontent = document.createElement("div");
+            fixcontent.className = "levelinputitem";
+            levelbox.appendChild(fixcontent);
+
+            var name = document.createElement("div");
+            name.className = "levelinputname";
+            name.innerHTML = inputobj.assignedname;
+            fixcontent.appendChild(name);
+
+
+            var guage = document.createElement("div");  // 200 px wide fixed. black to white.
+            guage.className = "levelinputgrad";
+            fixcontent.appendChild(guage);
+
+            var guagemark = document.createElement("div");
+            guagemark.className = "inputlevel_mark";
+            var sensorvoltage = inputobj.value;
+            //sensorvoltage = 6.8;
+
+            var pct = sensorvoltage * 10;
+            var markloc = 0;
+            if(inputobj.type == "daylight")
+                markloc = 200 - ((pct * 200)/ 100);
+            else
+                markloc = ((pct * 200)/ 100);
+
+            guagemark.style.marginLeft = markloc + "px";
+            guage.appendChild(guagemark);
+
+            var value = document.createElement("div");
+            value.className = "levelinputvalue";
+            value.innerHTML = "value";
+            fixcontent.appendChild(value);
+
+            if(inputobj.type == "daylight") {
+                // convert value to fc,
+                var fcval = voltageToFC(sensorvoltage);
+                // this value is a value 0 - 10 volts, 0 (full bright,  10 dark.
+                value.innerHTML = fcval + " FC";
+            }
+            else
+            {
+                value.innerHTML = sensorvoltage + " V";
+            }
+        }
+
+
+    }
+}
+
+
+function constructContactInputStatusBox() {
+    var currentrow_div = document.getElementById("StatusPage");
+    removeElement("contactbox");
+    var contactcol = document.createElement("div");
+    contactcol.className = "col-sm-12";
+    currentrow_div.appendChild(contactcol);
+
+    var contactbox = document.createElement("div");
+    contactbox.className = "card-box";
+    contactcol.appendChild(contactbox);
+    contactbox.id = "contactbox";
+
+    updateContactInputStatusBox();
+}
+
+
+
+function updateContactInputStatusBox()
+{
+    var levelbox = document.getElementById("contactbox");
+    if(levelbox != undefined)
+    {
+        levelbox.innerHTML = "";
+        var header = document.createElement("h4");
+        header.className = "text-dark  header-title m-t-0 m-b-10";
+        header.innerHTML = "Contact Inputs";
+        levelbox.appendChild(header);
+
+        for (var i = 0; i < cachedconfig.contactinputs.length; i++) {
+
+            var inputobj = cachedconfig.contactinputs[i];
+
+
+            var fixcontent = document.createElement("div");
+            fixcontent.className = "levelinputitem";
+            levelbox.appendChild(fixcontent);
+
+            var name = document.createElement("div");
+            name.className = "levelinputname";
+            name.innerHTML = inputobj.assignedname;
+            fixcontent.appendChild(name);
+
+
+            var guage = document.createElement("div");  // 200 px wide fixed. black to white.
+            guage.className = "levelinputgrad";
+            fixcontent.appendChild(guage);
+
+            var guagemark = document.createElement("div");
+            guagemark.className = "inputlevel_mark";
+            var sensorvoltage = inputobj.value;
+            //sensorvoltage = 6.8;
+
+            var pct = sensorvoltage * 10;
+            var markloc = 0;
+            if(inputobj.type == "daylight")
+                markloc = 200 - ((pct * 200)/ 100);
+            else
+                markloc = ((pct * 200)/ 100);
+
+            guagemark.style.marginLeft = markloc + "px";
+            guage.appendChild(guagemark);
+
+            var value = document.createElement("div");
+            value.className = "levelinputvalue";
+            value.innerHTML = "value";
+            fixcontent.appendChild(value);
+
+            if(inputobj.type == "daylight") {
+                // convert value to fc,
+                var fcval = voltageToFC(sensorvoltage);
+                // this value is a value 0 - 10 volts, 0 (full bright,  10 dark.
+                value.innerHTML = fcval + " FC";
+            }
+            else
+            {
+                value.innerHTML = sensorvoltage + " V";
+            }
+        }
+
+
+    }
 }

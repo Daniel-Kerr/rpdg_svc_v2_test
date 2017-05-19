@@ -406,6 +406,50 @@
             width: 200px;
            /* background: #00bb00;  */
         }
+
+        .levelinputitem {
+            width: 400px;
+            height: 40px;
+            margin-top: 10px;
+         /*   background: #ffee22;   */
+        }
+
+        .levelinputname {
+            text-align:center;
+            vertical-align: top;
+            display: inline-block;
+            width: 100px;
+            margin-top: 0px;
+            line-height: 40px;
+            height: 40px;
+        /*    background: #ff00ff;   */
+        }
+
+        .levelinputgrad {
+            display: inline-block;
+            border-radius: 5px;
+            background: linear-gradient(to right, black, white);
+            width: 200px;
+            height: 40px;
+        }
+
+        .levelinputvalue {
+            text-align:center;
+            vertical-align: top;
+            display: inline-block;
+            line-height: 40px;
+          /*  background: #5500ff;  */
+            width: 100px;
+            height: 40px;
+        }
+
+        .inputlevel_mark {
+            position: absolute;
+            width: 2px;
+            height: 40px;
+            background-color: red;
+        }
+
     </style>
 </head>
 
@@ -460,34 +504,12 @@
                 </div>
 
                 <div class="row" id="controls" >
-
                 </div>
 
                 <div id="StatusPage" class="row" >
-
-                    <!--div id="statusspace" class="status_gap">
-
-                        <label > Inputs Status</label>
-                    </div>
-
-                    <div id="inputsdiv" class="inputstatus">
-
-                        <div id="levelinputsdiv"  >
-                            <label color="white"> Level</label>
-
-                            <table id="levelinputstable" ></table>
-                        </div>
-
-
-                        <div id="holder1"></div>
-                        <div id="contactinputsdiv"  >
-                            <label > Contact</label>
-                            <table id="contactinputstable" ></table>
-                        </div>
-                    </div-->
-
                 </div>
 
+                <!--span data-plugin="peity-bar" data-colors="#3bafda" data-width="200" data-height="40">0,1,4,0,1,0,9,0,2,0,0,1,4,0,1,0,9,0,2,0,0,1,0,9</span-->
 
                 <!--div id="ConfigPage" class="configcontainer" >
 
@@ -551,6 +573,11 @@
 <!-- Counter Up  -->
 <script src="minton_dark_hor/plugins/waypoints/lib/jquery.waypoints.js"></script>
 <script src="minton_dark_hor/plugins/counterup/jquery.counterup.min.js"></script>
+
+
+<!-- peity charts -->
+<script src="minton_dark_hor/plugins/peity/jquery.peity.min.js"></script>
+<script src="minton_dark_hor/pages/jquery.peity.init.js"></script>
 
 <!-- circliful Chart -->
 <script src="minton_dark_hor/plugins/jquery-circliful/js/jquery.circliful.min.js"></script>
