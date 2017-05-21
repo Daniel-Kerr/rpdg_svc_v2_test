@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>This is test page for testing apis</title>
+
+    <script src="bsmaster/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="bsmaster/assets/js/bootstrap.min.js"></script>
+    <script src="bsmaster/assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="bsmaster/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="bsmaster/assets/js/moment.min.js"></script>
+
+    <script src="javascripts/crud_testapi.js"></script>
+    <script src="bsmaster/assets/js/jquery.dataTables.min.js"></script>
+    <script src="bsmaster/assets/js/dataTables.bootstrap.min.js"></script>
+
+    <script src="bsmaster/assets/js/jquery.sparkline.min.js"></script>
+    <link href="stylesheets/bootstrap-toggle.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/style.min.css" rel="stylesheet">
+    <link href="bsmaster/assets/css/retina.min.css" rel="stylesheet">
+    <link href="stylesheets/nouislider.min.css" rel="stylesheet">
+    <link href="stylesheets/jquery.steps.css" rel="stylesheet">
+
+    <script>
+        function sendPollingPeriod()
+        {
+            var element = {};
+            element.pollingperiod = document.getElementById("pollperiod").value;
+
+            setHWPollingPeriod(element, function(cfg) {
+
+                var k = 0 ;
+
+            });
+        }
+        $(document).ready(function() {
+
+        });
+    </script>
+
+</head>
+<body>
+<form>
+    <div id="main1">
+        <label>Polling Period(ms): </label> <input id="pollperiod" type="text" />
+        <input type="button" id = "btSend"  onclick="sendPollingPeriod()" value="Send Period"/>
+    </div>
+</form>
+</body>
+</html>

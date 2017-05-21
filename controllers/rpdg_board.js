@@ -68,7 +68,8 @@ exports.init = function(callback)
 {
     global.applogger.info(TAG, "init", "");
     rxhandler = callback;
-    startHWPolling();
+    module.exports.setPollingPeriod(100);
+    //startHWPolling();
     read_HWInfo(); // 5/8/17
 }
 
@@ -117,7 +118,6 @@ exports.getPWMPower = function() {
     }
     return watts;
 }
-
 
 //exports.getRPDG_HWInfo = function() {
 //    global.applogger.info(TAG, "****** attempting to read hw info from board ****** ", "");
@@ -272,48 +272,72 @@ exports.resetTinsey = function()
     reset_tinsy_counter = 0;
 }
 
+var periodictimer = undefined;
+
+exports.setPollingPeriod = function(timerperiodms)
+{
+    if(periodictimer != undefined)
+    {
+        global.applogger.info(TAG, "Polling Timer cleared / stopped:",  "");
+        clearInterval(periodictimer);
+        periodictimer = undefined;
+    }
+
+    global.applogger.info(TAG, "Polling :",  "Polling Timer ", "started at rate: " + timerperiodms);
+    periodictimer = setInterval(function () {
+        peroidicHWPollingLoop();
+      // global.applogger.info(TAG, "hw polling ---",  "timer fired");
+    }, timerperiodms);
+}
+
+function peroidicHWPollingLoop()
+{
+    if(polling_enabled) {
+        readHW_0to10inputs();
+        readHW_WetDryContactinputs();
+        readHW_CurrentCounts();
+
+        // ****************************************TINSEY RESET CODE  *****************************
+        if(reset_tinsy_counter > -1)  //reset it active
+        {
+            if (reset_tinsy_counter == 0)  // 0 = start/active.
+            {
+                global.applogger.info(TAG, "setting tinsy line LOW (reset start)", "");
+                if (resetline != undefined) {
+                    global.applogger.info(TAG, "HW gpio line is valid ", "");
+                    resetline.writeSync(1);   // start.  lo
+                }
+                reset_tinsy_counter++;
+            }
+            else if(reset_tinsy_counter == 6)  // 3 = (300 ms)  go high again,
+            {
+                global.applogger.info(TAG, "releasing tinsy line to HIGH (reset stop)",  "");
+                if(resetline != undefined)
+                    resetline.writeSync(0);   // start.
+
+                reset_tinsy_counter = -1;  //stop
+            }
+            else
+                reset_tinsy_counter++;
+        }
+
+        // ***************************** END RESET CODE *************************
+
+    }
+}
+
+
+/*
 function startHWPolling() {
 
     var BasePollingPeriod = 100;        // Time interval in mSec that we do the most frequent checks.
     global.applogger.info(TAG, "Polling :",  "polling timer started");
     periodictimer = setInterval(function () {
-        if(polling_enabled) {
-            readHW_0to10inputs();
-            readHW_WetDryContactinputs();
-            readHW_CurrentCounts();
-
-            // ****************************************TINSEY RESET CODE  *****************************
-            if(reset_tinsy_counter > -1)  //reset it active
-            {
-                if (reset_tinsy_counter == 0)  // 0 = start/active.
-                {
-                    global.applogger.info(TAG, "setting tinsy line LOW (reset start)", "");
-                    if (resetline != undefined) {
-                        global.applogger.info(TAG, "HW gpio line is valid ", "");
-                        resetline.writeSync(1);   // start.  lo
-                    }
-
-                    reset_tinsy_counter++;
-                }
-                else if(reset_tinsy_counter == 6)  // 3 = (300 ms)  go high again,
-                {
-                    global.applogger.info(TAG, "releasing tinsy line to HIGH (reset stop)",  "");
-                    if(resetline != undefined)
-                        resetline.writeSync(0);   // start.
-
-                    reset_tinsy_counter = -1;  //stop
-                }
-                else
-                    reset_tinsy_counter++;
-            }
-
-            // ***************************** END RESET CODE *************************
-
-        }
-        // global.applogger.info(TAG, "hw polling",  "timer fired");
+        peroidicHWPollingLoop();
+         global.applogger.info(TAG, "hw polling ---",  "timer fired");
     }, BasePollingPeriod);
 }
-
+*/
 
 // ********************************************PRIVATE FUNCS ******************************************
 // *****************************************************************************************************

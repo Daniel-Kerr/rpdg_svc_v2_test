@@ -1381,6 +1381,11 @@ var service = module.exports =  {
     isScriptRunning : function()
     {
         return activescript != undefined;
+    },
+    setRPDGHWPollingPeriod : function(periodms)
+    {
+        rpdg.setPollingPeriod(periodms);
     }
+
 
 };
