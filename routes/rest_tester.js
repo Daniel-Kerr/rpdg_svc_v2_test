@@ -9,11 +9,15 @@ var data_utils = require('../utils/data_utils.js');
 var service = require('../controllers/service');
 //global.test_mode =false;
 /* GET users listing. */
+//router.get('/', function(req, res, next) {
+ //   res.send('respond with a resource');
+//
+//});
+
+
 router.get('/', function(req, res, next) {
-    res.send('respond with a resource');
-
+    res.sendFile(path.join( app.get('views') +'/testapis.html'));
 });
-
 /*
 router.post('/setmode', function(req, res) {
 
@@ -105,6 +109,17 @@ router.post('/enablerpdgpolling', function(req, res) {
     var enable = JSON.parse(req.body.polling);
 
     service.enableRPDGHardwarePolling(enable);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    res.status(200).send(cfg);
+
+});
+
+
+router.post('/sethwpollingperiod', function(req, res) {
+
+    var period = JSON.parse(req.body.pollingperiod);
+
+    service.setRPDGHWPollingPeriod(period);
     var cfg = JSON.stringify(global.currentconfig,null,2);
     res.status(200).send(cfg);
 
