@@ -292,12 +292,12 @@ function peroidicHWPollingLoop()
         readHW_CurrentCounts();
 
         // ****************************************TINSEY RESET CODE  *****************************
-        if(i2c_error_count > 3)
-        {
-            i2c_error_count = 0;
-            global.applogger.info(TAG, "Teensy reset initiated because of i2c errors", "");
-            module.exports.resetTinsey(); // this will set the counter to 0, ..to start the reset sequence...
-        }
+       // if(i2c_error_count > 3)
+       // {
+       //     i2c_error_count = 0;
+        //    global.applogger.info(TAG, "Teensy reset initiated because of i2c errors", "");
+        //    module.exports.resetTinsey(); // this will set the counter to 0, ..to start the reset sequence...
+       // }
 
         if(reset_tinsy_counter > -1)  //reset it active
         {
