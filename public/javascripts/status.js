@@ -19,16 +19,16 @@ $(document).ready(function() {
 function initStatusHandler(config)
 {
     cachedconfig = config;
-    var fixcountinrow = 0;
-    var row = 1;
-    var currentrow_div = document.getElementById("fixture_row" + row);
+   // var fixcountinrow = 0;
+   // var row = 1;
+    var currentrow_div = document.getElementById("fixture_row1"); // + row);
     for (var i = 0; i < cachedconfig.fixtures.length; i++) {
-        if (fixcountinrow >= 4) {
-            row++;
-            currentrow_div = document.getElementById("fixture_row" + row);
-            fixcountinrow = 0;
-        }
-        fixcountinrow++;
+       // if (fixcountinrow >= 4) {
+       //     row++;
+       //     currentrow_div = document.getElementById("fixture_row" + row);
+       //     fixcountinrow = 0;
+       // }
+       // fixcountinrow++;
         var fixcol = constructFixtureBox(currentrow_div, cachedconfig.fixtures[i]);
     }
     updateUIPageComponents(undefined);
@@ -50,7 +50,7 @@ var bulb_icon_map = {};
 var daylight_limit_icon_map = {};
 function constructFixtureBox(currentdiv, fixture) {
     var fixcol = document.createElement("div");
-    fixcol.className = "col-lg-2";
+    fixcol.className = "col-xs-6 col-sm-4 col-md-4 col-lg-2";
     currentdiv.appendChild(fixcol);
 
     var fixbox = document.createElement("div");
