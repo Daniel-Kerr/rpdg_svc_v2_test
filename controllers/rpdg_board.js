@@ -5,7 +5,6 @@ var path = require('path');
 var pad = require('pad');
 var TAG = pad(path.basename(__filename),15);
 
-
 var platform = (process.arch == 'arm')?"RaspberryPI":"x86";
 var data_utils = require('../utils/data_utils.js');  //1/15/17,
 var boardmode = (data_utils.commandLineArgPresent("nohw"))?"HW NOT Present":"RPDG board present";
@@ -15,15 +14,27 @@ var nohw = data_utils.commandLineArgPresent("nohw");
 var ishv = data_utils.commandLineArgPresent("hv");
 var i2cwire = undefined;  // set at startup, for hw interface.
 
+var tempcounter = 0;
+var polling_enabled = true;
+var reset_tinsy_counter = -1;
+var periodictimer = undefined;
 
-var resetline = undefined;
+
+var teensy_reset_line = undefined;  // obj that will toggle io to reset tennsy.
+
+var i2c_error_count = 0;  // if > 3  call to reset teensy.
+
+
+
+
+
 if(platform == "RaspberryPI" && !nohw) {
     var i2c = require('i2c');
 
     try {
         global.applogger.info(TAG, "Initilizing the GPIO handler tied to tinsey", "","");
         var Gpio = require('onoff').Gpio; // Constructor function for Gpio objects.
-        resetline = new Gpio(11, 'out');   // Export GPIO #14 as an output...iv;
+        teensy_reset_line = new Gpio(11, 'out');   // Export GPIO #14 as an output...iv;
 
     } catch (ex1) {
         global.applogger.info(TAG, "error setting up the gpio", "","");
@@ -142,13 +153,10 @@ exports.setZero2TenDrive = function(inputs)
             var wire = getI2cWire();
             if (wire != undefined) {
                 wire.writeBytes(CMD_SET_ZERO_2_TEN_DRIVE, config, function (err) {
-                    if (err != null)
-                        global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
-
+                    TeensyI2cErrorHandler("Set Config 0 to 10 drive",err);
                 });
                 wire.writeBytes(CMD_SET_ZERO_2_TEN_DRIVE, config, function (err) {
-                    if (err != null)
-                        global.applogger.error(TAG, "setHW_ConfigureZero2TenDrive",  err);
+                    TeensyI2cErrorHandler("Set Config 0 to 10 drive",err);
                 });
             }
             else {
@@ -177,23 +185,17 @@ exports.setPWMOutputPolarity = function(polconfig)
         var wire = getI2cWire();
         if (wire != undefined) {
             wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
-                if (err != null)
-                    global.applogger.error(TAG, "setPWMOutputPolarity",  err);
+                TeensyI2cErrorHandler("Set PWM Polarity",err);
+
 
             });
             wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
-                if (err != null)
-                    global.applogger.error(TAG, "setPWMOutputPolarity",  err);
+                TeensyI2cErrorHandler("Set PWM Polarity",err);
             });
         }
         else {
             global.applogger.info(TAG, "setPWMOutputPolarity", "no i2c hw");
         }
-        // }
-        // else
-        //{
-        //    global.applogger.info(TAG, "setPWMOutputPolarity ", "cant set,  no config info to set");
-        // }
     } catch (err)
     {
         global.applogger.error(TAG, "setPWMOutputPolarity",  err);
@@ -213,13 +215,11 @@ exports.setHVDimMode = function(dimmodemask)
         var wire = getI2cWire();
         if (wire != undefined) {
             wire.writeBytes(CMD_SET_HV_DIM_MODE, config, function (err) {
-                if (err != null)
-                    global.applogger.error(TAG, "setHVDimMode",  err);
+                    TeensyI2cErrorHandler("Set HV Dim Mode",err);
 
             });
             wire.writeBytes(CMD_SET_HV_DIM_MODE, config, function (err) {
-                if (err != null)
-                    global.applogger.error(TAG, "setHVDimMode",  err);
+                    TeensyI2cErrorHandler("Set HV Dim Mode",err);
             });
         }
         else {
@@ -262,17 +262,11 @@ exports.getFWVersionNumber = function()
     }
 }
 
-var tempcounter = 0;
-
-var polling_enabled = true;
-var reset_tinsy_counter = -1;
-
 exports.resetTinsey = function()
 {
     reset_tinsy_counter = 0;
 }
 
-var periodictimer = undefined;
 
 exports.setPollingPeriod = function(timerperiodms)
 {
@@ -286,7 +280,7 @@ exports.setPollingPeriod = function(timerperiodms)
     global.applogger.info(TAG, "Polling :",  "Polling Timer ", "started at rate: " + timerperiodms);
     periodictimer = setInterval(function () {
         peroidicHWPollingLoop();
-      // global.applogger.info(TAG, "hw polling ---",  "timer fired");
+        // global.applogger.info(TAG, "hw polling ---",  "timer fired");
     }, timerperiodms);
 }
 
@@ -298,22 +292,29 @@ function peroidicHWPollingLoop()
         readHW_CurrentCounts();
 
         // ****************************************TINSEY RESET CODE  *****************************
+        if(i2c_error_count > 3)
+        {
+            i2c_error_count = 0;
+            global.applogger.info(TAG, "Teensy reset initiated because of i2c errors", "");
+            module.exports.resetTinsey(); // this will set the counter to 0, ..to start the reset sequence...
+        }
+
         if(reset_tinsy_counter > -1)  //reset it active
         {
             if (reset_tinsy_counter == 0)  // 0 = start/active.
             {
-                global.applogger.info(TAG, "setting tinsy line LOW (reset start)", "");
-                if (resetline != undefined) {
+                global.applogger.info(TAG, "setting Teensy line LOW (reset start)", "");
+                if (teensy_reset_line != undefined) {
                     global.applogger.info(TAG, "HW gpio line is valid ", "");
-                    resetline.writeSync(1);   // start.  lo
+                    teensy_reset_line.writeSync(1);   // start.  lo
                 }
                 reset_tinsy_counter++;
             }
             else if(reset_tinsy_counter == 6)  // 3 = (300 ms)  go high again,
             {
-                global.applogger.info(TAG, "releasing tinsy line to HIGH (reset stop)",  "");
-                if(resetline != undefined)
-                    resetline.writeSync(0);   // start.
+                global.applogger.info(TAG, "releasing Teensy line to HIGH (reset stop)",  "");
+                if(teensy_reset_line != undefined)
+                    teensy_reset_line.writeSync(0);   // start.
 
                 reset_tinsy_counter = -1;  //stop
             }
@@ -328,16 +329,16 @@ function peroidicHWPollingLoop()
 
 
 /*
-function startHWPolling() {
+ function startHWPolling() {
 
-    var BasePollingPeriod = 100;        // Time interval in mSec that we do the most frequent checks.
-    global.applogger.info(TAG, "Polling :",  "polling timer started");
-    periodictimer = setInterval(function () {
-        peroidicHWPollingLoop();
-         global.applogger.info(TAG, "hw polling ---",  "timer fired");
-    }, BasePollingPeriod);
-}
-*/
+ var BasePollingPeriod = 100;        // Time interval in mSec that we do the most frequent checks.
+ global.applogger.info(TAG, "Polling :",  "polling timer started");
+ periodictimer = setInterval(function () {
+ peroidicHWPollingLoop();
+ global.applogger.info(TAG, "hw polling ---",  "timer fired");
+ }, BasePollingPeriod);
+ }
+ */
 
 // ********************************************PRIVATE FUNCS ******************************************
 // *****************************************************************************************************
@@ -380,6 +381,17 @@ function read_HWInfo() {
     }
 }
 
+
+function TeensyI2cErrorHandler(message, err)
+{
+    if(err != null) {
+        i2c_error_count++;
+        global.applogger.error(TAG, "I2C Error: " + message, err);
+    }
+    else
+        i2c_error_count = 0;
+}
+
 /***
  * write the hw PLC outputs
  */
@@ -389,13 +401,10 @@ function setHW_PLC()
         var wire = getI2cWire();
         if(wire != undefined) {
             wire.writeBytes(CMD_SETPLC, plc_output_switch, function (err) {
-                if (err != null)
-                    global.applogger.error(TAG, "Set PLC LEVELS:  ", err);
+                TeensyI2cErrorHandler("Set PLC",err);
             });
             wire.writeBytes(CMD_SETPLC, plc_output_switch, function (err) {
-
-                if (err != null)
-                    global.applogger.error(TAG, "Set PLC LEVELS:  ", err);
+                TeensyI2cErrorHandler("Set PLC",err);
             });
         }
     } catch(err)
@@ -435,12 +444,11 @@ function setHW_PWMLevels()
         var wire = getI2cWire();
         if (wire != undefined) {
             wire.writeBytes(CMD_SETPWM, zone_levels, function (err) {
-                if (err != null)
-                    global.applogger.error(TAG, "setHW_PWMLevels:",  err);
+                TeensyI2cErrorHandler("Set PWM",err);
+
             });
             wire.writeBytes(CMD_SETPWM, zone_levels, function (err) {
-                if (err != null)
-                    global.applogger.error(TAG, "setHW_PWMLevels:",  err);
+                TeensyI2cErrorHandler("Set PWM",err);
             });
         }
         // else {
@@ -485,8 +493,8 @@ function readHW_CurrentCounts()
                     }
                     printCurrentCounts();
                 }
-                if (err != null)
-                    global.applogger.error(TAG, "readHW_CurrentCounts",  err);
+
+                TeensyI2cErrorHandler("Read Current Counts",err);
             });
         }
     } catch(err)
@@ -535,8 +543,7 @@ function readHW_0to10inputs() {
                             rxhandler("rpdg","levelinput", index+1, txvalue);
                         }
 
-                        if (err != null)
-                            global.applogger.error(TAG, "readHW_0to10inputs",  err);
+                        TeensyI2cErrorHandler("Read 0 to 10 inputs",err);
 
                         index++;
                     }
@@ -576,11 +583,11 @@ function readHW_WetDryContactinputs() {
                 }
                 else
                 {
-                    global.applogger.error(TAG, "readHW_WetDryContactinputs",  " res is null");
+                    TeensyI2cErrorHandler("Read Wet Dry Contacts","no data");
                 }
 
-                if (err != null)
-                    global.applogger.error(TAG, "readHW_WetDryContactinputs",  err);
+                TeensyI2cErrorHandler("Read Wet Dry Contacts",err);
+
             });
         }
 
