@@ -102,6 +102,7 @@ function updateDynButtonBar()
     hideDivID("StatusPage");
     hideDivID("dynbuttonbar");
     hideDivID("controls");
+    hideDivID("ConfigPage");
     switch(top_menu_selection)
     {
         case "Scenes":
