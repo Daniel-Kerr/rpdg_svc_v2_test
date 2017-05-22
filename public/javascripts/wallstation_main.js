@@ -1118,7 +1118,7 @@ function constructLevelInputStatusBox() {
     var currentrow_div = document.getElementById("StatusPage");
     removeElement("levelbox");
     var levelcol = document.createElement("div");
-    levelcol.className = "col-sm-12";
+    levelcol.className = "col-sm-6";
     currentrow_div.appendChild(levelcol);
 
     var levelbox = document.createElement("div");
@@ -1204,7 +1204,7 @@ function constructContactInputStatusBox() {
     var currentrow_div = document.getElementById("StatusPage");
     removeElement("contactbox");
     var contactcol = document.createElement("div");
-    contactcol.className = "col-sm-12";
+    contactcol.className = "col-sm-6";
     currentrow_div.appendChild(contactcol);
 
     var contactbox = document.createElement("div");
@@ -1234,49 +1234,33 @@ function updateContactInputStatusBox()
 
 
             var fixcontent = document.createElement("div");
-            fixcontent.className = "levelinputitem";
+            fixcontent.className = "contactinputitem";
             levelbox.appendChild(fixcontent);
 
             var name = document.createElement("div");
-            name.className = "levelinputname";
+            name.className = "contactinputname";
             name.innerHTML = inputobj.assignedname;
             fixcontent.appendChild(name);
 
-
-            var guage = document.createElement("div");  // 200 px wide fixed. black to white.
-            guage.className = "levelinputgrad";
-            fixcontent.appendChild(guage);
-
-            var guagemark = document.createElement("div");
-            guagemark.className = "inputlevel_mark";
-            var sensorvoltage = inputobj.value;
-            //sensorvoltage = 6.8;
-
-            var pct = sensorvoltage * 10;
-            var markloc = 0;
-            if(inputobj.type == "daylight")
-                markloc = 200 - ((pct * 200)/ 100);
-            else
-                markloc = ((pct * 200)/ 100);
-
-            guagemark.style.marginLeft = markloc + "px";
-            guage.appendChild(guagemark);
-
             var value = document.createElement("div");
-            value.className = "levelinputvalue";
+            value.className = "contactinputvalue";
             value.innerHTML = "value";
             fixcontent.appendChild(value);
 
-            if(inputobj.type == "daylight") {
-                // convert value to fc,
-                var fcval = voltageToFC(sensorvoltage);
-                // this value is a value 0 - 10 volts, 0 (full bright,  10 dark.
-                value.innerHTML = fcval + " FC";
+            var dt = moment(inputobj.lastupdated);
+
+            if(inputobj.type == "maintained") {
+
+                var desc = (inputobj.value == 1)?"ACTIVE":"INACTIVE";
+                value.innerHTML = desc + "   -- last: "+ dt.format('MMMM Do YYYY, h:mm:ss a');
             }
             else
             {
-                value.innerHTML = sensorvoltage + " V";
+                // momentary.
+                value.innerHTML = " -- last changed at: " + dt.format('MMMM Do YYYY, h:mm:ss a');
             }
+
+
         }
 
 
