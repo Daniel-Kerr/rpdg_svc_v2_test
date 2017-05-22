@@ -1182,6 +1182,7 @@ function updateWetDryContactTable() {
     oTColGrp.appendChild(coldef);
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
+   // coldef.style.wordWrap="normal";
     oTColGrp.appendChild(coldef);
     // coldef = document.createElement("col");
     // coldef.className = "col-md-1";
@@ -1211,10 +1212,19 @@ function updateWetDryContactTable() {
             col4part.innerHTML = wetdrycontactlist[i].type;
 
             var col5part = document.createElement("TD");
-            col5part.innerHTML = wetdrycontactlist[i].active_action;
+
+
+           // var prewrap = document.createElement("pre");
+           // prewrap.innerHTML = wetdrycontactlist[i].active_action;
+
+           // col5part.appendChild(prewrap);
+            var cleanaa = wetdrycontactlist[i].active_action.replace(/_@@_/g,"/");
+            col5part.innerHTML = cleanaa; //wetdrycontactlist[i].active_action;
 
             var col6part = document.createElement("TD");
-            col6part.innerHTML = wetdrycontactlist[i].inactive_action;
+
+            var cleania = wetdrycontactlist[i].inactive_action.replace(/_@@_/g,"/");
+            col6part.innerHTML = cleania; //wetdrycontactlist[i].inactive_action;
 
             //  var col7part = document.createElement("TD");
             // col7part.innerHTML = wetdrycontactlist[i].inactive_action;
