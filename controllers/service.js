@@ -675,6 +675,9 @@ var service = module.exports =  {
         var BasePollingPeriod = 1000;        // Time interval in mSec that we do the most frequent checks.
         periodictimer = setInterval(function () {
 
+
+           // rpdg.testToggleGPIO();  // for test only
+
             if( delayedHW_InitCount > 0)
             {
                 delayedHW_InitCount--;
