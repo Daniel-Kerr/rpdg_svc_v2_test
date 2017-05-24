@@ -1144,9 +1144,9 @@ function updateWetDryContactTable() {
     oCell1 = document.createElement("TD");
     oCell1.innerHTML = "Name";
     oCell2 = document.createElement("TD");
-    oCell2.innerHTML = "Interface";
+    oCell2.innerHTML = "I-face";
     oCell3 = document.createElement("TD");
-    oCell3.innerHTML = "Input Number";
+    oCell3.innerHTML = "#";
     oCell4 = document.createElement("TD");
     oCell4.innerHTML = "Type";
     oCell5 = document.createElement("TD");

@@ -591,7 +591,13 @@ var service = module.exports =  {
 
         var ip = require('ip');
         global.applogger.info(TAG, "IP ADDRESS IS: " + ip.address(), "");
-        //data_utils.generateFauxDataSeries();
+
+
+
+        // ************************************************** FAUX ****************DATA ***
+        //  data_utils.generateFauxDataSeries();
+        // **********************************************************************************
+
 
         sw_version = data_utils.getVersionFromFile();
 

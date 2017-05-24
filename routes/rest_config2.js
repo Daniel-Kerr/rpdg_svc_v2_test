@@ -261,25 +261,18 @@ router.post('/savelevelinput', function(req, res) {
             }
         }
 
+        // 5/24/17  add log object when adding fixture..
+        var logobj = {};
+        logobj.date = new moment().toISOString();
+        logobj.value = 0;
+        data_utils.appendInputObjectLogFile(req.body.assignedname, logobj);
+
+
+
+
         var fix = new LevelInput();
         fix.fromJson(req.body);
         global.currentconfig.levelinputs.push(fix);
-
-        /*switch (req.body.type) {
-            case "daylight":
-                var fix = new DayLightSensor();
-                fix.fromJson(req.body);
-                global.currentconfig.levelinputs.push(fix);
-                break;
-            case "dimmer":
-                var fix = new Dimmer();
-                fix.fromJson(req.body);
-                global.currentconfig.levelinputs.push(fix);
-                break;
-            default:
-                break;
-        }*/
-
         service.updateRPDGInputDrive();
     }
 
@@ -335,6 +328,12 @@ router.post('/savecontactinput', function(req, res) {
                 break;
             }
         }
+
+        var logobj = {};
+        logobj.date = new moment().toISOString();
+        logobj.value = 0;
+        data_utils.appendInputObjectLogFile(req.body.assignedname, logobj);
+
 
         var ci = new ContactInput();
         ci.fromJson(req.body);

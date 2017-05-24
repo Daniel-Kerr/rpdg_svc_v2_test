@@ -112,6 +112,13 @@
         padding-left: 50px;
         font-size: smaller;
     }
+
+    .zoomin {
+        width: 100px;
+        height: 100px;
+        background-color: #eaa0ee;
+
+    }
 </style>
 
 <script>
@@ -155,12 +162,50 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <input type="button" id = "bt1hr" class="btn btn-large btn-success" onclick=setWindowHours(1) value="1 hour"/>
-                <input type="button" id = "bt6hr" class="btn btn-large btn-success" onclick=setWindowHours(6) value="6 hours"/>
-                <input type="button" id = "bt12hr" class="btn btn-large btn-success" onclick=setWindowHours(12) value="12 hours"/>
-                <input type="button" id = "btday" class="btn btn-large btn-success" onclick=setWindowHours(24) value="Day"/>
-                <input type="button" id = "btweek" class="btn btn-large btn-success" onclick=setWindowHours(24*7) value="Week"/>
-                <input type="button" id = "btmonth" class="btn btn-large btn-success" onclick=setWindowHours(24*30) value="Month"/>
+                <div class="row icon-list-demo">
+                    <div class="col-sm-1 col-md-1 col-lg-1">
+                        <input type="button" id = "bt1hr" class="btn btn-large btn-success" onclick=setWindowHours(1) value="1 hour"/>
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-lg-1">
+                        <input type="button" id = "bt6hr" class="btn btn-large btn-success" onclick=setWindowHours(6) value="6 hours"/>
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-lg-1">
+                        <input type="button" id = "bt12hr" class="btn btn-large btn-success" onclick=setWindowHours(12) value="12 hours"/>
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-lg-1">
+                        <input type="button" id = "btday" class="btn btn-large btn-success" onclick=setWindowHours(24) value="Day"/>
+                    </div>
+
+                    <div class="col-sm-1 col-md-1 col-lg-1">
+                        <input type="button" id = "btweek" class="btn btn-large btn-success" onclick=setWindowHours(24*7) value="Week"/>
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-lg-1">
+                        <input type="button" id = "btmonth" class="btn btn-large btn-success" onclick=setWindowHours(24*30) value="Month"/>
+                    </div>
+
+
+                    <div class="col-sm-6 col-md-6 col-lg-6 text-right">
+
+                        <div class="" style=" display: inline-block;" onclick=windowZoomIn()>
+                            <i class="ti-zoom-in"></i>
+                        </div>
+
+                        <div class="" style=" display: inline-block;" onclick=windowZoomOut()>
+                            <i class="ti-zoom-out"></i>
+                        </div>
+
+                        <div class="" style=" display: inline-block;" onclick=windowMove("left")>
+                            <i class="ti-arrow-left"></i>
+                        </div>
+
+                        <div class="" style=" display: inline-block;" onclick=windowMove("right")>
+                            <i class="ti-arrow-right"></i>
+                        </div>
+
+                    </div>
+                    <!--input type="button" id = "btmoveleft" class="btn btn-large btn-success" onclick=windowMove("left") value="Left"/>
+                    <input type="button" id = "btmoveleft" class="btn btn-large btn-success" onclick=windowMove("right") value="Right"/-->
+                </div>
             </div>
         </div>
 
@@ -195,7 +240,7 @@
                 <div class="portlet"><!-- /primary heading -->
                     <div class="portlet-heading">
                         <h3 class="portlet-title text-dark">
-                            Sensors / Inputs Devices
+                            Level Inputs Devices
                         </h3>
                         <div class="portlet-widgets">
                             <!--a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a-->
@@ -209,6 +254,32 @@
                     <div id="portlet_inputs" class="panel-collapse collapse in">
                         <div class="portlet-body">
                             <div id="input-graph" class="demo-placeholder" style="height:260px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="portlet"><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            Contact Inputs Devices
+                        </h3>
+                        <div class="portlet-widgets">
+                            <!--a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a-->
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet_contactinputs"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="portlet_contactinputs" class="panel-collapse collapse in">
+                        <div class="portlet-body">
+                            <div id="contactinput-graph" class="demo-placeholder" style="height:260px;"></div>
                         </div>
                     </div>
                 </div>
