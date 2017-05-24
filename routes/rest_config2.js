@@ -110,13 +110,17 @@ router.post('/savefixture', function(req, res) {
             var fix = global.currentconfig.fixtures[i];
             if(fix.assignedname == req.body.assignedname)
             {
-                // update it,
+
                 exists = true;
                 global.currentconfig.fixtures.splice(i,1); //remove it,
-                //  global.currentconfig.fixtures[i] = req.body;
                 break;
             }
         }
+
+        // 5/24/17  add log object when adding fixture..
+        var logobj = {};
+        var now = moment();
+        logobj.date = now.toISOString();
 
         var fix = undefined;
         // if(!exists) {
@@ -125,26 +129,37 @@ router.post('/savefixture', function(req, res) {
                 fix = new OnOffFixture();
                 fix.fromJson(req.body);
                 global.currentconfig.fixtures.push(fix);
+                logobj.level = "0"; //.toFixed();
                 break;
             case "dim":
                 fix = new DimFixture();
                 fix.fromJson(req.body);
                 global.currentconfig.fixtures.push(fix);
+                logobj.level = "0";
                 break;
             case "cct":
                 var fix = new CCTFixture();
                 fix.fromJson(req.body);
                 global.currentconfig.fixtures.push(fix);
+                logobj.brightness = 0;
+                logobj.colortemp = 3500;
                 break;
             case "rgbw":
                 var fix = new RGBWFixture();
                 fix.fromJson(req.body);
                 global.currentconfig.fixtures.push(fix);
+
+                logobj.red = 0;
+                logobj.green = 0;
+                logobj.blue = 0;
+                logobj.white = 0;
                 break;
             default:
                 break;
         }
         // }
+
+        data_utils.appendOutputObjectLogFile(req.body.assignedname, logobj);
 
         if(fix != undefined)
         {

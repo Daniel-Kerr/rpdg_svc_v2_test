@@ -284,33 +284,6 @@ exports.setPollingPeriod = function(timerperiodms)
     }, timerperiodms);
 }
 
-/*
-var state = 0;
-exports.testToggleGPIO = function()
-{
-    if(platform == "RaspberryPI" ) {
-
-        try {
-            if(state == 0)
-            {
-                state = 1;
-                var Gpio = require('onoff').Gpio; // Constructor function for Gpio objects.
-                var hold = new Gpio(2, 'in');   // Export GPIO #14 as an output...iv;
-            }
-            else {
-                state = 0;
-                var Gpio = require('onoff').Gpio; // Constructor function for Gpio objects.
-                var hold = new Gpio(2, 'out');   // Export GPIO #14 as an output...iv;
-
-            }
-
-        } catch (ex1) {
-            global.applogger.info(TAG, "error setting up the gpio", "","");
-        }
-
-    }
-}
-*/
 
 
 
