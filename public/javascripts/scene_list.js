@@ -67,6 +67,7 @@ function openNewSceneListEditDlg()
                 Scene List:<input type='text' id='scenelist_name' /><br/>\
                 </form>",
         size: 'small',
+        onEscape: true,
         callback: function(result) {
             if(result) {
                 var listname = $('#scenelist_name').val();
@@ -79,10 +80,8 @@ function openNewSceneListEditDlg()
                     if(j != undefined && j.name != undefined && j.name.length > 0)
                     {
                         $.Notification.notify('error','top left', 'Error',   j.name[0]);
-                       // noty({text: j.name[0], type: 'error', timeout:1000});
                         return false;
                     }
-
 
                     saveConfigObject("scenelist", scenelist,function (retval) {
                         if(retval != undefined)
@@ -92,17 +91,21 @@ function openNewSceneListEditDlg()
                         }
                         else
                             $.Notification.notify('error','top left', 'Error',  'Error creating scene ');
-                         //   noty({text: 'Error creating scene ', type: 'error'});
                     });
                 }
                 else
                     $.Notification.notify('error','top left', 'Error',   'Incomplete Name, please try again ');
-                   // noty({text: 'Incomplete Name, please try again ', type: 'error'});
             }
         }});
 
     box.on('shown.bs.modal',function(){
         $("#scenelist_name").focus();
+    });
+
+
+    $(document).on("submit", ".bootbox form", function(e) {
+        e.preventDefault();
+        $(".bootbox .btn-primary").click();
     });
 }
 
