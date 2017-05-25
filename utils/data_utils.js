@@ -179,7 +179,7 @@ module.exports = {
             if (stats.isFile()) {
                 var contents = fs.readFileSync(target, 'utf8');
                 if (contents.length > 0) {
-                   // var mastercenelist = JSON.parse(contents);
+                    // var mastercenelist = JSON.parse(contents);
                     return contents;
                 }
             }
@@ -293,24 +293,22 @@ module.exports = {
     },
     generateFauxDataSeries: function()  {
 
-
+       // global.log.info("data_utils.js ", " &&&&&&&&&&&&&&&&&&& GEN DATA *****************************",  "");
         //test code to generate a pho data file.
-        var dt = moment('03-15-2017', 'MM-DD-YYYY');
+        var dt = moment('04-15-2017', 'MM-DD-YYYY');
         var dim1level = 0;
-        var dim2level = 0;
         var occ_sensorlevel = 0;
         var daylightlevel = 0;
-        for(var i = 0 ; i < 2500; i++) {
+
+        var rampdim = true;
+        var index_mark = 1000;
+        for(var i = 0 ; i < 20000; i++) {
+       // while(true) {
 
             var dim1 = {};
             dim1.date = dt.toISOString();
             dim1.level = dim1level;
             module.exports.appendOutputObjectLogFile("dim1", dim1);
-
-            var dim2 = {};
-            dim2.date = dt.toISOString();
-            dim2.level = dim2level;
-            module.exports.appendOutputObjectLogFile("dim2", dim2);
 
             var occ_sensor = {};
             occ_sensor.date = dt.toISOString();
@@ -322,9 +320,12 @@ module.exports = {
             daylight.value = daylightlevel;
             module.exports.appendInputObjectLogFile("daylight",daylight);
 
-            // ramp starting at 200
-            // OCC / dim1
-            if ((i > 200 && i < 500)  || (i > 750 && i < 1020) || (i > 1670 && i < 1834) ) {
+
+            // OCC
+            if ((i > 200 && i < 207)  ||  (i > 335 && i < 337) || (i > 550 && i < 552) || (i > 750 && i < 756)  || (i > 900 && i < 903)
+                || (i > 1002 && i < 1005)  || (i > 1007 && i < 1009) || (i > 1240 && i < 1243)
+                || (i > 2000 && i < 2010)  || (i > 3200 && i < 3206) || (i > 4300 && i < 4310) ) {
+
                 occ_sensorlevel = 100;
             }
             else
@@ -332,31 +333,48 @@ module.exports = {
                 occ_sensorlevel = 0;
             }
 
-            // set dim level according to occ level.
-            if (occ_sensorlevel > 0 && dim1level < 100) {
-                dim1level+= 5;
-            }
-            else if (occ_sensorlevel <= 0 && dim1level > 0)
+            // saw tooth.
+
+
+            if(dim1level < 100 && i < index_mark)
+                dim1level+= 1;
+            else if(dim1level == 100 && i < index_mark)
             {
-                dim1level-= 5;
+                index_mark = i;
             }
+            else if(i > index_mark + 200 && dim1level > 0)
+            {
+                dim1level-= 1;
+            }
+            else if (dim1level == 0)
+                index_mark = 30000; //reset
+
+
 
             // DAYLIGHT, ... dim2 *******************
-            // ramp daylight 350 -- 550
-            if (i > 350 && i < 549 && daylightlevel < 100) {
-                daylightlevel += 1;
+            var rampup = false;
+            if ((i > 200 && i < 280)  || (i > 750 && i < 900) || (i > 1345 && i < 1673) ||
+                (i > 3400 && i < 3500)  || (i > 4100 && i < 4300)) {
+                rampup = true;
             }
-            else if( i > 550 && daylightlevel > 0)
+
+            if (rampup)
+            {
+                if(daylightlevel < 100)
+                    daylightlevel += 1;
+            }
+            else if(daylightlevel > 0)
             {
                 daylightlevel -=1;
             }
 
-            // dim level 2 is inverse of daylight,
+            dt = dt.add(10, "minutes");
 
-            dim2level = 100 - daylightlevel;
-            // set dim level according to occ level.
 
-            dt = dt.add(30, "minutes");
+            if(dt.isAfter(new moment())) {
+
+                break;
+            }
         }
 
     },

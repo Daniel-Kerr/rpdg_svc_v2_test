@@ -24,10 +24,7 @@ var totalcontactinputs = 2;
 var panstartdate = new Date(2017,1,1);
 var end_date = new Date();
 
-
 var default_start_date = new Date();
-
-var FAUX_DATA = false;
 
 var line_colors = ['#33AAAA','#3322FF','#3377FF','#33AA11','#33AA99'];
 function init()
@@ -40,30 +37,30 @@ function init()
 
             default_start_date.setHours(default_start_date.getHours()-6);
 
-           // if(!FAUX_DATA) {
-                outputcount = 0;
-                totaloutputs = cfg.fixtures.length;
-                var fixtures = cfg.fixtures;
-                var levelinputs = cfg.levelinputs;
-                var contactinputs = cfg.contactinputs;
-                totalinputs = cfg.levelinputs.length;
+            outputcount = 0;
+            totaloutputs = cfg.fixtures.length;
+            var fixtures = cfg.fixtures;
+            var levelinputs = cfg.levelinputs;
+            var contactinputs = cfg.contactinputs;
+            totalinputs = cfg.levelinputs.length;
+            totalcontactinputs =  cfg.contactinputs.length;
 
 
-                for (var i = 0; i < fixtures.length; i++) {
-                    // FAUX data .
-                    var element = {};
-                    element.name = fixtures[i].assignedname;
-                    element.type = "output";
-                    getDataForObject(element, processOutputDataFetch);
-                }
+            for (var i = 0; i < fixtures.length; i++) {
+                // FAUX data .
+                var element = {};
+                element.name = fixtures[i].assignedname;
+                element.type = "output";
+                getDataForObject(element, processOutputDataFetch);
+            }
 
-                for (var i = 0; i < levelinputs.length; i++) {
-                    // FAUX data .
-                    var element = {};
-                    element.name = levelinputs[i].assignedname;
-                    element.type = "input";
-                    getDataForObject(element, processInputDataFetch);
-                }
+            for (var i = 0; i < levelinputs.length; i++) {
+                // FAUX data .
+                var element = {};
+                element.name = levelinputs[i].assignedname;
+                element.type = "input";
+                getDataForObject(element, processInputDataFetch);
+            }
 
             for (var i = 0; i < contactinputs.length; i++) {
                 // FAUX data .
@@ -72,33 +69,6 @@ function init()
                 element.type = "input";
                 getDataForObject(element, processContactInputDataFetch);
             }
-
-           /* }
-            else {
-
-                // FAUX data .
-
-                var element = {};
-                element.name = "dim1";
-                element.type = "output";
-                getDataForObject(element, processOutputDataFetch);
-
-
-                var element = {};
-                element.name = "dim2";
-                element.type = "output";
-                getDataForObject(element, processOutputDataFetch);
-
-                var element = {};
-                element.name = "occ_sensor";
-                element.type = "input";
-                getDataForObject(element, processInputDataFetch);
-
-                var element = {};
-                element.name = "daylight";
-                element.type = "input";
-                getDataForObject(element, processInputDataFetch);
-            }  */
 
         }
     });
@@ -191,6 +161,13 @@ function processOutputDataFetch(name, resultdata) {
                 input_plot.draw();
 
             }
+
+            if(contactinput_plot != undefined) {
+                contactinput_plot.getOptions().xaxes[0].min = axes.xaxis.min;
+                contactinput_plot.getOptions().xaxes[0].max = axes.xaxis.max;
+                contactinput_plot.setupGrid();
+                contactinput_plot.draw();
+            }
         });
     }
 }
@@ -242,11 +219,9 @@ var detailOptions = {
     }
 };
 
-
-
-
-// ************************************ INPUT GRAPH **************************
-
+//*********************************************************************************************************
+// ************************************LEVEL INPUT GRAPH **************************
+//*********************************************************************************************************
 
 function processInputDataFetch(name, resultdata) {
 
@@ -302,11 +277,13 @@ function processInputDataFetch(name, resultdata) {
                 output_plot.draw();
             }
 
+            if(contactinput_plot != undefined) {
+                contactinput_plot.getOptions().xaxes[0].min = axes.xaxis.min;
+                contactinput_plot.getOptions().xaxes[0].max = axes.xaxis.max;
+                contactinput_plot.setupGrid();
+                contactinput_plot.draw();
+            }
 
-            //$(".message").html("Panning to x: "  + axes.xaxis.min.toFixed(2)
-            //    + " &ndash; " + axes.xaxis.max.toFixed(2)
-            //   + " and y: " + axes.yaxis.min.toFixed(2)
-            //   + " &ndash; " + axes.yaxis.max.toFixed(2));
         });
     }
 }
@@ -348,13 +325,6 @@ var inputdetailOptions = {
 };
 
 
-
-
-
-
-
-
-
 toggleInputPlot = function(seriesIdx)
 {
     var someData = input_plot.getData();
@@ -364,9 +334,9 @@ toggleInputPlot = function(seriesIdx)
 }
 
 
-
+//*********************************************************************************************************
 // ******************************************** Contact Input graph ******
-
+//*********************************************************************************************************
 
 
 function processContactInputDataFetch(name, resultdata) {
@@ -381,40 +351,66 @@ function processContactInputDataFetch(name, resultdata) {
     // create obj
     var element = {};
     element.label = name;
-    element.color = line_colors[inputcount];
-    element.idx = inputcount;
+    element.color = line_colors[contactinputcount];
+    element.idx = contactinputcount;
 
-    inputcount++;
+    contactinputcount++;
 
+
+    var bucketcount = 0;
+    var bucketstartdate = undefined;
+    var bucketenddate = undefined;
     for(var i = 0; i < parts.length; i++)
     {
         try {
             var point = JSON.parse(parts[i]);
-
             var d = new Date(point.date);
 
-            dataholder.push([d,Number(point.value*10)]);  // for now scale.
+            // if this dt, is after the bucket end time,  send off current bucket.
+            if(bucketenddate != undefined) {
+                if (d.getTime() > bucketenddate.getTime()) {
+                    if(bucketcount == 0)
+                        bucketcount = -1;
+
+                    dataholder.push([d, Number(bucketcount)]);  // for now scale.
+                    bucketcount = 0;
+                    bucketstartdate = undefined;
+                }
+            }
+            // bundle up into 15 min buckets
+            if(point.value > 0)
+                  bucketcount++;
+
+            if (bucketstartdate == undefined) {
+                bucketstartdate = d;
+                bucketenddate = new Date(d);
+                bucketenddate.setMinutes(bucketenddate.getMinutes() + 15);
+            }
+
         } catch(err )
         {
         }
     }
 
     element.data = dataholder;
-    input_dataset.push(element);
+    contactinput_dataset.push(element);
 
-    if(inputcount >= totalinputs)
+    if(contactinputcount >= totalcontactinputs)
     {
-        var holder = $("#input-graph");
+        var holder = $("#contactinput-graph");
 
 
-        input_plot = $.plot($("#input-graph"),
-            input_dataset,
-            inputdetailOptions
+
+
+
+        contactinput_plot = $.plot($("#contactinput-graph"),
+            contactinput_dataset,
+            contactinputdetailOptions
         );
 
 
-        holder.bind("plotpan", function (event, input_plot) {
-            var axes = input_plot.getAxes();
+        holder.bind("plotpan", function (event, contactinput_plot) {
+            var axes = contactinput_plot.getAxes();
 
             if(output_plot != undefined) {
                 output_plot.getOptions().xaxes[0].min = axes.xaxis.min;
@@ -423,17 +419,71 @@ function processContactInputDataFetch(name, resultdata) {
                 output_plot.draw();
             }
 
+            if(input_plot != undefined) {
+                input_plot.getOptions().xaxes[0].min = axes.xaxis.min;
+                input_plot.getOptions().xaxes[0].max = axes.xaxis.max;
+                input_plot.setupGrid();
+                input_plot.draw();
 
-            //$(".message").html("Panning to x: "  + axes.xaxis.min.toFixed(2)
-            //    + " &ndash; " + axes.xaxis.max.toFixed(2)
-            //   + " and y: " + axes.yaxis.min.toFixed(2)
-            //   + " &ndash; " + axes.yaxis.max.toFixed(2));
+            }
         });
     }
 }
 
 
+var contactinputdetailOptions = {
+    series: {
+        bars: {
+            show: true,
+            align: "center",
+            barWidth: 15*60*1000, //24 * 60 * 60 * 600,
+            lineWidth:1
+        }
+        // lines: { show: true, lineWidth: 3 },
+        //shadowSize: 0
+    },
+    grid: {
+        hoverable: true,
+        borderWidth: 1
+    },
+    yaxis:{
+        min: 0,
+        max: 5,
+        ticksize: 20,
+        panRange: false
+    },
+    xaxis:{
+        show: true,
+        mode: "time",
+        timezone: "browser",
+        minTickSize: [1, "hour"],
+        timeformat: "%m/%d %H:%M",
+        min: default_start_date,
+        max: end_date,
+        panRange: [panstartdate.getTime(), end_date.getTime()]
+    },
+    pan: {
+        interactive: true
+    },
+    legend: {
+        labelFormatter: function(label, series){
+            return '<a href="#" onClick="toggleContactInputPlot('+series.idx+'); return false;">'+label+'</a>';
+        }
+    }
+};
 
+
+toggleContactInputPlot = function(seriesIdx)
+{
+    var someData = contactinput_plot.getData();
+    someData[seriesIdx].bars.show = !someData[seriesIdx].bars.show;
+    contactinput_plot.setData(someData);
+    contactinput_plot.draw();
+}
+
+//*********************************************************************************************************
+// ****************************************************************** END Contact input *****************************
+//*********************************************************************************************************
 
 function setWindowHours(hours)
 {
@@ -454,6 +504,13 @@ function setWindowHours(hours)
         input_plot.getOptions().xaxes[0].max = max.getTime();
         input_plot.setupGrid();
         input_plot.draw();
+    }
+
+    if(contactinput_plot != undefined) {
+        contactinput_plot.getOptions().xaxes[0].min = min.getTime();
+        contactinput_plot.getOptions().xaxes[0].max = max.getTime();
+        contactinput_plot.setupGrid();
+        contactinput_plot.draw();
     }
 
 }
@@ -500,6 +557,12 @@ function windowZoomIn()
         input_plot.draw();
     }
 
+    if(contactinput_plot != undefined) {
+        contactinput_plot.getOptions().xaxes[0].min = min.getTime();
+        contactinput_plot.getOptions().xaxes[0].max = max.getTime();
+        contactinput_plot.setupGrid();
+        contactinput_plot.draw();
+    }
 }
 
 
@@ -542,6 +605,12 @@ function windowZoomOut()
         input_plot.draw();
     }
 
+    if(contactinput_plot != undefined) {
+        contactinput_plot.getOptions().xaxes[0].min = min.getTime();
+        contactinput_plot.getOptions().xaxes[0].max = max.getTime();
+        contactinput_plot.setupGrid();
+        contactinput_plot.draw();
+    }
 }
 
 
@@ -589,6 +658,12 @@ function windowMove(direction)
         input_plot.draw();
     }
 
+    if(contactinput_plot != undefined) {
+        contactinput_plot.getOptions().xaxes[0].min = min.getTime();
+        contactinput_plot.getOptions().xaxes[0].max = max.getTime();
+        contactinput_plot.setupGrid();
+        contactinput_plot.draw();
+    }
 }
 
 
