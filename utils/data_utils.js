@@ -297,8 +297,10 @@ module.exports = {
         //test code to generate a pho data file.
         var dt = moment('04-15-2017', 'MM-DD-YYYY');
         var dim1level = 0;
+        var dim1level2 = 50;
         var occ_sensorlevel = 0;
         var daylightlevel = 0;
+        var lightswitchlevel = 0;
 
         var rampdim = true;
         var index_mark = 1000;
@@ -310,10 +312,21 @@ module.exports = {
             dim1.level = dim1level;
             module.exports.appendOutputObjectLogFile("dim1", dim1);
 
+            var dim2 = {};
+            dim2.date = dt.toISOString();
+            dim2.level = dim1level2;
+            module.exports.appendOutputObjectLogFile("dim2", dim2);
+
+
             var occ_sensor = {};
             occ_sensor.date = dt.toISOString();
             occ_sensor.value = occ_sensorlevel;
             module.exports.appendInputObjectLogFile("occ_sensor",occ_sensor);
+
+            var lightswitch = {};
+            lightswitch.date = dt.toISOString();
+            lightswitch.value = lightswitchlevel;
+            module.exports.appendInputObjectLogFile("light_switch",lightswitch);
 
             var daylight = {};
             daylight.date = dt.toISOString();
@@ -333,6 +346,19 @@ module.exports = {
                 occ_sensorlevel = 0;
             }
 
+
+
+            if ((i > 3 && i < 8)  ||  (i > 100 && i < 107) || (i > 250 && i < 270) || (i > 450 && i < 470)  || (i > 678 && i < 700)
+                || (i > 1200 && i < 1210)  || (i > 2100 && i < 2104) || (i > 3420 && i < 3443)
+                || (i > 3820 && i < 3840)  || (i > 4400 && i < 4450) || (i > 4750 && i < 4755) ) {
+
+                lightswitchlevel = 100;
+            }
+            else
+            {
+                lightswitchlevel = 0;
+            }
+
             // saw tooth.
 
 
@@ -348,6 +374,9 @@ module.exports = {
             }
             else if (dim1level == 0)
                 index_mark = 30000; //reset
+
+
+
 
 
 

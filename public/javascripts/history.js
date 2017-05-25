@@ -4,11 +4,11 @@
 
 var REST_GET_DATA = "history/getdata";
 var output_plot = undefined;
-var input_plot = undefined;
+var levelinput_plot = undefined;
 var contactinput_plot = undefined;
 
 var output_dataset = [];
-var input_dataset = [];
+var levelinput_dataset = [];
 var contactinput_dataset = [];
 
 var totaloutputs = 2;
@@ -151,9 +151,6 @@ function processOutputDataFetch(name, resultdata) {
             detailOptions
         );
 
-
-
-        // check boxes... "choices",
         var choiceContainer = $("#choices");
         $.each(output_dataset, function(key, val) {
             choiceContainer.append("<br/>" +
@@ -162,27 +159,24 @@ function processOutputDataFetch(name, resultdata) {
                 "' checked='checked' id='id" + key + "'></input>" +
                 "<label for='id" + key + "'>"
                 + val.label + "</label>" + "</div>");
-
-           // choiceContainer.append("<br/><input type='checkbox' name='" + key +
-           //     "' checked='checked' id='id" + key + "'></input>" +
-           //     "<label for='id" + key + "'>"
-           //     + val.label + "</label>");
         });
 
-        choiceContainer.find("input").click(plotAccordingToChoices);
+        choiceContainer.find("input").click(function() {
+            var someData = output_plot.getData();
+            someData[this.name].lines.show = !someData[this.name].lines.show;
+            output_plot.setData(someData);
+            output_plot.draw();
 
-
-
-
+        });
 
         holder.bind("plotpan", function (event, output_plot) {
             var axes = output_plot.getAxes();
 
-            if(input_plot != undefined) {
-                input_plot.getOptions().xaxes[0].min = axes.xaxis.min;
-                input_plot.getOptions().xaxes[0].max = axes.xaxis.max;
-                input_plot.setupGrid();
-                input_plot.draw();
+            if(levelinput_plot != undefined) {
+                levelinput_plot.getOptions().xaxes[0].min = axes.xaxis.min;
+                levelinput_plot.getOptions().xaxes[0].max = axes.xaxis.max;
+                levelinput_plot.setupGrid();
+                levelinput_plot.draw();
 
             }
 
@@ -195,24 +189,6 @@ function processOutputDataFetch(name, resultdata) {
         });
     }
 }
-
-
-function plotAccordingToChoices() {
-
-    var k = this;
-    var j = this.id;
-    togglePlot("0");
-}
-
-togglePlot = function(seriesIdx)
-{
-    var someData = output_plot.getData();
-    someData[seriesIdx].lines.show = !someData[seriesIdx].lines.show;
-    output_plot.setData(someData);
-    output_plot.draw();
-}
-
-
 
 
 var detailOptions = {
@@ -244,12 +220,6 @@ var detailOptions = {
     pan: {
         interactive: true
     }
-   // legend: {
-      //  labelFormatter: function(label, series){
-           // return '<input type="checkbox" onClick="togglePlot('+series.idx+'); return false;">'+label+'</input>';
-      //      return '<a href="#" onClick="togglePlot('+series.idx+'); return false;">'+label+'</a>';
-      //  }
-   // }
 };
 
 //*********************************************************************************************************
@@ -287,17 +257,37 @@ function processInputDataFetch(name, resultdata) {
     }
 
     element.data = dataholder;
-    input_dataset.push(element);
+    levelinput_dataset.push(element);
 
     if(inputcount >= totalinputs)
     {
         var holder = $("#input-graph");
 
 
-        input_plot = $.plot($("#input-graph"),
-            input_dataset,
-            inputdetailOptions
+        levelinput_plot = $.plot($("#input-graph"),
+            levelinput_dataset,
+            levelinputdetailOptions
         );
+
+
+        var choiceContainer = $("#levelinputchoices");
+        $.each(levelinput_dataset, function(key, val) {
+            choiceContainer.append("<br/>" +
+                "<div class='checkbox checkbox-primary'>"+
+                "<input type='checkbox' name='" + key +
+                "' checked='checked' id='level" + key + "'></input>" +
+                "<label for='level" + key + "'>"
+                + val.label + "</label>" + "</div>");
+        });
+
+        choiceContainer.find("input").click(function() {
+            var someData = levelinput_plot.getData();
+            someData[this.name].lines.show = !someData[this.name].lines.show;
+            levelinput_plot.setData(someData);
+            levelinput_plot.draw();
+
+        });
+
 
 
         holder.bind("plotpan", function (event, input_plot) {
@@ -322,7 +312,7 @@ function processInputDataFetch(name, resultdata) {
 }
 
 
-var inputdetailOptions = {
+var levelinputdetailOptions = {
     series: {
         lines: { show: true, lineWidth: 3 },
         shadowSize: 0
@@ -349,22 +339,9 @@ var inputdetailOptions = {
     },
     pan: {
         interactive: true
-    },
-    legend: {
-        labelFormatter: function(label, series){
-            return '<a href="#" onClick="toggleInputPlot('+series.idx+'); return false;">'+label+'</a>';
-        }
     }
+
 };
-
-
-toggleInputPlot = function(seriesIdx)
-{
-    var someData = input_plot.getData();
-    someData[seriesIdx].lines.show = !someData[seriesIdx].lines.show;
-    input_plot.setData(someData);
-    input_plot.draw();
-}
 
 
 //*********************************************************************************************************
@@ -432,15 +409,29 @@ function processContactInputDataFetch(name, resultdata) {
     {
         var holder = $("#contactinput-graph");
 
-
-
-
-
         contactinput_plot = $.plot($("#contactinput-graph"),
             contactinput_dataset,
             contactinputdetailOptions
         );
 
+
+        var choiceContainer = $("#contactinputchoices");
+        $.each(contactinput_dataset, function(key, val) {
+            choiceContainer.append("<br/>" +
+                "<div class='checkbox checkbox-primary'>"+
+                "<input type='checkbox' name='" + key +
+                "' checked='checked' id='contact" + key + "'></input>" +
+                "<label for='contact" + key + "'>"
+                + val.label + "</label>" + "</div>");
+        });
+
+        choiceContainer.find("input").click(function() {
+            var someData = contactinput_plot.getData();
+            someData[this.name].bars.show = !someData[this.name].bars.show;
+            contactinput_plot.setData(someData);
+            contactinput_plot.draw();
+
+        });
 
         holder.bind("plotpan", function (event, contactinput_plot) {
             var axes = contactinput_plot.getAxes();
@@ -452,11 +443,11 @@ function processContactInputDataFetch(name, resultdata) {
                 output_plot.draw();
             }
 
-            if(input_plot != undefined) {
-                input_plot.getOptions().xaxes[0].min = axes.xaxis.min;
-                input_plot.getOptions().xaxes[0].max = axes.xaxis.max;
-                input_plot.setupGrid();
-                input_plot.draw();
+            if(levelinput_plot != undefined) {
+                levelinput_plot.getOptions().xaxes[0].min = axes.xaxis.min;
+                levelinput_plot.getOptions().xaxes[0].max = axes.xaxis.max;
+                levelinput_plot.setupGrid();
+                levelinput_plot.draw();
 
             }
         });
@@ -497,15 +488,16 @@ var contactinputdetailOptions = {
     },
     pan: {
         interactive: true
-    },
-    legend: {
-        labelFormatter: function(label, series){
-            return '<a href="#" onClick="toggleContactInputPlot('+series.idx+'); return false;">'+label+'</a>';
-        }
     }
+    //,
+   // egend: {
+   //     labelFormatter: function(label, series){
+   //         return '<a href="#" onClick="toggleContactInputPlot('+series.idx+'); return false;">'+label+'</a>';
+    //    }
+   // }
 };
 
-
+/*
 toggleContactInputPlot = function(seriesIdx)
 {
     var someData = contactinput_plot.getData();
@@ -513,7 +505,7 @@ toggleContactInputPlot = function(seriesIdx)
     contactinput_plot.setData(someData);
     contactinput_plot.draw();
 }
-
+*/
 //*********************************************************************************************************
 // ****************************************************************** END Contact input *****************************
 //*********************************************************************************************************
@@ -532,11 +524,11 @@ function setWindowHours(hours)
         output_plot.draw();
     }
 
-    if(input_plot != undefined) {
-        input_plot.getOptions().xaxes[0].min = min.getTime();
-        input_plot.getOptions().xaxes[0].max = max.getTime();
-        input_plot.setupGrid();
-        input_plot.draw();
+    if(levelinput_plot != undefined) {
+        levelinput_plot.getOptions().xaxes[0].min = min.getTime();
+        levelinput_plot.getOptions().xaxes[0].max = max.getTime();
+        levelinput_plot.setupGrid();
+        levelinput_plot.draw();
     }
 
     if(contactinput_plot != undefined) {
@@ -583,11 +575,11 @@ function windowZoomIn()
         output_plot.draw();
     }
 
-    if(input_plot != undefined) {
-        input_plot.getOptions().xaxes[0].min = min.getTime();
-        input_plot.getOptions().xaxes[0].max = max.getTime();
-        input_plot.setupGrid();
-        input_plot.draw();
+    if(levelinput_plot != undefined) {
+        levelinput_plot.getOptions().xaxes[0].min = min.getTime();
+        levelinput_plot.getOptions().xaxes[0].max = max.getTime();
+        levelinput_plot.setupGrid();
+        levelinput_plot.draw();
     }
 
     if(contactinput_plot != undefined) {
@@ -631,11 +623,11 @@ function windowZoomOut()
         output_plot.draw();
     }
 
-    if(input_plot != undefined) {
-        input_plot.getOptions().xaxes[0].min = min.getTime();
-        input_plot.getOptions().xaxes[0].max = max.getTime();
-        input_plot.setupGrid();
-        input_plot.draw();
+    if(levelinput_plot != undefined) {
+        levelinput_plot.getOptions().xaxes[0].min = min.getTime();
+        levelinput_plot.getOptions().xaxes[0].max = max.getTime();
+        levelinput_plot.setupGrid();
+        levelinput_plot.draw();
     }
 
     if(contactinput_plot != undefined) {
@@ -684,11 +676,11 @@ function windowMove(direction)
         output_plot.draw();
     }
 
-    if(input_plot != undefined) {
-        input_plot.getOptions().xaxes[0].min = min.getTime();
-        input_plot.getOptions().xaxes[0].max = max.getTime();
-        input_plot.setupGrid();
-        input_plot.draw();
+    if(levelinput_plot != undefined) {
+        levelinput_plot.getOptions().xaxes[0].min = min.getTime();
+        levelinput_plot.getOptions().xaxes[0].max = max.getTime();
+        levelinput_plot.setupGrid();
+        levelinput_plot.draw();
     }
 
     if(contactinput_plot != undefined) {
