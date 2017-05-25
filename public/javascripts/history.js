@@ -151,6 +151,30 @@ function processOutputDataFetch(name, resultdata) {
             detailOptions
         );
 
+
+
+        // check boxes... "choices",
+        var choiceContainer = $("#choices");
+        $.each(output_dataset, function(key, val) {
+            choiceContainer.append("<br/>" +
+                "<div class='checkbox checkbox-primary'>"+
+                "<input type='checkbox' name='" + key +
+                "' checked='checked' id='id" + key + "'></input>" +
+                "<label for='id" + key + "'>"
+                + val.label + "</label>" + "</div>");
+
+           // choiceContainer.append("<br/><input type='checkbox' name='" + key +
+           //     "' checked='checked' id='id" + key + "'></input>" +
+           //     "<label for='id" + key + "'>"
+           //     + val.label + "</label>");
+        });
+
+        choiceContainer.find("input").click(plotAccordingToChoices);
+
+
+
+
+
         holder.bind("plotpan", function (event, output_plot) {
             var axes = output_plot.getAxes();
 
@@ -170,6 +194,14 @@ function processOutputDataFetch(name, resultdata) {
             }
         });
     }
+}
+
+
+function plotAccordingToChoices() {
+
+    var k = this;
+    var j = this.id;
+    togglePlot("0");
 }
 
 togglePlot = function(seriesIdx)
@@ -211,12 +243,13 @@ var detailOptions = {
     },
     pan: {
         interactive: true
-    },
-    legend: {
-        labelFormatter: function(label, series){
-            return '<a href="#" onClick="togglePlot('+series.idx+'); return false;">'+label+'</a>';
-        }
     }
+   // legend: {
+      //  labelFormatter: function(label, series){
+           // return '<input type="checkbox" onClick="togglePlot('+series.idx+'); return false;">'+label+'</input>';
+      //      return '<a href="#" onClick="togglePlot('+series.idx+'); return false;">'+label+'</a>';
+      //  }
+   // }
 };
 
 //*********************************************************************************************************
