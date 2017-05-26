@@ -488,9 +488,12 @@ function saveNewFixture(image) {
         outputlist = cachedinterfaceio.rpdg.pwmoutputs.slice(0);
     if(interface == "rpdg-plc")
         outputlist = cachedinterfaceio.rpdg.plcoutputs.slice(0);
+    if(interface == "enocean")
+        outputlist = cachedinterfaceio.enocean.outputs.slice(0);
+
 
     // 4/27/17,  validate output number,
-    if(interface == "rpdg-pwm" || interface == "rpdg-plc") {
+    if(interface == "rpdg-pwm" || interface == "rpdg-plc" || interface == "enocean") {
         var outputcheck = outputAvalibleCheck(outputlist, selstart, seltype, fixname, interface);
         if (!outputcheck) {
 
@@ -1012,7 +1015,7 @@ function updateAvalibleStartingOutputNumbers(filter)
     }
     else
     {
-        var ids = getAvailibleEnoceanOutputIDArray(filter);
+        var ids = getAvailibleEnoceanOutputIDArray(false);
         populateDropDown("starting_output", ids);
 
       /*  for (var i = 0 ; i < cachedinterfaceio.enocean.outputs.length; i += 1) {
