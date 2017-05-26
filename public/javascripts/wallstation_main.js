@@ -103,6 +103,7 @@ function updateDynButtonBar()
     hideDivID("dynbuttonbar");
     hideDivID("controls");
     hideDivID("ConfigPage");
+    cancelStatusFetchTimer();
     switch(top_menu_selection)
     {
         case "Scenes":
@@ -120,10 +121,12 @@ function updateDynButtonBar()
             constructFixtureButtons();
             break;
         case "Status":
+
             constructFixtureStatusBoxes();
             constructLevelInputStatusBox();
             constructContactInputStatusBox();
             showDivID("StatusPage","inline");
+            startStatusFetchTimer();
             break;
         case "Config":
             // constructConfigItemsDiv();
@@ -134,6 +137,43 @@ function updateDynButtonBar()
     }
 }
 
+var statusfetch_timer = undefined;
+
+function startStatusFetchTimer()
+{
+    statusfetch_timer = setInterval(function () {
+
+        getConfig(function(cfgdata){
+
+            if (cfgdata != null) {
+                cachedconfig = cfgdata;
+                for (var i = 0 ; i < cachedconfig.fixtures.length; i++) {
+                    var fixobj = cachedconfig.fixtures[i];
+                    updateFixtureStatusBox(fixobj,i);
+                }
+
+                // update level status.
+                updateLevelInputStatusBox();
+
+                updateContactInputStatusBox();
+                //()
+
+            }
+        });
+
+
+
+        }, 5000);
+}
+
+function cancelStatusFetchTimer()
+{
+    if(statusfetch_timer != undefined)
+    {
+        clearInterval(statusfetch_timer);
+        statusfetch_timer = undefined;
+    }
+}
 //function updateControlsContentRegion()
 //{
 //   showDivID("StatusPage","inline");
@@ -530,7 +570,7 @@ function SetDaylightPolling () {
     });
 }
 
-
+/*
 function updateLevelInputsTable() {
 
     var levelinputlist = cachedconfig.levelinputs;
@@ -718,7 +758,7 @@ function getDefaultCCTFixture()
     }
     return undefined;
 }
-
+*/
 
 
 function removeElement(id) {

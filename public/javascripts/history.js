@@ -153,7 +153,7 @@ function processOutputDataFetch(name, resultdata) {
 
         var choiceContainer = $("#choices");
         $.each(output_dataset, function(key, val) {
-            choiceContainer.append("<br/>" +
+            choiceContainer.append(
                 "<div class='checkbox checkbox-primary'>"+
                 "<input type='checkbox' name='" + key +
                 "' checked='checked' id='id" + key + "'></input>" +
@@ -272,7 +272,7 @@ function processInputDataFetch(name, resultdata) {
 
         var choiceContainer = $("#levelinputchoices");
         $.each(levelinput_dataset, function(key, val) {
-            choiceContainer.append("<br/>" +
+            choiceContainer.append(
                 "<div class='checkbox checkbox-primary'>"+
                 "<input type='checkbox' name='" + key +
                 "' checked='checked' id='level" + key + "'></input>" +
@@ -417,7 +417,7 @@ function processContactInputDataFetch(name, resultdata) {
 
         var choiceContainer = $("#contactinputchoices");
         $.each(contactinput_dataset, function(key, val) {
-            choiceContainer.append("<br/>" +
+            choiceContainer.append(
                 "<div class='checkbox checkbox-primary'>"+
                 "<input type='checkbox' name='" + key +
                 "' checked='checked' id='contact" + key + "'></input>" +
