@@ -477,8 +477,8 @@ function constructFixtureButtons()
                             if(ctempslider != undefined) {
 
                                 // convert pct to ctemp.
-                                var min = Number(2700); //selected_fixture.min);
-                                var max = Number(6500); //.max);
+                                var min = Number(selected_fixture.min); //selected_fixture.min);
+                                var max = Number(selected_fixture.max); //.max);
                                 var ctempcalc = (min + (max-min)*(Number(ctempslider.value)/100));
                                 element.ctemp = ctempcalc;
                                 setFixtureLevel(element);
@@ -487,8 +487,8 @@ function constructFixtureButtons()
                     }
                     else
                     {
-                        var min = Number(2700); //selected_fixture.min);
-                        var max = Number(6500); //.max);
+                        var min = Number(selected_fixture.min); //selected_fixture.min);
+                        var max = Number(selected_fixture.max); //.max);
                         var ctempcalc = (min + (max-min)*(Number(this.value)/100));
                         document.getElementById("colortempvalue").innerHTML = ctempcalc + " K";
 
@@ -862,7 +862,7 @@ function updateFixtureStatusBox(fixture, index)
         if(fixture.type == "on_off" || fixture.type == "dim")
             constructDimmableIndicators(statright,fixture.level);
         else if(fixture.type == "cct")
-            constructColorTempIndicators(statright, fixture.brightness, fixture.colortemp);
+            constructColorTempIndicators(statright, fixture.brightness, fixture.colortemp, fixture.min,fixture.max);
         else if(fixture.type == "rgbw")
             constructRGBWndicators(statright, fixture.red,fixture.green,fixture.blue,fixture.white);
 
@@ -875,7 +875,7 @@ function constructDimmableIndicators(parentdiv, brightpct)
     constructBasicLevelIndicator(parentdiv,100,190,brightpct,"level_bar", brightpct+"%");
 }
 
-function constructColorTempIndicators(parentdiv, brightpct, colortemplevel)
+/*function constructColorTempIndicators(parentdiv, brightpct, colortemplevel)
 {
     constructBasicLevelIndicator(parentdiv,50,190,brightpct,"level_bar", brightpct+"%");
     // calc ctemp as pct
@@ -884,8 +884,20 @@ function constructColorTempIndicators(parentdiv, brightpct, colortemplevel)
     var range = max-min;
     var barval2 = ((Number(colortemplevel) - min)/range) * 100;
     constructBasicLevelIndicator(parentdiv,50,190,barval2,"color_temp_bar", colortemplevel+"K");
-}
+}  */
 
+
+
+function constructColorTempIndicators(parentdiv, brightpct, colortemplevel, ctempmin, ctempmax)
+{
+    constructBasicLevelIndicator(parentdiv,50,190,brightpct,"level_bar", brightpct+"%");
+    // calc ctemp as pct
+    var min = Number(ctempmin);
+    var max = Number(ctempmax);
+    var range = max-min;
+    var barval2 = ((Number(colortemplevel) - min)/range) * 100;
+    constructBasicLevelIndicator(parentdiv,50,190,barval2,"color_temp_bar", colortemplevel+"K");
+}
 
 
 function constructRGBWndicators(parentdiv, red, green, blue, white)
