@@ -1,0 +1,122 @@
+.contentholder {
+    /*   background-color: lightgrey;   */
+    height: 200px;
+    width: 240px;
+
+}
+
+.status_left {
+    /*   background-color: blue;   */
+    height: 200px;
+    width: 100px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.status_right {
+    /*    background-color: red;   */
+    height: 200px;
+    width: 130px;
+    display: inline-block;
+}
+
+.imagehold {
+    /*    background-color: yellow;  */
+    height: 100px;
+    width: 100px;
+
+}
+
+.powerhold {
+    /*  background-color: green;  */
+    height: 50px;
+    width: 100%;
+    text-align:center;
+}
+
+.powerlabel {
+    margin-top: 10px;
+}
+
+.daylighthold{
+    /*  background-color: pink; */
+    height: 50px;
+    width: 100%;
+    text-align:center;
+}
+
+
+
+
+
+.level_holder {
+    display: inline-block;
+    /*     background-color: lightblue;   */
+    height: 190px;
+    margin-top: 0px;
+    margin-left: 10px;
+    width: 50px;
+
+}
+.level_bar {
+    height: 150px;
+    margin-top: 0px;
+    width: 100%;
+    background: linear-gradient(to top, black, lightyellow);
+}
+
+.color_temp_bar {
+    height: 150px;
+    margin-top: 0px;
+    width: 100%;
+    background: linear-gradient(to top, darkorange, white, blue);
+}
+
+.level_mark {
+    position: absolute;
+    /* margin-top: 20px;  */
+    width: 100px;
+    height: 3px;
+    background-color: black;
+}
+
+
+.level_label {
+    margin-top: 5px;
+    width: 40px;
+    font-size: 8pt;
+    height: 20px;
+    text-align:center;
+    /*   background-color: brown;    */
+}
+
+/*              RGBW level pars */
+
+
+.red_bar {
+    height: 150px;
+    margin-top: 0px;
+    width: 100%;
+    background: linear-gradient(to top, black, red);
+}
+
+.green_bar {
+    height: 150px;
+    margin-top: 0px;
+    width: 100%;
+    background: linear-gradient(to top, black, green);
+}
+
+.blue_bar {
+    height: 150px;
+    margin-top: 0px;
+    width: 100%;
+    background: linear-gradient(to top, black, blue);
+}
+
+.white_bar {
+    height: 150px;
+    margin-top: 0px;
+    width: 100%;
+    background: linear-gradient(to top, black, white);
+}

@@ -3,6 +3,10 @@
  */
 
 var cachedconfig;
+var gaugesmap = {};
+var bulb_icon_map = {};
+var daylight_limit_icon_map = {};
+
 // periodic poll of data.
 setInterval(function () {
     getConfig(updateUIPageComponents);
@@ -10,29 +14,14 @@ setInterval(function () {
 
 
 $(document).ready(function() {
-
-
-
     initFixtureStatusBoxes();
 });
 
 function initStatusHandler(config)
 {
     cachedconfig = config;
-   // var fixcountinrow = 0;
-   // var row = 1;
-    var currentrow_div = document.getElementById("fixture_row1"); // + row);
-    for (var i = 0; i < cachedconfig.fixtures.length; i++) {
-       // if (fixcountinrow >= 4) {
-       //     row++;
-       //     currentrow_div = document.getElementById("fixture_row" + row);
-       //     fixcountinrow = 0;
-       // }
-       // fixcountinrow++;
-        var fixcol = constructFixtureBox(currentrow_div, cachedconfig.fixtures[i]);
-    }
+    constructFixtureStatusBoxes();
     updateUIPageComponents(undefined);
-
 }
 
 
@@ -44,94 +33,16 @@ function initFixtureStatusBoxes() {
     })
 }
 
-
-var gaugesmap = {};
-var bulb_icon_map = {};
-var daylight_limit_icon_map = {};
-function constructFixtureBox(currentdiv, fixture) {
-    var fixcol = document.createElement("div");
-    fixcol.className = "col-xs-6 col-sm-4 col-md-4 col-lg-2";
-    currentdiv.appendChild(fixcol);
-
-    var fixbox = document.createElement("div");
-    fixbox.className = "card-box";
-    fixcol.appendChild(fixbox);
-
-    var header = document.createElement("h4");
-    header.className = "text-dark  header-title m-t-0 m-b-10";
-    header.innerHTML = fixture.assignedname;
-    fixbox.appendChild(header);
-
-    var fixcontent = document.createElement("div");
-    fixcontent.className = "box-content";
-    fixbox.appendChild(fixcontent);
-
-    var contentrow1 = document.createElement("div");
-    contentrow1.className = "guagerow";
-    contentrow1.id = fixture.assignedname + "_level";
-
-    fixcontent.appendChild(contentrow1);
-
-    if (fixture.type == "on_off") {
-        //var contentrow1 = document.createElement("div");
-        // contentrow1.innerHTML = " this is row 1 content ";
-        var bulb_icondiv = document.createElement("div");
-        bulb_icondiv.className = "gaugeblock";
-        bulb_icondiv.id = fixture.assignedname + "_bulb";
-        var bulb_iconimg = document.createElement("img");
-        bulb_iconimg.src = "images/bulb_off.jpg";
-        bulb_iconimg.className = "bulbiconrow";
-        bulb_icon_map[fixture.assignedname] = bulb_iconimg;
-        bulb_icondiv.appendChild(bulb_iconimg);
-        contentrow1.appendChild(bulb_icondiv);
-
-    }
-    else {
-        var gaugediv = document.createElement("div");
-        gaugediv.className = "gaugeblock";
-        gaugediv.id = fixture.assignedname + "_gauge";
-        contentrow1.appendChild(gaugediv);
-        // place gauge element inside the div
-
-
-
-        var test = new JustGage({id: fixture.assignedname + "_gauge", value: 50, min: 0, max: 100,  levelColors : [  "#72d2ff" ], title: "Dim Level"});
-        gaugesmap[fixture.assignedname] = test;
-
-    }
-
-
-
-    var contentrow2 = document.createElement("div");
-    contentrow2.style = "width: 100%; height: 20px";
-
-    var row2left = document.createElement("div");
-    //row2left.className = "guagerow";
-    row2left.id = fixture.assignedname + "_power";
-    row2left.innerHTML = fixture.powerwatts + " Watts";
-    row2left.style = "width:70%; float: left";
-    contentrow2.appendChild(row2left);
-
-
-    var row2right = document.createElement("div");
-    row2right.style = "float: left";
-    var sunbox = document.createElement("img");
-    sunbox.src = "images/handtinytrans.gif";
-    sunbox.height="20";
-    sunbox.width="20";
-    daylight_limit_icon_map[fixture.assignedname] = sunbox;
-    row2right.appendChild(sunbox);
-    contentrow2.appendChild(row2right);
-    fixcontent.appendChild(contentrow2);
-    return fixcol;
-
-}
-
 function updateUIPageComponents(config)
 {
     if(config != undefined)
         cachedconfig = config;
 
+    for (var i = 0 ; i < cachedconfig.fixtures.length; i++) {
+        var fixobj = cachedconfig.fixtures[i];
+        updateFixtureStatusBox(fixobj,i);
+    }
+    /*
     for (var i = 0; i < cachedconfig.fixtures.length; i++) {
 
         var fixobj = cachedconfig.fixtures[i];
@@ -184,19 +95,11 @@ function updateUIPageComponents(config)
         }
 
     }
-
-
+    */
     var fc = voltageToFC(cachedconfig.daylightlevelvolts);
-    //var dllabel = cachedconfig.daylightlevelvolts.toFixed(2) + " V  -- " + fc;
-   // document.getElementById("daylightlevel").innerHTML = dllabel;
-
- //   document.getElementById("occ_state").innerHTML = cachedconfig.occupiedstate;
-
-
     updateLevelInputsTable();
     updateWetDryContactTable();
 }
-
 
 function voltageToFC (volts) {
 
@@ -390,4 +293,174 @@ function updateWetDryContactTable() {
 
     $("#tableOutput").html(oTable);
 }
+
+
+
+
+// ***********************************************************************************************************
+// ******************************************** 5/26/17 **************************** new fixture status boxes
+// ***********************************************************************************************************
+
+function removeElement(id) {
+    var elem = document.getElementById(id);
+    if(elem != undefined)
+        return elem.parentNode.removeChild(elem);
+}
+
+function constructFixtureStatusBoxes()
+{
+    var currentrow_div = document.getElementById("fixture_row1");
+    currentrow_div.innerHTML = "";
+    for (var i = 0; i < cachedconfig.fixtures.length; i++) {
+        constructFixtureStatusBox(currentrow_div, cachedconfig.fixtures[i],i);
+    }
+}
+
+
+function constructFixtureStatusBox(currentdiv, fixture, index) {
+    removeElement("fix"+index);
+    var fixcol = document.createElement("div");
+    fixcol.className = "col-sm-4";
+    currentdiv.appendChild(fixcol);
+
+    var fixbox = document.createElement("div");
+    fixbox.className = "card-box";
+    fixbox.id = "fix"+index;
+
+    fixcol.appendChild(fixbox);
+
+    updateFixtureStatusBox(fixture,index);
+}
+
+function updateFixtureStatusBox(fixture, index)
+{
+    var cardboxdiv = document.getElementById("fix"+index);
+    if(cardboxdiv != undefined)
+    {
+
+        cardboxdiv.innerHTML = "";
+        var header = document.createElement("h4");
+        header.className = "text-dark  header-title m-t-0 m-b-10";
+        header.innerHTML = fixture.assignedname;
+        cardboxdiv.appendChild(header);
+
+        var fixcontent = document.createElement("div");
+        fixcontent.className = "contentholder";
+        cardboxdiv.appendChild(fixcontent);
+
+        var statleft = document.createElement("div");
+        statleft.className = "status_left";
+        fixcontent.appendChild(statleft);
+
+        var statright = document.createElement("div");
+        statright.className = "status_right";
+        fixcontent.appendChild(statright);
+
+        var image_hold = document.createElement("div");
+        image_hold.className = "imagehold";
+        statleft.appendChild(image_hold);
+
+        var power_hold = document.createElement("div");
+        power_hold.className = "powerhold";
+        statleft.appendChild(power_hold);
+
+        var lbval = document.createElement("label");
+        lbval.innerHTML = fixture.powerwatts + " Watts";
+        lbval.className = "powerlabel";
+        power_hold.appendChild(lbval);
+
+
+        var daylight_hold = document.createElement("div");
+        daylight_hold.className = "daylighthold";
+        statleft.appendChild(daylight_hold);
+
+
+        if(fixture.daylightlimited) {
+            var image = document.createElement("img");
+            image.src = "images/sun_1.gif";
+            image.style.marginTop = "5px";
+            image.width = "40";
+            image.height = "40";
+            daylight_hold.appendChild(image);
+        }
+
+        var image = document.createElement("img");
+        image.src = fixture.image; //"fixtureimg/1.jpg";
+        image.width = "100";
+        image.height = "100";
+        image_hold.appendChild(image);
+
+        if(fixture.type == "on_off" || fixture.type == "dim")
+            constructDimmableIndicators(statright,fixture.level);
+        else if(fixture.type == "cct")
+            constructColorTempIndicators(statright, fixture.brightness, fixture.colortemp);
+        else if(fixture.type == "rgbw")
+            constructRGBWndicators(statright, fixture.red,fixture.green,fixture.blue,fixture.white);
+
+    }
+}
+
+
+function constructDimmableIndicators(parentdiv, brightpct)
+{
+    constructBasicLevelIndicator(parentdiv,100,190,brightpct,"level_bar", brightpct+"%");
+}
+
+function constructColorTempIndicators(parentdiv, brightpct, colortemplevel)
+{
+    constructBasicLevelIndicator(parentdiv,50,190,brightpct,"level_bar", brightpct+"%");
+    // calc ctemp as pct
+    var min = Number(2700);
+    var max = Number(6500);
+    var range = max-min;
+    var barval2 = ((Number(colortemplevel) - min)/range) * 100;
+    constructBasicLevelIndicator(parentdiv,50,190,barval2,"color_temp_bar", colortemplevel+"K");
+}
+
+
+
+function constructRGBWndicators(parentdiv, red, green, blue, white)
+{
+    constructBasicLevelIndicator(parentdiv,20,190,red,"red_bar", red);
+    constructBasicLevelIndicator(parentdiv,20,190,green,"green_bar", green);
+    constructBasicLevelIndicator(parentdiv,20,190,blue,"blue_bar", blue);
+    constructBasicLevelIndicator(parentdiv,20,190,white,"white_bar", white);
+}
+
+
+function constructBasicLevelIndicator(parentdiv, width, height, pct, barclass, labelval )
+{
+    // main wrapper is 200px,
+    // level holder is 190 px high,
+    var holder = document.createElement("div");
+    holder.className = "level_holder";
+    holder.style.width =  width+"px";
+    holder.style.height =  height+"px";
+    parentdiv.appendChild(holder);
+
+    var bar = document.createElement("div");
+    bar.className = barclass;
+    var bar_height = height-20;
+    bar.style.height =  bar_height+"px";  //
+    holder.appendChild(bar);
+
+    var label = document.createElement("div");
+    label.className = "level_label";
+    label.style.width = width+"px";
+    holder.appendChild(label);
+
+    var lbval = document.createElement("label");
+    lbval.innerHTML = labelval;
+    label.appendChild(lbval);
+
+    var mark = document.createElement("div");
+    mark.className = "level_mark";
+    var bla = bar_height - ((pct * bar_height)/ 100);
+    mark.style.marginTop =  bla + "px"; //"90px";  //set level mark,, calc. based on 150 tall,
+    mark.style.width =  width+"px";
+    bar.appendChild(mark);
+
+
+}
+
 

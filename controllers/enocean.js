@@ -137,7 +137,7 @@ enocean.on("known-data",function(data){
         {
             if (sensor.last[0].unit != undefined && sensor.last[0].unit.includes('lux') && sensor.last[0].value != undefined)
             {
-                var voltage = convertLuxToVoltage(sensor.last[0].value);  //5/26/17  // value is in lux,  so weneed to convert. 
+                var voltage = convertLuxToVoltage(sensor.last[0].value);  //5/26/17  // value is in lux,  so weneed to convert.
 
                 rxhandler("enocean","levelinput", sensor.id, voltage);
             }
