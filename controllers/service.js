@@ -125,6 +125,10 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                 if (dev.inputid == inputid) {
                     global.applogger.info(TAG, "(LEVEL INPUT) message handler found device ", dev.interface + " : " + dev.assignedname + " : at level: " + level);
 
+
+
+
+
                     // store value of the input device for reference.
                     dev.setvalue(level.toFixed(2));
 
@@ -156,28 +160,7 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                                 }
                             }
 
-                            /*
-                             // look through all devices conntect and set to level (wallstation)
-                             for (var k = 0; k < global.currentconfig.fixtures.length; k++) {
-                             var fixobj = global.currentconfig.fixtures[k];
-                             if (fixobj.isBoundToInput(dev.assignedname)) {
-                             global.applogger.info(TAG, "(LEVEL INPUT) bound to this input", "wall station update" + fixobj.assignedname);
-                             var reqobj = {};
-                             reqobj.requesttype = "wallstation";
-                             if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
-                             // the input level is 0 - 10, so mult by 10, and round to int,
-                             var targetlevel = level * 10;
-                             reqobj.level = targetlevel.toFixed(0);
-                             fixobj.setLevel(reqobj, true);
-                             }
-                             if (fixobj instanceof CCTFixture) {
-                             // create request here iwthout a change to color temp,  tell driver to use last known,
-                             var targetlevel = level * 10;
-                             reqobj.brightness = targetlevel.toFixed(0);
-                             fixobj.setLevel(reqobj, true);
-                             }
-                             }
-                             } */
+
                         }
                         else if (dev.type == "daylight")  // check if input is a daylight sensor, and apply it, to global.
                         {

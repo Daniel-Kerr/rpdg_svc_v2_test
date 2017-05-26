@@ -137,7 +137,9 @@ enocean.on("known-data",function(data){
         {
             if (sensor.last[0].unit != undefined && sensor.last[0].unit.includes('lux') && sensor.last[0].value != undefined)
             {
-                rxhandler("enocean","levelinput", sensor.id, sensor.last[0].value);  //  //vacancy
+                var voltage = convertLuxToVoltage(sensor.last[0].value);  //5/26/17  // value is in lux,  so weneed to convert. 
+
+                rxhandler("enocean","levelinput", sensor.id, voltage);
             }
 
         }
@@ -187,6 +189,36 @@ function storeRxMessage(msg)
     if(last_rx_messages.length > 10)
         last_rx_messages.splice(0, 1);  // cut out index 0,
 
+}
+
+
+function convertLuxToVoltage(lux)
+{
+    // first convert lux to foot candles.
+    // 1 lux = 0.092903 fc,
+
+    var footcandles = Number(lux)* 0.092903;
+
+    var Zero2TenLevels = [
+        [0.0,50],
+        [1.5,50],
+        [2.3,50],
+        [3.1,40],
+        [4.9,40],
+        [5.7,30],
+        [6.1,20],
+        [7.2,20],
+        [8.5,10],
+        [9.3,10]
+    ];
+
+    var voltage = 0.0;
+    for (var dimIndex = 0; dimIndex < Zero2TenLevels.length; dimIndex++) {
+        if (footcandles <= Zero2TenLevels[dimIndex][1]) {
+            voltage = Zero2TenLevels[dimIndex][0];
+        }
+    }
+    return voltage;
 }
 
 
