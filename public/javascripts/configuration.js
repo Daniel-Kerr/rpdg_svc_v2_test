@@ -115,7 +115,7 @@ $(document).ready(function() {
 
                     document.getElementById("interface").value = fixture.interfacename;
 
-                    updateAvalibleStartingOutputNumbers();
+                    updateAvalibleStartingOutputNumbers(false);
                     document.getElementById("starting_output").value = fixture.outputid; //[0]; // need to do some work here.
                     if(fixture.type == "cct")
                     {
@@ -189,7 +189,7 @@ $(document).ready(function() {
 
 
     $("#interface").change(function () {
-        updateAvalibleStartingOutputNumbers();
+        updateAvalibleStartingOutputNumbers(true);
     });
 
     $("#levelinputinterface").change(function () {
@@ -371,7 +371,7 @@ function processConfig(configobj)
     getInterfaceOutputs(function (retval) {
 
         cachedinterfaceio = retval;
-        updateAvalibleStartingOutputNumbers();
+        updateAvalibleStartingOutputNumbers(true);
 
         updateLevelInputs_InputSel();
         updateContactInputs_InputSel();
@@ -640,6 +640,8 @@ function saveNewFixture(image) {
          }
          ]
          } );*/
+
+        updateAvalibleStartingOutputNumbers(true);  // 5/26/17
     });
 }
 
@@ -910,98 +912,6 @@ function constructDaylightOptionsBox()
     holder.appendChild(oTable);
 }
 
-/*
- function buildParamOptionsTable() {
- // Declare global variables and create the header, footer, and caption.
- var oTable = document.createElement("TABLE");
- // var oTHead = document.createElement("THEAD");
- var oTColGrp = document.createElement("colgroup");
- var oTBody = document.createElement("TBODY");
- var oTFoot = document.createElement("TFOOT");
- var oRow;
- var i, j;
- oTable.className = "table table-bordered";
- oTable.appendChild(oTColGrp);
- // now body.
- for (var paramnum = 0; paramnum < global_paramoptions.parameters.length; paramnum++)
- {
- oRow = document.createElement("TR");  // build row element
- oTBody.appendChild(oRow);
-
- // first param
- var parameter = global_paramoptions.parameters[paramnum];
- var paramoptions = parameter.options;
-
- var oCell1 = document.createElement("TD");
- oCell1.innerHTML = parameter.name;
- oRow.appendChild(oCell1);
-
- var tempcell = document.createElement("TD");
- var globalselector = document.createElement("select");
- globalselector.id = "fixtureparam_" + paramnum;
- globalselector.name = "fixtureparam_" + paramnum;
- globalselector.className = "btn btn-large btn-primary";
-
- // globalselector.addEventListener("change", onZoneOptionChanged);
- globalselector.setAttribute(ATTR_PARAM,paramnum);
- tempcell.appendChild(globalselector);
- oRow.appendChild(tempcell);
- setDropDownDataArray(globalselector,paramoptions);
-
- // second param for this row.
- paramnum++;
- if(paramnum < global_paramoptions.parameters.length) {
-
- var parameter2 = global_paramoptions.parameters[paramnum];
- var paramoptions2 = parameter2.options;
-
- var oCell1 = document.createElement("TD");
- oCell1.innerHTML = parameter2.name;
- oRow.appendChild(oCell1);
-
- var tempcell = document.createElement("TD");
- var globalselector = document.createElement("select");
- globalselector.id = "fixtureparam_" + paramnum;
- globalselector.name ="fixtureparam_" + paramnum;
- globalselector.className = "btn btn-large btn-primary";
-
- // globalselector.addEventListener("change", onZoneOptionChanged);
- globalselector.setAttribute(ATTR_PARAM, paramnum);
- tempcell.appendChild(globalselector);
- oRow.appendChild(tempcell);
- setDropDownDataArray(globalselector, paramoptions2);
- }
-
- // 3rd item
- paramnum++;
- if(paramnum < global_paramoptions.parameters.length) {
-
- var parameter3 = global_paramoptions.parameters[paramnum];
- var paramoptions3 = parameter3.options;
-
- var oCell1 = document.createElement("TD");
- oCell1.innerHTML = parameter3.name;
- oRow.appendChild(oCell1);
-
- var tempcell = document.createElement("TD");
- var globalselector = document.createElement("select");
- globalselector.id = "fixtureparam_" + paramnum;
- globalselector.name ="fixtureparam_" + paramnum;
- globalselector.className = "btn btn-large btn-primary";
-
- // globalselector.addEventListener("change", onZoneOptionChanged);
- globalselector.setAttribute(ATTR_PARAM, paramnum);
- tempcell.appendChild(globalselector);
- oRow.appendChild(tempcell);
- setDropDownDataArray(globalselector, paramoptions3);
- }
- }
-
- oTable.appendChild(oTBody);
- fixtureparamstable.appendChild(oTable);
- }
- */
-
 function setDropDownDataArray(dropdown, elementarray)
 {
     // clear all itesm ,
@@ -1016,14 +926,6 @@ function setDropDownDataArray(dropdown, elementarray)
         dropdown.appendChild(opt);
     }
 }
-
-
-
-
-
-
-
-
 
 
 function enableDisableInputActionDropDowns()
@@ -1049,7 +951,7 @@ function cacheAndProcessSceneNames(namelist)
 }
 
 
-function updateAvalibleStartingOutputNumbers()
+function updateAvalibleStartingOutputNumbers(filter)
 {
     var type = document.getElementById("fixturetype");
     var seltype = type.options[type.selectedIndex].value;
@@ -1110,16 +1012,44 @@ function updateAvalibleStartingOutputNumbers()
     }
     else
     {
-        for (var i = 0 ; i < cachedinterfaceio.enocean.outputs.length; i += 1) {
+        var ids = getAvailibleEnoceanOutputIDArray(filter);
+        populateDropDown("starting_output", ids);
+
+      /*  for (var i = 0 ; i < cachedinterfaceio.enocean.outputs.length; i += 1) {
             var opt = document.createElement('option');
             opt.setAttribute('value', cachedinterfaceio.enocean.outputs[i]);
             opt.appendChild(document.createTextNode(cachedinterfaceio.enocean.outputs[i]));
             sel.appendChild(opt);
         }
+        */
         $("#fixturetype").prop("disabled",false);
     }
 }
 
+
+
+function getAvailibleEnoceanOutputIDArray(filter)
+{
+    var ids = [];
+    for (var i = 0 ; i < cachedinterfaceio.enocean.outputs.length; i += 1) {
+
+        var include = true;
+        var outid = cachedinterfaceio.enocean.outputs[i];
+        if(filter) {
+            for (j = 0; j < cachedconfig.fixtures.length; j++) {
+                var fixoutputid = cachedconfig.fixtures[j].outputid;
+                if (fixoutputid == outid) {
+                    include = false;
+                    break;  // used, so skip it,
+                }
+            }
+        }
+
+        if(include)
+            ids.push(outid);
+    }
+    return ids;
+}
 
 
 // CONTACT INPUTS ************************************************************************************
