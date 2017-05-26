@@ -213,11 +213,15 @@ function convertLuxToVoltage(lux)
     ];
 
     var voltage = 0.0;
+    var fc = 0;
     for (var dimIndex = 0; dimIndex < Zero2TenLevels.length; dimIndex++) {
         if (footcandles <= Zero2TenLevels[dimIndex][1]) {
             voltage = Zero2TenLevels[dimIndex][0];
+            fc = Zero2TenLevels[dimIndex][1];
         }
     }
+
+    global.applogger.info(TAG, "convert:  lux value: " + lux + " to fc " + fc + "   voltage: " + voltage,"");
     return voltage;
 }
 

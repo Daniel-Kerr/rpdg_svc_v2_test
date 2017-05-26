@@ -340,7 +340,7 @@ function updateFixtureStatusBox(fixture, index)
         if(fixture.type == "on_off" || fixture.type == "dim")
             constructDimmableIndicators(statright,fixture.level);
         else if(fixture.type == "cct")
-            constructColorTempIndicators(statright, fixture.brightness, fixture.colortemp);
+            constructColorTempIndicators(statright, fixture.brightness, fixture.colortemp, fixture.min, fixture.max);
         else if(fixture.type == "rgbw")
             constructRGBWndicators(statright, fixture.red,fixture.green,fixture.blue,fixture.white);
 
@@ -353,12 +353,12 @@ function constructDimmableIndicators(parentdiv, brightpct)
     constructBasicLevelIndicator(parentdiv,100,190,brightpct,"level_bar", brightpct+"%");
 }
 
-function constructColorTempIndicators(parentdiv, brightpct, colortemplevel)
+function constructColorTempIndicators(parentdiv, brightpct, colortemplevel, ctempmin, ctempmax)
 {
     constructBasicLevelIndicator(parentdiv,50,190,brightpct,"level_bar", brightpct+"%");
     // calc ctemp as pct
-    var min = Number(2700);
-    var max = Number(6500);
+    var min = Number(ctempmin);
+    var max = Number(ctempmax);
     var range = max-min;
     var barval2 = ((Number(colortemplevel) - min)/range) * 100;
     constructBasicLevelIndicator(parentdiv,50,190,barval2,"color_temp_bar", colortemplevel+"K");
