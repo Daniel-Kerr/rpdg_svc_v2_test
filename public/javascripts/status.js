@@ -42,60 +42,7 @@ function updateUIPageComponents(config)
         var fixobj = cachedconfig.fixtures[i];
         updateFixtureStatusBox(fixobj,i);
     }
-    /*
-    for (var i = 0; i < cachedconfig.fixtures.length; i++) {
 
-        var fixobj = cachedconfig.fixtures[i];
-        var type = fixobj.type;
-        var line1 = document.getElementById(fixobj.assignedname + "_level");
-        if (line1 != undefined) {
-
-            var prefix = "";
-            if (type == "on_off") {
-
-                var imgholder = bulb_icon_map[fixobj.assignedname];
-                if (imgholder != undefined) {
-                    if (fixobj.level == 0)
-                        imgholder.src = "images/bulb_off.jpg";
-                    else
-                        imgholder.src = "images/bulb_on.jpg";
-                }
-            }
-            else if(type == "dim")
-            {
-                var gauge = gaugesmap[fixobj.assignedname];
-                gauge.refresh(Number(fixobj.level).toFixed());
-            }
-            else if(type == "cct")
-            {
-                var gauge = gaugesmap[fixobj.assignedname];
-                gauge.refresh(Number(fixobj.brightness).toFixed());
-            }
-            else if(type == "rgbw") {
-                displevel = fixobj.white;
-                var gauge = gaugesmap[fixobj.assignedname];
-                gauge.refresh(Number(fixobj.white).toFixed());
-            }
-        }
-
-        var line2 = document.getElementById(fixobj.assignedname + "_power");
-        if (line2 != undefined) {
-            var power = fixobj.powerwatts;
-            line2.innerHTML = power + " Watts";
-        }
-
-        // 1/7/17, add dl limit icon toggle.
-        var sunboxholder = daylight_limit_icon_map[fixobj.assignedname];
-        if(sunboxholder != undefined)
-        {
-            if(fixobj.daylightlimited)
-                sunboxholder.src = "/images/sun_1.gif";
-            else
-                sunboxholder.src = "/images/handtinytrans.gif";
-        }
-
-    }
-    */
     var fc = voltageToFC(cachedconfig.daylightlevelvolts);
     updateLevelInputsTable();
     updateWetDryContactTable();
