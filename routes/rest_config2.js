@@ -913,4 +913,15 @@ router.post('/getrpdgboardinfo', function(req, res) {
 });
 
 
+
+router.post('/enablehotspot', function(req, res) {
+
+    var enable = req.body.enable;
+    service.enableHotspot(enable);
+
+    res.status(200).send("OK");
+});
+
+
+
 module.exports = router;

@@ -12,6 +12,7 @@
     <script src="bsmaster/assets/js/moment.min.js"></script>
 
     <script src="javascripts/crud_testapi.js"></script>
+    <script src="javascripts/crud_config.js"></script>
     <script src="bsmaster/assets/js/jquery.dataTables.min.js"></script>
     <script src="bsmaster/assets/js/dataTables.bootstrap.min.js"></script>
 
@@ -38,6 +39,16 @@
         $(document).ready(function() {
 
         });
+
+
+        function disableHS()
+        {
+            var element = {};
+            element.enable = false;
+            setHotspotEnable(element, function(cfg) {
+                var k = 0 ;
+            });
+        }
     </script>
 
 </head>
@@ -46,6 +57,10 @@
     <div id="main1">
         <label>Polling Period(ms): </label> <input id="pollperiod" type="text" />
         <input type="button" id = "btSend"  onclick="sendPollingPeriod()" value="Send Period"/>
+
+    </br>
+    </br>
+        <input type="button" id = "btdisableHS"  onclick="disableHS()" value="Disable HotSpot"/>
     </div>
 </form>
 </body>

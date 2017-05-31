@@ -294,6 +294,9 @@ $(document).ready(function() {
                     $("#groupassignment").val(ic.group);
 
 
+                    onLevelInputTypeChanged();
+
+
                 }
             }
         }

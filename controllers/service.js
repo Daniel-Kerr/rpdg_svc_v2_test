@@ -83,15 +83,15 @@ var reInitSchedMgrCount = 0; // counter used to periodically reinit the sched mg
 //var led = undefined;
 //var button0 = undefined;
 /*if(israspberrypi) {
-    try {
-        global.applogger.info(TAG, "this is a pi, initing the led port", "","");
-        var Gpio = require('onoff').Gpio; // Constructor function for Gpio objects.
-        led = new Gpio(22, 'out');   // Export GPIO #14 as an output...iv;
-        button0 = new Gpio(4, 'in', 'both');
-    } catch (ex1) {
-        global.applogger.info(TAG, "error init led", "","");
-    }
-}*/
+ try {
+ global.applogger.info(TAG, "this is a pi, initing the led port", "","");
+ var Gpio = require('onoff').Gpio; // Constructor function for Gpio objects.
+ led = new Gpio(22, 'out');   // Export GPIO #14 as an output...iv;
+ button0 = new Gpio(4, 'in', 'both');
+ } catch (ex1) {
+ global.applogger.info(TAG, "error init led", "","");
+ }
+ }*/
 
 
 function incommingUDPMessageHandler(messageobj)
@@ -578,7 +578,7 @@ var service = module.exports =  {
 
 
         // ************************************************** FAUX ****************DATA ***
-       //   data_utils.generateFauxDataSeries();
+        //   data_utils.generateFauxDataSeries();
         // **********************************************************************************
 
 
@@ -612,7 +612,7 @@ var service = module.exports =  {
 
         // FOR DEV DEBUG
 
-      //  rpdg.resetTinsey();
+        //  rpdg.resetTinsey();
 
         // for dev
 
@@ -665,7 +665,7 @@ var service = module.exports =  {
         periodictimer = setInterval(function () {
 
 
-           // rpdg.testToggleGPIO();  // for test only
+            // rpdg.testToggleGPIO();  // for test only
 
             if( delayedHW_InitCount > 0)
             {
@@ -910,12 +910,12 @@ var service = module.exports =  {
 
 
 
-           // if(led != undefined)
-           //     led.writeSync(led.readSync() ^ 1); // 1 = on, 0 = off :)
+            // if(led != undefined)
+            //     led.writeSync(led.readSync() ^ 1); // 1 = on, 0 = off :)
 
-           // if(button0 != undefined)
+            // if(button0 != undefined)
             //{
-           //     var btlevel = button0.readSync();
+            //     var btlevel = button0.readSync();
             //    global.applogger.info(TAG, "Button 0 READ: ", btlevel ,"");
             //}
 
@@ -1319,6 +1319,51 @@ var service = module.exports =  {
     getScriptNames : function()
     {
         return availbilescripts;
+    },
+    enableHotspot : function(enable)
+    {
+        var command = (enable)?"start":"stop";
+        try {
+            global.applogger.info(TAG, " **** Attempting to enable wlan0 ****", "");
+
+            var childProcess = require('child_process'),
+                ls;
+
+          //  ls = childProcess.exec('ls -l', function (error, stdout, stderr) {
+            ls = childProcess.exec('sudo service hostapd '+ command, function (error, stdout, stderr) {
+                if (error) {
+                    console.log(error.stack);
+                    console.log('Error code: '+error.code);
+                    console.log('Signal received: '+error.signal);
+                }
+                console.log('Child Process STDOUT: '+stdout);
+                console.log('Child Process STDERR: '+stderr);
+            });
+
+            ls.on('exit', function (code) {
+                console.log('Child process exited with exit code '+code);
+            });
+
+
+
+
+           /* var hostapd = require('wireless-tools/hostapd');
+
+            this.exec
+            if(hostapd != undefined) {
+
+                hostapd.disable('wlan0', function (err) {
+                    global.applogger.info(TAG, " **** hostapd wlan0 disabled *****", "");
+                });
+            }
+            else
+            {
+                global.applogger.info(TAG, " **** Error getting hostapd handle ****", "");
+            }*/
+        } catch (ex1)
+        {
+            global.applogger.info(TAG, " ****EXception:  disable wlan0 ****", ex1);
+        }
     },
     getGPSFromZipcode : function(zipcode, res)
     {
