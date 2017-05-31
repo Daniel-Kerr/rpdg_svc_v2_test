@@ -26,6 +26,7 @@ var end_date = new Date();
 
 var default_start_date = new Date();
 
+var cachedconfig = undefined;
 var line_colors = ['#33AAAA','#3322FF','#3377FF','#33AA11','#33AA99'];
 function init()
 {
@@ -37,6 +38,7 @@ function init()
 
             default_start_date.setHours(default_start_date.getHours()-6);
 
+            cachedconfig = cfg;
             outputcount = 0;
             totaloutputs = cfg.fixtures.length;
             var fixtures = cfg.fixtures;
@@ -348,12 +350,14 @@ var levelinputdetailOptions = {
 // ******************************************** Contact Input graph ******
 //*********************************************************************************************************
 
+var cachedContactInputData = {};
 
 function processContactInputDataFetch(name, resultdata) {
 
     if(resultdata == undefined)
         return;
 
+    cachedContactInputData[name] = resultdata;
 
     var dataholder = [];
     var parts = resultdata.split('\n');
@@ -366,6 +370,7 @@ function processContactInputDataFetch(name, resultdata) {
 
     contactinputcount++;
 
+    var maxbucketcount = 0;
 
     var bucketcount = 0;
     var bucketstartdate = undefined;
@@ -381,6 +386,8 @@ function processContactInputDataFetch(name, resultdata) {
                 if (d.getTime() > bucketenddate.getTime()) {
                     if(bucketcount == 0)
                         bucketcount = -1;
+                    else if (bucketcount > maxbucketcount)
+                        maxbucketcount = bucketcount;
 
                     dataholder.push([d, Number(bucketcount)]);  // for now scale.
                     bucketcount = 0;
@@ -389,12 +396,17 @@ function processContactInputDataFetch(name, resultdata) {
             }
             // bundle up into 15 min buckets
             if(point.value > 0)
-                  bucketcount++;
+                bucketcount++;
 
             if (bucketstartdate == undefined) {
                 bucketstartdate = d;
                 bucketenddate = new Date(d);
-                bucketenddate.setMinutes(bucketenddate.getMinutes() + 15);
+
+                // 5/31/17  calc bucket size in min
+                var bucketminutes = 15; // default to 15 min,
+                var windowmin = currentwindowsizehours*60;
+                bucketminutes = windowmin/24;
+                bucketenddate.setMinutes(bucketenddate.getMinutes() + bucketminutes);
             }
 
         } catch(err )
@@ -405,8 +417,8 @@ function processContactInputDataFetch(name, resultdata) {
     element.data = dataholder;
     contactinput_dataset.push(element);
 
-    if(contactinputcount >= totalcontactinputs)
-    {
+
+    if(contactinputcount >= totalcontactinputs) {
         var holder = $("#contactinput-graph");
 
         contactinput_plot = $.plot($("#contactinput-graph"),
@@ -416,22 +428,40 @@ function processContactInputDataFetch(name, resultdata) {
 
 
         var choiceContainer = $("#contactinputchoices");
-        $.each(contactinput_dataset, function(key, val) {
+        $.each(contactinput_dataset, function (key, val) {
             choiceContainer.append(
-                "<div class='checkbox checkbox-primary'>"+
+                "<div class='checkbox checkbox-primary'>" +
                 "<input type='checkbox' name='" + key +
                 "' checked='checked' id='contact" + key + "'></input>" +
                 "<label for='contact" + key + "'>"
                 + val.label + "</label>" + "</div>");
         });
 
-        choiceContainer.find("input").click(function() {
+        choiceContainer.find("input").click(function () {
             var someData = contactinput_plot.getData();
             someData[this.name].bars.show = !someData[this.name].bars.show;
             contactinput_plot.setData(someData);
             contactinput_plot.draw();
 
         });
+
+
+        contactinput_plot.getOptions().yaxes[0].max = maxbucketcount + 5;
+        if (output_plot != undefined)
+        {
+            contactinput_plot.getOptions().xaxes[0].min = output_plot.getOptions().xaxes[0].min;
+            contactinput_plot.getOptions().xaxes[0].max = output_plot.getOptions().xaxes[0].max;
+
+            var width = currentwindowsizehours*60;
+            var  bla = contactinput_plot.getOptions().series.bars.barWidth;
+            var windowmin = currentwindowsizehours*60;
+            var bucketminutes = windowmin/24;
+            var bucketsec = bucketminutes*60;
+            var bucketmsec = bucketsec * 1000;
+            contactinput_plot.getOptions().series.bars.barWidth = bucketmsec;
+            contactinput_plot.setupGrid();
+            contactinput_plot.draw();
+        }
 
         holder.bind("plotpan", function (event, contactinput_plot) {
             var axes = contactinput_plot.getAxes();
@@ -455,6 +485,9 @@ function processContactInputDataFetch(name, resultdata) {
 }
 
 
+
+
+
 var contactinputdetailOptions = {
     series: {
         bars: {
@@ -472,7 +505,7 @@ var contactinputdetailOptions = {
     },
     yaxis:{
         min: 0,
-        max: 5,
+        max: 20,
         ticksize: 20,
         panRange: false
     },
@@ -490,22 +523,22 @@ var contactinputdetailOptions = {
         interactive: true
     }
     //,
-   // egend: {
-   //     labelFormatter: function(label, series){
-   //         return '<a href="#" onClick="toggleContactInputPlot('+series.idx+'); return false;">'+label+'</a>';
+    // egend: {
+    //     labelFormatter: function(label, series){
+    //         return '<a href="#" onClick="toggleContactInputPlot('+series.idx+'); return false;">'+label+'</a>';
     //    }
-   // }
+    // }
 };
 
 /*
-toggleContactInputPlot = function(seriesIdx)
-{
-    var someData = contactinput_plot.getData();
-    someData[seriesIdx].bars.show = !someData[seriesIdx].bars.show;
-    contactinput_plot.setData(someData);
-    contactinput_plot.draw();
-}
-*/
+ toggleContactInputPlot = function(seriesIdx)
+ {
+ var someData = contactinput_plot.getData();
+ someData[seriesIdx].bars.show = !someData[seriesIdx].bars.show;
+ contactinput_plot.setData(someData);
+ contactinput_plot.draw();
+ }
+ */
 //*********************************************************************************************************
 // ****************************************************************** END Contact input *****************************
 //*********************************************************************************************************
@@ -538,6 +571,7 @@ function setWindowHours(hours)
         contactinput_plot.draw();
     }
 
+    refreshContactInputHistorgram();
 }
 
 
@@ -588,55 +622,63 @@ function windowZoomIn()
         contactinput_plot.setupGrid();
         contactinput_plot.draw();
     }
+
+    refreshContactInputHistorgram();
 }
 
 
 
-function windowZoomOut()
-{
-    var delta = currentwindowsizehours/4;
+function windowZoomOut() {
+    var delta = currentwindowsizehours / 4;
 
     currentwindowsizehours = currentwindowsizehours + delta;
-    if(currentwindowsizehours >= 720)
+    if (currentwindowsizehours >= 720)
         currentwindowsizehours = 720;
 
-    var windowminutes = currentwindowsizehours*60;
+    var windowminutes = currentwindowsizehours * 60;
 
     var axes = output_plot.getAxes();
     var tempmin = axes.xaxis.min;
     var tempmax = axes.xaxis.max;
 
-    var zoompoint = tempmax - ((tempmax-tempmin)/2);
+    var zoompoint = tempmax - ((tempmax - tempmin) / 2);
 
     var middletime = new Date(zoompoint);
 
     var min = new Date(middletime.getTime());
     var max = new Date(middletime.getTime());
 
-    min.setMinutes(min.getMinutes()-windowminutes/2);
-    max.setMinutes(max.getMinutes()+windowminutes/2);
+    min.setMinutes(min.getMinutes() - windowminutes / 2);
+    max.setMinutes(max.getMinutes() + windowminutes / 2);
 
-    if(output_plot != undefined) {
+    if (output_plot != undefined) {
         output_plot.getOptions().xaxes[0].min = min.getTime();
         output_plot.getOptions().xaxes[0].max = max.getTime();
         output_plot.setupGrid();
         output_plot.draw();
     }
 
-    if(levelinput_plot != undefined) {
+    if (levelinput_plot != undefined) {
         levelinput_plot.getOptions().xaxes[0].min = min.getTime();
         levelinput_plot.getOptions().xaxes[0].max = max.getTime();
         levelinput_plot.setupGrid();
         levelinput_plot.draw();
     }
 
-    if(contactinput_plot != undefined) {
+    if (contactinput_plot != undefined) {
         contactinput_plot.getOptions().xaxes[0].min = min.getTime();
         contactinput_plot.getOptions().xaxes[0].max = max.getTime();
         contactinput_plot.setupGrid();
         contactinput_plot.draw();
     }
+
+
+    refreshContactInputHistorgram();
+
+
+
 }
+
 
 
 
@@ -692,3 +734,18 @@ function windowMove(direction)
 }
 
 
+
+
+function refreshContactInputHistorgram()
+{
+   // console.log("window size hours: " + currentwindowsizehours);
+    contactinputcount = 0;
+    contactinput_dataset = [];
+    $("#contactinputchoices").empty();
+    for (var key in cachedContactInputData) {
+
+        var data = cachedContactInputData[key];
+        processContactInputDataFetch(key, data);
+
+    }
+}
