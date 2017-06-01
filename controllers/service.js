@@ -620,7 +620,7 @@ var service = module.exports =  {
 
         }
 
-        
+
         if(persistantstore != undefined )
         {
            if(persistantstore.hotspotenable != undefined) {

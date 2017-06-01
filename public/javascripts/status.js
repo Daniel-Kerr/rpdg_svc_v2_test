@@ -152,7 +152,9 @@ function updateLevelInputsTable() {
                 }
             }
             else if(levelinputlist[i].interface == "enocean") {
-                val = levelinputlist[i].value  + " LUX";
+               // val = levelinputlist[i].value  + " LUX";
+                var fc = voltageToFC(levelinputlist[i].value);
+                val = levelinputlist[i].value + " Volts  /  " + fc + " (FC)";
             }
 
             var col4part = document.createElement("TD");
