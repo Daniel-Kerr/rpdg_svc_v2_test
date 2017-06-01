@@ -23,6 +23,7 @@
 
     <script src="minton_dark_hor/js/modernizr.min.js"></script>
 
+    <link href="stylesheets/bootstrap-toggle.css" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="/images/RVLT_LOGO_FAV.png">
 
@@ -276,7 +277,40 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-4">
+                <div class="portlet "><!-- /primary heading -->
+                    <div class="portlet-heading">
+                        <h3 class="portlet-title text-dark">
+                            General Settings
+                        </h3>
+                        <div class="portlet-widgets">
+                            <a href="javascript:;" data-toggle="reload"><i class="ion-refresh"></i></a>
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion1" href="#portlet_gs"><i class="ion-minus-round"></i></a>
+                            <span class="divider"></span>
+                            <a href="#" data-toggle="remove"><i class="ion-close-round"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="portlet_gs" class="panel-collapse collapse">
+                        <div class="portlet-body">
+
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label>HotSpot Enable: </label> <input type="checkbox" id="btwifienable" checked data-toggle="toggle">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+
+
+
 
         <div class="row">
             <div class="col-lg-6">
@@ -870,7 +904,8 @@
     <script src="image-picker/image-picker.js"></script>
 
     <!--script src="thirdparty/dataTables.select.min.js"></script-->
-
+    <script src="thirdparty/bootstrap-toggle.js"></script>
+    <script src="javascripts/crud_schedule.js"></script>
     <script src="javascripts/crud_config.js"></script>
     <script src="javascripts/configuration.js"></script>
     <script src="javascripts/crud_override.js"></script>

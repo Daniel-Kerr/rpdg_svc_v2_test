@@ -438,6 +438,19 @@ function constructMiscDirs()
 }
 
 
+function writePersistantStore()
+{
+    var output = JSON.stringify(persistantstore, null, 4);
+    fs.writeFile(PERSIST_FILE, output, function (err) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+
+        }
+    });
+}
+
 
 function constructPWMPolarityMask()
 {
@@ -607,14 +620,24 @@ var service = module.exports =  {
 
         }
 
-
-
+        
+        if(persistantstore != undefined )
+        {
+           if(persistantstore.hotspotenable != undefined) {
+               if (!persistantstore.hotspotenable) {
+                   global.applogger.info(TAG, "Boot - attepting to disable Hot spot ", "");
+                   module.exports.enableHotspot(false);  // disable hs if not enabled.
+               }
+           }
+           else {
+               persistantstore.hotspotenable = true;
+               writePersistantStore();
+           }
+        }
 
         // FOR DEV DEBUG
-
         //  rpdg.resetTinsey();
 
-        // for dev
 
     },
     getVersionObject: function()
@@ -1255,23 +1278,27 @@ var service = module.exports =  {
     },
     setScheduleModeEnable : function(enable)
     {
-        var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
-        if(obj.schedulemode != undefined)
-        {
-            if(obj.schedulemode == enable)
-                return;
-        }
-        obj.schedulemode = enable;
-        persistantstore = obj;
-        var output = JSON.stringify(obj, null, 4);
-        fs.writeFile(PERSIST_FILE, output, function (err) {
-            if (err) {
-                console.log(err);
-            }
-            else {
+        persistantstore.schedulemode = enable;
+        //var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
+        //if(obj.schedulemode != undefined)
+        //{
+        //    if(obj.schedulemode == enable)
+        //        return;
+        //}
+        //obj.schedulemode = enable;
+       // persistantstoreschedulemode = enable;
+      //  var output = JSON.stringify(obj, null, 4);
 
-            }
-        });
+
+        writePersistantStore();
+       // fs.writeFile(PERSIST_FILE, output, function (err) {
+       //    if (err) {
+        //        console.log(err);
+        //    }
+         //   else {
+//
+         //   }
+        //});
     },
     getPersistantStore : function()
     {
@@ -1326,40 +1353,42 @@ var service = module.exports =  {
         try {
             global.applogger.info(TAG, " **** Attempting to enable wlan0 ****", "");
 
-            var childProcess = require('child_process'),
-                ls;
+            if(process.arch == 'arm') {
+                var childProcess = require('child_process'),
+                    ls;
 
-          //  ls = childProcess.exec('ls -l', function (error, stdout, stderr) {
-            ls = childProcess.exec('sudo service hostapd '+ command, function (error, stdout, stderr) {
-                if (error) {
-                    console.log(error.stack);
-                    console.log('Error code: '+error.code);
-                    console.log('Signal received: '+error.signal);
-                }
-                console.log('Child Process STDOUT: '+stdout);
-                console.log('Child Process STDERR: '+stderr);
-            });
+                ls = childProcess.exec('sudo service hostapd ' + command, function (error, stdout, stderr) {
+                    if (error) {
+                        console.log(error.stack);
+                        console.log('Error code: ' + error.code);
+                        console.log('Signal received: ' + error.signal);
+                    }
+                    console.log('Child Process STDOUT: ' + stdout);
+                    console.log('Child Process STDERR: ' + stderr);
+                });
 
-            ls.on('exit', function (code) {
-                console.log('Child process exited with exit code '+code);
-            });
-
-
-
-
-           /* var hostapd = require('wireless-tools/hostapd');
-
-            this.exec
-            if(hostapd != undefined) {
-
-                hostapd.disable('wlan0', function (err) {
-                    global.applogger.info(TAG, " **** hostapd wlan0 disabled *****", "");
+                ls.on('exit', function (code) {
+                    console.log('Child process exited with exit code ' + code);
                 });
             }
-            else
-            {
-                global.applogger.info(TAG, " **** Error getting hostapd handle ****", "");
-            }*/
+
+           //var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
+           // if(obj.hotspotenable != undefined)
+           // {
+           //     if(obj.hotspotenable == enable)
+           //         return;
+           // }
+            persistantstore.hotspotenable = enable;
+            //persistantstore = obj;
+           // var output = JSON.stringify(obj, null, 4);
+            writePersistantStore();
+           // fs.writeFile(PERSIST_FILE, output, function (err) {
+           //     if (err) {
+           //         console.log(err);
+            //    }
+            //    else {
+            //    }
+            //});
         } catch (ex1)
         {
             global.applogger.info(TAG, " ****EXception:  disable wlan0 ****", ex1);

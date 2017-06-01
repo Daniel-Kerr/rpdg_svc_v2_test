@@ -313,6 +313,8 @@ function SelectRadioButton(name, value) {
     return false; // Returning false would not submit the form
 
 }
+
+var inithsbutton = true;
 function init()
 {
     getConfig(processConfig);
@@ -330,9 +332,36 @@ function init()
     showCCTOptions(false);
     showCommonAnodeOption(false);
     show12VoltOption(false);
+
+
+    getPersistStore(function (store) {
+        // set sched mode toggle to correct state,
+        var enabled = store.hotspotenable;
+        $('#btwifienable').prop('checked', enabled).change();
+        inithsbutton = false;
+        // if(enabled)
+        //     $('#btwifienable').bootstrapToggle('on');
+        // else
+        //     $('#btwifienable').bootstrapToggle('off');
+    });
 }
 
 
+
+$(function() {
+    $('#btwifienable').change(function() {
+
+        if(!inithsbutton) {
+            var enabled = $(this).prop('checked');
+            var element = {};
+            element.enable = enabled;
+            setHotspotEnable(element, function (cfg) {
+                var k = 0;
+            });
+        }
+
+    })
+})
 
 function cachehostipaddr(retval)
 {
@@ -1021,13 +1050,13 @@ function updateAvalibleStartingOutputNumbers(filter)
         var ids = getAvailibleEnoceanOutputIDArray(false);
         populateDropDown("starting_output", ids);
 
-      /*  for (var i = 0 ; i < cachedinterfaceio.enocean.outputs.length; i += 1) {
-            var opt = document.createElement('option');
-            opt.setAttribute('value', cachedinterfaceio.enocean.outputs[i]);
-            opt.appendChild(document.createTextNode(cachedinterfaceio.enocean.outputs[i]));
-            sel.appendChild(opt);
-        }
-        */
+        /*  for (var i = 0 ; i < cachedinterfaceio.enocean.outputs.length; i += 1) {
+         var opt = document.createElement('option');
+         opt.setAttribute('value', cachedinterfaceio.enocean.outputs[i]);
+         opt.appendChild(document.createTextNode(cachedinterfaceio.enocean.outputs[i]));
+         sel.appendChild(opt);
+         }
+         */
         $("#fixturetype").prop("disabled",false);
     }
 }
@@ -1118,7 +1147,7 @@ function updateWetDryContactTable() {
     oTColGrp.appendChild(coldef);
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
-   // coldef.style.wordWrap="normal";
+    // coldef.style.wordWrap="normal";
     oTColGrp.appendChild(coldef);
     // coldef = document.createElement("col");
     // coldef.className = "col-md-1";
@@ -1150,10 +1179,10 @@ function updateWetDryContactTable() {
             var col5part = document.createElement("TD");
 
 
-           // var prewrap = document.createElement("pre");
-           // prewrap.innerHTML = wetdrycontactlist[i].active_action;
+            // var prewrap = document.createElement("pre");
+            // prewrap.innerHTML = wetdrycontactlist[i].active_action;
 
-           // col5part.appendChild(prewrap);
+            // col5part.appendChild(prewrap);
             var cleanaa = wetdrycontactlist[i].active_action.replace(/_@@_/g,"/");
             col5part.innerHTML = cleanaa; //wetdrycontactlist[i].active_action;
 

@@ -162,6 +162,7 @@ exports.setZero2TenDrive = function(inputs)
             else {
                 global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive", "no i2c hw");
             }
+
         }
         else
         {
