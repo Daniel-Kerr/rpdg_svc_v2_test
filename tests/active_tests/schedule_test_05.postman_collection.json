@@ -488,6 +488,38 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "Clear Config",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}"
+				},
+				"description": "Blank out the config file."
+			},
+			"response": []
 		}
 	]
 }
