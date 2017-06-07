@@ -127,6 +127,14 @@ router.post('/sethwpollingperiod', function(req, res) {
 
 
 
+router.post('/forcecrash', function(req, res) {
+
+    service.forcecrash();
+    res.status(200).send(cfg);
+
+});
+
+
 
 // test hook for zero to 10 v driver
 /*router.get('/dimmeredgecfg', function(req, res, next) {
