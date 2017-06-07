@@ -41,7 +41,7 @@ var enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
 var SunCalc = require('suncalc');
 
-var daylightpollseconds = 5;     // global variable (can be set via api).
+var daylightpollseconds = 10;     // global variable (can be set via api).
 var daylightpolcount = 0;   // used for tracking of dl upddates. interval.
 
 var schedulepollseconds = 60;
@@ -356,7 +356,7 @@ function invokeAllToLevel(level, requesttype)
                 reqobj.name = fixobj.assignedname;
                 reqobj.level = level;
                 reqobj.requesttype = requesttype;
-                module.exports.setFixtureLevels(reqobj,true);
+                module.exports.setFixtureLevels(reqobj,false);
             }
             else if (fixobj instanceof CCTFixture) {
                 var reqobj = {};
@@ -364,7 +364,7 @@ function invokeAllToLevel(level, requesttype)
                 reqobj.brightness = level;
                 //reqobj.colortemp = 3500;
                 reqobj.requesttype = requesttype;
-                module.exports.setFixtureLevels(reqobj,true);
+                module.exports.setFixtureLevels(reqobj,false);
             }
             else if (fixobj instanceof RGBWFixture) {
                 var reqobj = {};
@@ -374,11 +374,13 @@ function invokeAllToLevel(level, requesttype)
                 reqobj.blue = level;
                 reqobj.white = level;
                 reqobj.requesttype = requesttype;
-                module.exports.setFixtureLevels(reqobj,true);
+                module.exports.setFixtureLevels(reqobj,false);
             }
 
         }
     }
+
+    module.exports.latchOutputValuesToHardware();  // 6/7/17
 }
 
 
@@ -525,10 +527,10 @@ function ScriptResultHandler(name, result)
     global.applogger.info(TAG, " Script: " + name + "  result: " + result, "");
     activescript = undefined;
 }
-var service = module.exports =  {
+var service = module.exports = {
 
 
-    initService : function () {
+    initService: function () {
 
         constructMiscDirs();
 
@@ -536,10 +538,9 @@ var service = module.exports =  {
         enocean.init(incommingHWChangeHandler);
         rpdg.init(incommingHWChangeHandler);
 
-        if(data_utils.commandLineArgPresent("udp"))
-        {
+        if (data_utils.commandLineArgPresent("udp")) {
             global.applogger.info(TAG, " Initilizing the udp handler now. ", "");
-            upd_handler  = require('./udp_handler.js');
+            upd_handler = require('./udp_handler.js');
             upd_handler.init(incommingUDPMessageHandler);
         }
 
@@ -549,17 +550,16 @@ var service = module.exports =  {
         //if(cfg == undefined)
         // {
         active_cfg = new Configuration();
-        if(cfg != undefined)
-        {
+        if (cfg != undefined) {
             active_cfg.fromJson(cfg); // load from file,
         }
         else
             created = true;
 
-        active_cfg.initHWInterfaces(rpdg,enocean);
+        active_cfg.initHWInterfaces(rpdg, enocean);
         global.currentconfig = active_cfg;
 
-        if(created)
+        if (created)
             data_utils.writeConfigToFile();
 
 
@@ -582,12 +582,11 @@ var service = module.exports =  {
 
 
         //4/17/17/
-        module.exports.invokeScene("ALL_ON","override");
+        module.exports.invokeScene("ALL_ON", "override");
 
 
         var ip = require('ip');
         global.applogger.info(TAG, "IP ADDRESS IS: " + ip.address(), "");
-
 
 
         // ************************************************** FAUX ****************DATA ***
@@ -615,24 +614,22 @@ var service = module.exports =  {
                     availbilescripts.push(items[i]);
                 }
             });
-        } catch(ex1)
-        {
+        } catch (ex1) {
 
         }
 
 
-        if(persistantstore != undefined )
-        {
-           if(persistantstore.hotspotenable != undefined) {
-               if (!persistantstore.hotspotenable) {
-                   global.applogger.info(TAG, "Boot - attepting to disable Hot spot ", "");
-                   module.exports.enableHotspot(false);  // disable hs if not enabled.
-               }
-           }
-           else {
-               persistantstore.hotspotenable = true;
-               writePersistantStore();
-           }
+        if (persistantstore != undefined) {
+            if (persistantstore.hotspotenable != undefined) {
+                if (!persistantstore.hotspotenable) {
+                    global.applogger.info(TAG, "Boot - attepting to disable Hot spot ", "");
+                    module.exports.enableHotspot(false);  // disable hs if not enabled.
+                }
+            }
+            else {
+                persistantstore.hotspotenable = true;
+                writePersistantStore();
+            }
         }
 
         // FOR DEV DEBUG
@@ -640,19 +637,17 @@ var service = module.exports =  {
 
 
     },
-    getVersionObject: function()
-    {
+    getVersionObject: function () {
 
         var ele = {};
         ele.controller = sw_version;
-        var verstring = (rpdg.isHighVoltageBoard())?"HV-":"LV-";
+        var verstring = (rpdg.isHighVoltageBoard()) ? "HV-" : "LV-";
         ele.firmware = verstring + " " + rpdg.getFWVersionNumber(); // firmware_version;
         return ele;
     },
-    updatePWMPolarity : function()
-    {
+    updatePWMPolarity: function () {
         var mask = 0;
-        if(rpdg.isHighVoltageBoard()) {
+        if (rpdg.isHighVoltageBoard()) {
             mask = constructHV_PhaseDimMask();
             global.applogger.info(TAG, "HV Phase Direction Mask: " + mask.toString(16), "");
 
@@ -661,27 +656,24 @@ var service = module.exports =  {
             global.applogger.info(TAG, "HV Dim Mode Phase Mask: " + dimmodemask.toString(16), "");
             rpdg.setHVDimMode(dimmodemask);
         }
-        else
-        {
+        else {
             mask = constructPWMPolarityMask();
             global.applogger.info(TAG, "PWM polarity Mask: " + mask.toString(16), "");
         }
         rpdg.setPWMOutputPolarity(mask);
 
     },
-    setupHWInterface : function(fixturename)
-    {
+    setupHWInterface: function (fixturename) {
         var fix = global.currentconfig.getFixtureByName(fixturename);
-        if(fix != undefined)
-        {
-            if(fix.interfacename == "enocean")
+        if (fix != undefined) {
+            if (fix.interfacename == "enocean")
                 fix.interface = enocean;
             else
                 fix.interface = rpdg;
         }
     },
 
-    startPolling : function() {
+    startPolling: function () {
         //global.applogger.info(TAG, "Polling started", "");
 
         var BasePollingPeriod = 1000;        // Time interval in mSec that we do the most frequent checks.
@@ -690,10 +682,9 @@ var service = module.exports =  {
 
             // rpdg.testToggleGPIO();  // for test only
 
-            if( delayedHW_InitCount > 0)
-            {
+            if (delayedHW_InitCount > 0) {
                 delayedHW_InitCount--;
-                if(delayedHW_InitCount <= 0) {
+                if (delayedHW_InitCount <= 0) {
                     global.applogger.info(TAG, "************** executing delayed hw init **************", "");
                     module.exports.updateRPDGInputDrive();
                     module.exports.updatePWMPolarity();
@@ -721,9 +712,9 @@ var service = module.exports =  {
             // *********************************************RPDG PWM CURRENT DRAW POLLING*********************************
             // poll for pwm output power.(RPDG PWM ONLY)
             var power_watts = rpdg.getPWMPower(); // should be 8 doubles... to be inserted into fixture table,
-            for(var i = 0; i < global.currentconfig.fixtures.length; i++) {
+            for (var i = 0; i < global.currentconfig.fixtures.length; i++) {
                 var fixobj = global.currentconfig.fixtures[i];
-                if(fixobj.interfacename == "rpdg-pwm") {
+                if (fixobj.interfacename == "rpdg-pwm") {
                     if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
 
                         var power = power_watts[Number(fixobj.outputid) - 1];
@@ -746,7 +737,7 @@ var service = module.exports =  {
                         var powerwhite = power_watts[Number(fixobj.outputid) + 2];
 
                         var totalpower = (Number(powerred) + Number(powergreen) + Number(powerblue) + Number(powerwhite));
-                        if(fixobj.twelvevolt)
+                        if (fixobj.twelvevolt)
                             totalpower /= 2;
 
                         fixobj.powerwatts = totalpower.toFixed(2);
@@ -759,19 +750,18 @@ var service = module.exports =  {
             // **************************************************** END PWM POLLING**********************************
 
 
-
             // DAYLIGHT POLLING******************************************************************************************
             // poll check the current daylight sensor input,
             // ********************************************************************************************************
             daylightpolcount++;
-            var DaylightPollingPeriod = Math.round ((daylightpollseconds * 1000) / BasePollingPeriod);
+            var DaylightPollingPeriod = Math.round((daylightpollseconds * 1000) / BasePollingPeriod);
             if (DaylightPollingPeriod > 0 && daylightpolcount >= DaylightPollingPeriod) {
                 daylightpolcount = 0;
                 //  global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
                 // get the dl sensor
 
                 // get each of the daylight sensors, in the config.
-                for(var levelidx = 0; levelidx < global.currentconfig.levelinputs.length; levelidx++ ) {
+                for (var levelidx = 0; levelidx < global.currentconfig.levelinputs.length; levelidx++) {
                     var inputobj = global.currentconfig.levelinputs[levelidx];
                     if (inputobj.type == "daylight") {
 
@@ -779,10 +769,10 @@ var service = module.exports =  {
                         //var level = inputobj.value;
 
                         var groupname = inputobj.group; //req.body.name;
-                        if(groupname != undefined) {
+                        if (groupname != undefined) {
                             var groupobj = global.currentconfig.getGroupByName(groupname);
                             if (groupobj != undefined) {
-                                if(groupobj.type == "brightness") {
+                                if (groupobj.type == "brightness") {
                                     var targetlevel = 0; // the level is irrelelevent since its a dl request type.. level * 10;
                                     service.setGroupToBrightnessLevel(groupname, targetlevel, "daylight");
                                 }
@@ -795,15 +785,12 @@ var service = module.exports =  {
             // ****************************************END DL POLLING ******************************************
 
 
-
-
-
             // 3/17/17/    Schedule manage polling,*******************************************************************
             //********************************************************************************************************
-            if(persistantstore != undefined && persistantstore.schedulemode != undefined && persistantstore.schedulemode) {
+            if (persistantstore != undefined && persistantstore.schedulemode != undefined && persistantstore.schedulemode) {
 
                 reInitSchedMgrCount++;
-                if(reInitSchedMgrCount > 120*60)  //for now every X hours,minutes
+                if (reInitSchedMgrCount > 120 * 60)  //for now every X hours,minutes
                 {
                     global.applogger.info(TAG, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", "", "");
                     global.applogger.info(TAG, "^^^^^^^^^^^^^ Periodic Sched Init Call ^^^^^^^^^^^^^^^^^^", "", "");
@@ -832,7 +819,7 @@ var service = module.exports =  {
                             for (var i = 0; i < eventbundle.events.length; i++) {
                                 var event = eventbundle.events[i];
                                 var id = event.id;
-                                if(event.repeat != 'none')
+                                if (event.repeat != 'none')
                                     id = event.base_id;
 
                                 eventidlist += id + " | ";
@@ -892,17 +879,14 @@ var service = module.exports =  {
             for (var i = 0; i < contactinputs.length; i++) {
 
                 var dev = contactinputs[i];
-                if(dev.active_pending_vancancy != undefined)
-                {
+                if (dev.active_pending_vancancy != undefined) {
                     // compare the time, if after thta time , trigger.
 
                     // global.applogger.info(TAG, "time compare ", dev.active_pending_vancancy + "   " + now, "");
-                    if(now.isAfter(dev.active_pending_vancancy))
-                    {
+                    if (now.isAfter(dev.active_pending_vancancy)) {
                         dev.active_pending_vancancy = undefined;
                         var parts = dev.active_action.split("_@@_");
-                        if(parts.length == 4)
-                        {
+                        if (parts.length == 4) {
                             var groupname = parts[2];
                             global.applogger.info(TAG, "Delayed Vacancy Message ", "   sending vac to: " + groupname);
                             module.exports.sendVacancyMessageToGroup(groupname);
@@ -910,15 +894,12 @@ var service = module.exports =  {
                     }
                 }
 
-                if(dev.inactive_pending_vancancy != undefined)
-                {
+                if (dev.inactive_pending_vancancy != undefined) {
                     // compare the time, if after thta time , trigger.
-                    if(now.isAfter(dev.inactive_pending_vancancy))
-                    {
+                    if (now.isAfter(dev.inactive_pending_vancancy)) {
                         dev.inactive_pending_vancancy = undefined;
                         var parts = dev.inactive_action.split("_@@_");
-                        if(parts.length == 4)
-                        {
+                        if (parts.length == 4) {
                             var groupname = parts[2];
                             global.applogger.info(TAG, "Delayed Vacancy Message ", "   sending vac to: " + groupname);
                             module.exports.sendVacancyMessageToGroup(groupname);
@@ -930,7 +911,6 @@ var service = module.exports =  {
 
             // end poll. for delayed vacancy. ************************************************************************
             // *******************************************************************************************************
-
 
 
             // if(led != undefined)
@@ -955,23 +935,19 @@ var service = module.exports =  {
         }, BasePollingPeriod);
     },
 
-    setGroupToBrightnessLevel : function (groupname, level, requesttype)
-    {
-        if(groupname != undefined)
-        {
+    setGroupToBrightnessLevel: function (groupname, level, requesttype) {
+        if (groupname != undefined) {
             var groupobj = global.currentconfig.getGroupByName(groupname);
-            if(groupobj != undefined && groupobj.type == "brightness") {
-                sendMessageToGroup(groupobj,requesttype,level);
+            if (groupobj != undefined && groupobj.type == "brightness") {
+                sendMessageToGroup(groupobj, requesttype, level);
             }
         }
     },
 
-    setGroupToColorTemp :  function (groupname, colortemp, brightness)
-    {
-        if(groupname != undefined )
-        {
+    setGroupToColorTemp: function (groupname, colortemp, brightness) {
+        if (groupname != undefined) {
             var groupobj = global.currentconfig.getGroupByName(groupname);
-            if(groupobj != undefined && groupobj.type == "ctemp") {
+            if (groupobj != undefined && groupobj.type == "ctemp") {
                 for (var i = 0; i < groupobj.fixtures.length; i++) {
                     var fixname = groupobj.fixtures[i];
                     var fixobj = global.currentconfig.getFixtureByName(fixname);
@@ -983,7 +959,7 @@ var service = module.exports =  {
                             reqobj.colortemp = colortemp;
                             reqobj.brightness = brightness;
                             reqobj.requesttype = "wallstation";
-                            module.exports.setFixtureLevels(reqobj,false);
+                            module.exports.setFixtureLevels(reqobj, false);
                         }
                     }
                 }
@@ -992,26 +968,22 @@ var service = module.exports =  {
         }
     },
 
-    setMultipleFixtureLevels : function (requestobj)
-    {
-        if(requestobj != undefined)
-        {
+    setMultipleFixtureLevels: function (requestobj) {
+        if (requestobj != undefined) {
             var fixturesetlist = requestobj; //this should be an array
             var updatehw = false;
-            for(var i = 0; i < fixturesetlist.length; i++)
-            {
+            for (var i = 0; i < fixturesetlist.length; i++) {
                 var fixturelevelsetobj = fixturesetlist[i];
 
-                if(fixturelevelsetobj.requesttype == undefined)
-                {
+                if (fixturelevelsetobj.requesttype == undefined) {
                     fixturelevelsetobj.requesttype = 'override';
                 }
-                this.setFixtureLevels(fixturelevelsetobj,false);
+                this.setFixtureLevels(fixturelevelsetobj, false);
                 updatehw = true;
             }
         }
 
-        if(updatehw)
+        if (updatehw)
             module.exports.latchOutputValuesToHardware();
 
 
@@ -1021,52 +993,44 @@ var service = module.exports =  {
      * @param requestobj-- json obj contains everything, uid..etc, uid, requesttype,
      * @returns {Uint8Array}
      */
-    setFixtureLevels : function (requestobj, applytohw)
-    {
-        global.applogger.info(TAG, "set fixture levels " ,JSON.stringify(requestobj));
-        if(requestobj != undefined) {
-            if(requestobj.name != undefined) {
+    setFixtureLevels: function (requestobj, applytohw) {
+        global.applogger.info(TAG, "set fixture levels ", JSON.stringify(requestobj));
+        if (requestobj != undefined) {
+            if (requestobj.name != undefined) {
                 var fix = global.currentconfig.getFixtureByName(requestobj.name);
-                if(fix != undefined) {
+                if (fix != undefined) {
                     // global.applogger.info(TAG, "found fixture wil ltry  to set level", "");
                     fix.setLevel(requestobj, applytohw);
                 }
             }
         }
     },
-    invokeScene : function(name, requesttype) {
+    invokeScene: function (name, requesttype) {
 
-        if(name == "ALL_ON")
-        {
-            invokeAllToLevel(100,requesttype);
+        if (name == "ALL_ON") {
+            invokeAllToLevel(100, requesttype);
             return;
         }
-        if(name == "ALL_OFF")
-        {
-            invokeAllToLevel(0,requesttype);
+        if (name == "ALL_OFF") {
+            invokeAllToLevel(0, requesttype);
             return;
         }
-        if(name == "ALL_50")
-        {
-            invokeAllToLevel(50,requesttype);
+        if (name == "ALL_50") {
+            invokeAllToLevel(50, requesttype);
             return;
         }
-        if(name == "ALL_10")
-        {
-            invokeAllToLevel(10,requesttype);
+        if (name == "ALL_10") {
+            invokeAllToLevel(10, requesttype);
             return;
         }
-
 
 
         var sceneobj = global.currentconfig.getSceneByName(name);
 
 
-
         // var requesttype = "wallstation";
-        if(sceneobj == undefined)
-        {
-            global.applogger.info(TAG, "cant invoke scene: " + name ,"");
+        if (sceneobj == undefined) {
+            global.applogger.info(TAG, "cant invoke scene: " + name, "");
             return;
         }
         // ... todo   add hold set hw ,  until after we are done setting levels,  (levels only )
@@ -1081,7 +1045,7 @@ var service = module.exports =  {
                     reqobj.name = fixobj.assignedname;
                     reqobj.level = scenefix.level;
                     reqobj.requesttype = requesttype;
-                    module.exports.setFixtureLevels(reqobj,true);
+                    module.exports.setFixtureLevels(reqobj, false);
                 }
                 else if (fixobj instanceof CCTFixture) {
                     var reqobj = {};
@@ -1089,7 +1053,7 @@ var service = module.exports =  {
                     reqobj.brightness = scenefix.brightness;
                     reqobj.colortemp = scenefix.colortemp;
                     reqobj.requesttype = requesttype;
-                    module.exports.setFixtureLevels(reqobj,true);
+                    module.exports.setFixtureLevels(reqobj, false);
                 }
                 else if (fixobj instanceof RGBWFixture) {
                     var reqobj = {};
@@ -1099,15 +1063,16 @@ var service = module.exports =  {
                     reqobj.blue = scenefix.blue;
                     reqobj.white = scenefix.white;
                     reqobj.requesttype = requesttype;
-                    module.exports.setFixtureLevels(reqobj,true);
+                    module.exports.setFixtureLevels(reqobj, false);
                 }
 
             }
         }
+
+        module.exports.latchOutputValuesToHardware();  // 6/7/17
     },
 
-    latchOutputValuesToHardware : function ()
-    {
+    latchOutputValuesToHardware: function () {
         rpdg.latchOutputLevelsToHW();
     },
 
@@ -1115,27 +1080,22 @@ var service = module.exports =  {
 // ***************************************************************************************************************
 
 // this handles all level / contact inputs.
-    testSetInputLevelVolts : function (interface, type, inputid, level)
-    {
-        incommingHWChangeHandler(interface, type, inputid,level);
+    testSetInputLevelVolts: function (interface, type, inputid, level) {
+        incommingHWChangeHandler(interface, type, inputid, level);
     },
-    sendOccupancyMessageToGroup : function (groupname)
-    {
+    sendOccupancyMessageToGroup: function (groupname) {
         var groupobj = global.currentconfig.getGroupByName(groupname);
-        if(groupobj != undefined)
-        {
+        if (groupobj != undefined) {
             sendMessageToGroup(groupobj, "occupancy", 100); // default value for occ is 100, but will use params
         }
     },
-    sendVacancyMessageToGroup : function (groupname)
-    {
+    sendVacancyMessageToGroup: function (groupname) {
         var groupobj = global.currentconfig.getGroupByName(groupname);
-        if(groupobj != undefined)
-        {
+        if (groupobj != undefined) {
             sendMessageToGroup(groupobj, "vacancy", 0); // default value for vacc is 0, but will use params
         }
     },
-    setDayLightPollingPeriodSeconds : function(intervalsec) {
+    setDayLightPollingPeriodSeconds: function (intervalsec) {
         daylightpollseconds = intervalsec;
         daylightpolcount = 0;
     },
@@ -1146,38 +1106,32 @@ var service = module.exports =  {
 //     s
 //
 // },
-    enableRPDGHardwarePolling : function(enable)
-    {
-        global.applogger.error("rpdg_driver.js ", "enable rpdg polling : " + enable,  "");
+    enableRPDGHardwarePolling: function (enable) {
+        global.applogger.error("rpdg_driver.js ", "enable rpdg polling : " + enable, "");
         rpdg.enableHardwarePolling(enable);
     },
 // ******************************************ENOCEAN SUPPORT **********************************************
 // ********************************************************************************************************
-    teachEnoceanDevice : function(enoceanid)
-    {
+    teachEnoceanDevice: function (enoceanid) {
         try {
             enocean.teachFixture(enoceanid);
 
             //var package = this.getStatus2();
             //var dataset = JSON.stringify(package, null, 2);
             // return dataset;
-        } catch (err)
-        {
-            global.applogger.error("rpdg_driver.js ", "teachEnoceanDevice :",  err);
+        } catch (err) {
+            global.applogger.error("rpdg_driver.js ", "teachEnoceanDevice :", err);
         }
     },
-    startEnoceanLearning : function()
-    {
+    startEnoceanLearning: function () {
         try {
             enocean.startLearning();
-        } catch (err)
-        {
-            global.log.error("rpdg_driver.js ", "teachEnoceanDevice :",  err);
+        } catch (err) {
+            global.log.error("rpdg_driver.js ", "teachEnoceanDevice :", err);
         }
     },
 
-    updateRPDGInputDrive : function()
-    {
+    updateRPDGInputDrive: function () {
         var inputdrives = new Float32Array(4);
         for (var i = 0; i < global.currentconfig.levelinputs.length; i++) {
             var input = global.currentconfig.levelinputs[i];
@@ -1188,72 +1142,62 @@ var service = module.exports =  {
         }
         rpdg.setZero2TenDrive(inputdrives);
     },
-    getEnoceanKnownContactInputs : function()    // contacts are occ and rocker switches
+    getEnoceanKnownContactInputs: function ()    // contacts are occ and rocker switches
     {
         var contactinputs = [];
         // refresh
         enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
-        for(var key in enocean_known_sensors)
-        {
+        for (var key in enocean_known_sensors) {
             var device = enocean_known_sensors[key];
-            if(device.eepFunc.includes("Occupancy") || device.eepFunc.includes("Rocker Switch"))
-            {
+            if (device.eepFunc.includes("Occupancy") || device.eepFunc.includes("Rocker Switch")) {
                 contactinputs.push(key);
             }
         }
         return contactinputs;
     },
-    getEnoceanKnownLevelInputs : function()    // level is light sensors.
+    getEnoceanKnownLevelInputs: function ()    // level is light sensors.
     {
         var levelinputs = [];
         // refresh
         enocean_known_sensors = require('../enocean_db/knownSensors.json');
-        for(var key in enocean_known_sensors)
-        {
+        for (var key in enocean_known_sensors) {
             var device = enocean_known_sensors[key];
-            if(device.eepFunc.includes("Light Sensors"))
-            {
+            if (device.eepFunc.includes("Light Sensors")) {
                 levelinputs.push(key);
             }
         }
         return levelinputs;
     },
-    getEnoceanKnownOutputDevices : function()
-    {
+    getEnoceanKnownOutputDevices: function () {
         var outputdevs = [];
-        for(var i = 0; i < global.currentconfig.enocean.length; i++)
-        {
+        for (var i = 0; i < global.currentconfig.enocean.length; i++) {
             var dev = global.currentconfig.enocean[i];
             outputdevs.push(dev.enoceanid);
         }
         return outputdevs;
     },
-    testmode_SetConfig : function(cfg)
-    {
+    testmode_SetConfig: function (cfg) {
 
         var active_cfg = new Configuration();
         active_cfg.fromJson(cfg);
 
-        active_cfg.initHWInterfaces(rpdg,enocean);
+        active_cfg.initHWInterfaces(rpdg, enocean);
         global.currentconfig = active_cfg;
         //setup the 0-10 v drive values for current config,
         module.exports.updateRPDGInputDrive();
     },
-    setRPDGPWMOutput : function(output, level)
-    {
-        rpdg.setOutputToLevel(output, level,false, undefined);
+    setRPDGPWMOutput: function (output, level) {
+        rpdg.setOutputToLevel(output, level, false, undefined);
     }
     ,
-    setRPDGPLCOutput : function(output, level)
-    {
-        rpdg.setOutputToLevel(output, level,false, "plc");
+    setRPDGPLCOutput: function (output, level) {
+        rpdg.setOutputToLevel(output, level, false, "plc");
     },
-    incrementSceneList : function(scenelistname)
-    {
+    incrementSceneList: function (scenelistname) {
         // get eh scl object,
         var sl = global.currentconfig.getSceneListByName(scenelistname);
-        if(sl != undefined) {
+        if (sl != undefined) {
             sl.incrementActiveIndex(true);
 
             var targetscene = sl.getActiveSceneName();
@@ -1263,11 +1207,10 @@ var service = module.exports =  {
             }
         }
     },
-    decrementSceneList : function(scenelistname)
-    {
+    decrementSceneList: function (scenelistname) {
         // get eh scl object,
         var sl = global.currentconfig.getSceneListByName(scenelistname);
-        if(sl != undefined) {
+        if (sl != undefined) {
             sl.decrementActiveIndex(true);
             var targetscene = sl.getActiveSceneName();
             if (targetscene != undefined) {
@@ -1276,8 +1219,7 @@ var service = module.exports =  {
             }
         }
     },
-    setScheduleModeEnable : function(enable)
-    {
+    setScheduleModeEnable: function (enable) {
         persistantstore.schedulemode = enable;
         //var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
         //if(obj.schedulemode != undefined)
@@ -1286,74 +1228,65 @@ var service = module.exports =  {
         //        return;
         //}
         //obj.schedulemode = enable;
-       // persistantstoreschedulemode = enable;
-      //  var output = JSON.stringify(obj, null, 4);
+        // persistantstoreschedulemode = enable;
+        //  var output = JSON.stringify(obj, null, 4);
 
 
         writePersistantStore();
-       // fs.writeFile(PERSIST_FILE, output, function (err) {
-       //    if (err) {
+        // fs.writeFile(PERSIST_FILE, output, function (err) {
+        //    if (err) {
         //        console.log(err);
         //    }
-         //   else {
+        //   else {
 //
-         //   }
+        //   }
         //});
     },
-    getPersistantStore : function()
-    {
+    getPersistantStore: function () {
         return JSON.stringify(persistantstore, null, 4);
     },
-    getEnoceanRxQue : function()
-    {
-        if(enocean != undefined)
+    getEnoceanRxQue: function () {
+        if (enocean != undefined)
             return enocean.getRxMessageFifo();
-        else
-        {
+        else {
             var k = [];
             return k;
         }
     },
-    runScript : function(name)
-    {
-        if(activescript != undefined)  // if not undefinded it needs to be canceled.
+    runScript: function (name) {
+        if (activescript != undefined)  // if not undefinded it needs to be canceled.
         {
             activescript.cancel();
             activescript = undefined;
         }
         activescript = require('../scripts/' + name);
-        if(activescript != undefined)
-        {
+        if (activescript != undefined) {
             activescript.run(ScriptResultHandler);
         }
     },
-    setVirtualTime : function(timestring)
-    {
-        global.applogger.info(TAG, "Setting Virtual Time to: " + timestring , "");
-        if(timestring != undefined) {
+    setVirtualTime: function (timestring) {
+        global.applogger.info(TAG, "Setting Virtual Time to: " + timestring, "");
+        if (timestring != undefined) {
             global.virtualbasetime = moment(timestring);
             global.virtualtimeset = moment();
             schedule_mgr.requestScheduleCacheReset(global.virtualbasetime.toDate());
         }
-        else
-        {
+        else {
             global.virtualbasetime = undefined;
             schedule_mgr.requestScheduleCacheReset(new Date());  // 5/9/17
         }
 
         currentschedule_eventbundle = undefined; //reset,  5/5/17
     },
-    getScriptNames : function()
-    {
+    getScriptNames: function () {
         return availbilescripts;
     },
-    enableHotspot : function(enable)
-    {
-        var command = (enable)?"start":"stop";
+    enableHotspot: function (enable) {
+        var command = (enable) ? "start" : "stop";
         try {
             global.applogger.info(TAG, " **** Attempting to enable wlan0 ****", "");
 
-            if(process.arch == 'arm') {
+            if (process.arch == 'arm') {
                 var childProcess = require('child_process'),
                     ls;
 
@@ -1372,30 +1305,28 @@ var service = module.exports =  {
                 });
             }
 
-           //var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
-           // if(obj.hotspotenable != undefined)
-           // {
-           //     if(obj.hotspotenable == enable)
-           //         return;
-           // }
+            //var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
+            // if(obj.hotspotenable != undefined)
+            // {
+            //     if(obj.hotspotenable == enable)
+            //         return;
+            // }
             persistantstore.hotspotenable = enable;
             //persistantstore = obj;
-           // var output = JSON.stringify(obj, null, 4);
+            // var output = JSON.stringify(obj, null, 4);
             writePersistantStore();
-           // fs.writeFile(PERSIST_FILE, output, function (err) {
-           //     if (err) {
-           //         console.log(err);
+            // fs.writeFile(PERSIST_FILE, output, function (err) {
+            //     if (err) {
+            //         console.log(err);
             //    }
             //    else {
             //    }
             //});
-        } catch (ex1)
-        {
+        } catch (ex1) {
             global.applogger.info(TAG, " ****EXception:  disable wlan0 ****", ex1);
         }
     },
-    getGPSFromZipcode : function(zipcode, res)
-    {
+    getGPSFromZipcode: function (zipcode, res) {
         // zipcode to 2 gps.
         var foundzip = false;
         try {
@@ -1410,10 +1341,8 @@ var service = module.exports =  {
                 lineReader.on('line', function (line) {
                     // console.log('Line from file:', line);
                     var parts = line.split(',');
-                    if(parts.length == 3)
-                    {
-                        if(parts[0].trim() == zipcode)
-                        {
+                    if (parts.length == 3) {
+                        if (parts[0].trim() == zipcode) {
                             foundzip = true;
                             var element = {};
                             element.location = parts;
@@ -1421,9 +1350,8 @@ var service = module.exports =  {
                             return;
                         }
                     }
-                }).on('close', function() {
-                    if(!foundzip)
-                    {
+                }).on('close', function () {
+                    if (!foundzip) {
                         console.log('ERROR zip code not found !!!!');
                         res.status(400).send("error not found");
                     }
@@ -1432,26 +1360,23 @@ var service = module.exports =  {
                 });
 
 
-
             }
-        }catch (ex1)
-        {
+        } catch (ex1) {
             global.applogger.info(TAG, " error reading file " + ex1, "");
         }
         //    res.status(200).send("not found");
     },
-    isHighVoltageBoard : function()
-    {
+    isHighVoltageBoard: function () {
         return rpdg.isHighVoltageBoard();
     },
-    isScriptRunning : function()
-    {
+    isScriptRunning: function () {
         return activescript != undefined;
     },
-    setRPDGHWPollingPeriod : function(periodms)
-    {
+    setRPDGHWPollingPeriod: function (periodms) {
         rpdg.setPollingPeriod(periodms);
+    },
+    forcecrash: function () {
+        process.exit(1);
     }
-
 
 };
