@@ -588,7 +588,15 @@ function windowZoomIn()
 
     var windowminutes = currentwindowsizehours*60;
 
-    var axes = output_plot.getAxes();
+    var axes = 0;
+    if(output_plot != undefined)
+        axes = output_plot.getAxes();
+    else if(levelinput_plot != undefined)
+        axes = levelinput_plot.getAxes();
+    else if(contactinput_plot != undefined)
+        axes = contactinput_plot.getAxes();
+
+
     var tempmin = axes.xaxis.min;
     var tempmax = axes.xaxis.max;
 
@@ -637,7 +645,16 @@ function windowZoomOut() {
 
     var windowminutes = currentwindowsizehours * 60;
 
-    var axes = output_plot.getAxes();
+   // var axes = output_plot.getAxes();
+
+    var axes = 0;
+    if(output_plot != undefined)
+        axes = output_plot.getAxes();
+    else if(levelinput_plot != undefined)
+        axes = levelinput_plot.getAxes();
+    else if(contactinput_plot != undefined)
+        axes = contactinput_plot.getAxes();
+
     var tempmin = axes.xaxis.min;
     var tempmax = axes.xaxis.max;
 
@@ -690,7 +707,15 @@ function windowMove(direction)
 
     var shiftminutes = windowminutes/4;
 
-    var axes = output_plot.getAxes();
+   // var axes = output_plot.getAxes();
+    var axes = 0;
+    if(output_plot != undefined)
+        axes = output_plot.getAxes();
+    else if(levelinput_plot != undefined)
+        axes = levelinput_plot.getAxes();
+    else if(contactinput_plot != undefined)
+        axes = contactinput_plot.getAxes();
+
     var tempmin = axes.xaxis.min;
     var tempmax = axes.xaxis.max;
 
@@ -738,7 +763,7 @@ function windowMove(direction)
 
 function refreshContactInputHistorgram()
 {
-   // console.log("window size hours: " + currentwindowsizehours);
+    // console.log("window size hours: " + currentwindowsizehours);
     contactinputcount = 0;
     contactinput_dataset = [];
     $("#contactinputchoices").empty();
