@@ -2345,3 +2345,15 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
     return true;
 }
 
+
+
+//6/7/17
+function SetDaylightPolling()
+{
+    var selection = $('#daylightpoll').val();
+    var element = {};
+    element.interval = selection;
+    SetDaylightPollingCRUD(element, function(data) {
+        // ignore return .
+    })
+}

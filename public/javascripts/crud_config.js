@@ -505,3 +505,22 @@ function setHotspotEnable(obj, callback) {
         }
     });
 }
+
+
+function SetDaylightPollingCRUD(obj, callback) {
+
+    var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: "/tester/setdaylighttimerinterval",
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}

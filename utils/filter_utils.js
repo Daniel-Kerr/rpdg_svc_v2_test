@@ -176,8 +176,15 @@ module.exports = {
                 ModifiedLevel = daylightModifiedLevel;
                 break;
             case 'daylight':
-                if (currentstate == 'Occupied') { ModifiedLevel = daylightModifiedLevel;}	// Only adjust daylight if occupied
-                else { ModifiedLevel = VacancyLevel;}			// ignore if Vacant
+                if (currentstate == 'Occupied')
+                {
+
+                    ModifiedLevel = daylightModifiedLevel;
+                    global.applogger.info(TAG, "**** state dl - and occupied  ml = ", ModifiedLevel);
+                }	// Only adjust daylight if occupied
+                else {
+                    ModifiedLevel = VacancyLevel;
+                }			// ignore if Vacant
                 break;
             case 'occupancy':
                 ModifiedLevel = OccupiedLevel;
