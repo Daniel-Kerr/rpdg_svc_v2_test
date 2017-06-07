@@ -115,6 +115,7 @@ exports.setOutputToLevel = function(outputid, level, apply, options) {
 }
 
 exports.latchOutputLevelsToHW = function() {
+    global.applogger.info(TAG, "*** latching output values to hardware now *** ", "");
     setHW_PLC();
     setHW_PWMLevels();
 }
