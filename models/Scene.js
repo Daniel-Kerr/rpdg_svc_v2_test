@@ -84,9 +84,10 @@ var Scene = function()
             }
         }
     }
-    this.addFixture = function(name, type)
+    this.addFixture = function(scenefixture)
     {
-        switch(type)
+        this.fixtures.push(scenefixture);
+        /*switch(type)
         {
             case "on_off":
                 var set = new OnOffSetting();
@@ -111,7 +112,7 @@ var Scene = function()
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
     this.getFixtureByName = function(name)

@@ -8,6 +8,11 @@ var app = express();
 var os = require( 'os' );
 
 var file_config = '../datastore/config.json';
+
+var OnOffSetting = require('../models/OnOffSetting.js');
+var DimSetting = require('../models/DimSetting.js');
+var CCTSetting = require('../models/CCTSetting.js');
+var RGBWSetting = require('../models/RGBWSetting.js');
 //var rpdg_driver = require('./rpdg_driver.js');
 
 //var data_utils = require('./data_utils.js');
@@ -127,17 +132,17 @@ router.post('/savefixture', function(req, res) {
         // make sure fix params exists if not add them in, blank, (default),
         // check if name already exists,  if so update,
         // removved 6/8/17
-       /* var exists = false;
-        for(var i = 0; i < global.currentconfig.fixtures.length; i++)
-        {
-            var fix = global.currentconfig.fixtures[i];
-            if(fix.assignedname == req.body.assignedname)
-            {
-                exists = true;
-                global.currentconfig.fixtures.splice(i,1); //remove it,
-                break;
-            }
-        }  */
+        /* var exists = false;
+         for(var i = 0; i < global.currentconfig.fixtures.length; i++)
+         {
+         var fix = global.currentconfig.fixtures[i];
+         if(fix.assignedname == req.body.assignedname)
+         {
+         exists = true;
+         global.currentconfig.fixtures.splice(i,1); //remove it,
+         break;
+         }
+         }  */
 
         // 5/24/17  add log object when adding fixture..
         var logobj = {};
@@ -641,9 +646,48 @@ router.post('/addfixturetoscene', function(req, res) {
     if(sceneobj != undefined)
     {
         var found = sceneobj.containsFixture(fixturename);
-        if(!found)
+        var fixobj = global.currentconfig.getFixtureByName(fixturename);
+        if(!found && fixobj != undefined)
         {
-            sceneobj.addFixture(fixturename, fixtype);
+            // 6/8/17,
+            // moved abstraction up to capture fix current settings.
+            var set = undefined;
+            switch(fixtype)
+            {
+                case "on_off":
+                    set = new OnOffSetting();
+                    set.name = fixturename;
+                    set.level = fixobj.level;
+
+                    break;
+                case "dim":
+                    set = new DimSetting();
+                    set.name = fixturename;
+                    set.level = fixobj.level;
+
+                    break;
+
+                case "cct":
+                    set = new CCTSetting();
+                    set.name = fixturename;
+                    set.colortemp = fixobj.colortemp;
+                    set.brightness = fixobj.brightness;
+
+                    break;
+                case "rgbw":
+                    set = new RGBWSetting();
+                    set.name = fixturename;
+                    set.red = Number(fixobj.red);
+                    set.green = Number(fixobj.green);
+                    set.blue = Number(fixobj.blue);
+                    set.white = Number(fixobj.white);
+
+                    break;
+                default:
+                    break;
+            }
+
+            sceneobj.addFixture(set);
         }
     }
 
