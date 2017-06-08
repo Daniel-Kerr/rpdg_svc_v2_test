@@ -139,13 +139,4 @@ router.post('/forcecrash', function(req, res) {
 });
 
 
-
-// test hook for zero to 10 v driver
-/*router.get('/dimmeredgecfg', function(req, res, next) {
-
-    service.testDimmerEdgeConfig();
-    res.send('dimmer edge command sent to driver');
-
-});  */
-
 module.exports = router;

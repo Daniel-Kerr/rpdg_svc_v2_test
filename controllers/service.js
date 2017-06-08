@@ -1371,6 +1371,29 @@ var service = module.exports = {
     },
     forcecrash: function () {
         process.exit(1);
+    },
+    i2c_test1: function () {
+        var value = 0;
+        var direction = true;
+        rpdg.setOutputToLevel(1,0,true,undefined);  // set to 0
+        for(var i = 0; i < 500; i++)
+        {
+            rpdg.setOutputToLevel(1,value,true,undefined);
+            if(direction) {
+                value++;
+
+                if(value >= 100)
+                    direction = false;
+            }
+            else
+            {
+                value--;
+
+                if(value <= 0)
+                    direction = true;
+            }
+        }
     }
+
 
 };
