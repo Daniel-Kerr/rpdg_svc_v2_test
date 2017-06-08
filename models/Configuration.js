@@ -33,6 +33,7 @@ var Configuration = function()
     //this.daylightlevelvolts = 0;
     this.occupiedstate = 0;
 
+    this.daylightpollsec = 600; // in seconds. = 10 min
 
     this.sitezip = 97219;
     this.sitelatt = 45.4736058;
@@ -43,6 +44,9 @@ var Configuration = function()
         this.sitezip = obj.sitezip;
         this.sitelatt = obj.sitelatt; //45.4736058;
         this.sitelong = obj.sitelong; //-122.7349017;
+
+        if(obj.daylightpollsec != undefined)
+            this.daylightpollsec = obj.daylightpollsec;
 
         for (var i = 0; i < obj.fixtures.length; i++) {
             var fix = obj.fixtures[i];
@@ -82,22 +86,22 @@ var Configuration = function()
             f.fromJson(input);
             this.levelinputs.push(f);
 
-           /* switch (input.type) {
+            /* switch (input.type) {
 
-                case "dimmer":
-                    var f = new Dimmer();
-                    f.fromJson(input);
-                    this.levelinputs.push(f);
-                    break;
+             case "dimmer":
+             var f = new Dimmer();
+             f.fromJson(input);
+             this.levelinputs.push(f);
+             break;
 
-                case "daylight":
-                    var f = new DayLightSensor();
-                    f.fromJson(input);
-                    this.levelinputs.push(f);
-                    break;
-                default:
-                    break;
-            }*/
+             case "daylight":
+             var f = new DayLightSensor();
+             f.fromJson(input);
+             this.levelinputs.push(f);
+             break;
+             default:
+             break;
+             }*/
         }
 
 

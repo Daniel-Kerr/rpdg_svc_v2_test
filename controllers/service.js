@@ -41,7 +41,9 @@ var enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
 var SunCalc = require('suncalc');
 
-var daylightpollseconds = 10;     // global variable (can be set via api).
+//var daylightpollseconds = 10;     // global variable (can be set via api).
+
+
 var daylightpolcount = 0;   // used for tracking of dl upddates. interval.
 
 var schedulepollseconds = 60;
@@ -434,9 +436,6 @@ function constructMiscDirs()
     var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
     persistantstore = obj;
 
-
-
-
 }
 
 
@@ -632,6 +631,9 @@ var service = module.exports = {
             }
         }
 
+
+        var k =  global.currentconfig.daylightpollsec;
+
         // FOR DEV DEBUG
         //  rpdg.resetTinsey();
 
@@ -754,7 +756,7 @@ var service = module.exports = {
             // poll check the current daylight sensor input,
             // ********************************************************************************************************
             daylightpolcount++;
-            var DaylightPollingPeriod = Math.round((daylightpollseconds * 1000) / BasePollingPeriod);
+            var DaylightPollingPeriod = Math.round((global.currentconfig.daylightpollsec * 1000) / BasePollingPeriod);
             if (DaylightPollingPeriod > 0 && daylightpolcount >= DaylightPollingPeriod) {
                 daylightpolcount = 0;
                 //  global.applogger.info(TAG, "DAYLIGHT POLL CHECK", "");
@@ -1095,17 +1097,9 @@ var service = module.exports = {
             sendMessageToGroup(groupobj, "vacancy", 0); // default value for vacc is 0, but will use params
         }
     },
-    setDayLightPollingPeriodSeconds: function (intervalsec) {
-        daylightpollseconds = intervalsec;
+    resetDayLightPollCount: function () {
         daylightpolcount = 0;
     },
-// ,
-// reinitScheduleMgr : function()
-// {
-//     reinit_schedule_countdown = 2;
-//     s
-//
-// },
     enableRPDGHardwarePolling: function (enable) {
         global.applogger.error("rpdg_driver.js ", "enable rpdg polling : " + enable, "");
         rpdg.enableHardwarePolling(enable);

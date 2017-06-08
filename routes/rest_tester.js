@@ -59,8 +59,12 @@ router.post('/setdaylighttimerinterval', function(req, res) {
 
     if(req.body.interval != undefined) {
         var interval = req.body.interval;
-        service.setDayLightPollingPeriodSeconds(interval);
+        global.currentconfig.daylightpollsec = interval;  // 6/8/17,
+
+        data_utils.writeConfigToFile();
+        service.resetDayLightPollCount();
     }
+
     var cfg = JSON.stringify(global.currentconfig,null,2);
     res.status(200).send(cfg);
 

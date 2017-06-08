@@ -442,6 +442,10 @@ function processConfig(configobj)
 
     onLevelInputTypeChanged(); //init the active drive gui layout...
 
+
+    // 6/8/17,
+    $('#daylightpoll').val(cachedconfig.daylightpollsec);
+
 }
 
 var scriptnames = undefined;
@@ -2355,5 +2359,7 @@ function SetDaylightPolling()
     element.interval = selection;
     SetDaylightPollingCRUD(element, function(data) {
         // ignore return .
+        cachedconfig = data;
+
     })
 }
