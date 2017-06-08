@@ -106,7 +106,7 @@ router.post('/savefixture', function(req, res) {
         for(var i = 0; i < global.currentconfig.fixtures.length; i++)
         {
             var fix = global.currentconfig.fixtures[i];
-            if(fix.outputid == req.body.outputid && fix.assignedname != req.body.assignedname)
+            if(fix.outputid == req.body.outputid && fix.interfacename == req.body.interfacename && fix.assignedname != req.body.assignedname)
             {
                 // found matching output id,   but name does not match, this is a rename case.
                 global.currentconfig.renameFixtureInGroupsScenes(fix.assignedname, req.body.assignedname);
@@ -914,16 +914,6 @@ router.post('/getgpsfromzipcode', function(req, res) {
     var zip = req.body.zip;
     var data = service.getGPSFromZipcode(zip, res);
 
-});
-
-
-router.post('/getrpdgboardinfo', function(req, res) {
-
-    var data = service.isHighVoltageBoard()
-    var element = {};
-    element.ishighvoltage = data;
-    element.fwversion = "??.??";
-    res.status(200).send(element);
 });
 
 
