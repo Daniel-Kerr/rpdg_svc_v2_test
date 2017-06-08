@@ -158,7 +158,7 @@ function processOutputDataFetch(name, resultdata) {
         var height = totaloutputs * 27;
         if(height < 260)
             height = 260;
-        
+
         $("#parent_output").height(height);
 
 

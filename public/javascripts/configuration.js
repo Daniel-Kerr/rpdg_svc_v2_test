@@ -529,19 +529,14 @@ function saveNewFixture(image) {
 
 
     // 4/27/17,  validate output number,
-    if(interface == "rpdg-pwm" || interface == "rpdg-plc" || interface == "enocean") {
+    // 6/8/17, temp removed,  for name edit
+   if(interface == "rpdg-pwm" || interface == "rpdg-plc" || interface == "enocean") {
         var outputcheck = outputAvalibleCheck(outputlist, selstart, seltype, fixname, interface);
         if (!outputcheck) {
-
             $.Notification.notify('error','top left', 'Fixture Save Error', "Output number conflict, or output limit issue, please check type and output number");
-            //noty({
-            //    text: "Output number conflict, or output limit issue, please check type and output number",
-            //    type: 'error',
-            //    timeout: 4000
-            // });
             return;
         }
-    }
+   }
 
     if(seltype == "cct")
     {
@@ -549,7 +544,6 @@ function saveNewFixture(image) {
         if(j != undefined && j.minctemp != undefined && j.minctemp.length > 0)
         {
             $.Notification.notify('error','top left', 'Fixture Save Error', j.minctemp[0]);
-            // noty({text: j.minctemp[0], type: 'error', timeout:750});
             return;
         }
 
@@ -557,7 +551,6 @@ function saveNewFixture(image) {
         if(j != undefined && j.maxctemp != undefined && j.maxctemp.length > 0)
         {
             $.Notification.notify('error','top left', 'Fixture Save Error', j.maxctemp[0]);
-            // noty({text: j.maxctemp[0], type: 'error', timeout:750});
             return;
         }
 
@@ -565,34 +558,17 @@ function saveNewFixture(image) {
         if((Number(document.getElementById("minctemp").value) > document.getElementById("maxctemp").value))
         {
             $.Notification.notify('error','top left', 'Fixture Save Error', "Minimum Color temp must be < Maximum");
-            // noty({text: "Minimum Color temp must be < Maximum", type: 'error', timeout:1250});
             return;
         }
 
     }
 
-
     var fixture = {};
-
-
-
-    //  var assignment = buildassignment(Number(selstart), seltype);
-    //  fixture.assignment = assignment;
-
-    // convert assignemtn array to numbers with _ between them,
-    // var custom = assignment.join("_");
     fixture.assignedname = document.getElementById("fixturename").value;
-    // var uidbase = hostip.split(".").join("_");
-    // fixture.uid = uidbase + "_" + custom;
     fixture.type = seltype;
     fixture.interfacename = $("#interface").val();
-    //  fixture.globalgroups = 0;
-    //  fixture.localgroups = "";
     fixture.outputid = selstart;
-
-
     fixture.image = "/fixtureimg/1.jpg";
-
 
     if(image != undefined)
     {
@@ -600,20 +576,13 @@ function saveNewFixture(image) {
     }
 
     fixture.status = 0;
-    //if (seltype == "on_off")
-
-    // else if (seltype == "dim")
-    //     fixture.image = "/images/light_eg1.jpg";
     if (seltype == "cct") {
-        //  fixture.image = "/images/ceiling_spotlight.jpg";
         fixture.candledim = document.getElementById("candledim").checked;
         fixture.min = document.getElementById("minctemp").value;
         fixture.max =  document.getElementById("maxctemp").value;
-
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
     else if(seltype == "rgbw") {
-        //   fixture.image = "/images/rgbw_fixture.jpg";
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
 
@@ -627,14 +596,10 @@ function saveNewFixture(image) {
             k = k + 1;
             boundinputs.push(cb.val());
         }
-
     }
 
     fixture.twelvevolt = document.getElementById("twelvevolt").checked;
-
     fixture.boundinputs = boundinputs;
-    //  fixture.candledim = document.getElementById("candledim").checked;
-
     var params = {};  // will contain current settings,
     params.dimoptions = document.getElementById("fixtureparam_0").value;
     params.dimrate = document.getElementById("fixtureparam_1").value;
@@ -2271,12 +2236,12 @@ function gpsLookup()
 
 function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interface)
 {
-    // filter out any already used outputs.
+    // filter out any already used outputs.   based on this fixtures interface /
     for(var i = 0; i < cachedconfig.fixtures.length; i++)
     {
         var fixobj = cachedconfig.fixtures[i];
 
-        if(fixobj.interfacename == interface) {
+        if(fixobj.interfacename == interface && fixobj.outputid != desiredstartoutput) {
 
             if (fixobj.assignedname == name)
                 continue; // allows for edit,
@@ -2316,7 +2281,7 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
         if(ctemp < 0)
             return false;
 
-        var ne
+
         var bright = inputlist.indexOf(String(Number(desiredstartoutput)+1));
         if(bright < 0)
             return false;

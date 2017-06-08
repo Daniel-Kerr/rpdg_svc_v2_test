@@ -101,21 +101,43 @@ router.post('/savefixture', function(req, res) {
 
     if(req.body != undefined && req.body.type != undefined )
     {
+
+        //6/8/17 handle rename of fixutre here. by testing for output number match,
+        for(var i = 0; i < global.currentconfig.fixtures.length; i++)
+        {
+            var fix = global.currentconfig.fixtures[i];
+            if(fix.outputid == req.body.outputid && fix.assignedname != req.body.assignedname)
+            {
+                // found matching output id,   but name does not match, this is a rename case.
+                global.currentconfig.renameFixtureInGroupsScenes(fix.assignedname, req.body.assignedname);
+                // go through all scenes and groups, and rename old to new.
+                global.currentconfig.fixtures.splice(i,1); //remove it
+                //global.currentconfig.fixtures.splice(i,1); //remove it,
+                break;
+            }
+            else if(fix.assignedname == req.body.assignedname)
+            {
+                global.currentconfig.fixtures.splice(i,1); //remove it,
+                break;
+            }
+        }
+
+
         // validate here,
         // make sure fix params exists if not add them in, blank, (default),
         // check if name already exists,  if so update,
-        var exists = false;
+        // removved 6/8/17
+       /* var exists = false;
         for(var i = 0; i < global.currentconfig.fixtures.length; i++)
         {
             var fix = global.currentconfig.fixtures[i];
             if(fix.assignedname == req.body.assignedname)
             {
-
                 exists = true;
                 global.currentconfig.fixtures.splice(i,1); //remove it,
                 break;
             }
-        }
+        }  */
 
         // 5/24/17  add log object when adding fixture..
         var logobj = {};
@@ -167,13 +189,8 @@ router.post('/savefixture', function(req, res) {
         }
     }
 
-
     service.updatePWMPolarity();
-
-
-
     var cfg = JSON.stringify(global.currentconfig,null,2);
-
     // for now cache it to disk .
     data_utils.writeConfigToFile();
     res.status(200).send(cfg);
@@ -191,9 +208,6 @@ router.post('/deletefixture', function(req, res) {
             var fix = global.currentconfig.fixtures[i];
             if(fix.assignedname == req.body.assignedname)
             {
-
-
-
                 global.currentconfig.fixtures.splice(i,1);
                 break;
             }

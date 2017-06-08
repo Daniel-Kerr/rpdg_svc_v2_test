@@ -285,6 +285,38 @@ var Configuration = function()
         }
         return undefined;
     };
+
+    this.renameFixtureInGroupsScenes = function(oldname, newname)
+    {
+        for(var i = 0 ; i < this.groups.length; i++)  ///for each group
+        {
+            var group = this.groups[i];
+            for(var gi = 0; gi < group.fixtures.length; gi++)  //check all fixtures
+            {
+                var fixname = group.fixtures[gi];
+                if(fixname == oldname)
+                {
+                    group.fixtures[gi] = newname;
+                    break;
+                }
+            }
+
+        }
+        for(var i = 0 ; i < this.scenes.length; i++)  ///for each scene
+        {
+            var scene = this.scenes[i];
+            for(var gi = 0; gi < scene.fixtures.length; gi++)  //check all fixtures
+            {
+                var fixinscene = scene.fixtures[gi];
+                if(fixinscene.name == oldname)
+                {
+                    fixinscene.name = newname;
+                    break;
+                }
+            }
+
+        }
+    };
 };
 
 module.exports = Configuration;
