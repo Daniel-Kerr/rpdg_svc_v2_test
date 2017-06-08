@@ -7,6 +7,7 @@ var gaugesmap = {};
 var bulb_icon_map = {};
 var daylight_limit_icon_map = {};
 
+var boardtype = "N/A";  // LV is assumed
 // periodic poll of data.
 setInterval(function () {
     getConfig(updateUIPageComponents);
@@ -25,11 +26,15 @@ function initStatusHandler(config)
 }
 
 
+
 function initFixtureStatusBoxes() {
     getConfig(initStatusHandler);
 
     getVersion(function(ver) {
         document.getElementById("version").innerHTML = ver.controller + " / " + ver.firmware;
+
+        if(ver.boardtype != undefined)
+            boardtype = ver.boardtype;
     })
 }
 
@@ -152,7 +157,7 @@ function updateLevelInputsTable() {
                 }
             }
             else if(levelinputlist[i].interface == "enocean") {
-               // val = levelinputlist[i].value  + " LUX";
+                // val = levelinputlist[i].value  + " LUX";
                 var fc = voltageToFC(levelinputlist[i].value);
                 val = levelinputlist[i].value + " Volts  /  " + fc + " (FC)";
             }
@@ -170,7 +175,7 @@ function updateLevelInputsTable() {
     }
 
     $("#tableOutput").html(oTable);
-   // levelinputdiv.appendChild(oTable);
+    // levelinputdiv.appendChild(oTable);
 }
 
 
@@ -314,7 +319,12 @@ function updateFixtureStatusBox(fixture, index)
         statleft.appendChild(power_hold);
 
         var lbval = document.createElement("label");
-        lbval.innerHTML = fixture.powerwatts + " Watts";
+        var powerlevel = "";
+        if(fixture.interfacename == "rpdg-pwm" && boardtype == "LV") // && board is type lv. )
+        {
+            powerlevel = fixture.powerwatts + " Watts";
+        }
+        lbval.innerHTML = powerlevel; // fixture.powerwatts + " Watts";
         lbval.className = "powerlabel";
         power_hold.appendChild(lbval);
 

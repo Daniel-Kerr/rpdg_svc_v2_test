@@ -57,7 +57,7 @@ var REST_GET_SCRIPT_NAMES = "/config/getscriptnames";
 
 var REST_GET_GPS_FROM_ZIPCODE = "/config/getgpsfromzipcode";
 
-var REST_GET_RPDG_BOARD_INFO = "/config/getrpdgboardinfo";
+//var REST_GET_RPDG_BOARD_INFO = "/config/getrpdgboardinfo";
 
 var REST_GET_VERSION = "/version";
 
@@ -465,7 +465,7 @@ function getGPSCordFromZipcode(obj, callback) {
 
 
 
-
+/*
 function getRPDGBoardInfo(callback) {
 
    // var dataset = JSON.stringify(obj);
@@ -483,7 +483,7 @@ function getRPDGBoardInfo(callback) {
         }
     });
 }
-
+*/
 
 
 

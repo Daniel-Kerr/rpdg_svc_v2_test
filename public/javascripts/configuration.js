@@ -433,12 +433,17 @@ function processConfig(configobj)
     });
 
 
-    getRPDGBoardInfo(function(data) {
-
-        rpdg_highvoltage = data.ishighvoltage;
+    //getRPDGBoardInfo(function(data) {
+    //    rpdg_highvoltage = data.ishighvoltage;
         //var k = data;
+      //
+    //});
 
-    });
+    getVersion(function(ver) {
+
+        if(ver != undefined && ver.boardtype != undefined)
+            rpdg_highvoltage = (ver.boardtype == "HV");
+    })
 
     onLevelInputTypeChanged(); //init the active drive gui layout...
 

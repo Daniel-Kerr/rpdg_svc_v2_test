@@ -643,13 +643,14 @@ var service = module.exports = {
 
         var ele = {};
         ele.controller = sw_version;
-        var verstring = (rpdg.isHighVoltageBoard()) ? "HV-" : "LV-";
+        var verstring = rpdg.getBoardType() + "-";
         ele.firmware = verstring + " " + rpdg.getFWVersionNumber(); // firmware_version;
+        ele.boardtype = rpdg.getBoardType();
         return ele;
     },
     updatePWMPolarity: function () {
         var mask = 0;
-        if (rpdg.isHighVoltageBoard()) {
+        if (rpdg.getBoardType() == "HV") {
             mask = constructHV_PhaseDimMask();
             global.applogger.info(TAG, "HV Phase Direction Mask: " + mask.toString(16), "");
 
@@ -1183,8 +1184,7 @@ var service = module.exports = {
     },
     setRPDGPWMOutput: function (output, level) {
         rpdg.setOutputToLevel(output, level, false, undefined);
-    }
-    ,
+    },
     setRPDGPLCOutput: function (output, level) {
         rpdg.setOutputToLevel(output, level, false, "plc");
     },
@@ -1360,9 +1360,7 @@ var service = module.exports = {
         }
         //    res.status(200).send("not found");
     },
-    isHighVoltageBoard: function () {
-        return rpdg.isHighVoltageBoard();
-    },
+
     isScriptRunning: function () {
         return activescript != undefined;
     },

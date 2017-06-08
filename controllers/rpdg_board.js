@@ -240,16 +240,15 @@ exports.enableHardwarePolling = function(enable)
 }
 
 
-exports.isHighVoltageBoard = function()
+exports.getBoardType = function()
 {
-    if(getI2cWire() == undefined)
-        return true;
-
+    if(getI2cWire() == undefined || boardtype == undefined)
+        return "N/A";
 
     if(boardtype.toLowerCase().includes("high"))
-        return true;
+        return "HV";
     else
-        return false;
+        return "LV";
 }
 
 
@@ -257,6 +256,9 @@ exports.isHighVoltageBoard = function()
 exports.getFWVersionNumber = function()
 {
     try {
+        if(fwversion == "??")
+            return "n/a";
+
         return parseFloat(fwversion);
     } catch(ex)
     {

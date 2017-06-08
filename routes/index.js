@@ -32,12 +32,7 @@ router.get('/testme', function(req, res) {
 
 router.get('/version', function(req, res) {
 
-   // var element = {};
-
     var ele = service.getVersionObject();
-
-   // element.controller = "1.00";
-   // element.firmware = "tbd";
     res.status(200).send(JSON.stringify(ele));
 });
 
