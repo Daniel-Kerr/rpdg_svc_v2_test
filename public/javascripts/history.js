@@ -153,6 +153,15 @@ function processOutputDataFetch(name, resultdata) {
             detailOptions
         );
 
+        // ***************************************************
+      //  var par_out_div = $("#parent_output");  // 6/8/17 set
+        var height = totaloutputs * 27;
+        if(height < 260)
+            height = 260;
+        
+        $("#parent_output").height(height);
+
+
         var choiceContainer = $("#choices");
         $.each(output_dataset, function(key, val) {
             choiceContainer.append(
@@ -271,6 +280,12 @@ function processInputDataFetch(name, resultdata) {
             levelinputdetailOptions
         );
 
+
+        var height = totalinputs * 27;
+        if(height < 260)
+            height = 260;
+
+        $("#parent_levelinput").height(height);
 
         var choiceContainer = $("#levelinputchoices");
         $.each(levelinput_dataset, function(key, val) {
@@ -425,6 +440,12 @@ function processContactInputDataFetch(name, resultdata) {
             contactinput_dataset,
             contactinputdetailOptions
         );
+
+        var height = totalcontactinputs * 27;
+        if(height < 260)
+            height = 260;
+
+        $("#parent_contactinput").height(height);
 
 
         var choiceContainer = $("#contactinputchoices");
