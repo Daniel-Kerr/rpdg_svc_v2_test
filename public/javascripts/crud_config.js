@@ -464,30 +464,6 @@ function getGPSCordFromZipcode(obj, callback) {
 }
 
 
-
-/*
-function getRPDGBoardInfo(callback) {
-
-   // var dataset = JSON.stringify(obj);
-    $.ajax({
-        url: REST_GET_RPDG_BOARD_INFO,
-        type: 'post',
-      //  data: dataset,
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            callback(result);
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            callback("error");
-        }
-    });
-}
-*/
-
-
-
-
 function setHotspotEnable(obj, callback) {
 
     var dataset = JSON.stringify(obj);
@@ -523,4 +499,40 @@ function SetDaylightPollingCRUD(obj, callback) {
             callback("error");
         }
     });
+}
+
+
+
+
+
+/***
+ *
+ * @param
+ * @param callback
+ */
+function editConfigObject(action, objtype, obj, editindex, callback) {
+
+    var element = {};
+    element.action = action;
+    element.objecttype = objtype;
+    element.object = obj;
+    element.index = editindex;
+
+    var dataset = JSON.stringify(element);
+    var target = "/config/editconfig";
+
+    $.ajax({
+        url: target,
+        type: 'post',
+        data: dataset,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+
 }

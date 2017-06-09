@@ -435,8 +435,8 @@ function processConfig(configobj)
 
     //getRPDGBoardInfo(function(data) {
     //    rpdg_highvoltage = data.ishighvoltage;
-        //var k = data;
-      //
+    //var k = data;
+    //
     //});
 
     getVersion(function(ver) {
@@ -508,12 +508,8 @@ function buildassignment(start, type)
 
 function saveNewFixture(image) {
 
-    selected_edit_fixture = undefined;
-    //  var startout = document.getElementById("starting_output");
-    //  var type = document.getElementById("fixturetype");
     var selstart =  $("#starting_output").val(); //startout.options[startout.selectedIndex].value;
     var seltype = $("#fixturetype").val();  //type.options[type.selectedIndex].value;
-    // start of validation code.
 
     var fixname = document.getElementById("fixturename").value.trim();
     var j = validate({name: fixname}, constraints);
@@ -532,16 +528,16 @@ function saveNewFixture(image) {
     if(interface == "enocean")
         outputlist = cachedinterfaceio.enocean.outputs.slice(0);
 
+    var newitem = (selected_edit_fixture == undefined)? true:false;
 
-    // 4/27/17,  validate output number,
-    // 6/8/17, temp removed,  for name edit
-   if(interface == "rpdg-pwm" || interface == "rpdg-plc" || interface == "enocean") {
-        var outputcheck = outputAvalibleCheck(outputlist, selstart, seltype, fixname, interface);
+
+    if(interface == "rpdg-pwm" || interface == "rpdg-plc" || interface == "enocean") {
+        var outputcheck = outputAvalibleCheck(outputlist, selstart, seltype, fixname, interface, newitem);
         if (!outputcheck) {
             $.Notification.notify('error','top left', 'Fixture Save Error', "Output number conflict, or output limit issue, please check type and output number");
             return;
         }
-   }
+    }
 
     if(seltype == "cct")
     {
@@ -565,7 +561,6 @@ function saveNewFixture(image) {
             $.Notification.notify('error','top left', 'Fixture Save Error', "Minimum Color temp must be < Maximum");
             return;
         }
-
     }
 
     var fixture = {};
@@ -597,8 +592,6 @@ function saveNewFixture(image) {
         var cb = availibleinputs[i];
         if($(cb).is(':checked'))
         {
-            var k = 0;
-            k = k + 1;
             boundinputs.push(cb.val());
         }
     }
@@ -624,41 +617,45 @@ function saveNewFixture(image) {
 
     fixture.parameters = params;
 
-    saveConfigObject("fixture",fixture,function (retval) {
-        cachedconfig = retval;
+    if(selectedfixtureindex > -1)
+    {
+        editConfigObject("edit", "fixture", fixture, selectedfixtureindex, function (retval) {
+            document.getElementById("fixturename").value = "";  //blank it out.
+            cachedconfig = retval;
+            fixturetable.destroy();
+            constructFixtureTable();
+            updateAvalibleStartingOutputNumbers(true);
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
+        });
+    }
+    else {
 
-        fixturetable.destroy();
-        constructFixtureTable();
-        /*
-         var dataset = transformFixtureToDataSet();
-         fixturetable = $('#fixturetable').DataTable( {
-         "aaData": dataset,
-         "aoColumns": [
-         { "mData": 'assignedname'},
-         { "mData": 'type'},
-         { "mData": 'interfacename'},
-         { "mData": 'outputid', "bSortable": false},
-         { "mData": 'image', "bSortable": false,
-         "mRender": function (data, type, row) {
-         //  var sens = data;
-         //  var imgstring = '<a src='+data + ' onclick=' + '"setfixtureimage()"' +' href=#></a>';
-         var imgstring = '<img src='+data + ' width=30 height=30 onclick=' + '"setfixtureimage()"' +' />';
-         return imgstring;
+        editConfigObject("create", "fixture", fixture, undefined, function (retval) {
+            document.getElementById("fixturename").value = "";  //blank it out.
+            cachedconfig = retval;
+            fixturetable.destroy();
+            constructFixtureTable();
+            updateAvalibleStartingOutputNumbers(true);
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
+        });
+    }
 
-         }
-         }
-         ]
-         } );*/
-
-        updateAvalibleStartingOutputNumbers(true);  // 5/26/17
-    });
+    //saveConfigObject("fixture",fixture,function (retval) {
+    //    document.getElementById("fixturename").value = "";  //blank it out.
+    //    cachedconfig = retval;
+    //    fixturetable.destroy();
+    //    constructFixtureTable();
+    //    updateAvalibleStartingOutputNumbers(true);
+    //});
 }
-
 
 
 function deleteFixture()
 {
-
 
     var index =  selectedfixtureindex; //Number(this.getAttribute('index'));
     // bug 201,  set the outputs of this fixture to 0,
@@ -682,7 +679,19 @@ function deleteFixture()
     setFixtureLevel2(element, function (result) {
 
         var i = 0;  //cb stub
-        deleteConfigObject("fixture",cachedconfig.fixtures[index],function (retval) {
+
+        editConfigObject("delete", "fixture", undefined, selectedfixtureindex, function (retval) {
+            document.getElementById("fixturename").value = "";  //blank it out.
+            cachedconfig = retval;
+            fixturetable.destroy();
+            constructFixtureTable();
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
+            updateAvalibleStartingOutputNumbers(true);
+        });
+
+        /*deleteConfigObject("fixture",cachedconfig.fixtures[index],function (retval) {
             cachedconfig = retval;
 
             fixturetable.destroy();
@@ -692,7 +701,7 @@ function deleteFixture()
             selectedlevelinputindex = -1;
             selectedcontactinputindex = -1;
             selectedfixtureindex = -1;
-        });
+        });  */
     });
 
 }
@@ -1294,33 +1303,52 @@ function saveNewContactInputObj() {
         contactinput.inactive_action = "action_none";
 
 
-    saveConfigObject("contactinput",contactinput ,function(retval) {
-        cachedconfig = retval;
-        updateWetDryContactTable();
-        //  populateBoundInputOptions();
-
-    });
-
-}
-
-
-
-function deleteInputContactItem()
-{
-    if(selectedcontactinputindex > -1) {
-        var index = selectedcontactinputindex;
-        deleteConfigObject("contactinput", cachedconfig.contactinputs[index], function (retval) {
+    if(selectedcontactinputindex > -1)
+    {
+        editConfigObject("edit", "contactinput", contactinput, selectedcontactinputindex, function (retval) {
+            document.getElementById("contactname").value = "";
             cachedconfig = retval;
             updateWetDryContactTable();
-
             selectedlevelinputindex = -1;
             selectedcontactinputindex = -1;
             selectedfixtureindex = -1;
         });
-
     }
+    else {
+
+        editConfigObject("create", "contactinput", contactinput, undefined, function (retval) {
+            document.getElementById("contactname").value = "";
+            cachedconfig = retval;
+            updateWetDryContactTable();
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
+        });
+    }
+
+
+   // saveConfigObject("contactinput",contactinput ,function(retval) {
+   //     cachedconfig = retval;
+   //     updateWetDryContactTable();
+        //  populateBoundInputOptions();
+
+   // });
+
 }
 
+function deleteInputContactItem()
+{
+    if(selectedcontactinputindex > -1) {
+        editConfigObject("delete", "contactinput", undefined, selectedcontactinputindex, function (retval) {
+            document.getElementById("contactname").value = "";  //blank it out.
+            cachedconfig = retval;
+            updateWetDryContactTable();
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
+        });
+    }
+}
 
 
 function updateContactInputs_InputSel()
@@ -1522,23 +1550,45 @@ function saveNewLevelInput() {
     levelinput.group = $("#groupassignment").val();
 
 
-    saveConfigObject("levelinput",levelinput ,function(retval) {
-        cachedconfig = retval;
-        updateLevelInputsTable();
-        //  populateBoundInputOptions();
+    if(selectedlevelinputindex > -1)
+    {
+        editConfigObject("edit", "levelinput", levelinput, selectedlevelinputindex, function (retval) {
+            document.getElementById("levelinputname").value = "";  //blank it out.
+            cachedconfig = retval;
+            updateLevelInputsTable();
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
+        });
+    }
+    else {
 
-    });
+        editConfigObject("create", "levelinput", levelinput, undefined, function (retval) {
+            document.getElementById("levelinputname").value = "";
+            cachedconfig = retval;
+            updateLevelInputsTable();
+            selectedlevelinputindex = -1;
+            selectedcontactinputindex = -1;
+            selectedfixtureindex = -1;
+        });
+    }
+
+
+
+   // saveConfigObject("levelinput",levelinput ,function(retval) {
+   //     cachedconfig = retval;
+   //     updateLevelInputsTable();
+   // });
 }
 
 
 function deleteLevelInput()
 {
     if(selectedlevelinputindex > -1) {
-        var index = selectedlevelinputindex; //Number(this.getAttribute('index'));
-        deleteConfigObject("levelinput", cachedconfig.levelinputs[index], function (retval) {
+        editConfigObject("delete", "levelinput", undefined, selectedlevelinputindex, function (retval) {
+            document.getElementById("levelinputname").value = "";  //blank it out.
             cachedconfig = retval;
             updateLevelInputsTable();
-
             selectedlevelinputindex = -1;
             selectedcontactinputindex = -1;
             selectedfixtureindex = -1;
@@ -2246,10 +2296,28 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
     {
         var fixobj = cachedconfig.fixtures[i];
 
-        if(fixobj.interfacename == interface && fixobj.outputid != desiredstartoutput) {
+        if(fixobj.interfacename == interface) { // } && (fixobj.outputid != desiredstartoutput || newitem)) {
 
-            if (fixobj.assignedname == name)
-                continue; // allows for edit,
+            // skip the fixture that is being edited,  (don't count it),
+            if(selected_edit_fixture != undefined && fixobj == selected_edit_fixture)
+            {
+                continue;
+
+                //var k = 0;
+                //if(fixobj.outputid == desiredstartoutput)  // if output id has not changed,
+                //{
+                //     continue;
+                //}
+                //else
+                //{
+                // output id has changed,  so remove
+                //}
+                // check if the output id has changed relative to the edit fixture. ..
+
+            }
+            // if(!newitem && fixobj.outputid != desiredstartoutput)
+            //if (fixobj.assignedname == name)
+            //   continue; // allows for edit,
 
             var outstart = Number(fixobj.outputid);
             if (fixobj.type == "on_off" || fixobj.type == "dim") {

@@ -101,6 +101,8 @@ router.get('/getinterfaceoutputs', function(req, res) {
 
     res.send(interfaces);
 });
+
+/*
 // Fixtures:
 router.post('/savefixture', function(req, res) {
 
@@ -145,7 +147,7 @@ router.post('/savefixture', function(req, res) {
          }  */
 
         // 5/24/17  add log object when adding fixture..
-        var logobj = {};
+  /*      var logobj = {};
         var now = moment();
         logobj.date = now.toISOString();
 
@@ -200,7 +202,9 @@ router.post('/savefixture', function(req, res) {
     data_utils.writeConfigToFile();
     res.status(200).send(cfg);
 });
+*/
 
+  /*
 router.post('/deletefixture', function(req, res) {
 
 
@@ -258,9 +262,9 @@ router.post('/deletefixture', function(req, res) {
     res.status(200).send(cfg);
 });
 
+*/
 
-
-
+/*
 
 router.post('/savelevelinput', function(req, res) {
 
@@ -327,7 +331,7 @@ router.post('/deletelevelinput', function(req, res) {
     data_utils.writeConfigToFile();
     res.status(200).send(cfg);
 });
-
+*/
 
 router.post('/savecontactinput', function(req, res) {
 
@@ -972,4 +976,192 @@ router.post('/enablehotspot', function(req, res) {
 
 
 
+
+// ************************************** 6/9/17 new single crud iface for all fixture / inputput items
+// including create / edit delete,
+
+
+router.post('/editconfig', function(req, res) {
+
+    // sub items:
+    // action -- create/edit/delete
+    // index ==  item index for edit/delete.,  not for create.
+    // object type: fixture/ contact input / levelinput
+    // object
+
+    if(req.body != undefined && req.body.action != undefined && req.body.objecttype != undefined) {
+        switch (req.body.objecttype) {
+            case "fixture":
+                if (req.body.action == "create" && req.body.object != undefined) {
+                    addFixtureToConfig(req.body.object);
+
+                }
+                else if (req.body.action == "edit" && req.body.object != undefined && req.body.index != undefined)
+                {
+                    var edititem = global.currentconfig.fixtures[req.body.index];
+                    if(edititem.assignedname != req.body.object.assignedname)  // if name is diff, rename groups/scenese.
+                    {
+                        global.currentconfig.renameFixtureInGroupsScenes(edititem.assignedname, req.body.object.assignedname);
+                    }
+                    global.currentconfig.fixtures.splice(req.body.index,1); //remove it
+                    // now save new one.
+                    addFixtureToConfig(req.body.object);
+                }
+                else if (req.body.action == "delete" && req.body.index != undefined)
+                {
+                    var delfix = global.currentconfig.fixtures[req.body.index];
+                    global.currentconfig.fixtures.splice(req.body.index,1); //remove it
+                    // delete from groups
+                    for(var i = 0; i < global.currentconfig.groups.length; i++)
+                    {
+                        var group = global.currentconfig.groups[i];
+                        for(var k = 0; k < group.fixtures.length; k++) {
+                            var fixname = group.fixtures[k];
+                            if (fixname == delfix.assignedname) {
+                                group.fixtures.splice(k, 1);
+                                break;
+                            }
+                        }
+                    }
+                    // delete from scenes
+                    for(var i = 0; i < global.currentconfig.scenes.length; i++)
+                    {
+                        var scene = global.currentconfig.scenes[i];
+                        for(var k = 0; k < scene.fixtures.length; k++) {
+
+                            var fixname = scene.fixtures[k].name;
+                            if (fixname == delfix.assignedname) {
+
+                                scene.fixtures.splice(k, 1);
+                                break;
+                            }
+                        }
+                    }
+
+                }
+                service.updatePWMPolarity();
+                break;
+            case "levelinput":
+                if (req.body.action == "create" && req.body.object != undefined) {
+                    addLevelInputToConfig(req.body.object);
+                }
+                else if (req.body.action == "edit" && req.body.object != undefined && req.body.index != undefined)
+                {
+                    var edititem = global.currentconfig.levelinputs[req.body.index];
+                    global.currentconfig.levelinputs.splice(req.body.index,1); //remove it
+                    // now save new one.
+                    addLevelInputToConfig(req.body.object);
+                }
+                else if (req.body.action == "delete" && req.body.index != undefined)
+                {
+                    global.currentconfig.levelinputs.splice(req.body.index,1); //remove it
+                }
+
+                break;
+            case "contactinput":
+                if (req.body.action == "create" && req.body.object != undefined) {
+                    addContactInputToConfig(req.body.object);
+                }
+                else if (req.body.action == "edit" && req.body.object != undefined && req.body.index != undefined)
+                {
+                    global.currentconfig.contactinputs.splice(req.body.index,1); //remove it
+                    addContactInputToConfig(req.body.object);
+                }
+                else if (req.body.action == "delete" && req.body.index != undefined)
+                {
+                    global.currentconfig.contactinputs.splice(req.body.index,1); //remove it
+                }
+
+                break;
+
+            default:
+                break;
+
+        }   // end switch,
+
+    }
+
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    // for now cache it to disk .
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+});
+
+
+
+function addFixtureToConfig(fixobjjson)
+{
+
+
+    var logobj = {};
+    var now = moment();
+    logobj.date = now.toISOString();
+    var fix = undefined;
+    switch (fixobjjson.type) {  // fixture type...
+        case "on_off":
+            fix = new OnOffFixture();
+            fix.fromJson(fixobjjson);
+            global.currentconfig.fixtures.push(fix);
+            logobj.level = "0";
+            break;
+        case "dim":
+            fix = new DimFixture();
+            fix.fromJson(fixobjjson);
+            global.currentconfig.fixtures.push(fix);
+            logobj.level = "0";
+            break;
+        case "cct":
+            var fix = new CCTFixture();
+            fix.fromJson(fixobjjson);
+            global.currentconfig.fixtures.push(fix);
+            logobj.brightness = 0;
+            logobj.colortemp = 3500;
+            break;
+        case "rgbw":
+            var fix = new RGBWFixture();
+            fix.fromJson(fixobjjson);
+            global.currentconfig.fixtures.push(fix);
+            logobj.red = 0;
+            logobj.green = 0;
+            logobj.blue = 0;
+            logobj.white = 0;
+            break;
+        default:
+            break;
+    }
+
+    data_utils.appendOutputObjectLogFile(fixobjjson.assignedname, logobj);
+    if (fix != undefined) {
+        service.setupHWInterface(fix.assignedname);
+    }
+}
+
+
+function addLevelInputToConfig(levinputobjjson)
+{
+    // 5/24/17  add log object when adding fixture..
+    var logobj = {};
+    logobj.date = new moment().toISOString();
+    logobj.value = 0;
+    data_utils.appendInputObjectLogFile(levinputobjjson.assignedname, logobj);
+    var li = new LevelInput();
+    li.fromJson(levinputobjjson);
+    global.currentconfig.levelinputs.push(li);
+    service.updateRPDGInputDrive();
+}
+
+
+
+function addContactInputToConfig(contactinputobjjson)
+{
+    var logobj = {};
+    logobj.date = new moment().toISOString();
+    logobj.value = 0;
+    data_utils.appendInputObjectLogFile(contactinputobjjson.assignedname, logobj);
+    var ci = new ContactInput();
+    ci.fromJson(contactinputobjjson);
+    global.currentconfig.contactinputs.push(ci);
+
+
+}
 module.exports = router;
