@@ -531,6 +531,18 @@ function saveNewFixture(image) {
     var newitem = (selected_edit_fixture == undefined)? true:false;
 
 
+    //6/9/17, dup name check, new item only
+    if(selectedfixtureindex == -1) {
+        for (j = 0; j < cachedconfig.fixtures.length; j++) {
+            var name = cachedconfig.fixtures[j].assignedname;
+            if (name == fixname) {
+                $.Notification.notify('error', 'top left', 'Fixture Save Error', "Duplicate Name");
+                return;
+            }
+        }
+    }
+
+
     if(interface == "rpdg-pwm" || interface == "rpdg-plc" || interface == "enocean") {
         var outputcheck = outputAvalibleCheck(outputlist, selstart, seltype, fixname, interface, newitem);
         if (!outputcheck) {
@@ -644,13 +656,6 @@ function saveNewFixture(image) {
         });
     }
 
-    //saveConfigObject("fixture",fixture,function (retval) {
-    //    document.getElementById("fixturename").value = "";  //blank it out.
-    //    cachedconfig = retval;
-    //    fixturetable.destroy();
-    //    constructFixtureTable();
-    //    updateAvalibleStartingOutputNumbers(true);
-    //});
 }
 
 
@@ -691,17 +696,7 @@ function deleteFixture()
             updateAvalibleStartingOutputNumbers(true);
         });
 
-        /*deleteConfigObject("fixture",cachedconfig.fixtures[index],function (retval) {
-            cachedconfig = retval;
 
-            fixturetable.destroy();
-
-            constructFixtureTable();
-
-            selectedlevelinputindex = -1;
-            selectedcontactinputindex = -1;
-            selectedfixtureindex = -1;
-        });  */
     });
 
 }
@@ -1212,6 +1207,20 @@ function saveNewContactInputObj() {
         return;
     }
 
+    //6/9/17, dup name check, new item only
+    if(selectedcontactinputindex == -1) {
+        for (j = 0; j < cachedconfig.contactinputs.length; j++) {
+            var name = cachedconfig.contactinputs[j].assignedname;
+            if (name == objname) {
+                $.Notification.notify('error', 'top left', 'Contact Save Error', "Duplicate Name");
+                return;
+            }
+        }
+    }
+
+
+
+
     var contactinput = {};
     contactinput.assignedname = document.getElementById("contactname").value;
     contactinput.interface = $("#contactinputinterface").val();
@@ -1536,6 +1545,20 @@ function saveNewLevelInput() {
         $.Notification.notify('error','top left', 'Level Input Save Error',j.name[0]);
         return;
     }
+
+    //6/9/17, dup name check, new item only
+    if(selectedlevelinputindex == -1) {
+        for (j = 0; j < cachedconfig.levelinputs.length; j++) {
+            var name = cachedconfig.levelinputs[j].assignedname;
+            if (name == objname) {
+                $.Notification.notify('error', 'top left', 'Level Input Save Error', "Duplicate Name");
+                return;
+            }
+        }
+    }
+
+
+
 
     var levelinput = {};
     levelinput.assignedname = document.getElementById("levelinputname").value;
@@ -2299,25 +2322,10 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
         if(fixobj.interfacename == interface) { // } && (fixobj.outputid != desiredstartoutput || newitem)) {
 
             // skip the fixture that is being edited,  (don't count it),
-            if(selected_edit_fixture != undefined && fixobj == selected_edit_fixture)
+            if(selectedfixtureindex > -1 && i == selectedfixtureindex)
             {
                 continue;
-
-                //var k = 0;
-                //if(fixobj.outputid == desiredstartoutput)  // if output id has not changed,
-                //{
-                //     continue;
-                //}
-                //else
-                //{
-                // output id has changed,  so remove
-                //}
-                // check if the output id has changed relative to the edit fixture. ..
-
             }
-            // if(!newitem && fixobj.outputid != desiredstartoutput)
-            //if (fixobj.assignedname == name)
-            //   continue; // allows for edit,
 
             var outstart = Number(fixobj.outputid);
             if (fixobj.type == "on_off" || fixobj.type == "dim") {
