@@ -38,66 +38,66 @@ function processConfig(configobj)
 
 
 /*
-$(function () {
-    // click handler for boxes.. just under test.
-    $('.group_dropzone').on('click', function(){
-        var x = $(this).css('backgroundColor');
+ $(function () {
+ // click handler for boxes.. just under test.
+ $('.group_dropzone').on('click', function(){
+ var x = $(this).css('backgroundColor');
 
-        var selecteditemthistime = $(this);
-        // if selected item is not ud , and it does not equal the current.
-        // then disable the current,
-        if(selecteditem != undefined && selecteditem.get(0) != selecteditemthistime.get(0))
-        {
-            //disable action buttons on all ,
-            for(var k = 0; k <  loadedconfig.groups.length; k++)
-            {
-                var disableele = '#actionbuttons_'+k;
-                $(disableele).children().addClass('disabled');
-                $(disableele).children().removeClass('active');
-            }
+ var selecteditemthistime = $(this);
+ // if selected item is not ud , and it does not equal the current.
+ // then disable the current,
+ if(selecteditem != undefined && selecteditem.get(0) != selecteditemthistime.get(0))
+ {
+ //disable action buttons on all ,
+ for(var k = 0; k <  loadedconfig.groups.length; k++)
+ {
+ var disableele = '#actionbuttons_'+k;
+ $(disableele).children().addClass('disabled');
+ $(disableele).children().removeClass('active');
+ }
 
 
 
-            selecteditem.css("border-color", defaultcolor);
-            selecteditem.droppable("option", "disabled", true);
-            enableDisableFixturesInDiv(selecteditem, false);
+ selecteditem.css("border-color", defaultcolor);
+ selecteditem.droppable("option", "disabled", true);
+ enableDisableFixturesInDiv(selecteditem, false);
 
-            $(this).css("border-color", "blue");
-            selecteditem = selecteditemthistime; //$(this);
-            enableDisableFixturesInDiv(selecteditem, true);
-            $(this).droppable("option", "disabled", false);
+ $(this).css("border-color", "blue");
+ selecteditem = selecteditemthistime; //$(this);
+ enableDisableFixturesInDiv(selecteditem, true);
+ $(this).droppable("option", "disabled", false);
 
-            var selectedindex = selecteditem.attr('index');
+ var selectedindex = selecteditem.attr('index');
 
-            var enableelement = '#actionbuttons_'+selectedindex;
-            $(enableelement).children().removeClass('disabled');
-            $(enableelement).children().addClass('active');
+ var enableelement = '#actionbuttons_'+selectedindex;
+ $(enableelement).children().removeClass('disabled');
+ $(enableelement).children().addClass('active');
 
-            selected_group = loadedconfig.groups[Number(selectedindex)];
-            filterAvalibleFixtures();
+ selected_group = loadedconfig.groups[Number(selectedindex)];
+ filterAvalibleFixtures();
 
-        }
-        else if(selecteditem == undefined)
-        {
-            $(this).css("border-color", "blue");
-            selecteditem = selecteditemthistime; //$(this);
-            enableDisableFixturesInDiv(selecteditem, true);
-            $(this).droppable("option", "disabled", false);
+ }
+ else if(selecteditem == undefined)
+ {
+ $(this).css("border-color", "blue");
+ selecteditem = selecteditemthistime; //$(this);
+ enableDisableFixturesInDiv(selecteditem, true);
+ $(this).droppable("option", "disabled", false);
 
-            var selectedindex = selecteditem.attr('index');
+ var selectedindex = selecteditem.attr('index');
 
-            var enableelement = '#actionbuttons_'+selectedindex;
-            $(enableelement).children().removeClass('disabled');
-            $(enableelement).children().addClass('active');
+ var enableelement = '#actionbuttons_'+selectedindex;
+ $(enableelement).children().removeClass('disabled');
+ $(enableelement).children().addClass('active');
 
-            selected_group = loadedconfig.groups[Number(selectedindex)];
-            filterAvalibleFixtures();
-        }
-    });
+ selected_group = loadedconfig.groups[Number(selectedindex)];
+ filterAvalibleFixtures();
+ }
+ });
 
-});
+ });
 
-*/
+ */
 
 function redrawGroups()
 {
@@ -149,7 +149,7 @@ function openNewGroupEditDialog()
                 if(j != undefined && j.name != undefined && j.name.length > 0)
                 {
                     $.Notification.notify('error','top left', 'Error',  j.name[0]);
-                  //  noty({text: j.name[0], type: 'error', timeout:1000});
+                    //  noty({text: j.name[0], type: 'error', timeout:1000});
                     return false;
                 }
 
@@ -163,12 +163,12 @@ function openNewGroupEditDialog()
                     }
                     else
                         $.Notification.notify('error','top left', 'Error',  'Error creating group ');
-                       // noty({text: 'Error creating group ', type: 'error'});
+                    // noty({text: 'Error creating group ', type: 'error'});
                 });
             }
             else
                 $.Notification.notify('error','top left', 'Error',  'Incomplete Name, please try again ');
-                //noty({text: 'Incomplete Name, please try again ', type: 'error'});
+            //noty({text: 'Incomplete Name, please try again ', type: 'error'});
         }
     });
 
@@ -369,7 +369,7 @@ function filterAvalibleFixtures()
                     }
                     else if(retval.error != undefined)
                         $.Notification.notify('error','top left', 'Error',  'Error saving config ' + retval.error);
-                        //noty({text: 'Error saving config ' + retval.error, type: 'error'});
+                    //noty({text: 'Error saving config ' + retval.error, type: 'error'});
                 });
 
 
@@ -431,7 +431,7 @@ function constructGroupBox(currentdiv, group,groupnum) {
             if(loadedconfig.levelinputs[i].group == selected_group.name)
             {
                 $.Notification.notify('error','top left', 'Error',  'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group");
-              //  noty({text: 'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group", type: 'error'});
+                //  noty({text: 'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group", type: 'error'});
                 return;
             }
         }
@@ -441,7 +441,7 @@ function constructGroupBox(currentdiv, group,groupnum) {
             if(loadedconfig.contactinputs[i].active_action.includes(selected_group.name) || loadedconfig.contactinputs[i].inactive_action.includes(selected_group.name))
             {
                 $.Notification.notify('error','top left', 'Error',  'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group");
-              //  noty({text: 'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group", type: 'error'});
+                //  noty({text: 'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group", type: 'error'});
                 return;
             }
         }
@@ -462,7 +462,7 @@ function constructGroupBox(currentdiv, group,groupnum) {
                         }
                         else
                             $.Notification.notify('error','top left', 'Error', 'Error deleting group: ' + retval);
-                          //  noty({text: 'Error deleting group: ' + retval, type: 'error'});
+                        //  noty({text: 'Error deleting group: ' + retval, type: 'error'});
                     });
                 }
             }});
@@ -472,8 +472,51 @@ function constructGroupBox(currentdiv, group,groupnum) {
 
 
 
-
     var header = document.createElement("h2");
+  //  header.className="grouptitle";
+
+   /* header.addEventListener('click', function() {
+        var box = bootbox.confirm("<form id='infos' action=''>\
+              New Group Name:<input type='text' id='group_name' /><br/>\
+        </form>", function(result) {
+            if(result) {
+                var groupname = $('#group_name').val();
+                if(groupname.length > 0) {  //todo validate its unique.
+                    //  var groups_div = document.getElementById("active_groups_holder");
+                    var group1 = {};
+                    group1.name = groupname;
+                    /*
+                     var j = validate({name: groupname}, constraints);
+                     if(j != undefined && j.name != undefined && j.name.length > 0)
+                     {
+                     $.Notification.notify('error','top left', 'Error',  j.name[0]);
+
+                     return false;
+                     }
+                     saveConfigObject("group", group1,function (retval) {
+                     if(retval != undefined)  // as of 1/24/17, added version.
+                     {
+                     loadedconfig = retval;
+                     var grpnum = loadedconfig.groups.length-1;
+                     constructGroupBox(groups_div, group1, grpnum);
+                     }
+                     else
+                     $.Notification.notify('error','top left', 'Error',  'Error creating group ');
+
+                     });
+
+                }
+                else
+                    $.Notification.notify('error','top left', 'Error',  'Incomplete Name, please try again ');
+            }
+        });
+
+        box.on('shown.bs.modal',function(){
+            $("#group_name").focus();
+        });
+
+    }, false);  */
+
     header.innerHTML = group.name;
     fixboxheader.appendChild(header);
 
@@ -504,7 +547,7 @@ function constructGroupBox(currentdiv, group,groupnum) {
 
                 $(disableele).children().prop('disabled', true);
                 //$(disableele).children().addClass('disabled');
-               // $(disableele).children().removeClass('active');
+                // $(disableele).children().removeClass('active');
             }
 
 
@@ -523,8 +566,8 @@ function constructGroupBox(currentdiv, group,groupnum) {
             var enableelement = '#actionbuttons_'+selectedindex;
 
             $(enableelement).children().prop('disabled', false);
-           // $(enableelement).children().removeClass('disabled');
-           // $(enableelement).children().addClass('active');
+            // $(enableelement).children().removeClass('disabled');
+            // $(enableelement).children().addClass('active');
 
             selected_group = loadedconfig.groups[Number(selectedindex)];
             filterAvalibleFixtures();
@@ -542,8 +585,8 @@ function constructGroupBox(currentdiv, group,groupnum) {
             var enableelement = '#actionbuttons_'+selectedindex;
 
             $(enableelement).children().prop('disabled', false);
-           // $(enableelement).children().removeClass('disabled');
-          //  $(enableelement).children().addClass('active');
+            // $(enableelement).children().removeClass('disabled');
+            //  $(enableelement).children().addClass('active');
 
             selected_group = loadedconfig.groups[Number(selectedindex)];
             filterAvalibleFixtures();
@@ -580,7 +623,7 @@ function constructGroupBox(currentdiv, group,groupnum) {
                     }
                     else if(retval.error != undefined)
                         $.Notification.notify('error','top left', 'Error', 'Error saving fixture to group: ' + retval.error);
-                       // noty({text: 'Error saving fixture to group: ' + retval.error, type: 'error'});
+                    // noty({text: 'Error saving fixture to group: ' + retval.error, type: 'error'});
                 });
 
                 if (selected_group.fixtures != undefined && selected_group.fixtures.length == 4)  // if going from 2-->3

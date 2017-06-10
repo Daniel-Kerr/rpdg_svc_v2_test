@@ -167,7 +167,7 @@ function adddevice()
 
     var element = {}
     element.enoceanid = devid; // document.getElementById("deviceid").value;
-    for(var i = 10; i < 100; i+=2)
+    for(var i = 4; i < 50; i+=1)
     {
         if(!systemidtaken(i))
         {

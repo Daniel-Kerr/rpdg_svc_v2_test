@@ -350,7 +350,13 @@ function contactSwitchHandler(contactdef)
 function invokeAllToLevel(level, requesttype)
 {
     for (var i = 0; i < global.currentconfig.fixtures.length; i++) {
+
         var fixobj = global.currentconfig.fixtures[i];
+
+       // if(fixobj.interfacename == "enocean")  //6/9/17
+       // {
+
+      //  }
         if (fixobj != undefined) {
             // create a reqeuest obj, pass it in
             if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {

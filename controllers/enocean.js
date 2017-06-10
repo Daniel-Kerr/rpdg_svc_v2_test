@@ -99,6 +99,7 @@ enocean.on("ready",function(data){
 // ****************************************************************************************************
 enocean.on("known-data",function(data){
 
+    storeRxMessage("known device: " + data.sensor.id);
     //  var message = {};
     if(data.sensor != undefined)
     {
@@ -107,6 +108,9 @@ enocean.on("known-data",function(data){
 
         if(eep == 'f6-02-03')  // ROCKER SWITCH
         {
+            var bla = JSON.stringify(sensor);
+            var value = sensor.last[0].value;
+            global.applogger.info(TAG, "@@@@@@@@ got ROCKER " +  value, "@@@@@@@@@@@@ " );
             if ((sensor.last[0].value.includes('A1') || sensor.last[0].value.includes('B1')) && sensor.last[0].value.includes('down')) {
                 rxhandler("enocean","contactinput", sensor.id, 1);  //up
 
@@ -173,10 +177,12 @@ enocean.on("learn-mode-stop",function(data){
 
 enocean.on("learned",function(data){
     global.applogger.info(TAG, "Device Learned: ",data);
+    storeRxMessage("Device Learned: " + data);
 })
 
 enocean.on("forgotten",function(data){
     global.applogger.info(TAG, "Device Forgotton: ",data);
+    storeRxMessage("Device Forgotton: " + data);
 })
 
 
@@ -241,6 +247,27 @@ function getSystemIDFromEnoceanID(enoceanid)
 var fixturemap = [];
 
 
+
+// deque
+
+function tranmitDequeueloop()
+{
+    if(transmitequeue.length > 0)
+    {
+        var element = transmitequeue[0];
+        var dimmer = element.dimmer;
+        var level = element.level;
+        global.applogger.info(TAG, "tx deque item found ", "  ");
+        dimmer.setValue(level);
+        dimmer.setValue(level);
+
+        transmitequeue.splice(0,1);  //remove index 0
+    }
+}
+
+var periodictimer = undefined;
+var transmitequeue = [];
+
 module.exports = {
 
     init : function(callback)
@@ -256,6 +283,20 @@ module.exports = {
                 enocean.listen(comport); //"COM8");
 
         }
+
+        if(periodictimer != undefined)
+        {
+            global.applogger.info(TAG, "Polling Timer cleared / stopped:",  "");
+            clearInterval(periodictimer);
+            periodictimer = undefined;
+        }
+
+        periodictimer = setInterval(function () {
+            tranmitDequeueloop();
+          //  global.applogger.info(TAG, "****** tx deque loop fired. ",  "*************");
+        }, 50);
+
+
     },
     getRxMessageFifo: function()
     {
@@ -277,7 +318,13 @@ module.exports = {
                     fixturemap[outputid] = dimmer;
                     global.applogger.info(TAG, "set new dimmer", outputid + "  sysid  " + sysid +   "  to  " + level + "   applied " + apply + "  opts: " + options);
 
-                    dimmer.setValue(level);
+                    // dimmer.setValue(level);
+
+
+                    var element = {};
+                    element.dimmer = dimmer;
+                    element.level = level;
+                    transmitequeue.push(element);
                 }
             }
             else
@@ -286,7 +333,12 @@ module.exports = {
                 global.applogger.info(TAG, "set existing dimmer", outputid + "  sysid  " + sysid +   "  to  " + level + "   applied " + apply + "  opts: " + options);
 
                 var dimmer = fixturemap[outputid];
-                dimmer.setValue(level);
+                // dimmer.setValue(level);
+
+                var element = {};
+                element.dimmer = dimmer;
+                element.level = level;
+                transmitequeue.push(element);
             }
         }
     },
