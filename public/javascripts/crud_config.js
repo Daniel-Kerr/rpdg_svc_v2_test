@@ -505,6 +505,25 @@ function SetDaylightPollingCRUD(obj, callback) {
 
 
 
+function SetBoardVoltageCRUD(obj, callback) {
+
+    var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: "/config/setboardvoltage",
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}
+
+
 
 
 /***

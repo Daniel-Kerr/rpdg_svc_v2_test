@@ -466,10 +466,12 @@ function processConfig(configobj)
 
     })
 
+
+    $("#boardvoltage").val(cachedconfig.boardvoltage);
+
 }
 
 var fixtureimgcount = 0;
-
 var scriptnames = undefined;
 
 
@@ -2434,6 +2436,17 @@ function SetDaylightPolling()
     SetDaylightPollingCRUD(element, function(data) {
         // ignore return .
         cachedconfig = data;
+    })
+}
 
+
+function SetBoardVoltage()
+{
+    var selection = $('#boardvoltage').val();
+    var element = {};
+    element.boardvoltage = selection;
+    SetBoardVoltageCRUD(element, function(data) {
+        // ignore return .
+        cachedconfig = data;
     })
 }

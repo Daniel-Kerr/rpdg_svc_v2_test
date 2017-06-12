@@ -300,6 +300,18 @@
                                 <div class="col-lg-3">
                                     <label>HotSpot Enable: </label> <input type="checkbox" id="btwifienable" checked data-toggle="toggle">
                                 </div>
+
+                                <div class="col-lg-3">
+                                    <label>Board Voltage: </label>
+
+                                    <select id="boardvoltage" class="btn btn-large btn-primary" onchange="SetBoardVoltage()">
+                                        <option value="24">24 VDC</option>
+                                        <option value="120">120 VAC</option>
+                                        <option value="208">208 VAC</option>
+                                        <option value="240">240 VAC</option>
+                                        <option value="277">277 VAC</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -831,37 +843,9 @@
         <div class="modal-content">
             <span class="close" onclick="closemodal()">&times;</span>
             <p>Please select an image for your fixture</p>
-
-
             <select id="iconpick" class="image-picker show-html">
-                <!--option value=""></option>
-                <option data-img-src="fixtureimg/1.jpg" value="1">1</option>
-                <option data-img-src="fixtureimg/2.jpg" value="2">2</option>
-                <option data-img-src="fixtureimg/3.jpg" value="3">3</option>
-                <option data-img-src="fixtureimg/4.jpg" value="4">4</option>
-                <option data-img-src="fixtureimg/5.jpg" value="5">5</option>
-                <option data-img-src="fixtureimg/6.jpg" value="6">6</option>
-                <option data-img-src="fixtureimg/7.jpg" value="7">7</option>
-                <option data-img-src="fixtureimg/8.jpg" value="8">8</option>
-
-                <option data-img-src="fixtureimg/10.jpg" value="10">10</option>
-                <option data-img-src="fixtureimg/11.jpg" value="11">11</option>
-
-                <option data-img-src="fixtureimg/13.jpg" value="13">13</option>
-                <option data-img-src="fixtureimg/14.jpg" value="14">14</option>
-
-                <option data-img-src="fixtureimg/16.jpg" value="16">16</option>
-                <option data-img-src="fixtureimg/17.jpg" value="17">17</option>
-
-                <option data-img-src="fixtureimg/19.jpg" value="19">19</option>
-                <option data-img-src="fixtureimg/20.jpg" value="20">20</option>
-                <option data-img-src="fixtureimg/21.jpg" value="21">21</option-->
             </select>
-
-
-
             <input type="button" id = "btsaveimage"  onclick="saveImageToFixture()" value="SAVE"/>
-
         </div>
 
     </div>

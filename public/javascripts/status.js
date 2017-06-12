@@ -320,7 +320,7 @@ function updateFixtureStatusBox(fixture, index)
 
         var lbval = document.createElement("label");
         var powerlevel = "";
-        if(fixture.interfacename == "rpdg-pwm" && boardtype == "LV") // && board is type lv. )
+        if(fixture.interfacename == "rpdg-pwm") //  && boardtype == "LV") // && board is type lv. )
         {
             powerlevel = fixture.powerwatts + " Watts";
         }

@@ -35,6 +35,8 @@ var Configuration = function()
 
     this.daylightpollsec = 600; // in seconds. = 10 min
 
+    this.boardvoltage = 24; // used for power calc
+
     this.sitezip = 97219;
     this.sitelatt = 45.4736058;
     this.sitelong = -122.7349017;
@@ -47,6 +49,10 @@ var Configuration = function()
 
         if(obj.daylightpollsec != undefined)
             this.daylightpollsec = obj.daylightpollsec;
+
+        if(obj.boardvoltage != undefined)
+            this.boardvoltage = obj.boardvoltage;
+
 
         for (var i = 0; i < obj.fixtures.length; i++) {
             var fix = obj.fixtures[i];

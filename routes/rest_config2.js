@@ -757,6 +757,17 @@ router.post('/enablehotspot', function(req, res) {
 
 
 
+router.post('/setboardvoltage', function(req, res) {
+
+    var voltage = req.body.boardvoltage;
+    global.currentconfig.boardvoltage  = Number(voltage);
+    var cfg = JSON.stringify(global.currentconfig,null,2);
+    data_utils.writeConfigToFile();
+    res.status(200).send(cfg);
+});
+
+
+
 
 // ************************************** 6/9/17 new single crud iface for all fixture / inputput items
 // including create / edit delete,

@@ -125,16 +125,12 @@ exports.getPWMPower = function() {
     var watts = [];
     for (var i = 0; i < pwm_current_amps.length; i++) {
         var amps = pwm_current_amps[i];
-        var power = (amps * 24);
+
+        var power = (amps * global.currentconfig.boardvoltage); //24);
         watts.push(power.toFixed(2))
     }
     return watts;
 }
-
-//exports.getRPDG_HWInfo = function() {
-//    global.applogger.info(TAG, "****** attempting to read hw info from board ****** ", "");
-//    read_HWInfo();
-//}
 
 
 exports.setZero2TenDrive = function(inputs)
