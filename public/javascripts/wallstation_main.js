@@ -834,7 +834,12 @@ function updateFixtureStatusBox(fixture, index)
         statleft.appendChild(power_hold);
 
         var lbval = document.createElement("label");
-        lbval.innerHTML = fixture.powerwatts + " Watts";
+        var powerlevel = "";
+        if(fixture.interfacename == "rpdg-pwm" && boardtype == "LV") // && board is type lv. )
+        {
+            powerlevel = fixture.powerwatts + " Watts";
+        }
+        lbval.innerHTML = powerlevel;
         lbval.className = "powerlabel";
         power_hold.appendChild(lbval);
 
