@@ -59,6 +59,7 @@
 
 }
 .level_bar {
+    border-radius: 10px;
     height: 150px;
     margin-top: 0px;
     width: 100%;
@@ -75,9 +76,10 @@
 .level_mark {
     position: absolute;
     /* margin-top: 20px;  */
+
     width: 100px;
     height: 3px;
-    background-color: black;
+    background-color: red;
 }
 
 
