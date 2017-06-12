@@ -81,6 +81,8 @@ var delayedHW_InitCount = 3;
 
 var reInitSchedMgrCount = 0; // counter used to periodically reinit the sched mgr.  cache. list
 
+
+var fixtureimagefilecount = 0;
 //var israspberrypi = (process.arch == 'arm');
 //var led = undefined;
 //var button0 = undefined;
@@ -642,6 +644,19 @@ var service = module.exports = {
 
         // FOR DEV DEBUG
         //  rpdg.resetTinsey();
+        var fiximg = path.resolve('public/fixtureimg');
+       // const dir = '../public/fixtureimg';
+        fs.readdir(fiximg, function (err, files) {                    //List all files in the target directory
+            if(err) {
+                    var k = 0;                               //Abort if error
+            } else {
+
+                fixtureimagefilecount = files.length;
+
+
+            }
+        })
+
 
 
     },
@@ -1397,6 +1412,10 @@ var service = module.exports = {
                     direction = true;
             }
         }
+    },
+    getFixtureImageCount: function()
+    {
+        return fixtureimagefilecount;
     }
 
 

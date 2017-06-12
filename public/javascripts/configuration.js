@@ -303,7 +303,6 @@ $(document).ready(function() {
     });
 
 
-    $("#iconpick").imagepicker();
 
 });
 
@@ -334,6 +333,8 @@ function init()
     show12VoltOption(false);
 
 
+
+
     getPersistStore(function (store) {
         // set sched mode toggle to correct state,
         var enabled = store.hotspotenable;
@@ -344,6 +345,9 @@ function init()
         // else
         //     $('#btwifienable').bootstrapToggle('off');
     });
+
+
+
 }
 
 
@@ -451,7 +455,20 @@ function processConfig(configobj)
     // 6/8/17,
     $('#daylightpoll').val(cachedconfig.daylightpollsec);
 
+
+
+    getMiscInfo(function(miscinfo) {
+
+        fixtureimgcount = miscinfo.fiximgcount;
+
+        initImagePickerModal();
+        $("#iconpick").imagepicker();
+
+    })
+
 }
+
+var fixtureimgcount = 0;
 
 var scriptnames = undefined;
 
@@ -2201,7 +2218,18 @@ function on_ina_part2_change()
 }
 
 
+function initImagePickerModal()
+{
+    var sel = document.getElementById("iconpick");
 
+    for (var i = 1; i <= fixtureimgcount; i += 1) {
+        var opt = document.createElement('option');
+        opt.setAttribute('value', i);
+        opt.setAttribute('data-img-src', "fixtureimg/"+i+".jpg");
+        opt.appendChild(document.createTextNode(i));
+        sel.appendChild(opt);
+    }
+}
 
 
 

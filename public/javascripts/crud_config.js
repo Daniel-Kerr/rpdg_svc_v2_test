@@ -4,6 +4,8 @@
 
 var REST_GET_CONFIG = "/config/getconfig";
 
+var REST_GET_MISC_INFO = "/config/miscinfo";
+
 var REST_SAVE_FIXTURE = "/config/savefixture";
 var REST_DELETE_FIXTURE = "/config/deletefixture";
 
@@ -535,4 +537,20 @@ function editConfigObject(action, objtype, obj, editindex, callback) {
         }
     });
 
+}
+
+
+// config get / set,
+function getMiscInfo(callback)
+{
+    function onDataReceived(series) {
+        if(series != null)
+            callback(series);
+    }
+    $.ajax({
+        url: REST_GET_MISC_INFO,
+        type: "GET",
+        dataType: "json",
+        success: onDataReceived,
+    });
 }
