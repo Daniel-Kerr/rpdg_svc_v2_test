@@ -11,11 +11,6 @@ var enocean = require('./enocean.js');
 var rpdg = require('./rpdg_board.js');
 var InputMessage = require('../models/InputMessage.js');
 
-//var OccSensor = require('../models/OccSensor.js');
-//var MotionSensor = require('../models/MotionSensor.js');
-var Dimmer = require('../models/Dimmer.js');
-var DayLightSensor = require('../models/DayLightSensor.js');
-
 var OnOffFixture = require('../models/OnOffFixture.js');
 var DimFixture = require('../models/DimFixture.js');
 var CCTFixture = require('../models/CCTFixture.js');

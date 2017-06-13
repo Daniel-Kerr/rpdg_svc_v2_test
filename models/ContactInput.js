@@ -37,6 +37,29 @@ var ContactInput = function()
     }
 
     this.setvalue = function(val){
+
+        // ****9/13/17*********** bogus data point entry , ******************
+        // ONLY IF MAINTAINED TYPE
+        // place bogus data point into log for obj, with current datetime, but last level.
+        if(this.type == "maintained") {
+            var now = moment();
+            if (this.lastupdated != undefined) {
+                var deltamin = now.diff(moment(this.lastupdated), 'minutes');
+                if (deltamin >= 5)   // 5 min,
+                {
+                    var logobj = {};
+                    var backtime = now.subtract(1, "minutes");
+                    logobj.date = backtime.toISOString();
+                    logobj.value = this.value.toFixed();
+                    data_utils.appendInputObjectLogFile(this.assignedname, logobj);
+                }
+            }
+        }
+
+
+
+
+
         this.previousvalue= this.value;
         this.value = val;
         this.lastupdated = moment();

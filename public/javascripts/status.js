@@ -349,12 +349,23 @@ function updateFixtureStatusBox(fixture, index)
         image.height = "100";
         image_hold.appendChild(image);
 
-        if(fixture.type == "on_off" || fixture.type == "dim")
-            constructDimmableIndicators(statright,fixture.level);
-        else if(fixture.type == "cct")
-            constructColorTempIndicators(statright, fixture.brightness, fixture.colortemp, fixture.min, fixture.max);
-        else if(fixture.type == "rgbw")
-            constructRGBWndicators(statright, fixture.red,fixture.green,fixture.blue,fixture.white);
+        if(fixture.type == "on_off" || fixture.type == "dim") {
+            var trim = Number(fixture.level).toFixed(2);
+            constructDimmableIndicators(statright, trim);
+        }
+        else if(fixture.type == "cct") {
+
+            var trim = Number(fixture.brightness).toFixed(2);
+            constructColorTempIndicators(statright, trim, fixture.colortemp, fixture.min, fixture.max);
+        }
+        else if(fixture.type == "rgbw") {
+
+            var trimr = Number(fixture.red).toFixed(2);
+            var trimg = Number(fixture.green).toFixed(2);
+            var trimb = Number(fixture.blue).toFixed(2);
+            var trimw = Number(fixture.white).toFixed(2);
+            constructRGBWndicators(statright, trimr, trimg, trimb, trimw);
+        }
 
     }
 }
