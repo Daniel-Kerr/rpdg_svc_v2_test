@@ -295,7 +295,7 @@ module.exports = {
 
        // global.log.info("data_utils.js ", " &&&&&&&&&&&&&&&&&&& GEN DATA *****************************",  "");
         //test code to generate a pho data file.
-        var dt = moment('06-8-2017', 'MM-DD-YYYY');
+        var dt = moment('05-28-2017', 'MM-DD-YYYY');
         var dim1level = 0;
         var dim1level2 = 50;
         var occ_sensorlevel = 0;

@@ -603,6 +603,9 @@ function processMaintainedContactDataFetch(name, resultdata) {
         return;
 
 
+    cachedMaintainedContactData[name] = resultdata;
+
+
     var dataholder = [];
     var parts = resultdata.split('\n');
 
@@ -619,7 +622,9 @@ function processMaintainedContactDataFetch(name, resultdata) {
         try {
             var point = JSON.parse(parts[i]);
             var d = new Date(point.date);
-            dataholder.push([d,Number(point.value*10)]);  // for now scale.
+            if(point.value <= 0)
+            dataholder.push([d,-1]);  // for now scale.
+            dataholder.push([d,Number(point.value)]);  // for now scale.
         } catch(err )
         {
         }
@@ -641,7 +646,7 @@ function processMaintainedContactDataFetch(name, resultdata) {
         if(height < 260)
             height = 260;
 
-        $("#parent_levelinput").height(height);
+        $("#parent_contactinput_main").height(height);
 
         var choiceContainer = $("#maintained_contactchoices");
         $.each(maintainedcontact_dataset, function(key, val) {
@@ -759,7 +764,7 @@ function setWindowHours(hours)
     }
 
     refreshMomentaryContactHistorgram();
-    refreshMaintainedContactHistorgram();
+   // refreshMaintainedContactHistorgram();
 }
 
 
@@ -827,7 +832,7 @@ function windowZoomIn()
     }
 
     refreshMomentaryContactHistorgram();
-    refreshMaintainedContactHistorgram();
+   // refreshMaintainedContactHistorgram();
 }
 
 
@@ -894,7 +899,7 @@ function windowZoomOut() {
 
     refreshMomentaryContactHistorgram();
 
-    refreshMaintainedContactHistorgram();
+  //  refreshMaintainedContactHistorgram();
 
 }
 
