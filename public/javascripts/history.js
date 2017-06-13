@@ -362,7 +362,7 @@ var levelinputdetailOptions = {
 
 
 //*********************************************************************************************************
-// ******************************************** Contact Input graph ******
+// ******************************************** Momentary Contact Input graph ******
 //*********************************************************************************************************
 
 var cachedContactInputData = {};
@@ -543,26 +543,19 @@ var contactinputdetailOptions = {
     pan: {
         interactive: true
     }
-    //,
-    // egend: {
-    //     labelFormatter: function(label, series){
-    //         return '<a href="#" onClick="toggleContactInputPlot('+series.idx+'); return false;">'+label+'</a>';
-    //    }
-    // }
+
 };
 
-/*
- toggleContactInputPlot = function(seriesIdx)
- {
- var someData = contactinput_plot.getData();
- someData[seriesIdx].bars.show = !someData[seriesIdx].bars.show;
- contactinput_plot.setData(someData);
- contactinput_plot.draw();
- }
- */
 //*********************************************************************************************************
-// ****************************************************************** END Contact input *****************************
+// ****************************************************************** END Momentary Contact input *****************************
 //*********************************************************************************************************
+
+
+
+
+
+
+
 
 function setWindowHours(hours)
 {

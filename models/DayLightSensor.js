@@ -34,6 +34,11 @@ var DayLightSensor = function()
     }
 
     this.setvalue = function(val){
+
+
+
+
+
         this.previousvalue= this.value;
         this.value = val;
         this.lastupdated = moment();

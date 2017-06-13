@@ -114,7 +114,7 @@ function incommingUDPMessageHandler(messageobj)
  */
 function incommingHWChangeHandler(interface, type, inputid,level)
 {
-    global.applogger.info(TAG, "rx handler -- interface:"+  interface + " type: " + type + "  inputid: " + inputid + "  level: " + level, "");
+    //global.applogger.info(TAG, "rx handler -- interface:"+  interface + " type: " + type + "  inputid: " + inputid + "  level: " + level, "");
     // loop through inputdevices looking for device, then,
     // translate the message from a hw specific to a genreic input message pass to app layer.
     //e.g.
@@ -710,7 +710,9 @@ var service = module.exports = {
                 delayedHW_InitCount--;
                 if (delayedHW_InitCount <= 0) {
                     global.applogger.info(TAG, "************** executing delayed hw init **************", "");
+
                     module.exports.updateRPDGInputDrive();
+                 //   rpdg.readWetDryContacts();
                     module.exports.updatePWMPolarity();
                 }
             }
@@ -1018,7 +1020,9 @@ var service = module.exports = {
      * @returns {Uint8Array}
      */
     setFixtureLevels: function (requestobj, applytohw) {
-        global.applogger.info(TAG, "set fixture levels ", JSON.stringify(requestobj));
+
+       // global.applogger.info(TAG, "set fixture levels ", JSON.stringify(requestobj));
+
         if (requestobj != undefined) {
             if (requestobj.name != undefined) {
                 var fix = global.currentconfig.getFixtureByName(requestobj.name);

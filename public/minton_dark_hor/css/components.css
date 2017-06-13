@@ -1,6 +1,12 @@
+/*
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700);
 @import url(https://fonts.googleapis.com/css?family=Poppins:500,600);
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:600,400,700);
+*/
+
+@import url(../googlefonts/google_roboto.css);
+@import url(../googlefonts/google_poppins.css);
+@import url(../googlefonts/google_source_sans.css);
 /* ===========
    Components List
 

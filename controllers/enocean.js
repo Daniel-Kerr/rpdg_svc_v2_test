@@ -110,7 +110,7 @@ enocean.on("known-data",function(data){
         {
             var bla = JSON.stringify(sensor);
             var value = sensor.last[0].value;
-            global.applogger.info(TAG, "@@@@@@@@ got ROCKER " +  value, "@@@@@@@@@@@@ " );
+           // global.applogger.info(TAG, "@@@@@@@@ got ROCKER " +  value, "@@@@@@@@@@@@ " );
             if ((sensor.last[0].value.includes('A1') || sensor.last[0].value.includes('B1')) && sensor.last[0].value.includes('down')) {
                 rxhandler("enocean","contactinput", sensor.id, 1);  //up
 
@@ -128,11 +128,14 @@ enocean.on("known-data",function(data){
                 if(entry.type == "PIR Status")
                 {
                     var status = entry.value;
-                    if(status == "on")
-                        rxhandler("enocean","contactinput", sensor.id, 1);  //occupancy
-
-                    else if(status == "off")
-                        rxhandler("enocean","contactinput", sensor.id, 0);  //  //vacancy
+                    if(status == "on") {
+                        global.applogger.info(TAG, "^^^^^^^ contact input value ON: " + sensor.id );
+                        rxhandler("enocean", "contactinput", sensor.id, 1);  //occupancy
+                    }
+                    else if(status == "off") {
+                        global.applogger.info(TAG, "^^^^^^ contact input value OFF: " + sensor.id );
+                        rxhandler("enocean", "contactinput", sensor.id, 0);  //  //vacancy
+                    }
                     break;
                 }
             }
@@ -257,7 +260,7 @@ function tranmitDequeueloop()
         var element = transmitequeue[0];
         var dimmer = element.dimmer;
         var level = element.level;
-        global.applogger.info(TAG, "tx deque item found ", "  ");
+     //   global.applogger.info(TAG, "tx deque item found ", "  ");
         dimmer.setValue(level);
         dimmer.setValue(level);
 
@@ -316,7 +319,7 @@ module.exports = {
                 {
                     var dimmer = new Dimmer(enocean, Number(sysid));
                     fixturemap[outputid] = dimmer;
-                    global.applogger.info(TAG, "set new dimmer", outputid + "  sysid  " + sysid +   "  to  " + level + "   applied " + apply + "  opts: " + options);
+                    global.applogger.info(TAG, "set new dimmer: ", outputid + "  sysid  " + sysid +   "  to  " + level); // + "   applied " + apply + "  opts: " + options);
 
                     // dimmer.setValue(level);
 
@@ -330,7 +333,7 @@ module.exports = {
             else
             {
                 var sysid = getSystemIDFromEnoceanID(outputid);
-                global.applogger.info(TAG, "set existing dimmer", outputid + "  sysid  " + sysid +   "  to  " + level + "   applied " + apply + "  opts: " + options);
+                global.applogger.info(TAG, "set existing dimmer: ", outputid + "  sysid  " + sysid +   "  to  " + level); // + "   applied " + apply + "  opts: " + options);
 
                 var dimmer = fixturemap[outputid];
                 // dimmer.setValue(level);

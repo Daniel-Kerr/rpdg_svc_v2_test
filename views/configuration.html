@@ -204,6 +204,19 @@
 
 <!-- Navigation Bar-->
 <header id="topnav">
+
+    <div class="menu-item">
+        <!-- Mobile menu toggle-->
+        <a class="navbar-toggle">
+            <div class="lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </a>
+        <!-- End mobile menu toggle-->
+    </div>
+
     <!-- Navbar Start -->
     <div class="navbar-custom">
         <div class="container">
@@ -304,7 +317,7 @@
                                 <div class="col-lg-3">
                                     <label>Board Voltage: </label>
 
-                                    <select id="boardvoltage" class="btn btn-large btn-primary" onchange="SetBoardVoltage()">
+                                    <select id="boardvoltage" class="btn btn-large btn-primary" onchange="SetBoardVoltage()" disabled="true">
                                         <option value="24">24 VDC</option>
                                         <option value="120">120 VAC</option>
                                         <option value="208">208 VAC</option>

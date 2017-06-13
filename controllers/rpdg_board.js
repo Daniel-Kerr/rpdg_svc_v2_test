@@ -137,7 +137,7 @@ exports.setZero2TenDrive = function(inputs)
 {
     try {
 
-        global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive ", "sending drive to hw");
+
         var config = new Uint8Array(4);
 
         if(inputs.length == 4) {
@@ -146,6 +146,9 @@ exports.setZero2TenDrive = function(inputs)
             config[1] = inputs[1] / .25;
             config[2] = inputs[2] / .25;
             config[3] = inputs[3] / .25;
+
+            var hex = Buffer.from(config).toString('hex');
+            global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive ", "sending drive 4 bytes to hw: " + hex);
             // console.log("drive config sending to hw(byte0) :  " + config[0] );
             var wire = getI2cWire();
             if (wire != undefined) {
@@ -176,10 +179,13 @@ exports.setZero2TenDrive = function(inputs)
 exports.setPWMOutputPolarity = function(polconfig)
 {
     try {
-        global.applogger.info(TAG, "setPWMOutputPolarity ", "sending output config to hw");
+
         var config = new Uint8Array(1);
         //if(polconfig.length == 1) {
         config[0] = polconfig;
+
+        var hex = Buffer.from(config).toString('hex');
+        global.applogger.info(TAG, "setPWMOutputPolarity ", "sending output config to hw: byte " + hex);
         var wire = getI2cWire();
         if (wire != undefined) {
             wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
@@ -285,7 +291,10 @@ exports.setPollingPeriod = function(timerperiodms)
 }
 
 
-
+exports.readWetDryContacts = function()
+{
+    readHW_WetDryContactinputs();
+}
 
 
 function peroidicHWPollingLoop()
@@ -302,7 +311,7 @@ function peroidicHWPollingLoop()
         {
             if (reset_tinsy_counter == 0)  // 0 = start/active.
             {
-                global.applogger.info(TAG, "setting Teensy line LOW (reset start)", "");
+                global.applogger.info(TAG, "@@@@@@@@@@@@@ setting Teensy line LOW (reset start) @@@@@@@@@@ ", "&&&&&&&&&&&&&&&&&&&&&&&&&");
                 if (teensy_reset_line != undefined) {
                     global.applogger.info(TAG, "HW gpio line is valid ", "");
                     teensy_reset_line.writeSync(1);   // start.  lo
@@ -544,7 +553,7 @@ function readHW_0to10inputs() {
                         var absdelta = Math.abs(voltage - Zero_to_Ten_Volt_inputs[index]);
                         // update the stored value.
                         if (absdelta > .50) {  //for historisis (this is volts),
-                            global.applogger.info(TAG, "Input Delta > .50:  ", "abs delta: " + absdelta.toFixed(2) + "  " + Zero_to_Ten_Volt_inputs[index].toFixed(2) + " : " + voltage.toFixed(2));
+                            //global.applogger.info(TAG, "Input Delta > .50:  ", "abs delta: " + absdelta.toFixed(2) + "  " + Zero_to_Ten_Volt_inputs[index].toFixed(2) + " : " + voltage.toFixed(2));
 
 
 
@@ -656,7 +665,7 @@ function printCurrentCounts()
         // console.log("Current Counts: " + pwm_current_amps.length);
         for (var i = 0; i < pwm_current_amps.length; i++) {
             var amps = pwm_current_amps[i];
-            var power = (amps * 24);
+            var power = (amps * global.currentconfig.boardvoltage);
             msg += "zone: " + i + " current: " + amps.toFixed(2) + " (amps)  power: " + power.toFixed(2) + " watts";
         }
         global.applogger.info(TAG, "PWM Current / Power Levels   ", msg);
