@@ -331,7 +331,7 @@ function constructGroupButtons()
                 onInit : function() {
 
                 },
-                onSlide : function( position, value ) {
+                onSlideEnd : function( position, value ) {
 
                     if(selected_group.type == "brightness") {
 
@@ -454,7 +454,7 @@ function constructFixtureButtons()
                 onInit : function() {
                     //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
                 },
-                onSlide : function( position, value ) {
+                onSlideEnd : function( position, value ) {
                     //  this.output.html( value );
                     // var k = $("brightctrl");
                     if(this.$element[0].id == "brightctrl")
@@ -864,12 +864,34 @@ function updateFixtureStatusBox(fixture, index)
         image.height = "100";
         image_hold.appendChild(image);
 
-        if(fixture.type == "on_off" || fixture.type == "dim")
-            constructDimmableIndicators(statright,fixture.level);
-        else if(fixture.type == "cct")
-            constructColorTempIndicators(statright, fixture.brightness, fixture.colortemp, fixture.min,fixture.max);
-        else if(fixture.type == "rgbw")
-            constructRGBWndicators(statright, fixture.red,fixture.green,fixture.blue,fixture.white);
+        if(fixture.type == "on_off" || fixture.type == "dim") {
+            var trim = Number(fixture.level).toFixed(0);
+            constructDimmableIndicators(statright, trim);
+        }
+        else if(fixture.type == "cct") {
+
+            var trim = Number(fixture.brightness).toFixed(0);
+            constructColorTempIndicators(statright, trim, fixture.colortemp, fixture.min, fixture.max);
+        }
+        else if(fixture.type == "rgbw") {
+
+            var trimr = Number(fixture.red).toFixed(0);
+            var trimg = Number(fixture.green).toFixed(0);
+            var trimb = Number(fixture.blue).toFixed(0);
+            var trimw = Number(fixture.white).toFixed(0);
+            constructRGBWndicators(statright, trimr, trimg, trimb, trimw);
+        }
+
+        /*
+        if(fixture.type == "on_off" || fixture.type == "dim") {
+            constructDimmableIndicators(statright, fixture.level);
+        }
+        else if(fixture.type == "cct") {
+            constructColorTempIndicators(statright, fixture.brightness, fixture.colortemp, fixture.min, fixture.max);
+        }
+        else if(fixture.type == "rgbw") {
+            constructRGBWndicators(statright, fixture.red, fixture.green, fixture.blue, fixture.white);
+        }  */
 
     }
 }

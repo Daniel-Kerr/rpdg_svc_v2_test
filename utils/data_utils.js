@@ -295,17 +295,18 @@ module.exports = {
 
        // global.log.info("data_utils.js ", " &&&&&&&&&&&&&&&&&&& GEN DATA *****************************",  "");
         //test code to generate a pho data file.
-        var dt = moment('04-15-2017', 'MM-DD-YYYY');
+        var dt = moment('06-8-2017', 'MM-DD-YYYY');
         var dim1level = 0;
         var dim1level2 = 50;
         var occ_sensorlevel = 0;
         var daylightlevel = 0;
         var lightswitchlevel = 0;
+        var pushbutton_level = 0;
 
         var rampdim = true;
         var index_mark = 1000;
-        for(var i = 0 ; i < 20000; i++) {
-       // while(true) {
+        for(var i = 0 ; i < 5000; i++) {
+
 
             var dim1 = {};
             dim1.date = dt.toISOString();
@@ -334,25 +335,23 @@ module.exports = {
             module.exports.appendInputObjectLogFile("daylight",daylight);
 
 
-            // OCC
-            if ((i > 200 && i < 207)  ||  (i > 335 && i < 337) || (i > 550 && i < 552) || (i > 750 && i < 756)  || (i > 900 && i < 903)
-                || (i > 1002 && i < 1005)  || (i > 1007 && i < 1009) || (i > 1240 && i < 1243)
-                || (i > 2000 && i < 2010)  || (i > 3200 && i < 3206) || (i > 4300 && i < 4310) ) {
 
-                occ_sensorlevel = 100;
+
+            // OCC
+            if ((i > 200 && i < 207)  ||  (i > 335 && i < 900)
+                || (i > 1002 && i < 3000) || (i > 4300 && i < 4310) ) {
+                occ_sensorlevel = 1;
             }
             else
             {
                 occ_sensorlevel = 0;
             }
 
-
-
             if ((i > 3 && i < 8)  ||  (i > 100 && i < 107) || (i > 250 && i < 270) || (i > 450 && i < 470)  || (i > 678 && i < 700)
                 || (i > 1200 && i < 1210)  || (i > 2100 && i < 2104) || (i > 3420 && i < 3443)
                 || (i > 3820 && i < 3840)  || (i > 4400 && i < 4450) || (i > 4750 && i < 4755) ) {
 
-                lightswitchlevel = 100;
+                lightswitchlevel = 1;
             }
             else
             {
@@ -397,8 +396,29 @@ module.exports = {
                 daylightlevel -=1;
             }
 
-            dt = dt.add(10, "minutes");
 
+            // push button
+            if ((i == 3)  ||  (i == 100) || (i == 250) || (i == 480) || (i == 1300) || (i == 2500) || (i == 3780))
+            {
+                var limit = 10;
+                if(i == 100)
+                    limit = 5;
+                if(i == 480)
+                    limit = 20;
+                if(i == 2500)
+                    limit = 15;
+
+                var bla = dt.clone();
+                for(var inc = 0 ; inc < limit; inc++) {
+                    var pushbutton = {};
+                    pushbutton.date = bla.toISOString();
+                    pushbutton.value = 1;
+                    module.exports.appendInputObjectLogFile("push_button", pushbutton);
+                    bla = bla.add(1, "minutes");
+                }
+            }
+
+            dt = dt.add(10, "minutes");
 
             if(dt.isAfter(new moment())) {
 

@@ -50,7 +50,7 @@ var ContactInput = function()
                     var logobj = {};
                     var backtime = now.subtract(1, "minutes");
                     logobj.date = backtime.toISOString();
-                    logobj.value = this.value.toFixed();
+                    logobj.value = this.value;
                     data_utils.appendInputObjectLogFile(this.assignedname, logobj);
                 }
             }

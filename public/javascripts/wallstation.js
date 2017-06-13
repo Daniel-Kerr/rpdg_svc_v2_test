@@ -667,11 +667,11 @@ function constructFixtureStatusBoxs()
         {
             case "on_off":
             case "dim":
-                level = fixobj.level;
+                level = Number(fixobj.level).toFixed(0);
                 break;
             case "cct":
                 colortemp = fixobj.colortemp;
-                level = fixobj.brightness;
+                level = Number(fixobj.brightness).toFixed(0);
                 break;
 
             case "rgbw":
