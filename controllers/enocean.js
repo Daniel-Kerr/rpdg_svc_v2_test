@@ -8,30 +8,18 @@ var TAG = pad(path.basename(__filename),15);
 var rxhandler = undefined;
 var data_utils = require('../utils/data_utils.js');  //1/15/17,
 var fs = require('fs');
-var known_s = path.join(__dirname) + "/../enocean_db/knownSensors.json";
-var config = path.join(__dirname) + "/../enocean_db/enocean_config.json";
 
-var supported = false; //(data_utils.commandLineArgPresent("enocean"))?true:false;
+
+//var known_s = path.join(__dirname) + "/../enocean_db/knownSensors.json";
+//var config = path.join(__dirname) + "/../enocean_db/enocean_config.json";
+
+var supported = false;
 var israspberrypi = (process.arch == 'arm');
-
 var isready = false;
-
 var comport = '/dev/ttyUSB0';
-
-// 4/18/17,  console window for encean config,
-
 var last_rx_messages = [];
-
-
-// 4/27/17 added enocean db
-if (!fs.existsSync('enocean_db/')) {
-    try {
-        fs.mkdirSync('enocean_db/')
-    } catch (err) {
-        if (err.code !== 'EEXIST') throw err
-    }
-}
-
+var enocean = undefined;
+var Dimmer = undefined;
 
 // if com port is present,
 if(!israspberrypi && process.argv.length > 0 && data_utils.commandLineArgPresent("COM"))
@@ -59,134 +47,132 @@ else if(israspberrypi)
 
 
 
-var enocean = undefined;
-var Dimmer = undefined;
-
-
-if(!israspberrypi) {
-    enocean = require("../../crossplatform_modules/windows/node-enocean")(
-        {sensorFilePath: known_s},
-        {configFilePath: config},
-        {timeout: 30}
-    );
-
-    Dimmer = require("../../crossplatform_modules/windows/node-enocean-dimmer");
-}
-else
+function initDriver()
 {
-    enocean = require("../../crossplatform_modules/rpi/node-enocean")(
-        {sensorFilePath:known_s},
-        {configFilePath:config},
-        {timeout:30}
-    );
+    // note:  construction of fdimmer needs absolute dir.  hence the path join, ..
+    var known_s = path.join(__dirname) + "/../../datastore/enocean_db/knownSensors.json";
+    var config = path.join(__dirname) + "/../../datastore/enocean_db/enocean_config.json";
 
-    Dimmer = require("../../crossplatform_modules/rpi/node-enocean-dimmer");
-}
+    if(!israspberrypi) {
+        enocean = require("../../crossplatform_modules/windows/node-enocean")(
+            {sensorFilePath: known_s},
+            {configFilePath: config},
+            {timeout: 30}
+        );
 
+        Dimmer = require("../../crossplatform_modules/windows/node-enocean-dimmer");
+    }
+    else
+    {
+        enocean = require("../../crossplatform_modules/rpi/node-enocean")(
+            {sensorFilePath:known_s},
+            {configFilePath:config},
+            {timeout:30}
+        );
 
+        Dimmer = require("../../crossplatform_modules/rpi/node-enocean-dimmer");
+    }
 
-
-
-
-//var Dimmer = require("node-enocean-dimmer");
-
-enocean.on("ready",function(data){
-    global.applogger.info(TAG, "isReady", "  Enocean device is now Ready");
-    isready = true;
-});
+    enocean.on("ready",function(data){
+        global.applogger.info(TAG, "isReady", "  Enocean device is now Ready");
+        isready = true;
+    });
 
 // ****************** Incomming data handler,  (from sensors, rockers..etc) ***************************
 // ****************************************************************************************************
-enocean.on("known-data",function(data){
+    enocean.on("known-data",function(data){
 
-    storeRxMessage("known device: " + data.sensor.id);
-    //  var message = {};
-    if(data.sensor != undefined)
-    {
-        var sensor = data.sensor;
-        var eep = sensor.eep;
-
-        if(eep == 'f6-02-03')  // ROCKER SWITCH
+        storeRxMessage("known device: " + data.sensor.id);
+        //  var message = {};
+        if(data.sensor != undefined)
         {
-            var bla = JSON.stringify(sensor);
-            var value = sensor.last[0].value;
-           // global.applogger.info(TAG, "@@@@@@@@ got ROCKER " +  value, "@@@@@@@@@@@@ " );
-            if ((sensor.last[0].value.includes('A1') || sensor.last[0].value.includes('B1')) && sensor.last[0].value.includes('down')) {
-                rxhandler("enocean","contactinput", sensor.id, 1);  //up
+            var sensor = data.sensor;
+            var eep = sensor.eep;
 
-            }
-            else  if((sensor.last[0].value.includes('A0') || sensor.last[0].value.includes('B0')) && sensor.last[0].value.includes('down')) {
-                rxhandler("enocean","contactinput", sensor.id, 0);
-            }
-        }
-        else if(eep == 'a5-07-01')  // OCC Sensor
-        {
-            for(var i = 0 ; i < data.values.length; i++)
+            if(eep == 'f6-02-03')  // ROCKER SWITCH
             {
-                //extract pir status
-                var entry = data.values[i];
-                if(entry.type == "PIR Status")
-                {
-                    var status = entry.value;
-                    if(status == "on") {
-                        global.applogger.info(TAG, "^^^^^^^ contact input value ON: " + sensor.id );
-                        rxhandler("enocean", "contactinput", sensor.id, 1);  //occupancy
-                    }
-                    else if(status == "off") {
-                        global.applogger.info(TAG, "^^^^^^ contact input value OFF: " + sensor.id );
-                        rxhandler("enocean", "contactinput", sensor.id, 0);  //  //vacancy
-                    }
-                    break;
+                var bla = JSON.stringify(sensor);
+                var value = sensor.last[0].value;
+                // global.applogger.info(TAG, "@@@@@@@@ got ROCKER " +  value, "@@@@@@@@@@@@ " );
+                if ((sensor.last[0].value.includes('A1') || sensor.last[0].value.includes('B1')) && sensor.last[0].value.includes('down')) {
+                    rxhandler("enocean","contactinput", sensor.id, 1);  //up
+
+                }
+                else  if((sensor.last[0].value.includes('A0') || sensor.last[0].value.includes('B0')) && sensor.last[0].value.includes('down')) {
+                    rxhandler("enocean","contactinput", sensor.id, 0);
                 }
             }
-        }
-        else if(eep == 'a5-06-02')  // light sensor
-        {
-            if (sensor.last[0].unit != undefined && sensor.last[0].unit.includes('lux') && sensor.last[0].value != undefined)
+            else if(eep == 'a5-07-01')  // OCC Sensor
             {
-                var voltage = convertLuxToVoltage(sensor.last[0].value);  //5/26/17  // value is in lux,  so weneed to convert.
-
-                rxhandler("enocean","levelinput", sensor.id, voltage);
+                for(var i = 0 ; i < data.values.length; i++)
+                {
+                    //extract pir status
+                    var entry = data.values[i];
+                    if(entry.type == "PIR Status")
+                    {
+                        var status = entry.value;
+                        if(status == "on") {
+                            global.applogger.info(TAG, "^^^^^^^ contact input value ON: " + sensor.id );
+                            rxhandler("enocean", "contactinput", sensor.id, 1);  //occupancy
+                        }
+                        else if(status == "off") {
+                            global.applogger.info(TAG, "^^^^^^ contact input value OFF: " + sensor.id );
+                            rxhandler("enocean", "contactinput", sensor.id, 0);  //  //vacancy
+                        }
+                        break;
+                    }
+                }
             }
+            else if(eep == 'a5-06-02')  // light sensor
+            {
+                if (sensor.last[0].unit != undefined && sensor.last[0].unit.includes('lux') && sensor.last[0].value != undefined)
+                {
+                    var voltage = convertLuxToVoltage(sensor.last[0].value);  //5/26/17  // value is in lux,  so weneed to convert.
 
+                    rxhandler("enocean","levelinput", sensor.id, voltage);
+                }
+
+            }
+            else
+                global.applogger.info(TAG, "known data", "  not handled");
         }
         else
             global.applogger.info(TAG, "known data", "  not handled");
-    }
-    else
-        global.applogger.info(TAG, "known data", "  not handled");
 
-})
+    })
 
 // ******************************Enocean callback functions that are not used currently ******************
 // *******************************************************************************************************
-enocean.on("unknown-data",function(data){
-    global.applogger.info(TAG, "unknown data from enocean device id: ",data.senderId);
-    storeRxMessage("unknown data from enocean device id: " + data.senderId);
-})
+    enocean.on("unknown-data",function(data){
+        global.applogger.info(TAG, "unknown data from enocean device id: ",data.senderId);
+        storeRxMessage("unknown data from enocean device id: " + data.senderId);
+    })
 
-enocean.on("unknown-teach-in",function(data){
-    global.applogger.info(TAG, "unknown teach in  ",data);
-})
+    enocean.on("unknown-teach-in",function(data){
+        global.applogger.info(TAG, "unknown teach in  ",data);
+    })
 
-enocean.on("learn-mode-start",function(){
-    global.applogger.info(TAG, "learn mode has been started ","");
-})
+    enocean.on("learn-mode-start",function(){
+        global.applogger.info(TAG, "learn mode has been started ","");
+    })
 
-enocean.on("learn-mode-stop",function(data){
-    global.applogger.info(TAG, "learn mode stopped: ",data.reason);
+    enocean.on("learn-mode-stop",function(data){
+        global.applogger.info(TAG, "learn mode stopped: ",data.reason);
 
-})
+    })
 
-enocean.on("learned",function(data){
-    global.applogger.info(TAG, "Device Learned: ",data);
-    storeRxMessage("Device Learned: " + data);
-})
+    enocean.on("learned",function(data){
+        global.applogger.info(TAG, "Device Learned: ",data);
+        storeRxMessage("Device Learned: " + data);
+    })
 
-enocean.on("forgotten",function(data){
-    global.applogger.info(TAG, "Device Forgotton: ",data);
-    storeRxMessage("Device Forgotton: " + data);
-})
+    enocean.on("forgotten",function(data){
+        global.applogger.info(TAG, "Device Forgotton: ",data);
+        storeRxMessage("Device Forgotton: " + data);
+    })
+
+}
+
 
 
 function storeRxMessage(msg)
@@ -277,6 +263,9 @@ module.exports = {
     {
 
         global.applogger.info(TAG, "init enocean driver ", "  enocean support enabled on comport: " + comport);
+
+        initDriver(); // 6/9/17
+
         rxhandler = callback;
 
         if(supported) {
@@ -385,37 +374,3 @@ module.exports = {
         }
     }
 }
-
-
-
-// this is just for debug,  will be async messgae from enocean...serial cb.
-/*
- var tempcounter = 0;
- function startHWPolling() {
-
-
- var BasePollingPeriod = 2000000;        // Time interval in mSec that we do the most frequent checks.
- // global.applogger.info(TAG, "HW Polling Started :",  "polling timer started");
- periodictimer = setInterval(function () {
-
- tempcounter += 1;
- if(tempcounter % 2 == 0)
- {
- tempcounter = 0;
- rxhandler("enocean", "3543545542", 3.3);  // input numbers on rpdg board will be numbered uniquily,  (0----10, ).
- }
-
- // contact input
- if(tempcounter % 4 == 0)
- {
- rxhandler("enocean", "3", 1);
- }
-
-
- if(tempcounter > 100)
- tempcounter = 0;
-
- // global.applogger.info(TAG, "hw polling",  "timer fired");
- }, BasePollingPeriod);
- }
- */

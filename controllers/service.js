@@ -37,7 +37,7 @@ var schedule_mgr = require('./schedule_mgr.js');
 
 var PERSIST_FILE = '../datastore/persist.json';
 
-var enocean_known_sensors = require('../enocean_db/knownSensors.json');
+//var enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
 var SunCalc = require('suncalc');
 
@@ -440,6 +440,25 @@ function constructMiscDirs()
             if (err.code !== 'EEXIST') throw err
         }
     }
+
+
+    // moved here from enocean module,  6/14/17,
+    if (!fs.existsSync('../datastore/enocean_db/')) {
+        try {
+            fs.mkdirSync('../datastore/enocean_db/')
+            try {
+                var target = path.resolve("../datastore/enocean_db/knownSensors.json");
+                var blank = {};
+                var output = JSON.stringify(blank, null, 4);
+                fs.writeFileSync(target, output);
+            } catch (err) {
+                if (err.code !== 'EEXIST') throw err
+            }
+        } catch (err) {
+            if (err.code !== 'EEXIST') throw err
+        }
+    }
+
     // setup persistant store point, (may move to global. ),
     var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
     persistantstore = obj;
@@ -1166,7 +1185,7 @@ var service = module.exports = {
     {
         var contactinputs = [];
         // refresh
-        enocean_known_sensors = require('../enocean_db/knownSensors.json');
+        var enocean_known_sensors = require('../../datastore/enocean_db/knownSensors.json');
 
         for (var key in enocean_known_sensors) {
             var device = enocean_known_sensors[key];
@@ -1180,7 +1199,7 @@ var service = module.exports = {
     {
         var levelinputs = [];
         // refresh
-        enocean_known_sensors = require('../enocean_db/knownSensors.json');
+        var enocean_known_sensors = require('../../datastore/enocean_db/knownSensors.json');
         for (var key in enocean_known_sensors) {
             var device = enocean_known_sensors[key];
             if (device.eepFunc.includes("Light Sensors")) {
