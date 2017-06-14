@@ -355,10 +355,10 @@ function invokeAllToLevel(level, requesttype)
 
         var fixobj = global.currentconfig.fixtures[i];
 
-       // if(fixobj.interfacename == "enocean")  //6/9/17
-       // {
+        // if(fixobj.interfacename == "enocean")  //6/9/17
+        // {
 
-      //  }
+        //  }
         if (fixobj != undefined) {
             // create a reqeuest obj, pass it in
             if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
@@ -616,7 +616,7 @@ var service = module.exports = {
 
 
         // ************************************************** FAUX ****************DATA ***
-       //    data_utils.generateFauxDataSeries();
+        //    data_utils.generateFauxDataSeries();
         // **********************************************************************************
 
 
@@ -664,10 +664,10 @@ var service = module.exports = {
         // FOR DEV DEBUG
         //  rpdg.resetTinsey();
         var fiximg = path.resolve('public/fixtureimg');
-       // const dir = '../public/fixtureimg';
+        // const dir = '../public/fixtureimg';
         fs.readdir(fiximg, function (err, files) {                    //List all files in the target directory
             if(err) {
-                    var k = 0;                               //Abort if error
+                var k = 0;                               //Abort if error
             } else {
 
                 fixtureimagefilecount = files.length;
@@ -677,6 +677,11 @@ var service = module.exports = {
         })
 
 
+
+        // 6/14/17  
+        // * stub for setting static ip address **********************************************
+       //     module.exports.setLANIPAddress('192.168.20.202', '192.168.20.1');
+        // * **********************************************************************************
 
     },
     getVersionObject: function () {
@@ -731,7 +736,7 @@ var service = module.exports = {
                     global.applogger.info(TAG, "************** executing delayed hw init **************", "");
 
                     module.exports.updateRPDGInputDrive();
-                 //   rpdg.readWetDryContacts();
+                    //   rpdg.readWetDryContacts();
                     module.exports.updatePWMPolarity();
                 }
             }
@@ -1040,7 +1045,7 @@ var service = module.exports = {
      */
     setFixtureLevels: function (requestobj, applytohw) {
 
-       // global.applogger.info(TAG, "set fixture levels ", JSON.stringify(requestobj));
+        // global.applogger.info(TAG, "set fixture levels ", JSON.stringify(requestobj));
 
         if (requestobj != undefined) {
             if (requestobj.name != undefined) {
@@ -1439,6 +1444,47 @@ var service = module.exports = {
     getFixtureImageCount: function()
     {
         return fixtureimagefilecount;
+    },
+    setLANIPAddress: function(ipaddr, routerip)
+    {
+        global.applogger.info(TAG, " attempting to set static ip address (TEST)", "");
+        var gold = path.resolve('/etc/dhcpcd.gold');
+        var temp = path.resolve('/etc/dhcpcd.temp');
+        var active_file = path.resolve('/etc/dhcpcd.conf');
+        try {
+            var data = fs.readFileSync(gold, 'utf-8');
+            fs.writeFileSync(temp, data);
+            global.applogger.info(TAG, "gold  file copied to temp", "");
+
+            // # interface eth0
+            //# static ip_address=192.168.20.200/24
+            //# static routers=192.168.20.1
+            //# static domain_name_servers=192.168.20.1
+          //  var  dataline = '\r\ninterface eth0\n static ip_address=192.168.20.200/24\n static routers=192.168.20.1\nstatic domain_name_servers=192.168.20.1\n';
+
+            var dataline = '\r\ninterface eth0\nstatic ip_address=' + ipaddr + '/24\nstatic routers=' + routerip +
+                '\nstatic domain_name_servers=' + routerip + '\n';
+
+            // / if set to -1,  set to  dhcp.
+
+            // var objectpath = '/etc/dhcpcd.conf';
+            // var target = path.resolve(objectpath);
+            global.applogger.info(TAG, "appending temp file ", dataline);
+            fs.appendFileSync(temp, dataline, 'utf-8');
+
+
+            var data = fs.readFileSync(temp, 'utf-8');
+            fs.writeFileSync(active_file, data);
+            global.applogger.info(TAG, "temp file copied to active file.. need to reboot ", "");
+
+
+
+
+        }catch (ex1)
+        {
+            global.applogger.info(TAG, " error writing DHCPCD CONF FILE " + ex1, "");
+        }
+
     }
 
 
