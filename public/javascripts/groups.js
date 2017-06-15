@@ -132,18 +132,20 @@ function openNewGroupEditDialog()
             <option value='brightness'>Brightness</option>\
             <option value='ctemp'>Color Temp</option>\
             <option value='red'>Red Level</option>\
-              <option value='green'>Green Level</option>\
+            <option value='green'>Green Level</option>\
        </select>\
+       Global: <input type='checkbox'  id='global' </input>\
     </form>", function(result) {
         if(result) {
             var grouptype = $('#grouptype').val();
             var groupname = $('#group_name').val();
+            var global = $('#global').is(':checked');
             if(groupname.length > 0) {  //todo validate its unique.
                 var groups_div = document.getElementById("active_groups_holder");
                 var group1 = {};
                 group1.name = groupname;
                 group1.type = grouptype;
-
+                group1.isglobal = global;
 
                 var j = validate({name: groupname}, constraints);
                 if(j != undefined && j.name != undefined && j.name.length > 0)

@@ -6,6 +6,7 @@ var Group = function()
 {
     this.name = "";
     this.type = "";
+    this.isglobal = false;
     this.fixtures = []; // name list,
 
     Group.prototype.fromJson = function(obj)

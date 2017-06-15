@@ -45,7 +45,7 @@ function runscript() {
         if(!init)
         {
             init =true;
-            service.invokeScene("ALL_ON","override");      // <---- here is where you set the desired scene.
+            service.invokeScene("ALL_ON","override", false);      // <---- here is where you set the desired scene.
             // disable all inputs to be ignored.
             enableAllInputs(false);
         }

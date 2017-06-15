@@ -69,7 +69,7 @@ var persistantstore = undefined;
 
 
 // 4/19/17, Networking start.
-var upd_handler = undefined; //require('./udp_handler.js');
+var udp_handler = undefined; //require('./udp_handler.js');
 
 
 var sw_version = "???";
@@ -103,6 +103,34 @@ function incommingUDPMessageHandler(messageobj)
     // stub for now,  but will act on group / scene messages ..
     // add filter to check for group id, ..etc, and if found,,,
     global.applogger.info(TAG, "UDP rx handler got message", JSON.stringify(messageobj));
+
+    // is it a group msg
+    if(messageobj.groupname != undefined) {
+
+        if(messageobj.type == "brightness") {
+            global.applogger.info(TAG, "applying broadcasted group brightness command" , "");
+            module.exports.setGroupToBrightnessLevel(messageobj.groupname, messageobj.level, messageobj.requesttype, false);
+        }
+
+        //     var element = {};
+        //    element.groupname = groupname;
+        //    element.level = level;
+        //    element.requesttype = requesttype;
+        //    element.type = "brightness";
+
+
+    }
+    else if(messageobj.scenename != undefined)
+    {
+        global.applogger.info(TAG, "applying broadcasted scene command" , "");
+
+
+        module.exports.invokeScene(messageobj.scenename,messageobj.requesttype, false);
+    }
+
+
+
+
 }
 //
 /***
@@ -153,7 +181,7 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                                 if (groupobj != undefined) {
                                     if(groupobj.type == "brightness") {
                                         var targetlevel = level * 10;
-                                        service.setGroupToBrightnessLevel(groupname, targetlevel, "wallstation");
+                                        service.setGroupToBrightnessLevel(groupname, targetlevel, "wallstation",true);
                                     }
                                     else if(groupobj.type == "ctemp") {
                                         //scale color temp. between 2200 / 6500
@@ -301,7 +329,7 @@ function contactSwitchHandler(contactdef)
                 if (parts.length == 2) {
                     var scenename = parts[1];
                     global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  invoking scene: " +scenename);
-                    module.exports.invokeScene(scenename, "wallstation");
+                    module.exports.invokeScene(scenename, "wallstation",true);
                 }
                 break;
 
@@ -328,7 +356,7 @@ function contactSwitchHandler(contactdef)
                         if(targetscene != undefined)
                         {
                             global.applogger.info(TAG, "CONTACT INPUT HANDLER", "  invoking scene from list: " +targetscene);
-                            module.exports.invokeScene(targetscene, "wallstation");
+                            module.exports.invokeScene(targetscene, "wallstation",true);
                         }
                     }
                 }
@@ -565,9 +593,10 @@ var service = module.exports = {
         rpdg.init(incommingHWChangeHandler);
 
         if (data_utils.commandLineArgPresent("udp")) {
-            global.applogger.info(TAG, " Initilizing the udp handler now. ", "");
-            upd_handler = require('./udp_handler.js');
-            upd_handler.init(incommingUDPMessageHandler);
+            var sender = data_utils.commandLineArgPresent("sender");
+            global.applogger.info(TAG, " Initilizing the udp handler now. ", "is sender: " +sender);
+            udp_handler = require('./udp_handler.js');
+            udp_handler.init(incommingUDPMessageHandler, sender);
         }
 
         var cfg = data_utils.getConfigFromFile();
@@ -608,7 +637,7 @@ var service = module.exports = {
 
 
         //4/17/17/
-        module.exports.invokeScene("ALL_ON", "override");
+        module.exports.invokeScene("ALL_ON", "override",false);
 
 
         var ip = require('ip');
@@ -678,9 +707,9 @@ var service = module.exports = {
 
 
 
-        // 6/14/17  
+        // 6/14/17
         // * stub for setting static ip address **********************************************
-       //     module.exports.setLANIPAddress('192.168.20.202', '192.168.20.1');
+        //     module.exports.setLANIPAddress('192.168.20.202', '192.168.20.1');
         // * **********************************************************************************
 
     },
@@ -824,7 +853,7 @@ var service = module.exports = {
                             if (groupobj != undefined) {
                                 if (groupobj.type == "brightness") {
                                     var targetlevel = 0; // the level is irrelelevent since its a dl request type.. level * 10;
-                                    service.setGroupToBrightnessLevel(groupname, targetlevel, "daylight");
+                                    service.setGroupToBrightnessLevel(groupname, targetlevel, "daylight", true);
                                 }
 
                             }
@@ -885,7 +914,7 @@ var service = module.exports = {
                                     if (parts.length == 2) {
                                         var scenename = parts[1].trim();
                                         global.applogger.info(TAG, "Sched Event INVOKE -- : ", scenename, "");
-                                        module.exports.invokeScene(scenename, "wallstation");
+                                        module.exports.invokeScene(scenename, "wallstation",true);
                                     }
                                 }
 
@@ -985,11 +1014,23 @@ var service = module.exports = {
         }, BasePollingPeriod);
     },
 
-    setGroupToBrightnessLevel: function (groupname, level, requesttype) {
+    setGroupToBrightnessLevel: function (groupname, level, requesttype, broadcast) {
         if (groupname != undefined) {
             var groupobj = global.currentconfig.getGroupByName(groupname);
             if (groupobj != undefined && groupobj.type == "brightness") {
                 sendMessageToGroup(groupobj, requesttype, level);
+
+                // construct group msg.
+                if(broadcast && groupobj.isglobal && udp_handler != undefined) {
+                    global.applogger.info(TAG, "@@@@ ---- Broadcasting group level request out to others ", "");
+                    var element = {};
+                    element.groupname = groupname;
+                    element.level = level;
+                    element.requesttype = requesttype;
+                    element.type = "brightness";
+                    var packet = JSON.stringify(element);
+                    udp_handler.transmitData(packet);
+                }
             }
         }
     },
@@ -1057,7 +1098,7 @@ var service = module.exports = {
             }
         }
     },
-    invokeScene: function (name, requesttype) {
+    invokeScene: function (name, requesttype, broadcast) {
 
         if (name == "ALL_ON") {
             invokeAllToLevel(100, requesttype);
@@ -1119,6 +1160,17 @@ var service = module.exports = {
                 }
 
             }
+        }
+
+
+        // construct scene broadcast obj
+        if(broadcast && udp_handler != undefined) {
+            global.applogger.info(TAG, "@@@@ ---- Broadcasting scene request out to others ", "");
+            var element = {};
+            element.scenename = name;
+            element.requesttype = requesttype;
+            var packet = JSON.stringify(element);
+            udp_handler.transmitData(packet);
         }
 
         module.exports.latchOutputValuesToHardware();  // 6/7/17
@@ -1246,7 +1298,7 @@ var service = module.exports = {
             var targetscene = sl.getActiveSceneName();
             if (targetscene != undefined) {
                 global.applogger.info(TAG, "Override", "  invoking scene from list: " + targetscene);
-                module.exports.invokeScene(targetscene, "wallstation");
+                module.exports.invokeScene(targetscene, "wallstation",true);
             }
         }
     },
@@ -1258,7 +1310,7 @@ var service = module.exports = {
             var targetscene = sl.getActiveSceneName();
             if (targetscene != undefined) {
                 global.applogger.info(TAG, "Override", "  invoking scene from list: " + targetscene);
-                module.exports.invokeScene(targetscene, "wallstation");
+                module.exports.invokeScene(targetscene, "wallstation",true);
             }
         }
     },
@@ -1460,7 +1512,7 @@ var service = module.exports = {
             //# static ip_address=192.168.20.200/24
             //# static routers=192.168.20.1
             //# static domain_name_servers=192.168.20.1
-          //  var  dataline = '\r\ninterface eth0\n static ip_address=192.168.20.200/24\n static routers=192.168.20.1\nstatic domain_name_servers=192.168.20.1\n';
+            //  var  dataline = '\r\ninterface eth0\n static ip_address=192.168.20.200/24\n static routers=192.168.20.1\nstatic domain_name_servers=192.168.20.1\n';
 
             var dataline = '\r\ninterface eth0\nstatic ip_address=' + ipaddr + '/24\nstatic routers=' + routerip +
                 '\nstatic domain_name_servers=' + routerip + '\n';
@@ -1485,6 +1537,15 @@ var service = module.exports = {
             global.applogger.info(TAG, " error writing DHCPCD CONF FILE " + ex1, "");
         }
 
+    },
+    cleanupServer: function() {
+
+        console.log( " Server cleanup start ");
+        if(udp_handler != undefined)
+        {
+            console.log( " udp server valid, cleanup call  ");
+            udp_handler.cleanup();
+        }
     }
 
 

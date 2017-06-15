@@ -57,14 +57,15 @@ router.post('/invokescene', function(req, res) {
         // bug 49,
         if(global.currentconfig.getSceneByName(name) != undefined)
         {
-            service.invokeScene(name, requesttype);
+            service.invokeScene(name, requesttype, true);
             code = 200;
         }
         else if(name == "ALL_ON" || name == "ALL_50" || name == "ALL_10" || name == "ALL_OFF")
         {
-            service.invokeScene(name, requesttype);
+            service.invokeScene(name, requesttype, true);
             code = 200;
         }
+
     }
     var cfg = JSON.stringify(global.currentconfig,null,2);
     res.status(code).send(cfg);

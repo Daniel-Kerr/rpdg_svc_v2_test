@@ -47,13 +47,13 @@ function runscript() {
         if(!state)
         {
             state =true;
-            service.invokeScene("ALL_ON","override");
+            service.invokeScene("ALL_ON","override", false);
 
         }
         else
         {
             state = false;
-            service.invokeScene("ALL_OFF","override");
+            service.invokeScene("ALL_OFF","override", false);
         }
 
         if(count > 5)   // auto stop after 10 loops

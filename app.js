@@ -82,20 +82,20 @@ app.use('/history', history);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 
@@ -104,6 +104,37 @@ service.initService();
 service.startPolling();
 
 // GNP add ons
+
+
+// 6/9/17  handle shutdowns .. cleanly.
+process.stdin.resume();//so the program will not close instantly
+
+function exitHandler(options, err) {
+
+    console.log( "app exit handler");
+    //if(options.cleanup)
+    service.cleanupServer();
+
+    if (options.cleanup)
+        console.log('** clean ***');
+
+    if (err) console.log(err.stack);
+
+    if (options.exit)
+        process.exit();
+}
+
+//do something when app is closing
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+
+//catches uncaught exceptions
+//process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+
+
+
 
 
 
