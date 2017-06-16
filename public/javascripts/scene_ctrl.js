@@ -114,29 +114,21 @@ function redrawScenes()
 function redrawGroup(groupname)
 {
     var groups_div = document.getElementById("active_scenes_holder");
-
     $('.group_holder_0 div').remove();
-    // groups_div.innerHTML = "";
-    //for(var i = 0; i < loadedconfig.groups.length; i++)
-    //{
-    //    var group = loadedconfig.groups[i];
-    //    constructSceneBox(groups_div, group,i);
-    // }
-    //.
 }
 
-function openNewSceneEditDlg()
+function openNewSceneEditDlg(index)
 {
     var box = bootbox.confirm("<form id='infos' action=''>\
     Scene Name:<input type='text' id='scene_name' /><br/>\
      Global: <input type='checkbox'  id='global' </input>\
     </form>", function(result) {
         if(result) {
-            var grouptype = $('#grouptype').val();
+           // var grouptype = $('#grouptype').val();
             var scenename = $('#scene_name').val();
             var global = $('#global').is(':checked');
             if(scenename.length > 0) {  //todo validate its unique.
-                var groups_div = document.getElementById("active_scenes_holder");
+                var scenes_div = document.getElementById("active_scenes_holder");
                 var scene = {};
                 scene.name = scenename;
                 scene.isglobal = global;
@@ -144,22 +136,48 @@ function openNewSceneEditDlg()
                 if(scenename == "ALL_ON" || scenename == "ALL_OFF")
                 {
                     $.Notification.notify('error','top left', 'Error',  "Reserved scene name");
-                   // noty({text: 'Error: scene name reserved  ', type: 'error'});
                     return ;
                 }
-
-
 
                 var j = validate({name: scenename}, constraints);
                 if(j != undefined && j.name != undefined && j.name.length > 0)
                 {
                     $.Notification.notify('error','top left', 'Error',  j.name[0]);
-                   // noty({text: j.name[0], type: 'error', timeout:1000});
                     return false;
                 }
 
 
+                if(index >= 0) {
 
+                    editConfigObject("edit", "scene", scene, index, function (retval) {
+
+                        if(retval != undefined)  // as of 1/24/17, added version.
+                        {
+                            cachedconfig = retval;
+                            redrawScenes();
+                            //var grpnum = cachedconfig.scenes.length-1;
+                            //constructSceneBox(scenes_div, scene, grpnum);
+                        }
+                        else
+                            $.Notification.notify('error','top left', 'Error',  'Error creating scene ');
+                    });
+                }
+                else
+                {
+                    editConfigObject("create", "scene", scene, undefined, function (retval) {
+                        if(retval != undefined)  // as of 1/24/17, added version.
+                        {
+                            cachedconfig = retval;
+                            var grpnum = cachedconfig.scenes.length-1;
+                            constructSceneBox(scenes_div, scene, grpnum);
+                        }
+                        else
+                            $.Notification.notify('error','top left', 'Error',  'Error creating scene ');
+                    });
+                }
+
+
+                /*
                 saveConfigObject("scene", scene,function (retval) {
                     if(retval != undefined)  // as of 1/24/17, added version.
                     {
@@ -169,14 +187,23 @@ function openNewSceneEditDlg()
                     }
                     else
                         $.Notification.notify('error','top left', 'Error',  'Error creating scene ');
-                       // noty({text: 'Error creating scene ', type: 'error'});
                 });
+
+                */
             }
             else
                 $.Notification.notify('error','top left', 'Error',  'Incomplete Name, please try again ');
-               // noty({text: 'Incomplete Name, please try again ', type: 'error'});
         }
     });
+
+    if(index > -1)
+    {
+        var editscene = cachedconfig.scenes[Number(index)];
+        $('#scene_name').val(editscene.name);
+
+        $('#global').prop('checked', editscene.isglobal);
+    }
+
 
     box.on('shown.bs.modal',function(){
         $("#scene_name").focus();
@@ -186,7 +213,7 @@ function openNewSceneEditDlg()
 
 function createNewScene()
 {
-    openNewSceneEditDlg();
+    openNewSceneEditDlg(-1);
 }
 function enableDisableFixturesInDiv(groupdiv, enable)
 {
@@ -424,6 +451,24 @@ function constructSceneBox(currentdiv, scene, groupnum) {
     buttonholder.appendChild(btinvokescene);
 
 
+    var bteditscene = document.createElement("input");
+    bteditscene.className = "btn btn-xs btn-primary disabled";
+    bteditscene.type = "button";
+    bteditscene.value = "edit";
+
+    bteditscene.setAttribute('scene', scene.name);
+    bteditscene.setAttribute('index', groupnum);
+    bteditscene.onclick = function () {
+        var scenename = this.getAttribute('scene');
+        var index = this.getAttribute('index');
+        // calc index.
+
+        openNewSceneEditDlg(index);
+
+
+    };
+    buttonholder.appendChild(bteditscene);
+
 
     var btndelete = document.createElement("input");
     btndelete.className = "btn btn-xs btn-danger disabled";
@@ -439,13 +484,10 @@ function constructSceneBox(currentdiv, scene, groupnum) {
             if(cachedconfig.contactinputs[i].active_action.includes(scene.name) || cachedconfig.contactinputs[i].inactive_action.includes(scene.name))
             {
                 $.Notification.notify('error','top left', 'Error',  'Please reassign contact input: ' + cachedconfig.contactinputs[i].assignedname + " to a different scene ");
-               // noty({text: 'Please reassign contact input: ' + cachedconfig.contactinputs[i].assignedname + " to a different scene ", type: 'error'});
+
                 return;
             }
         }
-
-
-
 
 
         bootbox.confirm({
@@ -453,9 +495,23 @@ function constructSceneBox(currentdiv, scene, groupnum) {
             size: 'small',
             callback: function(result){
                 if(result) {
-                    //var element = {};
-                    //element.name = pendingdeleteitem; //this.getAttribute('scenelist');
-                    deleteConfigObject("scene",selected_scene,function (retval) {
+
+                    var index = getIndexOfScene(selected_scene.name);
+
+                    editConfigObject("delete", "scene", undefined, index, function (retval) {
+                        if(retval != undefined)
+                        {
+                            cachedconfig = retval;
+                            selected_scene = undefined;
+                            redrawScenes();
+                            filterAvalibleFixtures();
+                        }
+                        else
+                            $.Notification.notify('error','top left', 'Error',  'Error deleting group: ' + retval);
+                    });
+
+
+                   /* deleteConfigObject("scene",selected_scene,function (retval) {
                         //deleteConfigObject(selected_scene.name, function (retval) {
                         if(retval != undefined)  // as of 1/24/17, added version.
                         {
@@ -467,7 +523,7 @@ function constructSceneBox(currentdiv, scene, groupnum) {
                         else
                             $.Notification.notify('error','top left', 'Error',  'Error deleting group: ' + retval);
                            // noty({text: 'Error deleting group: ' + retval, type: 'error'});
-                    });
+                    });  */
                 }
             }});
 

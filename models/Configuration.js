@@ -323,6 +323,42 @@ var Configuration = function()
 
         }
     };
+
+
+
+
+
+    this.renameSceneInConfig = function(oldname, newname)
+    {
+        // wet dry contacts,
+        for(var i = 0 ; i < this.contactinputs.length; i++)  ///for each group
+        {
+            var ci = this.contactinputs[i];
+            if(ci.active_action.includes("scene") && ci.active_action.includes(oldname))
+            {
+                ci.active_action = "scene_@@_"+newname;
+            }
+            if(ci.inactive_action.includes("scene") && ci.inactive_action.includes(oldname))
+            {
+                ci.inactive_action = "scene_@@_"+newname;
+            }
+        }
+
+        // schedule., handled in sched mgr, and within sched file.s
+        // scene lists
+        for(var i = 0 ; i < this.scenelists.length; i++)  ///for each group
+        {
+            var sl = this.scenelists[i];
+            for(var gi = 0; gi < sl.scenes.length; gi++)  //check all scenes in scene list
+            {
+                var scene = sl.scenes[gi];
+                if(scene == oldname)
+                {
+                    sl.scenes[gi] = newname;
+                }
+            }
+        }
+    };
 };
 
 module.exports = Configuration;

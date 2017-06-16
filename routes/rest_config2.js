@@ -13,26 +13,8 @@ var OnOffSetting = require('../models/OnOffSetting.js');
 var DimSetting = require('../models/DimSetting.js');
 var CCTSetting = require('../models/CCTSetting.js');
 var RGBWSetting = require('../models/RGBWSetting.js');
-//var rpdg_driver = require('./rpdg_driver.js');
-
-//var data_utils = require('./data_utils.js');
-
-//global.currentconfig = {}; //this is the current config in mem
-// 1/2/17,  if cfg file does not exist, create it,
-
-//var testfile = data_utils.getConfigFromFile();
-//if(testfile == undefined)
-//{
-//    var default_cfg = 'datastore/default/config_default.json';
-//    fse.copySync(default_cfg, file_config);
-//}
-
-
-//global.currentconfig =  data_utils.getConfigFromFile();
-//rpdg_driver.updateConfigData();
 
 var data_utils = require('../utils/data_utils.js');
-//var validateconfig = data_utils.commandLineArgPresent("validate");
 
 router.get('/test_crud', function(req, res, next) {
     res.sendFile(path.join( app.get('views') +'/test_crud.html'));
@@ -47,10 +29,6 @@ var DimFixture = require('../models/DimFixture.js');
 var CCTFixture = require('../models/CCTFixture.js');
 var RGBWFixture = require('../models/RGBWFixture.js');
 
-//var OccSensor = require('../models/OccSensor.js');
-//var MotionSensor = require('../models/MotionSensor.js');
-//var Dimmer = require('../models/Dimmer.js');
-//var DayLightSensor = require('../models/DayLightSensor.js');
 var LevelInput = require('../models/LevelInput.js');
 
 var Group = require('../models/Group.js');
@@ -58,13 +36,10 @@ var Scene = require('../models/Scene.js');
 var SceneList = require('../models/SceneList.js');
 var ContactInput = require('../models/ContactInput.js');
 // CRUD interface for modifying the configuration.
-//var file_paramoptions = '../datastore/paramoptions.json';
+
 var file_paramoptions = 'routes/paramoptions.json';
-
 var service = require('../controllers/service');
-
 var schedule_mgr = require('../controllers/schedule_mgr.js');
-
 
 router.get('/getconfig', function(req, res) {
 
@@ -113,7 +88,7 @@ router.get('/miscinfo', function(req, res) {
 
 
 
-
+/*
 router.post('/savecontactinput', function(req, res) {
 
     if(req.body != undefined && req.body.type != undefined )
@@ -181,7 +156,7 @@ router.post('/deletecontactinput', function(req, res) {
     data_utils.writeConfigToFile();
     res.status(200).send(cfg);
 });
-
+*/
 
 
 function removeinputfromfixtures(inputname)
@@ -335,7 +310,7 @@ router.post('/getgroupmembers', function(req, res) {
 
 
 
-
+/*
 
 router.post('/savescene', function(req, res) {
 
@@ -416,7 +391,7 @@ router.post('/deletescene', function(req, res) {
     res.status(200).send(cfg);
 });
 
-
+*/
 
 
 router.post('/addfixturetoscene', function(req, res) {
@@ -865,7 +840,48 @@ router.post('/editconfig', function(req, res) {
                 }
 
                 break;
+            case "scene":
+                if (req.body.action == "create" && req.body.object != undefined) {
+                    addSceneToConfig(req.body.object,undefined);
+                }
+                else if (req.body.action == "edit" && req.body.object != undefined && req.body.index != undefined)
+                {
+                    // copy all members from old group to new.
+                    var oldname = global.currentconfig.scenes[req.body.index].name;
+                    var newname = req.body.object.name;
 
+                    var fixlist = global.currentconfig.scenes[req.body.index].fixtures;
+                    global.currentconfig.scenes.splice(req.body.index,1); //remove it
+                    addSceneToConfig(req.body.object,fixlist);
+
+                    if(oldname != newname) {
+                        global.currentconfig.renameSceneInConfig(oldname, newname);
+                        schedule_mgr.renameSceneinSchedule(oldname, newname);
+                    }
+                }
+                else if (req.body.action == "delete" && req.body.index != undefined)
+                {
+                    // remove from scenelists.
+                    var scenename = global.currentconfig.scenes[req.body.index].name;
+                    for(var i = 0; i < global.currentconfig.scenelists.length; i++)
+                    {
+                        var scenelist = global.currentconfig.scenelists[i];
+                        for(var j = 0; j < scenelist.scenes.length; j++)
+                        {
+                            var name = scenelist.scenes[j];
+                            if(name == scenename)
+                            {
+                                scenelist.scenes.splice(j,1);
+                                scenelist.activeindex = 0;
+                            }
+                        }
+                    }
+                    //  remove any sched events that use this scene.
+                    schedule_mgr.removeSceneFromSchedule(scenename);
+                    global.currentconfig.scenes.splice(req.body.index,1); //remove it
+                }
+
+                break;
             default:
                 break;
 
@@ -955,5 +971,17 @@ function addContactInputToConfig(contactinputobjjson)
     global.currentconfig.contactinputs.push(ci);
 
 
+}
+
+
+
+function addSceneToConfig(sceneobjjson, fixlist)
+{
+    var sc = new Scene();
+    sc.fromJson(sceneobjjson);
+    if(fixlist != undefined)
+        sc.fixtures = fixlist;
+
+    global.currentconfig.scenes.push(sc);
 }
 module.exports = router;

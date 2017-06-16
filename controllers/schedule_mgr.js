@@ -510,6 +510,37 @@ var mgr = module.exports = {
 
         }
     },
+    renameSceneinSchedule: function(oldname,newname)
+    {
+        var filelist = [SCHEDULE_FILE_ONETIME,SCHEDULE_FILE_DAILY,SCHEDULE_FILE_WEEKLY];
+
+        for(var f = 0; f < filelist.length; f++) {
+
+            var targetfile = filelist[f];
+
+            var list = getEventListFromFile(targetfile);
+            var edit = false;
+            for (var i = list.length - 1; i >= 0; i--)  // go backwards... rename all matches.
+            {
+                var event = list[i];
+                if (event.action == 'scene') {
+                    var parts = event.text.split(':');
+                    var match = parts[1].trim();
+                    if (match == oldname) {
+
+                        list[i].text = "scene:"+newname;
+                       // list.splice(i, 1);
+                        edit = true;
+                    }
+                }
+            }
+            if (edit)
+                writeEventListToFile(list, targetfile);
+
+
+        }
+    },
+
 
 // NOTE:  all storage is in 24 hr format,
     getEventsinTimeSpan: function(start_ref, end_ref)
