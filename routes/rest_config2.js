@@ -178,7 +178,7 @@ function removeinputfromfixtures(inputname)
 
 // *************************************FROM old code,  group stuff *************
 
-
+/*
 router.post('/savegroup', function(req, res) {
 
     if (req.body != undefined && req.body.name != undefined) {
@@ -208,6 +208,7 @@ router.post('/savegroup', function(req, res) {
     res.status(200).send(cfg);
 });
 
+
 router.post('/deletegroup', function(req, res) {
 
     var groupname = req.body.name;
@@ -233,7 +234,7 @@ router.post('/deletegroup', function(req, res) {
     res.status(200).send(cfg);
 });
 
-
+*/
 
 
 router.post('/addfixturetogroup', function(req, res) {
@@ -882,6 +883,33 @@ router.post('/editconfig', function(req, res) {
                 }
 
                 break;
+
+            case "group":
+
+                if (req.body.action == "create" && req.body.object != undefined) {
+                    addGroupToConfig(req.body.object,undefined);
+                }
+                else if (req.body.action == "edit" && req.body.object != undefined && req.body.index != undefined)
+                {
+                    // copy all members from old group to new.
+                    var oldname = global.currentconfig.groups[req.body.index].name;
+                    var newname = req.body.object.name;
+
+                    var fixlist = global.currentconfig.groups[req.body.index].fixtures;
+                    global.currentconfig.groups.splice(req.body.index,1); //remove it
+                    addGroupToConfig(req.body.object,fixlist);
+
+                    if(oldname != newname) {
+                        global.currentconfig.renameGroupInConfig(oldname, newname);
+
+                    }
+                }
+                else if (req.body.action == "delete" && req.body.index != undefined)
+                {
+                    global.currentconfig.groups.splice(req.body.index,1); //remove it
+                }
+                break;
+
             default:
                 break;
 
@@ -984,4 +1012,16 @@ function addSceneToConfig(sceneobjjson, fixlist)
 
     global.currentconfig.scenes.push(sc);
 }
+
+
+function addGroupToConfig(groupobjjson, fixlist)
+{
+    var sc = new Group();
+    sc.fromJson(groupobjjson);
+    if(fixlist != undefined)
+        sc.fixtures = fixlist;
+
+    global.currentconfig.groups.push(sc);
+}
+
 module.exports = router;

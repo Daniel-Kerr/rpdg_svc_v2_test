@@ -324,10 +324,6 @@ var Configuration = function()
         }
     };
 
-
-
-
-
     this.renameSceneInConfig = function(oldname, newname)
     {
         // wet dry contacts,
@@ -356,6 +352,43 @@ var Configuration = function()
                 {
                     sl.scenes[gi] = newname;
                 }
+            }
+        }
+    };
+
+    this.renameGroupInConfig = function(oldname, newname)
+    {
+        // wet dry contacts,
+        for(var i = 0 ; i < this.contactinputs.length; i++)  ///for each group
+        {
+            var ci = this.contactinputs[i];
+            if(ci.active_action.includes("msg") && ci.active_action.includes(oldname))
+            {
+                var parts = ci.active_action.split("_@@_");
+                if(parts.length == 4)
+                {
+                    ci.active_action = "msg_@@_"+parts[1] + "_@@_"+ newname + "_@@_"+ parts[3];
+                }
+            }
+            if(ci.inactive_action.includes("msg") && ci.inactive_action.includes(oldname))
+            {
+                var parts = ci.active_action.split("_@@_");
+                if(parts.length == 4)
+                {
+                    ci.inactive_action = "msg_@@_"+parts[1] + "_@@_"+ newname + "_@@_"+ parts[3];
+                }
+            }
+        }
+
+        // level inputs.
+
+        for(var i = 0 ; i < this.levelinputs.length; i++)  ///for each group
+        {
+            var li = this.levelinputs[i];
+
+            if(li.group == oldname)
+            {
+                li.group = newname;
             }
         }
     };

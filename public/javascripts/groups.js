@@ -124,7 +124,7 @@ function redrawGroup(groupname)
     //.
 }
 
-function openNewGroupEditDialog()
+function openNewGroupEditDialog(index)
 {
     var box = bootbox.confirm("<form id='infos' action=''>\
     Group Name:<input type='text' id='group_name' /><br/>\
@@ -156,23 +156,54 @@ function openNewGroupEditDialog()
                 }
 
 
-                saveConfigObject("group", group1,function (retval) {
-                    if(retval != undefined)  // as of 1/24/17, added version.
-                    {
-                        loadedconfig = retval;
-                        var grpnum = loadedconfig.groups.length-1;
-                        constructGroupBox(groups_div, group1, grpnum);
-                    }
-                    else
-                        $.Notification.notify('error','top left', 'Error',  'Error creating group ');
-                    // noty({text: 'Error creating group ', type: 'error'});
-                });
+                if(index >= 0) {
+
+                    editConfigObject("edit", "group", group1, index, function (retval) {
+
+                        if(retval != undefined)  // as of 1/24/17, added version.
+                        {
+                            //todo,
+                            loadedconfig = retval;
+                            selected_group = undefined;
+                            redrawGroups();
+                            filterAvalibleFixtures();
+                            //cachedconfig = retval;
+                            //redrawScenes();
+                            //var grpnum = cachedconfig.scenes.length-1;
+                            //constructSceneBox(scenes_div, scene, grpnum);
+                        }
+                        else
+                            $.Notification.notify('error','top left', 'Error',  'Error editing group ');
+                    });
+                }
+                else
+                {
+                    editConfigObject("create", "group", group1, undefined, function (retval) {
+                        if(retval != undefined)  // as of 1/24/17, added version.
+                        {
+                            loadedconfig = retval;
+                            var grpnum = loadedconfig.groups.length-1;
+                            constructGroupBox(groups_div, group1, grpnum);
+                        }
+                        else
+                            $.Notification.notify('error','top left', 'Error',  'Error creating group ');
+                    });
+                }
             }
             else
                 $.Notification.notify('error','top left', 'Error',  'Incomplete Name, please try again ');
-            //noty({text: 'Incomplete Name, please try again ', type: 'error'});
+
         }
     });
+
+
+    if(index > -1)
+    {
+        var editgrp = loadedconfig.groups[Number(index)];
+        $('#group_name').val(editgrp.name);
+        $('#global').prop('checked', editgrp.isglobal);
+        $('#grouptype').prop('disabled', true);
+    }
 
     box.on('shown.bs.modal',function(){
         $("#group_name").focus();
@@ -182,7 +213,7 @@ function openNewGroupEditDialog()
 
 function createnewgroup()
 {
-    openNewGroupEditDialog();
+    openNewGroupEditDialog(-1);
 }
 function enableDisableFixturesInDiv(groupdiv, enable)
 {
@@ -420,12 +451,25 @@ function constructGroupBox(currentdiv, group,groupnum) {
     buttonholder.id = "actionbuttons_"+groupnum;
     fixboxheader.appendChild(buttonholder);
 
+
+    var bteditgroup = document.createElement("input");
+    bteditgroup.className = "btn btn-xs btn-primary";
+    bteditgroup.type = "button";
+    bteditgroup.value = "edit";
+    bteditgroup.setAttribute('index', groupnum);
+    bteditgroup.onclick = function () {
+        var index = this.getAttribute('index');
+        openNewGroupEditDialog(index);
+    };
+    buttonholder.appendChild(bteditgroup);
+
+
     var btndelete = document.createElement("input");
     btndelete.className = "btn btn-xs btn-danger";
     btndelete.type = "button";
     btndelete.value = "Delete";
     btndelete.disabled = true;
-    //  btndelete.setAttribute('group', group.name);
+    btndelete.setAttribute('index', groupnum);
     btndelete.onclick = function () {
 
         for(var i = 0; i < loadedconfig.levelinputs.length; i++)
@@ -433,7 +477,6 @@ function constructGroupBox(currentdiv, group,groupnum) {
             if(loadedconfig.levelinputs[i].group == selected_group.name)
             {
                 $.Notification.notify('error','top left', 'Error',  'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group");
-                //  noty({text: 'Please reassign level input: ' + loadedconfig.levelinputs[i].assignedname + " to a different group", type: 'error'});
                 return;
             }
         }
@@ -443,16 +486,32 @@ function constructGroupBox(currentdiv, group,groupnum) {
             if(loadedconfig.contactinputs[i].active_action.includes(selected_group.name) || loadedconfig.contactinputs[i].inactive_action.includes(selected_group.name))
             {
                 $.Notification.notify('error','top left', 'Error',  'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group");
-                //  noty({text: 'Please reassign contact input: ' + loadedconfig.contactinputs[i].assignedname + " to a different group", type: 'error'});
                 return;
             }
         }
+
+        var index = this.getAttribute('index');
 
         bootbox.confirm({
             message : "Please Confirm Delete of Group",
             size: 'small',
             callback: function(result){
                 if(result) {
+
+                    editConfigObject("delete", "group", undefined, index, function (retval) {
+                        if(retval != undefined)
+                        {
+                            loadedconfig = retval;
+                            selected_group = undefined;
+                            redrawGroups();
+                            filterAvalibleFixtures();
+                        }
+                        else
+                            $.Notification.notify('error','top left', 'Error',  'Error deleting group: ' + retval);
+                    });
+
+
+                    /*
                     deleteConfigObject("group",selected_group,function (retval) {
                         if(retval != undefined)  // as of 1/24/17, added version.
                         {
@@ -465,7 +524,7 @@ function constructGroupBox(currentdiv, group,groupnum) {
                         else
                             $.Notification.notify('error','top left', 'Error', 'Error deleting group: ' + retval);
                         //  noty({text: 'Error deleting group: ' + retval, type: 'error'});
-                    });
+                    });  */
                 }
             }});
     };

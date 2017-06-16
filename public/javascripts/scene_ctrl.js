@@ -175,21 +175,6 @@ function openNewSceneEditDlg(index)
                             $.Notification.notify('error','top left', 'Error',  'Error creating scene ');
                     });
                 }
-
-
-                /*
-                saveConfigObject("scene", scene,function (retval) {
-                    if(retval != undefined)  // as of 1/24/17, added version.
-                    {
-                        cachedconfig = retval;
-                        var grpnum = cachedconfig.scenes.length-1;
-                        constructSceneBox(groups_div, scene, grpnum);
-                    }
-                    else
-                        $.Notification.notify('error','top left', 'Error',  'Error creating scene ');
-                });
-
-                */
             }
             else
                 $.Notification.notify('error','top left', 'Error',  'Incomplete Name, please try again ');
@@ -200,7 +185,6 @@ function openNewSceneEditDlg(index)
     {
         var editscene = cachedconfig.scenes[Number(index)];
         $('#scene_name').val(editscene.name);
-
         $('#global').prop('checked', editscene.isglobal);
     }
 
@@ -455,17 +439,12 @@ function constructSceneBox(currentdiv, scene, groupnum) {
     bteditscene.className = "btn btn-xs btn-primary disabled";
     bteditscene.type = "button";
     bteditscene.value = "edit";
-
     bteditscene.setAttribute('scene', scene.name);
     bteditscene.setAttribute('index', groupnum);
     bteditscene.onclick = function () {
         var scenename = this.getAttribute('scene');
         var index = this.getAttribute('index');
-        // calc index.
-
         openNewSceneEditDlg(index);
-
-
     };
     buttonholder.appendChild(bteditscene);
 
@@ -511,19 +490,7 @@ function constructSceneBox(currentdiv, scene, groupnum) {
                     });
 
 
-                   /* deleteConfigObject("scene",selected_scene,function (retval) {
-                        //deleteConfigObject(selected_scene.name, function (retval) {
-                        if(retval != undefined)  // as of 1/24/17, added version.
-                        {
-                            cachedconfig = retval;
-                            selected_scene = undefined;
-                            redrawScenes();
-                            filterAvalibleFixtures();
-                        }
-                        else
-                            $.Notification.notify('error','top left', 'Error',  'Error deleting group: ' + retval);
-                           // noty({text: 'Error deleting group: ' + retval, type: 'error'});
-                    });  */
+
                 }
             }});
 
