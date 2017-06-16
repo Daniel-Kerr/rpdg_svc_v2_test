@@ -98,18 +98,21 @@ module.exports = {
 
     transmitData : function(data)
     {
-        transmitqueue.push(data);
+      //  transmitqueue.push(data);
+        var message = new Buffer(data);
+        server.send(message, 0, message.length, SRC_PORT, MULTICAST_ADDR, function () {
+        });
     }
 
 } // end of exports.
 
 
-var transmitqueue = [];
+//var transmitqueue = [];
 
 
 function initSenderLoop() {
 
-    global.applogger.info(TAG, "****** Init of sender loop now ******", "");
+  /*  global.applogger.info(TAG, "****** Init of sender loop now ******", "");
 
     setInterval(function () {
 
@@ -135,7 +138,7 @@ function initSenderLoop() {
             }
 
         }
-    }, 8000);
+    }, 8000);  */
 
 }
 

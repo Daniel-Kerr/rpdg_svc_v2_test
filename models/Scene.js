@@ -9,6 +9,7 @@ var RGBWSetting = require('./RGBWSetting.js');
 var Scene = function()
 {
     this.name = "";
+    this.isglobal = false;
     this.fixtures = []; // name list, , with levels  / color temps. /
     Scene.prototype.fromJson = function(obj)
     {

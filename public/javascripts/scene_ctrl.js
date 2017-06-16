@@ -129,15 +129,17 @@ function openNewSceneEditDlg()
 {
     var box = bootbox.confirm("<form id='infos' action=''>\
     Scene Name:<input type='text' id='scene_name' /><br/>\
+     Global: <input type='checkbox'  id='global' </input>\
     </form>", function(result) {
         if(result) {
             var grouptype = $('#grouptype').val();
             var scenename = $('#scene_name').val();
+            var global = $('#global').is(':checked');
             if(scenename.length > 0) {  //todo validate its unique.
                 var groups_div = document.getElementById("active_scenes_holder");
                 var scene = {};
                 scene.name = scenename;
-
+                scene.isglobal = global;
 
                 if(scenename == "ALL_ON" || scenename == "ALL_OFF")
                 {

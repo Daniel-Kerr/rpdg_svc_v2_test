@@ -107,10 +107,23 @@ function incommingUDPMessageHandler(messageobj)
     // is it a group msg
     if(messageobj.groupname != undefined) {
 
-        if(messageobj.type == "brightness") {
-            global.applogger.info(TAG, "applying broadcasted group brightness command" , "");
-            module.exports.setGroupToBrightnessLevel(messageobj.groupname, messageobj.level, messageobj.requesttype, false);
+        // check if group is gloal or not, only apply if global?,
+        var groupobj = global.currentconfig.getGroupByName(messageobj.groupname);
+        if(groupobj != undefined && groupobj.isglobal) {
+            if (messageobj.type == "brightness") {
+                global.applogger.info(TAG, "applying broadcasted group brightness command", "");
+                module.exports.setGroupToBrightnessLevel(messageobj.groupname, messageobj.level, messageobj.requesttype, false);
+            }
+            else if (messageobj.type == "colortemp") {
+                global.applogger.info(TAG, "applying broadcasted group color temp command", "");
+                service.setGroupToColorTemp(messageobj.groupname, messageobj.colortemp, messageobj.brightness, false);
+            }
         }
+       // element.groupname = groupname;
+       // element.colortemp = colortemp;
+       // element.brightness = brightness;
+       // element.requesttype = "wallstation";
+
 
         //     var element = {};
         //    element.groupname = groupname;
@@ -123,9 +136,10 @@ function incommingUDPMessageHandler(messageobj)
     else if(messageobj.scenename != undefined)
     {
         global.applogger.info(TAG, "applying broadcasted scene command" , "");
-
-
-        module.exports.invokeScene(messageobj.scenename,messageobj.requesttype, false);
+        var sceneobj = global.currentconfig.getSceneByName(messageobj.scenename);
+        if(sceneobj != undefined && sceneobj.isglobal) {
+            module.exports.invokeScene(messageobj.scenename, messageobj.requesttype, false);
+        }
     }
 
 
@@ -187,7 +201,7 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                                         //scale color temp. between 2200 / 6500
                                         var scale = level / 10;
                                         var targetctemp = ((6500-2200) * scale) + 2200;
-                                        service.setGroupToColorTemp(groupname,targetctemp,100);
+                                        service.setGroupToColorTemp(groupname,targetctemp,100,true);
                                     }
                                 }
                             }
@@ -1035,7 +1049,7 @@ var service = module.exports = {
         }
     },
 
-    setGroupToColorTemp: function (groupname, colortemp, brightness) {
+    setGroupToColorTemp: function (groupname, colortemp, brightness, broadcast) {
         if (groupname != undefined) {
             var groupobj = global.currentconfig.getGroupByName(groupname);
             if (groupobj != undefined && groupobj.type == "ctemp") {
@@ -1055,6 +1069,21 @@ var service = module.exports = {
                     }
                 }
                 module.exports.latchOutputValuesToHardware();
+
+
+
+                // construct group msg.
+                if(broadcast && groupobj.isglobal && udp_handler != undefined) {
+                    global.applogger.info(TAG, "@@@@ ---- Broadcasting group color temp request out to others ", "");
+                    var element = {};
+                    element.groupname = groupname;
+                    element.colortemp = colortemp;
+                    element.brightness = brightness;
+                    element.requesttype = "wallstation";  // not used currently,
+                    element.type = "colortemp";
+                    var packet = JSON.stringify(element);
+                    udp_handler.transmitData(packet);
+                }
             }
         }
     },
@@ -1164,7 +1193,7 @@ var service = module.exports = {
 
 
         // construct scene broadcast obj
-        if(broadcast && udp_handler != undefined) {
+        if(sceneobj.isglobal && broadcast && udp_handler != undefined) {
             global.applogger.info(TAG, "@@@@ ---- Broadcasting scene request out to others ", "");
             var element = {};
             element.scenename = name;

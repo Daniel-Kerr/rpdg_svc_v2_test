@@ -47,7 +47,7 @@ router.post('/setgrouptocolortemp', function(req, res) {
     if(groupname != undefined && ctemp != undefined && brightness != undefined) {
         var groupobj = global.currentconfig.getGroupByName(groupname);
         if (groupobj != undefined) {
-            service.setGroupToColorTemp(groupname,ctemp,brightness);
+            service.setGroupToColorTemp(groupname,ctemp,brightness,true);
             code = 200;
         }
     }
