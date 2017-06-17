@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "group_test_03",
-		"_postman_id": "27094e42-156e-5aac-da3f-d7341a914954",
+		"_postman_id": "0cffb299-36b7-40d9-e8ba-77ea343fb30c",
 		"description": "Testing API to:\nCreate groups\nAdd fixtures to groups\nAdd duplicate fixture and check that it errors with a duplicate message.\nDelete fixtures from groups\nDelete groups",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -53,19 +53,8 @@
 		},
 		{
 			"name": "Create Brightness Group",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
 			"request": {
-				"url": "http://localhost:3000/config/savegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -76,7 +65,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Brightness\",\n  \"type\": \"brightness\"\n}"
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"Brightness\",\n   \t   \"type\":\"brightness\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
@@ -96,7 +85,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/savegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -107,7 +96,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"CCT\",\n  \"type\": \"ctemp\"\n}"
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"CCT\",\n   \t   \"type\":\"ctemp\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
@@ -127,7 +116,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/savegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -138,7 +127,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Red\",\n  \"type\": \"red\"\n}"
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"Red\",\n   \t   \"type\":\"red\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
@@ -158,7 +147,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/savegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -169,7 +158,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Green\",\n  \"type\": \"green\"\n}"
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"Green\",\n   \t   \"type\":\"green\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
@@ -189,7 +178,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/savegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -200,38 +189,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Blue\",\n  \"type\": \"blue\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Create White Group",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/savegroup",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"White\",\n  \"type\": \"white\"\n}"
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"Blue\",\n   \t   \"type\":\"blue\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
@@ -253,7 +211,6 @@
 							"var thirdgroup = jsongroups[2];",
 							"var fourthgroup = jsongroups[3];",
 							"var fithgroup = jsongroups[4];",
-							"var sixthgroup = jsongroups[5];",
 							"tests[\"Check first groupname\"] = (firstgroup.name == \"Brightness\");",
 							"tests[\"Check first grouptype\"] = (firstgroup.type == \"brightness\");",
 							"tests[\"Check second groupname\"] = (secondgroup.name == \"CCT\");",
@@ -263,9 +220,7 @@
 							"tests[\"Check fourth groupname\"] = (fourthgroup.name == \"Green\");",
 							"tests[\"Check fourth grouptype\"] = (fourthgroup.type == \"green\");",
 							"tests[\"Check fith groupname\"] = (fithgroup.name == \"Blue\");",
-							"tests[\"Check fith grouptype\"] = (fithgroup.type == \"blue\");",
-							"tests[\"Check sixth groupname\"] = (sixthgroup.name == \"White\");",
-							"tests[\"Check sixth grouptype\"] = (sixthgroup.type == \"white\");"
+							"tests[\"Check fith grouptype\"] = (fithgroup.type == \"blue\");"
 						]
 					}
 				}
@@ -469,37 +424,6 @@
 			"response": []
 		},
 		{
-			"name": "Add Fixture to group",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/addfixturetogroup",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"fixturename\": \"TEST_FIX_RGBW\",\n  \"groupname\": \"White\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
 			"name": "Get Brightness Members",
 			"event": [
 				{
@@ -680,42 +604,6 @@
 			"response": []
 		},
 		{
-			"name": "Get White Members",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"var jsonData = JSON.parse(responseBody);",
-							"var jsonfixtures = jsonData.fixtures;",
-							"var firstfixture = jsonfixtures[0];",
-							"tests[\"Check first fixture\"] = (firstfixture == \"TEST_FIX_RGBW\");",
-							""
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://localhost:3000/config/getgroupmembers",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"White\"\n}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
 			"name": "Remove Fixture from Group",
 			"event": [
 				{
@@ -796,7 +684,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/deletegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -807,7 +695,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Brightness\"\n}"
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"Brightness\",\n   \t   \"type\":\"brightness\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": 0\n}"
 				},
 				"description": ""
 			},
@@ -828,12 +716,10 @@
 							"var secondgroup = jsongroups[1];",
 							"var thirdgroup = jsongroups[2];",
 							"var fourthgroup = jsongroups[3];",
-							"var fithgroup = jsongroups[4];",
 							"tests[\"Check first groupname\"] = (firstgroup.name == \"CCT\");",
 							"tests[\"Check second groupname\"] = (secondgroup.name == \"Red\");",
 							"tests[\"Check third groupname\"] = (thirdgroup.name == \"Green\");",
-							"tests[\"Check fourth groupname\"] = (fourthgroup.name == \"Blue\");",
-							"tests[\"Check fith groupname\"] = (fithgroup.name == \"White\");"
+							"tests[\"Check fourth groupname\"] = (fourthgroup.name == \"Blue\");"
 						]
 					}
 				}
@@ -864,7 +750,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/deletegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -875,7 +761,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"CCT\"\n}"
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"CCT\",\n   \t   \"type\":\"ctemp\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": 0\n}"
 				},
 				"description": ""
 			},
@@ -895,11 +781,9 @@
 							"var firstgroup = jsongroups[0];",
 							"var secondgroup = jsongroups[1];",
 							"var thirdgroup = jsongroups[2];",
-							"var fourthgroup = jsongroups[3];",
 							"tests[\"Check first groupname\"] = (firstgroup.name == \"Red\");",
 							"tests[\"Check second groupname\"] = (secondgroup.name == \"Green\");",
-							"tests[\"Check third groupname\"] = (thirdgroup.name == \"Blue\");",
-							"tests[\"Check fourth groupname\"] = (fourthgroup.name == \"White\");"
+							"tests[\"Check third groupname\"] = (thirdgroup.name == \"Blue\");"
 						]
 					}
 				}
@@ -930,7 +814,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/deletegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -941,7 +825,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Blue\"\n}"
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"Blue\",\n   \t   \"type\":\"blue\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": 2\n}"
 				},
 				"description": ""
 			},
@@ -960,10 +844,8 @@
 							"var jsongroups = jsonData.groups;",
 							"var firstgroup = jsongroups[0];",
 							"var secondgroup = jsongroups[1];",
-							"var thirdgroup = jsongroups[2];",
 							"tests[\"Check first groupname\"] = (firstgroup.name == \"Red\");",
-							"tests[\"Check second groupname\"] = (secondgroup.name == \"Green\");",
-							"tests[\"Check third groupname\"] = (thirdgroup.name == \"White\");"
+							"tests[\"Check second groupname\"] = (secondgroup.name == \"Green\");"
 						]
 					}
 				}
@@ -994,7 +876,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/savegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -1005,7 +887,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Brightness\",\n  \"type\": \"brightness\"\n}"
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"Brightness\",\n   \t   \"type\":\"brightness\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
@@ -1025,7 +907,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/savegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -1036,7 +918,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"CCT\",\n  \"type\": \"ctemp\"\n}"
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"CCT\",\n   \t   \"type\":\"ctemp\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
@@ -1056,7 +938,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/savegroup",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -1067,7 +949,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\": \"Blue\",\n  \"type\": \"blue\"\n}"
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"group\",\n   \"object\": {\n   \t   \"name\":\"Blue\",\n   \t   \"type\":\"blue\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": []\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
@@ -1089,13 +971,11 @@
 							"var thirdgroup = jsongroups[2];",
 							"var fourthgroup = jsongroups[3];",
 							"var fithgroup = jsongroups[4];",
-							"var sixthgroup = jsongroups[5];",
 							"tests[\"Check first groupname\"] = (firstgroup.name == \"Red\");",
 							"tests[\"Check second groupname\"] = (secondgroup.name == \"Green\");",
-							"tests[\"Check third groupname\"] = (thirdgroup.name == \"White\");",
-							"tests[\"Check fourth groupname\"] = (fourthgroup.name == \"Brightness\");",
-							"tests[\"Check fith groupname\"] = (fithgroup.name == \"CCT\");",
-							"tests[\"Check sixth groupname\"] = (sixthgroup.name == \"Blue\");"
+							"tests[\"Check fourth groupname\"] = (thirdgroup.name == \"Brightness\");",
+							"tests[\"Check fith groupname\"] = (fourthgroup.name == \"CCT\");",
+							"tests[\"Check sixth groupname\"] = (fithgroup.name == \"Blue\");"
 						]
 					}
 				}
