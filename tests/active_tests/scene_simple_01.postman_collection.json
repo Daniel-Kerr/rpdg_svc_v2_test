@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "scene_simple_01",
-		"_postman_id": "049d9eed-18a3-1fa5-a2b8-ee1383f57bd0",
+		"_postman_id": "17bc2681-1145-00ef-821a-d738919e1d36",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -69,7 +69,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/savescene",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -80,7 +80,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "\n  {\n        \"name\": \"ALL_ON_01\",\n        \"desc\": \"All Fixtures to 100%.\",\n        \"fixtures\": [\n            {\n              \"name\": \"TEST_FIX_Dim_1\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_2\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_3\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_4\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_5\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_6\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_7\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_8\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_1\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_2\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_3\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_4\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_1\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_2\",\n              \"type\": \"dim\",\n              \"level\": 100\n            }\n          ]\n  }\n  "
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"scene\",\n   \"object\": {\n   \t   \"name\":\"ALL_ON_01\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": [\n {\n              \"name\": \"TEST_FIX_Dim_1\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_2\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_3\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_4\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_5\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_6\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_7\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_8\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_1\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_2\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_3\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_4\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_1\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_2\",\n              \"type\": \"dim\",\n              \"level\": 100\n            }\n        ]\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
@@ -116,7 +116,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/savescene",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -127,7 +127,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "\n  {\n        \"name\": \"ALL_OFF_01\",\n        \"desc\": \"All Fixtures to 0%.\",\n        \"fixtures\": [\n            {\n              \"name\": \"TEST_FIX_Dim_1\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_2\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_3\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_4\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_5\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_6\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_7\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_8\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_1\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_2\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_3\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_4\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_1\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_2\",\n              \"type\": \"dim\",\n              \"level\": 0\n            }\n          ]\n  }\n  "
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"scene\",\n   \"object\": {\n   \t   \"name\":\"ALL_OFF_01\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": [\n\t\t\t{\n              \"name\": \"TEST_FIX_Dim_1\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_2\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_3\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_4\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_5\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_6\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_7\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_8\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_1\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_2\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_3\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_4\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_1\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_2\",\n              \"type\": \"dim\",\n              \"level\": 0\n            }\n          ]\n  },\n  \"index\": -1\n}\n  "
 				},
 				"description": ""
 			},
@@ -239,7 +239,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:3000/config/deletescene",
+				"url": "http://localhost:3000/config/editconfig",
 				"method": "POST",
 				"header": [
 					{
@@ -250,7 +250,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n        \"name\": \"ALL_ON_01\"\n}"
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"scene\",\n   \"object\": {},\n  \"index\": 0\n}\n  "
 				},
 				"description": ""
 			},
