@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "daylight__polling_03",
-		"_postman_id": "d7f71664-2aa8-5bb6-bcc0-f12f11b4520b",
+		"_postman_id": "8fd7f7c2-a7b3-163b-c492-5313d2c94905",
 		"description": "Sets basic setup of daylight on input 1 and Occupancy on input 2 via wet contact input. If room is vacant daylight should not effect light levels and pwm. If room is occupied daylight should effect light levels and pwm.\n\nResponse set for fc messages are:\nFC message  % level\n50      0\n40      10\n30      25\n20      50\n10      75\n0      100\n\nThese correspond to the 0-10V readings on input 1 (daylight) of \n        [0.0,50],\n        [1.5,50],\n        [2.3,50],\n        [3.1,40],\n        [4.9,40],\n        [5.7,30],\n        [6.1,20],\n        [7.2,20],\n        [8.5,10],\n        [9.3,10]\nthat are defined in the FCLookup method in the rpdg_utils.js file\n\nAny changes to this table will break the test !!!",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -33,7 +33,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 75,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-03-27T21:40:13.867Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": true,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-27T21:40:14.114Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"boundinputs\": [],\n            \"status\": 0\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_ENO_1\",\n            \"interface\": {},\n            \"interfacename\": \"enocean\",\n            \"outputid\": \"019D35B9\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-26T16:06:59.464Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        }\n    ],\n    \"levelinputs\": [\n        {\n            \"type\": \"daylight\",\n            \"assignedname\": \"Daylight\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"1\",\n            \"drivelevel\": \"0\",\n            \"group\": \"Occupancy\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"enabled\": true\n        }\n    ],\n    \"contactinputs\": [\n        {\n            \"assignedname\": \"Occupancy\",\n            \"type\": \"maintained\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"2\",\n            \"active_action\": \"msg_@@_Occupancy_@@_Occupancy_@@_0\",\n            \"inactive_action\": \"msg_@@_Vacancy_@@_Occupancy_@@_0\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-31T15:56:03.453Z\",\n            \"enabled\": true\n        }\n    ],\n    \"groups\": [\n        {\n            \"name\": \"Occupancy\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_1\",\n                \"TEST_FIX_Plc_1\",\n                \"TEST_FIX_ENO_1\"\n            ]\n        }\n    ],\n    \"scenes\": [],\n    \"enocean\": [\n        {\n            \"enoceanid\": \"019D35B9\",\n            \"systemid\": \"10\"\n        }\n    ],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}"
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_Dim_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/light_eg1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 75,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-03-27T21:40:13.867Z\",\n            \"powerwatts\": \"0.00\",\n            \"daylightlimited\": true,\n            \"status\": 0,\n            \"boundinputs\": []\n        },\n        {\n            \"type\": \"on_off\",\n            \"assignedname\": \"TEST_FIX_Plc_1\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-plc\",\n            \"outputid\": \"1\",\n            \"image\": \"/images/bulb_off.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-27T21:40:14.114Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"boundinputs\": [],\n            \"status\": 0\n        },\n        {\n            \"type\": \"dim\",\n            \"assignedname\": \"TEST_FIX_ENO_1\",\n            \"interface\": {},\n            \"interfacename\": \"enocean\",\n            \"outputid\": \"019D35B9\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"candledim\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"100\",\n                \"resptovac\": \"0\",\n                \"resptodl50\": \"0\",\n                \"resptodl40\": \"10\",\n                \"resptodl30\": \"25\",\n                \"resptodl20\": \"50\",\n                \"resptodl10\": \"75\",\n                \"resptodl0\": \"100\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"level\": 0,\n            \"lastuserequestedlevel\": 0,\n            \"previousvalue\": null,\n            \"lastupdated\": \"2017-04-26T16:06:59.464Z\",\n            \"powerwatts\": 0,\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        }\n    ],\n    \"levelinputs\": [\n        {\n            \"type\": \"daylight\",\n            \"assignedname\": \"Daylight\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"1\",\n            \"drivelevel\": \"0\",\n            \"group\": \"Occupancy\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"enabled\": true\n        }\n    ],\n    \"contactinputs\": [\n        {\n            \"assignedname\": \"Occupancy\",\n            \"type\": \"maintained\",\n            \"interface\": \"rpdg\",\n            \"inputid\": \"2\",\n            \"active_action\": \"msg_@@_Occupancy_@@_Occupancy_@@_0\",\n            \"inactive_action\": \"msg_@@_Vacancy_@@_Occupancy_@@_0\",\n            \"value\": 0,\n            \"previousvalue\": 0,\n            \"lastupdated\": \"2017-03-31T15:56:03.453Z\",\n            \"enabled\": true\n        }\n    ],\n    \"groups\": [\n        {\n            \"name\": \"Occupancy\",\n            \"type\": \"brightness\",\n            \"fixtures\": [\n                \"TEST_FIX_Dim_1\",\n                \"TEST_FIX_Plc_1\",\n                \"TEST_FIX_ENO_1\"\n            ]\n        }\n    ],\n    \"scenes\": [],\n    \"enocean\": [\n        {\n            \"enoceanid\": \"019D35B9\",\n            \"systemid\": \"10\"\n        }\n    ],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n\t\"generalsettings\": {},\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}"
 				},
 				"description": ""
 			},
@@ -242,7 +242,10 @@
 				"url": "http://localhost:3000/config/getconfig",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -367,7 +370,10 @@
 				"url": "http://localhost:3000/config/getconfig",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -457,7 +463,10 @@
 				"url": "http://localhost:3000/config/getconfig",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -582,7 +591,10 @@
 				"url": "http://localhost:3000/config/getconfig",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
