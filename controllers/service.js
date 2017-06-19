@@ -35,14 +35,10 @@ var filter_utils = require('./../utils/filter_utils.js');
 
 var schedule_mgr = require('./schedule_mgr.js');
 
-var PERSIST_FILE = '../datastore/persist.json';
-
+//var PERSIST_FILE = '../datastore/persist.json';
 //var enocean_known_sensors = require('../enocean_db/knownSensors.json');
 
 var SunCalc = require('suncalc');
-
-//var daylightpollseconds = 10;     // global variable (can be set via api).
-
 
 var daylightpolcount = 0;   // used for tracking of dl upddates. interval.
 
@@ -52,8 +48,6 @@ var schedulepollcount = 0;
 var fs = require('fs');
 
 var currentschedule_eventbundle = undefined;
-//var reinit_schedule_countdown = -1;
-
 
 var availbilescripts = [];
 
@@ -63,10 +57,7 @@ var dim_bright_request_map = {};
 var rpdg_service_moment = undefined; // used as time reference for vairous functions 4/11/17,
 // can be either real time or virtual time,  for test.
 
-// PERSISTAT SETTINGS (not config) ,
-var persistantstore = undefined;
-
-
+//var persistantstore = undefined;
 
 // 4/19/17, Networking start.
 var udp_handler = undefined; //require('./udp_handler.js');
@@ -471,7 +462,7 @@ function constructMiscDirs()
         }
     }
 
-
+/*
     if (!fs.existsSync(PERSIST_FILE)) {
         try {
             var target = path.resolve(PERSIST_FILE);
@@ -482,7 +473,7 @@ function constructMiscDirs()
             if (err.code !== 'EEXIST') throw err
         }
     }
-
+*/
 
     // moved here from enocean module,  6/14/17,
     if (!fs.existsSync('../datastore/enocean_db/')) {
@@ -502,12 +493,14 @@ function constructMiscDirs()
     }
 
     // setup persistant store point, (may move to global. ),
-    var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
-    persistantstore = obj;
+   // removed 6/19/17
+    // var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
+   // persistantstore = obj;
 
 }
 
 
+/*
 function writePersistantStore()
 {
     var output = JSON.stringify(persistantstore, null, 4);
@@ -520,7 +513,7 @@ function writePersistantStore()
         }
     });
 }
-
+*/
 
 function constructPWMPolarityMask()
 {
@@ -688,38 +681,36 @@ var service = module.exports = {
         }
 
 
-        if (persistantstore != undefined) {
-            if (persistantstore.hotspotenable != undefined) {
-                if (!persistantstore.hotspotenable) {
+        if (global.currentconfig != undefined) {
+            if (global.currentconfig.generalsettings.hotspotenable != undefined) {
+                if (!global.currentconfig.generalsettings.hotspotenable) {
                     global.applogger.info(TAG, "Boot - attepting to disable Hot spot ", "");
                     module.exports.enableHotspot(false);  // disable hs if not enabled.
                 }
             }
             else {
-                persistantstore.hotspotenable = true;
-                writePersistantStore();
+                global.currentconfig.generalsettings.hotspotenable = true;
+                data_utils.writeConfigToFile();
             }
         }
 
 
-        var k =  global.currentconfig.daylightpollsec;
-
+        //var k =  global.currentconfig.daylightpollsec;
         // FOR DEV DEBUG
         //  rpdg.resetTinsey();
+        // ***********************************END DBBUG teensy.
+
+
+        // read out fixture img.
         var fiximg = path.resolve('public/fixtureimg');
         // const dir = '../public/fixtureimg';
         fs.readdir(fiximg, function (err, files) {                    //List all files in the target directory
             if(err) {
                 var k = 0;                               //Abort if error
             } else {
-
                 fixtureimagefilecount = files.length;
-
-
             }
         })
-
-
 
         // 6/14/17
         // * stub for setting static ip address **********************************************
@@ -880,7 +871,7 @@ var service = module.exports = {
 
             // 3/17/17/    Schedule manage polling,*******************************************************************
             //********************************************************************************************************
-            if (persistantstore != undefined && persistantstore.schedulemode != undefined && persistantstore.schedulemode) {
+            if (global.currentconfig.generalsettings.schedulemode != undefined && global.currentconfig.generalsettings.schedulemode) {
 
                 reInitSchedMgrCount++;
                 if (reInitSchedMgrCount > 120 * 60)  //for now every X hours,minutes
@@ -1344,19 +1335,11 @@ var service = module.exports = {
         }
     },
     setScheduleModeEnable: function (enable) {
-        persistantstore.schedulemode = enable;
-        //var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
-        //if(obj.schedulemode != undefined)
-        //{
-        //    if(obj.schedulemode == enable)
-        //        return;
-        //}
-        //obj.schedulemode = enable;
-        // persistantstoreschedulemode = enable;
-        //  var output = JSON.stringify(obj, null, 4);
+       // persistantstore.schedulemode = enable;
 
-
-        writePersistantStore();
+        global.currentconfig.generalsettings.schedulemode = enable;
+        data_utils.writeConfigToFile();
+      //  writePersistantStore();
         // fs.writeFile(PERSIST_FILE, output, function (err) {
         //    if (err) {
         //        console.log(err);
@@ -1366,9 +1349,10 @@ var service = module.exports = {
         //   }
         //});
     },
-    getPersistantStore: function () {
-        return JSON.stringify(persistantstore, null, 4);
-    },
+    //,
+   // getPersistantStore: function () {
+   //     return JSON.stringify(persistantstore, null, 4);
+   // },
     getEnoceanRxQue: function () {
         if (enocean != undefined)
             return enocean.getRxMessageFifo();
@@ -1429,23 +1413,9 @@ var service = module.exports = {
                 });
             }
 
-            //var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
-            // if(obj.hotspotenable != undefined)
-            // {
-            //     if(obj.hotspotenable == enable)
-            //         return;
-            // }
-            persistantstore.hotspotenable = enable;
-            //persistantstore = obj;
-            // var output = JSON.stringify(obj, null, 4);
-            writePersistantStore();
-            // fs.writeFile(PERSIST_FILE, output, function (err) {
-            //     if (err) {
-            //         console.log(err);
-            //    }
-            //    else {
-            //    }
-            //});
+            global.currentconfig.generalsettings.hotspotenable = enable;
+            data_utils.writeConfigToFile();
+
         } catch (ex1) {
             global.applogger.info(TAG, " ****EXception:  disable wlan0 ****", ex1);
         }

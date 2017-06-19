@@ -1,8 +1,6 @@
 /**
  * Created by Nick on 11/30/2016.
  */
-
-
 var toggles;
 var sliders;
 var leavecheckboxes;
@@ -13,46 +11,44 @@ var timeselector;
 // for del dev,
 var selectedevent;
 var selectedeventdiv;
-
 var cachedconfig;
-
 var html = function(id) { return document.getElementById(id); }; //just a helper
-
 var dp = undefined;
+var user_pref_format = 12;
+var view_mode = "month";
+
+var initenablebtn = true;
+
 $( function() {
     $( "#eventdate" ).datepicker();
 } );
 
 $(document).ready(function() {
-
-    getConfig(processConfig);
-    getPersistStore(function (store) {
-        // set sched mode toggle to correct state,
-        var enabled = store.schedulemode;
-        $('#schedenable').prop('checked', enabled).change();
-    });
+    getConfig(processConfig)
 });
-
-
 
 $(function() {
     $('#schedenable').change(function() {
-        var enabled = $(this).prop('checked');
-        var element = {};
-        element.enable = enabled;
-        setScheduleMode(element,function () {
+        if(!initenablebtn) {
+            var enabled = $(this).prop('checked');
+            var element = {};
+            element.enable = enabled;
+            setScheduleMode(element, function () {
 
-        });
-
+            });
+        }
     })
 })
 
-var user_pref_format = 12;
-
-var view_mode = "month";
 
 function processConfig(configobj) {
     cachedconfig = configobj;
+
+
+    var enabled = cachedconfig.generalsettings.schedulemode;
+    $('#schedenable').prop('checked', enabled).change();
+    initenablebtn = false;
+
 
     var date_format = "%H:%i";
     if(user_pref_format == 12)
@@ -67,15 +63,7 @@ function processConfig(configobj) {
 
     });
     dp = new dataProcessor("schedule/getschedule2");
-
-
-
-
     dp.init(scheduler);
-    // dp.setTransactionMode("REST");
-
-
-
 
     scheduler.locale.labels.timeline_tab ="Timeline";
     scheduler.createTimelineView({

@@ -7,7 +7,7 @@ var REST_DELETE_SCHEDULE_EVENT = "/schedule/delevent";
 
 var REST_SET_SCHED_MODE = "/schedule/setschedulemode";
 
-var REST_GET_PERSIST_STORE = "/schedule/getpersistantstore";
+//var REST_GET_PERSIST_STORE = "/schedule/getpersistantstore";
 
 
 function setScheduleMode(obj, callback) {
@@ -29,7 +29,7 @@ function setScheduleMode(obj, callback) {
 }
 
 
-
+/*
 function getPersistStore(callback) {
 
   //  var dataset = JSON.stringify(obj);
@@ -47,6 +47,9 @@ function getPersistStore(callback) {
         }
     });
 }
+*/
+
+
 
 /*
 function addScheduleEvent(schedobj, newevent, callback)

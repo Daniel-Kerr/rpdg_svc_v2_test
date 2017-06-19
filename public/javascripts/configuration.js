@@ -332,22 +332,6 @@ function init()
     showCommonAnodeOption(false);
     show12VoltOption(false);
 
-
-
-
-    getPersistStore(function (store) {
-        // set sched mode toggle to correct state,
-        var enabled = store.hotspotenable;
-        $('#btwifienable').prop('checked', enabled).change();
-        inithsbutton = false;
-        // if(enabled)
-        //     $('#btwifienable').bootstrapToggle('on');
-        // else
-        //     $('#btwifienable').bootstrapToggle('off');
-    });
-
-
-
 }
 
 
@@ -469,6 +453,18 @@ function processConfig(configobj)
 
     $("#boardvoltage").val(cachedconfig.boardvoltage);
 
+
+
+    // 6/19/17,
+    var enabled = cachedconfig.generalsettings.hotspotenable;
+    $('#btwifienable').prop('checked', enabled); //.change();
+
+     if(enabled)
+         $('#btwifienable').bootstrapToggle('on');
+     else
+         $('#btwifienable').bootstrapToggle('off');
+
+    inithsbutton = false;
 }
 
 var fixtureimgcount = 0;

@@ -191,6 +191,8 @@
             height: 50px;
         }
 
+        .top-buffer { margin-top:20px; }
+
     </style>
 
 </head>
@@ -310,11 +312,8 @@
                         <div class="portlet-body">
 
                             <div class="row">
-                                <div class="col-lg-3">
-                                    <label>HotSpot Enable: </label> <input type="checkbox" id="btwifienable" checked data-toggle="toggle">
-                                </div>
 
-                                <div class="col-lg-3">
+                                <div class="col-lg-6">
                                     <label>Board Voltage: </label>
 
                                     <select id="boardvoltage" class="btn btn-large btn-primary" onchange="SetBoardVoltage()" disabled="true">
@@ -324,6 +323,31 @@
                                         <option value="240">240 VAC</option>
                                         <option value="277">277 VAC</option>
                                     </select>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label>HotSpot Enable: </label> <input type="checkbox" id="btwifienable" checked data-toggle="toggle">
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-12">
+                                    <label>Static IP Address Settings (Leave blank if using DHCP) </label>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+
+
+                                <div class="col-lg-6">
+                                    <label>Static IP Address: </label><input id="staticip" type="text" />
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>Router IP Address: </label><input id="routerip" type="text" />
+                                </div>
+
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-12">
+                                    <input type="button" id = "btsaveip" class="btn btn-large btn-success" onclick=saveIPSettings() value="Save IPs"/>
                                 </div>
                             </div>
                         </div>
@@ -820,7 +844,7 @@
 
 
 
-                                 <br>
+                                <br>
                                 <br>
 
 

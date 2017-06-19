@@ -30,7 +30,6 @@ var Configuration = function()
     this.scenes = [];
     this.enocean = [];
     this.scenelists = [];
-    //this.daylightlevelvolts = 0;
     this.occupiedstate = 0;
 
     this.daylightpollsec = 600; // in seconds. = 10 min
@@ -41,11 +40,18 @@ var Configuration = function()
     this.sitelatt = 45.4736058;
     this.sitelong = -122.7349017;
 
+
+    this.generalsettings = {};
+
+
     Configuration.prototype.fromJson = function(obj) {
 
         this.sitezip = obj.sitezip;
         this.sitelatt = obj.sitelatt; //45.4736058;
         this.sitelong = obj.sitelong; //-122.7349017;
+
+
+        this.generalsettings = obj.generalsettings;
 
         if(obj.daylightpollsec != undefined)
             this.daylightpollsec = obj.daylightpollsec;
@@ -91,23 +97,6 @@ var Configuration = function()
             var f = new LevelInput();
             f.fromJson(input);
             this.levelinputs.push(f);
-
-            /* switch (input.type) {
-
-             case "dimmer":
-             var f = new Dimmer();
-             f.fromJson(input);
-             this.levelinputs.push(f);
-             break;
-
-             case "daylight":
-             var f = new DayLightSensor();
-             f.fromJson(input);
-             this.levelinputs.push(f);
-             break;
-             default:
-             break;
-             }*/
         }
 
 
@@ -175,24 +164,6 @@ var Configuration = function()
         }
         return undefined;
     };
-
-    /*
-     this.getDayLightSensor = function()
-     {
-     for(var i = 0; i < this.levelinputs.length; i++)
-     {
-     var input = this.levelinputs[i];
-     if(input.type == "daylight")
-     {
-     return input;
-     }
-     }
-     return undefined;
-     }
-     */
-
-
-
 
 
     this.initHWInterfaces = function(rpdg, enocean)

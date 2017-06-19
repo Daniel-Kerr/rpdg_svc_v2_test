@@ -299,12 +299,12 @@ router.post('/setschedulemode', function(req, res) {
 });
 
 
-
+/*
 router.get('/getpersistantstore', function(req, res) {
 
   res.status(200).send(service.getPersistantStore());
 });
-
+*/
 
 module.exports = router;
 
