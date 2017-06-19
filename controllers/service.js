@@ -110,10 +110,10 @@ function incommingUDPMessageHandler(messageobj)
                 service.setGroupToColorTemp(messageobj.groupname, messageobj.colortemp, messageobj.brightness, false);
             }
         }
-       // element.groupname = groupname;
-       // element.colortemp = colortemp;
-       // element.brightness = brightness;
-       // element.requesttype = "wallstation";
+        // element.groupname = groupname;
+        // element.colortemp = colortemp;
+        // element.brightness = brightness;
+        // element.requesttype = "wallstation";
 
 
         //     var element = {};
@@ -462,18 +462,18 @@ function constructMiscDirs()
         }
     }
 
-/*
-    if (!fs.existsSync(PERSIST_FILE)) {
-        try {
-            var target = path.resolve(PERSIST_FILE);
-            var blank = {};
-            var output = JSON.stringify(blank, null, 4);
-            fs.writeFileSync(target, output);
-        } catch (err) {
-            if (err.code !== 'EEXIST') throw err
-        }
-    }
-*/
+    /*
+     if (!fs.existsSync(PERSIST_FILE)) {
+     try {
+     var target = path.resolve(PERSIST_FILE);
+     var blank = {};
+     var output = JSON.stringify(blank, null, 4);
+     fs.writeFileSync(target, output);
+     } catch (err) {
+     if (err.code !== 'EEXIST') throw err
+     }
+     }
+     */
 
     // moved here from enocean module,  6/14/17,
     if (!fs.existsSync('../datastore/enocean_db/')) {
@@ -493,27 +493,27 @@ function constructMiscDirs()
     }
 
     // setup persistant store point, (may move to global. ),
-   // removed 6/19/17
+    // removed 6/19/17
     // var obj = JSON.parse(fs.readFileSync(PERSIST_FILE, 'utf8'));
-   // persistantstore = obj;
+    // persistantstore = obj;
 
 }
 
 
 /*
-function writePersistantStore()
-{
-    var output = JSON.stringify(persistantstore, null, 4);
-    fs.writeFile(PERSIST_FILE, output, function (err) {
-        if (err) {
-            console.log(err);
-        }
-        else {
+ function writePersistantStore()
+ {
+ var output = JSON.stringify(persistantstore, null, 4);
+ fs.writeFile(PERSIST_FILE, output, function (err) {
+ if (err) {
+ console.log(err);
+ }
+ else {
 
-        }
-    });
-}
-*/
+ }
+ });
+ }
+ */
 
 function constructPWMPolarityMask()
 {
@@ -1341,11 +1341,11 @@ var service = module.exports = {
         }
     },
     setScheduleModeEnable: function (enable) {
-       // persistantstore.schedulemode = enable;
+        // persistantstore.schedulemode = enable;
 
         global.currentconfig.generalsettings.schedulemode = enable;
         data_utils.writeConfigToFile();
-      //  writePersistantStore();
+        //  writePersistantStore();
         // fs.writeFile(PERSIST_FILE, output, function (err) {
         //    if (err) {
         //        console.log(err);
@@ -1356,9 +1356,9 @@ var service = module.exports = {
         //});
     },
     //,
-   // getPersistantStore: function () {
-   //     return JSON.stringify(persistantstore, null, 4);
-   // },
+    // getPersistantStore: function () {
+    //     return JSON.stringify(persistantstore, null, 4);
+    // },
     getEnoceanRxQue: function () {
         if (enocean != undefined)
             return enocean.getRxMessageFifo();
@@ -1537,8 +1537,26 @@ var service = module.exports = {
                 global.applogger.info(TAG, "temp file copied to active file.. need to reboot ", "");
 
 
-                // need to add restart of service here. todo. ,  or reboot.
+                // restart of service here.
+                global.applogger.info(TAG, " **** Attempting to restart dhcpcd service ****", "");
 
+
+                var childProcess = require('child_process'),
+                    ls;
+
+                ls = childProcess.exec('sudo dhclient -r eth0; sudo /etc/init.d/dhcpcd restart', function (error, stdout, stderr) {
+                    if (error) {
+                        console.log(error.stack);
+                        console.log('Error code: ' + error.code);
+                        console.log('Signal received: ' + error.signal);
+                    }
+                    console.log('Child Process STDOUT: ' + stdout);
+                    console.log('Child Process STDERR: ' + stderr);
+                });
+
+                ls.on('exit', function (code) {
+                    console.log('Child process exited with exit code ' + code);
+                });
 
             } catch (ex1) {
                 global.applogger.info(TAG, " error writing DHCPCD CONF FILE " + ex1, "");
