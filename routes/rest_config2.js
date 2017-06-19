@@ -725,14 +725,27 @@ router.post('/getgpsfromzipcode', function(req, res) {
 
 router.post('/setgeneralsettings', function(req, res) {
 
+    var ipaddrchanged = false;
+
     global.currentconfig.generalsettings.nodename = req.body.nodename;
     global.currentconfig.generalsettings.boardvoltage = Number(req.body.boardvoltage);
     global.currentconfig.generalsettings.hotspotenable = req.body.hotspotenable;
+
+    if(global.currentconfig.generalsettings.nodeip != req.body.nodeip ||
+        global.currentconfig.generalsettings.routerip != req.body.routerip) {
+        ipaddrchanged = true;
+    }
+
     global.currentconfig.generalsettings.nodeip = req.body.nodeip;
     global.currentconfig.generalsettings.routerip = req.body.routerip;
     service.enableHotspot(global.currentconfig.generalsettings.hotspotenable);
 
     var cfg = JSON.stringify(global.currentconfig,null,2);
+
+
+    if(ipaddrchanged)
+         service.setLANIPAddress(global.currentconfig.generalsettings.nodeip, global.currentconfig.generalsettings.routerip);
+
     data_utils.writeConfigToFile();
     res.status(200).send(cfg);
 });

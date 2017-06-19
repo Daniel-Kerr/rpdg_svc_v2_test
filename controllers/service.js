@@ -682,16 +682,22 @@ var service = module.exports = {
 
 
         if (global.currentconfig != undefined) {
-            if (global.currentconfig.generalsettings != undefined && global.currentconfig.generalsettings.hotspotenable != undefined) {
-                if (!global.currentconfig.generalsettings.hotspotenable) {
-                    global.applogger.info(TAG, "Boot - attepting to disable Hot spot ", "");
-                    module.exports.enableHotspot(false);  // disable hs if not enabled.
+
+            if(global.currentconfig.generalsettings == undefined)
+                global.currentconfig.generalsettings = {};
+            else {
+                if (global.currentconfig.generalsettings.hotspotenable != undefined) {
+                    if (!global.currentconfig.generalsettings.hotspotenable) {
+                        global.applogger.info(TAG, "Boot - attepting to disable Hot spot ", "");
+                        module.exports.enableHotspot(false);  // disable hs if not enabled.
+                    }
+                }
+                else {
+                    global.currentconfig.generalsettings.hotspotenable = true;
+                    data_utils.writeConfigToFile();
                 }
             }
-            else {
-                global.currentconfig.generalsettings.hotspotenable = true;
-                data_utils.writeConfigToFile();
-            }
+
         }
 
 
@@ -1513,6 +1519,9 @@ var service = module.exports = {
             var dataline = '\r\ninterface eth0\nstatic ip_address=' + ipaddr + '/24\nstatic routers=' + routerip +
                 '\nstatic domain_name_servers=' + routerip + '\n';
 
+
+            if(ipaddr.length <= 0 || routerip.length <= 0)
+                dataline = ""; //
             // / if set to -1,  set to  dhcp.
 
             // var objectpath = '/etc/dhcpcd.conf';
@@ -1526,6 +1535,8 @@ var service = module.exports = {
             global.applogger.info(TAG, "temp file copied to active file.. need to reboot ", "");
 
 
+
+            // need to add restart of service here. todo. ,  or reboot.
 
 
         }catch (ex1)

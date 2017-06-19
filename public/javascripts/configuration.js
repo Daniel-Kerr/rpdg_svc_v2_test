@@ -2454,6 +2454,15 @@ function SetBoardVoltage()
 */
 
 
+function ValidateIPaddress(ipaddress) {
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
+        return (true)
+    }
+
+   // alert("You have entered an invalid IP address!")
+    return (false)
+}
+
 function saveGeneralSettings()
 {
     var name = $('#nodename').val();
@@ -2463,6 +2472,26 @@ function saveGeneralSettings()
     var routerip = $('#routerip').val();
 
     // validate...
+
+    var ipvalid = ValidateIPaddress(nodeip);
+    if(!ipvalid) {
+        $.Notification.notify('error', 'top left', 'Node IP Format Error', "Please refresh and submit again");
+        return;
+    }
+
+    var ipvalid = ValidateIPaddress(routerip);
+    if(!ipvalid) {
+        $.Notification.notify('error', 'top left', 'Router IP Format Error', "Please refresh and submit again");
+        return;
+    }
+
+
+    var j = validate({name: name}, constraints);
+    if(j != undefined && j.name != undefined && j.name.length > 0)
+    {
+        $.Notification.notify('error','top left', 'Node Name Save Error', j.name[0]);
+        return;
+    }
 
     // dkfjdf
 
@@ -2491,5 +2520,7 @@ function saveGeneralSettings()
         $('#routerip').val(cachedconfig.generalsettings.routerip);
 
         document.title = cachedconfig.generalsettings.nodename;
+
+        $.Notification.notify('success','top left', 'Config Saved', "");
     })
 }
