@@ -1413,9 +1413,6 @@ var service = module.exports = {
                 });
             }
 
-            global.currentconfig.generalsettings.hotspotenable = enable;
-            data_utils.writeConfigToFile();
-
         } catch (ex1) {
             global.applogger.info(TAG, " ****EXception:  disable wlan0 ****", ex1);
         }

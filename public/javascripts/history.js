@@ -42,11 +42,15 @@ function init()
 
         if(cfg != undefined)
         {
+
             currentwindowsizehours = 6; // 5/24/17
 
             default_start_date.setHours(default_start_date.getHours()-6);
 
             cachedconfig = cfg;
+            document.title = cachedconfig.generalsettings.nodename;
+
+            
             outputcount = 0;
             totaloutputs = cfg.fixtures.length;
             var fixtures = cfg.fixtures;

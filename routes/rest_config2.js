@@ -723,26 +723,19 @@ router.post('/getgpsfromzipcode', function(req, res) {
 
 
 
-router.post('/enablehotspot', function(req, res) {
+router.post('/setgeneralsettings', function(req, res) {
 
-    var enable = req.body.enable;
-    service.enableHotspot(enable);
+    global.currentconfig.generalsettings.nodename = req.body.nodename;
+    global.currentconfig.generalsettings.boardvoltage = Number(req.body.boardvoltage);
+    global.currentconfig.generalsettings.hotspotenable = req.body.hotspotenable;
+    global.currentconfig.generalsettings.nodeip = req.body.nodeip;
+    global.currentconfig.generalsettings.routerip = req.body.routerip;
+    service.enableHotspot(global.currentconfig.generalsettings.hotspotenable);
 
-    res.status(200).send("OK");
-});
-
-
-
-router.post('/setboardvoltage', function(req, res) {
-
-    var voltage = req.body.boardvoltage;
-    global.currentconfig.boardvoltage  = Number(voltage);
     var cfg = JSON.stringify(global.currentconfig,null,2);
     data_utils.writeConfigToFile();
     res.status(200).send(cfg);
 });
-
-
 
 
 // ************************************** 6/9/17 new single crud iface for all fixture / inputput items

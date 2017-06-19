@@ -349,6 +349,7 @@ function init() {
 function processConfig(configobj)
 {
     cachedconfig = configobj;
+    document.title = cachedconfig.generalsettings.nodename;
     updateFixturesTable();
     redrawScenes();
 

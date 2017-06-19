@@ -335,8 +335,9 @@ function init()
 }
 
 
-
+/*
 $(function() {
+
     $('#btwifienable').change(function() {
 
         if(!inithsbutton) {
@@ -350,7 +351,7 @@ $(function() {
 
     })
 })
-
+*/
 function cachehostipaddr(retval)
 {
     hostip = retval;
@@ -362,12 +363,11 @@ function processConfig(configobj)
 {
     cachedconfig = configobj;  // just so we can copy over groups on save.
 
+    document.title = cachedconfig.generalsettings.nodename;
 
     getFixtureParameterOptions(cacheFixtureParamOptions);
 
-
     updateWetDryContactTable();
-
 
     updateLevelInputsTable();
 
@@ -451,18 +451,22 @@ function processConfig(configobj)
     })
 
 
-    $("#boardvoltage").val(cachedconfig.boardvoltage);
-
-
+  //  $("#boardvoltage").val(cachedconfig.boardvoltage);
 
     // 6/19/17,
     var enabled = cachedconfig.generalsettings.hotspotenable;
-    $('#btwifienable').prop('checked', enabled); //.change();
-
      if(enabled)
          $('#btwifienable').bootstrapToggle('on');
      else
          $('#btwifienable').bootstrapToggle('off');
+
+
+    $('#nodename').val(cachedconfig.generalsettings.nodename);
+    $('#boardvoltage').val(cachedconfig.generalsettings.boardvoltage);
+
+    $('#nodeip').val(cachedconfig.generalsettings.nodeip);
+    $('#routerip').val(cachedconfig.generalsettings.routerip);
+
 
     inithsbutton = false;
 }
@@ -2436,6 +2440,7 @@ function SetDaylightPolling()
 }
 
 
+/*
 function SetBoardVoltage()
 {
     var selection = $('#boardvoltage').val();
@@ -2444,5 +2449,47 @@ function SetBoardVoltage()
     SetBoardVoltageCRUD(element, function(data) {
         // ignore return .
         cachedconfig = data;
+    })
+}
+*/
+
+
+function saveGeneralSettings()
+{
+    var name = $('#nodename').val();
+    var hotspotenable = $('#btwifienable').prop('checked');
+    var voltage = $('#boardvoltage').val();
+    var nodeip = $('#nodeip').val();
+    var routerip = $('#routerip').val();
+
+    // validate...
+
+    // dkfjdf
+
+    var element = {};
+    element.nodename = name;
+
+    element.boardvoltage = voltage;
+    element.hotspotenable = hotspotenable;
+    element.nodeip = nodeip;
+    element.routerip = routerip;
+
+    SaveGeneralSettingsCRUD(element, function(data) {
+        cachedconfig = data;
+
+        var enabled = cachedconfig.generalsettings.hotspotenable;
+        if(enabled)
+            $('#btwifienable').bootstrapToggle('on');
+        else
+            $('#btwifienable').bootstrapToggle('off');
+
+
+        $('#nodename').val(cachedconfig.generalsettings.nodename);
+        $('#boardvoltage').val(cachedconfig.generalsettings.boardvoltage);
+
+        $('#nodeip').val(cachedconfig.generalsettings.nodeip);
+        $('#routerip').val(cachedconfig.generalsettings.routerip);
+
+        document.title = cachedconfig.generalsettings.nodename;
     })
 }

@@ -44,7 +44,7 @@ $(function() {
 function processConfig(configobj) {
     cachedconfig = configobj;
 
-
+    document.title = cachedconfig.generalsettings.nodename;
     var enabled = cachedconfig.generalsettings.schedulemode;
     $('#schedenable').prop('checked', enabled).change();
     initenablebtn = false;

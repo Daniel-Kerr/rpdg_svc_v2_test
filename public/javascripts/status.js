@@ -21,6 +21,7 @@ $(document).ready(function() {
 function initStatusHandler(config)
 {
     cachedconfig = config;
+    document.title = cachedconfig.generalsettings.nodename;
     constructFixtureStatusBoxes();
     updateUIPageComponents(undefined);
 }

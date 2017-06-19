@@ -33,6 +33,7 @@ $(document).ready(function() {
 function processConfig(configobj)
 {
     loadedconfig = configobj;  // cache config.
+    document.title = loadedconfig.generalsettings.nodename;
     redrawGroups();
 }
 

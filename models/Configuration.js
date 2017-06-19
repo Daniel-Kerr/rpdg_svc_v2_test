@@ -34,7 +34,7 @@ var Configuration = function()
 
     this.daylightpollsec = 600; // in seconds. = 10 min
 
-    this.boardvoltage = 24; // used for power calc
+  //  this.boardvoltage = 24; // used for power calc
 
     this.sitezip = 97219;
     this.sitelatt = 45.4736058;
@@ -42,6 +42,7 @@ var Configuration = function()
 
 
     this.generalsettings = {};
+    this.generalsettings.boardvoltage = 24;
 
 
     Configuration.prototype.fromJson = function(obj) {
@@ -56,8 +57,8 @@ var Configuration = function()
         if(obj.daylightpollsec != undefined)
             this.daylightpollsec = obj.daylightpollsec;
 
-        if(obj.boardvoltage != undefined)
-            this.boardvoltage = obj.boardvoltage;
+       // if(obj.boardvoltage != undefined)
+       //     this.boardvoltage = obj.boardvoltage;
 
 
         for (var i = 0; i < obj.fixtures.length; i++) {

@@ -63,7 +63,10 @@ var REST_GET_GPS_FROM_ZIPCODE = "/config/getgpsfromzipcode";
 
 var REST_GET_VERSION = "/version";
 
-var REST_SET_HOTSPOT_ENABLE = "/config/enablehotspot";
+//var REST_SET_HOTSPOT_ENABLE = "/config/enablehotspot";
+
+var REST_SET_GENERAL_SETTINGS = "/config/setgeneralsettings";
+
 // config get / set,
 function getConfig(callback)
 {
@@ -504,12 +507,32 @@ function SetDaylightPollingCRUD(obj, callback) {
 }
 
 
-
+/*
 function SetBoardVoltageCRUD(obj, callback) {
 
     var dataset = JSON.stringify(obj);
     $.ajax({
         url: "/config/setboardvoltage",
+        type: 'post',
+        data: dataset,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}
+*/
+
+
+function SaveGeneralSettingsCRUD(obj, callback) {
+
+    var dataset = JSON.stringify(obj);
+    $.ajax({
+        url: REST_SET_GENERAL_SETTINGS,
         type: 'post',
         data: dataset,
         dataType: "json",
