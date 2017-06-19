@@ -1,0 +1,657 @@
+{
+	"variables": [],
+	"info": {
+		"name": "crud_test_01",
+		"_postman_id": "b6380223-3721-01ab-f8bf-f2e7559b5557",
+		"description": "Start with Blank config and add both fixtures and inputs, then delete them out and verify that the config has the proper items.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_blank",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n\t\"generalsettings\": {\n        \"schedulemode\": true},\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017\n}"
+				},
+				"description": "Blank out the config file."
+			},
+			"response": []
+		},
+		{
+			"name": "Save on_off_fixture",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of fixture 1 is correct\"] = jsonData.fixtures[0].assignedname === \"TEST_FIX_NoDim\";",
+							"tests[\"Interface Name of fixture 1 is correct\"] = jsonData.fixtures[0].interfacename === \"rpdg-pwm\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"fixture\",\n   \"object\": {\n \"type\": \"on_off\",\n      \"assignedname\": \"TEST_FIX_NoDim\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"1\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": 0,\n        \"dimrate\": 0,\n        \"brightenrate\": 0,\n        \"resptoocc\": 100,\n        \"resptovac\": 0,\n        \"resptodl50\": -1,\n        \"resptodl40\": -1,\n        \"resptodl30\": -1,\n        \"resptodl20\": -1,\n        \"resptodl10\": -1,\n        \"resptodl0\": -1,\n        \"daylightceiling\": 100,\n        \"manualceiling\": -1,\n        \"daylightfloor\": 0,\n        \"manualfloor\": -1\n      },\n      \"level\": 100,\n      \"lastuserequestedlevel\": 100,\n      \"previousvalue\": 0,\n      \"lastupdated\": \"2017-06-19T22:34:45.249Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false\n   },\n   \"index\": -1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save dim_fxiture",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of fixture 2 is correct\"] = jsonData.fixtures[1].assignedname === \"TEST_FIX_Dim\";",
+							"tests[\"Interface Name of fixture 2 is correct\"] = jsonData.fixtures[1].interfacename === \"rpdg-pwm\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"fixture\",\n   \"object\": {\n      \"type\": \"dim\",\n      \"assignedname\": \"TEST_FIX_Dim\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"2\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": 0,\n        \"dimrate\": 0,\n        \"brightenrate\": 0,\n        \"resptoocc\": -1,\n        \"resptovac\": -1,\n        \"resptodl50\": -1,\n        \"resptodl40\": -1,\n        \"resptodl30\": -1,\n        \"resptodl20\": -1,\n        \"resptodl10\": -1,\n        \"resptodl0\": -1,\n        \"daylightceiling\": -1,\n        \"manualceiling\": 100,\n        \"daylightfloor\": -1,\n        \"manualfloor\": 0\n      },\n      \"level\": 100,\n      \"lastuserequestedlevel\": \"100\",\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-06-19T22:34:47.495Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false\n   },\n   \"index\": -1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save cct_fixture",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of fixture 3 is correct\"] = jsonData.fixtures[2].assignedname === \"TEST_FIX_cct\";",
+							"tests[\"Interface Name of fixture 3 is correct\"] = jsonData.fixtures[2].interfacename === \"rpdg-pwm\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"fixture\",\n   \"object\": {\n      \"type\": \"cct\",\n      \"assignedname\": \"TEST_FIX_cct\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"3\",\n      \"image\": \"/fixtureimg/18.jpg\",\n      \"candledim\": false,\n      \"min\": \"2000\",\n      \"max\": \"6500\",\n      \"commonanode\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": 0,\n        \"dimrate\": 0,\n        \"brightenrate\": 0,\n        \"resptoocc\": -1,\n        \"resptovac\": -1,\n        \"resptodl50\": 0,\n        \"resptodl40\": 10,\n        \"resptodl30\": 25,\n        \"resptodl20\": 50,\n        \"resptodl10\": 75,\n        \"resptodl0\": 100,\n        \"daylightceiling\": -1,\n        \"manualceiling\": -1,\n        \"daylightfloor\": -1,\n        \"manualfloor\": -1\n      },\n      \"colortemp\": \"6500\",\n      \"brightness\": \"100\",\n      \"lastuserequestedbrightness\": \"100\",\n      \"previouscolortemp\": \"6500\",\n      \"previousbrightness\": \"100\",\n      \"lastupdated\": \"2017-06-19T22:34:49.887Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false,\n      \"hwwarm\": 0,\n      \"hwcool\": 100\n   },\n   \"index\": -1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save rgbw_fixture",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of fixture 4 is correct\"] = jsonData.fixtures[3].assignedname === \"TEST_FIX_rgbw\";",
+							"tests[\"Interface Name of fixture 4 is correct\"] = jsonData.fixtures[3].interfacename === \"rpdg-pwm\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"fixture\",\n   \"object\": {\n      \"type\": \"rgbw\",\n      \"assignedname\": \"TEST_FIX_rgbw\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"5\",\n      \"image\": \"/fixtureimg/6.jpg\",\n      \"commonanode\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": 0,\n        \"dimrate\": 0,\n        \"brightenrate\": 0,\n        \"resptoocc\": -1,\n        \"resptovac\": -1,\n        \"resptodl50\": 100,\n        \"resptodl40\": 75,\n        \"resptodl30\": 50,\n        \"resptodl20\": 25,\n        \"resptodl10\": 10,\n        \"resptodl0\": 0,\n        \"daylightceiling\": -1,\n        \"manualceiling\": -1,\n        \"daylightfloor\": -1,\n        \"manualfloor\": -1\n      },\n      \"red\": \"100\",\n      \"green\": \"100\",\n      \"blue\": \"100\",\n      \"white\": 100,\n      \"lastuserrequestedwhite\": 100,\n      \"previousred\": 100,\n      \"previousgreen\": 100,\n      \"previousblue\": 100,\n      \"previouswhite\": 100,\n      \"lastupdated\": \"2017-06-19T22:34:54.201Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false\n   },\n   \"index\": -1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Group All",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of group 1 is correct\"] = jsonData.groups[0].name === \"All\";",
+							"tests[\"Type of group 1 is correct\"] = jsonData.groups[0].type === \"brightness\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"group\",\n   \"object\": {\n      \"name\": \"All\",\n      \"type\": \"brightness\",\n      \"isglobal\": false,\n      \"fixtures\": [\n        \"TEST_FIX_NoDim\",\n        \"TEST_FIX_Dim\",\n        \"TEST_FIX_cct\",\n        \"TEST_FIX_rgbw\"\n      ]\n   },\n   \"index\": -1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save contact_input",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of contact input 1 is correct\"] = jsonData.contactinputs[0].assignedname === \"Test_Button\";",
+							"tests[\"Type of contact input 1 is correct\"] = jsonData.contactinputs[0].type === \"momentary\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"contactinput\",\n   \"object\": {\n      \"assignedname\": \"Test_Button\",\n      \"type\": \"momentary\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"1\",\n      \"active_action\": \"scene_@@_ALL_ON\",\n      \"inactive_action\": \"action_none\",\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"lastupdated\": \"2017-06-19T22:54:37.849Z\",\n      \"enabled\": true\n   },\n   \"index\": -1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save contact_input",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of contact input 2 is correct\"] = jsonData.contactinputs[1].assignedname === \"Motion_Sensor\";",
+							"tests[\"Type of contact input 2 is correct\"] = jsonData.contactinputs[1].type === \"maintained\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"contactinput\",\n   \"object\": {\n      \"assignedname\": \"Motion_Sensor\",\n      \"type\": \"maintained\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"2\",\n      \"active_action\": \"msg_@@_Occupancy_@@_All_@@_0\",\n      \"inactive_action\": \"msg_@@_Vacancy_@@_All_@@_0\",\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"lastupdated\": \"2017-06-19T23:02:21.516Z\",\n      \"enabled\": true\n   },\n   \"index\": -1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save level_input",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of level input 1 is correct\"] = jsonData.levelinputs[0].assignedname === \"Test_Dimmer\";",
+							"tests[\"Type of level input 1 is correct\"] = jsonData.levelinputs[0].type === \"dimmer\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"levelinput\",\n   \"object\": {\n      \"type\": \"dimmer\",\n      \"assignedname\": \"Test_Dimmer\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"3\",\n      \"drivelevel\": \"0\",\n      \"group\": \"All\",\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"enabled\": true\n   },\n   \"index\": -1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Save level_input",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of level input 2 is correct\"] = jsonData.levelinputs[1].assignedname === \"Daylight_Sensor\";",
+							"tests[\"Type of level input 2 is correct\"] = jsonData.levelinputs[1].type === \"daylight\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"levelinput\",\n   \"object\": {\n      \"type\": \"daylight\",\n      \"assignedname\": \"Daylight_Sensor\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"4\",\n      \"drivelevel\": \"0\",\n      \"group\": \"All\",\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"enabled\": true\n   },\n   \"index\": -1\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear level_input",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of level input 1 is correct\"] = jsonData.levelinputs[0].assignedname === \"Daylight_Sensor\";",
+							"tests[\"Type of level input 1 is correct\"] = jsonData.levelinputs[0].type === \"daylight\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"levelinput\",\n   \"object\": {},\n   \"index\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear level_input",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Do 0 level inputs come back?\"] = jsonData.levelinputs.length === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"levelinput\",\n   \"object\": {},\n   \"index\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear contact_input",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of contact input 1 is correct\"] = jsonData.contactinputs[0].assignedname === \"Motion_Sensor\";",
+							"tests[\"Type of contact input 1 is correct\"] = jsonData.contactinputs[0].type === \"maintained\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"contactinput\",\n   \"object\": {},\n   \"index\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear contact_input",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Do 0 contact inputs come back?\"] = jsonData.contactinputs.length === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"contactinput\",\n   \"object\": {},\n   \"index\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Group All",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Do 0 groups come back?\"] = jsonData.groups.length === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"group\",\n   \"object\": {},\n   \"index\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear on_off_fixture",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of fixture 1 is correct\"] = jsonData.fixtures[0].assignedname === \"TEST_FIX_Dim\";",
+							"tests[\"Interface Name of fixture 1 is correct\"] = jsonData.fixtures[0].interfacename === \"rpdg-pwm\";",
+							"tests[\"Name of fixture 2 is correct\"] = jsonData.fixtures[1].assignedname === \"TEST_FIX_cct\";",
+							"tests[\"Interface Name of fixture 2 is correct\"] = jsonData.fixtures[1].interfacename === \"rpdg-pwm\";",
+							"tests[\"Name of fixture 3 is correct\"] = jsonData.fixtures[2].assignedname === \"TEST_FIX_rgbw\";",
+							"tests[\"Interface Name of fixture 3 is correct\"] = jsonData.fixtures[2].interfacename === \"rpdg-pwm\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"fixture\",\n   \"object\": {},\n   \"index\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear dim_fixture",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of fixture 1 is correct\"] = jsonData.fixtures[0].assignedname === \"TEST_FIX_cct\";",
+							"tests[\"Interface Name of fixture 1 is correct\"] = jsonData.fixtures[0].interfacename === \"rpdg-pwm\";",
+							"tests[\"Name of fixture 2 is correct\"] = jsonData.fixtures[1].assignedname === \"TEST_FIX_rgbw\";",
+							"tests[\"Interface Name of fixture 2 is correct\"] = jsonData.fixtures[1].interfacename === \"rpdg-pwm\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"fixture\",\n   \"object\": {},\n   \"index\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear cct_fixture",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Name of fixture 1 is correct\"] = jsonData.fixtures[0].assignedname === \"TEST_FIX_rgbw\";",
+							"tests[\"Interface Name of fixture 1 is correct\"] = jsonData.fixtures[0].interfacename === \"rpdg-pwm\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"fixture\",\n   \"object\": {},\n   \"index\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear rgbw_fixture",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Do 0 fixtures come back?\"] = jsonData.fixtures.length === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/editconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"action\":\"delete\",\n   \"objecttype\":\"fixture\",\n   \"object\": {},\n   \"index\": 0\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
