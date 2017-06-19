@@ -50,7 +50,7 @@ function init()
             cachedconfig = cfg;
             document.title = cachedconfig.generalsettings.nodename;
 
-            
+
             outputcount = 0;
             totaloutputs = cfg.fixtures.length;
             var fixtures = cfg.fixtures;

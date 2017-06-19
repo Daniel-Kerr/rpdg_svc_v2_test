@@ -682,7 +682,7 @@ var service = module.exports = {
 
 
         if (global.currentconfig != undefined) {
-            if (global.currentconfig.generalsettings.hotspotenable != undefined) {
+            if (global.currentconfig.generalsettings != undefined && global.currentconfig.generalsettings.hotspotenable != undefined) {
                 if (!global.currentconfig.generalsettings.hotspotenable) {
                     global.applogger.info(TAG, "Boot - attepting to disable Hot spot ", "");
                     module.exports.enableHotspot(false);  // disable hs if not enabled.
