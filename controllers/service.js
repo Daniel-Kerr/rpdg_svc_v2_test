@@ -1501,47 +1501,52 @@ var service = module.exports = {
     },
     setLANIPAddress: function(ipaddr, routerip)
     {
-        global.applogger.info(TAG, " attempting to set static ip address (TEST)", "");
-        var gold = path.resolve('/etc/dhcpcd.gold');
-        var temp = path.resolve('/etc/dhcpcd.temp');
-        var active_file = path.resolve('/etc/dhcpcd.conf');
-        try {
-            var data = fs.readFileSync(gold, 'utf-8');
-            fs.writeFileSync(temp, data);
-            global.applogger.info(TAG, "gold  file copied to temp", "");
+        if(process.arch == 'arm') {
 
-            // # interface eth0
-            //# static ip_address=192.168.20.200/24
-            //# static routers=192.168.20.1
-            //# static domain_name_servers=192.168.20.1
-            //  var  dataline = '\r\ninterface eth0\n static ip_address=192.168.20.200/24\n static routers=192.168.20.1\nstatic domain_name_servers=192.168.20.1\n';
+            global.applogger.info(TAG, " attempting to set static ip address (TEST)", "");
+            var gold = path.resolve('/etc/dhcpcd.gold');
+            var temp = path.resolve('/etc/dhcpcd.temp');
+            var active_file = path.resolve('/etc/dhcpcd.conf');
+            try {
+                var data = fs.readFileSync(gold, 'utf-8');
+                fs.writeFileSync(temp, data);
+                global.applogger.info(TAG, "gold  file copied to temp", "");
 
-            var dataline = '\r\ninterface eth0\nstatic ip_address=' + ipaddr + '/24\nstatic routers=' + routerip +
-                '\nstatic domain_name_servers=' + routerip + '\n';
+                // # interface eth0
+                //# static ip_address=192.168.20.200/24
+                //# static routers=192.168.20.1
+                //# static domain_name_servers=192.168.20.1
+                //  var  dataline = '\r\ninterface eth0\n static ip_address=192.168.20.200/24\n static routers=192.168.20.1\nstatic domain_name_servers=192.168.20.1\n';
 
-
-            if(ipaddr.length <= 0 || routerip.length <= 0)
-                dataline = ""; //
-            // / if set to -1,  set to  dhcp.
-
-            // var objectpath = '/etc/dhcpcd.conf';
-            // var target = path.resolve(objectpath);
-            global.applogger.info(TAG, "appending temp file ", dataline);
-            fs.appendFileSync(temp, dataline, 'utf-8');
+                var dataline = '\r\ninterface eth0\nstatic ip_address=' + ipaddr + '/24\nstatic routers=' + routerip +
+                    '\nstatic domain_name_servers=' + routerip + '\n';
 
 
-            var data = fs.readFileSync(temp, 'utf-8');
-            fs.writeFileSync(active_file, data);
-            global.applogger.info(TAG, "temp file copied to active file.. need to reboot ", "");
+                if (ipaddr.length <= 0 || routerip.length <= 0)
+                    dataline = ""; //
+                // / if set to -1,  set to  dhcp.
+
+                // var objectpath = '/etc/dhcpcd.conf';
+                // var target = path.resolve(objectpath);
+                global.applogger.info(TAG, "appending temp file ", dataline);
+                fs.appendFileSync(temp, dataline, 'utf-8');
 
 
+                var data = fs.readFileSync(temp, 'utf-8');
+                fs.writeFileSync(active_file, data);
+                global.applogger.info(TAG, "temp file copied to active file.. need to reboot ", "");
 
-            // need to add restart of service here. todo. ,  or reboot.
+
+                // need to add restart of service here. todo. ,  or reboot.
 
 
-        }catch (ex1)
+            } catch (ex1) {
+                global.applogger.info(TAG, " error writing DHCPCD CONF FILE " + ex1, "");
+            }
+        }
+        else
         {
-            global.applogger.info(TAG, " error writing DHCPCD CONF FILE " + ex1, "");
+            global.applogger.info(TAG, "cant update ip address on non-pi system", "");
         }
 
     },

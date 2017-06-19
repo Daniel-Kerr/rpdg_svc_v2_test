@@ -89,74 +89,74 @@ router.get('/miscinfo', function(req, res) {
 
 
 /*
-router.post('/savecontactinput', function(req, res) {
+ router.post('/savecontactinput', function(req, res) {
 
-    if(req.body != undefined && req.body.type != undefined )
-    {
-        // validate here,
-        // make sure fix params exists if not add them in, blank, (default),
-        // check if name already exists,  if so update,
+ if(req.body != undefined && req.body.type != undefined )
+ {
+ // validate here,
+ // make sure fix params exists if not add them in, blank, (default),
+ // check if name already exists,  if so update,
 
-        for(var i = 0; i < global.currentconfig.contactinputs.length; i++)
-        {
-            var fix = global.currentconfig.contactinputs[i];
-            if(fix.assignedname == req.body.assignedname)
-            {
-                // update it,
-                global.currentconfig.contactinputs.splice(i,1);
-                break;
-            }
-        }
+ for(var i = 0; i < global.currentconfig.contactinputs.length; i++)
+ {
+ var fix = global.currentconfig.contactinputs[i];
+ if(fix.assignedname == req.body.assignedname)
+ {
+ // update it,
+ global.currentconfig.contactinputs.splice(i,1);
+ break;
+ }
+ }
 
-        var logobj = {};
-        logobj.date = new moment().toISOString();
-        logobj.value = 0;
-        data_utils.appendInputObjectLogFile(req.body.assignedname, logobj);
-
-
-        var ci = new ContactInput();
-        ci.fromJson(req.body);
-        global.currentconfig.contactinputs.push(ci);
-
-    }
-
-    var cfg = JSON.stringify(global.currentconfig,null,2);
-
-    // for now cache it to disk .
-    data_utils.writeConfigToFile();
-    res.status(200).send(cfg);
-});
+ var logobj = {};
+ logobj.date = new moment().toISOString();
+ logobj.value = 0;
+ data_utils.appendInputObjectLogFile(req.body.assignedname, logobj);
 
 
+ var ci = new ContactInput();
+ ci.fromJson(req.body);
+ global.currentconfig.contactinputs.push(ci);
+
+ }
+
+ var cfg = JSON.stringify(global.currentconfig,null,2);
+
+ // for now cache it to disk .
+ data_utils.writeConfigToFile();
+ res.status(200).send(cfg);
+ });
 
 
-router.post('/deletecontactinput', function(req, res) {
-
-    if(req.body != undefined && req.body.assignedname != undefined )
-    {
-        // find the name in our db.
-        for(var i = 0; i < global.currentconfig.contactinputs.length; i++)
-        {
-            var fix = global.currentconfig.contactinputs[i];
-            if(fix.assignedname == req.body.assignedname)
-            {
-                global.currentconfig.contactinputs.splice(i,1);
 
 
-                // remove this input from any bound fixtures.
-                removeinputfromfixtures(req.body.assignedname)
+ router.post('/deletecontactinput', function(req, res) {
+
+ if(req.body != undefined && req.body.assignedname != undefined )
+ {
+ // find the name in our db.
+ for(var i = 0; i < global.currentconfig.contactinputs.length; i++)
+ {
+ var fix = global.currentconfig.contactinputs[i];
+ if(fix.assignedname == req.body.assignedname)
+ {
+ global.currentconfig.contactinputs.splice(i,1);
 
 
-                break;
-            }
-        }
-    }
+ // remove this input from any bound fixtures.
+ removeinputfromfixtures(req.body.assignedname)
 
-    var cfg = JSON.stringify(global.currentconfig,null,2);
-    data_utils.writeConfigToFile();
-    res.status(200).send(cfg);
-});
-*/
+
+ break;
+ }
+ }
+ }
+
+ var cfg = JSON.stringify(global.currentconfig,null,2);
+ data_utils.writeConfigToFile();
+ res.status(200).send(cfg);
+ });
+ */
 
 
 function removeinputfromfixtures(inputname)
@@ -179,62 +179,62 @@ function removeinputfromfixtures(inputname)
 // *************************************FROM old code,  group stuff *************
 
 /*
-router.post('/savegroup', function(req, res) {
+ router.post('/savegroup', function(req, res) {
 
-    if (req.body != undefined && req.body.name != undefined) {
+ if (req.body != undefined && req.body.name != undefined) {
 
-        var groupname = req.body.name;
-        var type = req.body.type;
+ var groupname = req.body.name;
+ var type = req.body.type;
 
-        var found = false;
-        for (var i = 0; i < global.currentconfig.groups.length; i++) {
-            var group = global.currentconfig.groups[i];
-            if (group.name == groupname) {
-                found = true;
-                break;
-            }
-        }
+ var found = false;
+ for (var i = 0; i < global.currentconfig.groups.length; i++) {
+ var group = global.currentconfig.groups[i];
+ if (group.name == groupname) {
+ found = true;
+ break;
+ }
+ }
 
-        if (!found) {
-            var grp = new Group();
-            grp.fromJson(req.body);
+ if (!found) {
+ var grp = new Group();
+ grp.fromJson(req.body);
 
-            global.currentconfig.groups.push(grp);
-        }
-    }
+ global.currentconfig.groups.push(grp);
+ }
+ }
 
-    var cfg = JSON.stringify(global.currentconfig,null,2);
-    data_utils.writeConfigToFile();
-    res.status(200).send(cfg);
-});
-
-
-router.post('/deletegroup', function(req, res) {
-
-    var groupname = req.body.name;
-    var returndata = "error";
-    var found = false;
-    for(var i = 0; i < global.currentconfig.groups.length; i++)
-    {
-        var group = global.currentconfig.groups[i];
-        if(group.name == groupname)
-        {
+ var cfg = JSON.stringify(global.currentconfig,null,2);
+ data_utils.writeConfigToFile();
+ res.status(200).send(cfg);
+ });
 
 
+ router.post('/deletegroup', function(req, res) {
 
-            global.currentconfig.groups.splice(i,1);
-            found = true;
-            break;
-        }
-    }
+ var groupname = req.body.name;
+ var returndata = "error";
+ var found = false;
+ for(var i = 0; i < global.currentconfig.groups.length; i++)
+ {
+ var group = global.currentconfig.groups[i];
+ if(group.name == groupname)
+ {
 
 
-    var cfg = JSON.stringify(global.currentconfig,null,2);
-    data_utils.writeConfigToFile();
-    res.status(200).send(cfg);
-});
 
-*/
+ global.currentconfig.groups.splice(i,1);
+ found = true;
+ break;
+ }
+ }
+
+
+ var cfg = JSON.stringify(global.currentconfig,null,2);
+ data_utils.writeConfigToFile();
+ res.status(200).send(cfg);
+ });
+
+ */
 
 
 router.post('/addfixturetogroup', function(req, res) {
@@ -313,86 +313,86 @@ router.post('/getgroupmembers', function(req, res) {
 
 /*
 
-router.post('/savescene', function(req, res) {
+ router.post('/savescene', function(req, res) {
 
-    if (req.body != undefined && req.body.name != undefined) {
+ if (req.body != undefined && req.body.name != undefined) {
 
-        var scenename = req.body.name;
+ var scenename = req.body.name;
 
-        var found = false;
-        for (var i = 0; i < global.currentconfig.scenes.length; i++) {
-            var scene = global.currentconfig.scenes[i];
-            if (scene.name == scenename) {
-                found = true;
-                break;
-            }
-        }
+ var found = false;
+ for (var i = 0; i < global.currentconfig.scenes.length; i++) {
+ var scene = global.currentconfig.scenes[i];
+ if (scene.name == scenename) {
+ found = true;
+ break;
+ }
+ }
 
-        if (!found) {
-            var grp = new Scene();
-            grp.fromJson(req.body);
+ if (!found) {
+ var grp = new Scene();
+ grp.fromJson(req.body);
 
-            global.currentconfig.scenes.push(grp);
-        }
-    }
+ global.currentconfig.scenes.push(grp);
+ }
+ }
 
-    var cfg = JSON.stringify(global.currentconfig,null,2);
-    data_utils.writeConfigToFile();
-    res.status(200).send(cfg);
-});
+ var cfg = JSON.stringify(global.currentconfig,null,2);
+ data_utils.writeConfigToFile();
+ res.status(200).send(cfg);
+ });
 
-router.post('/deletescene', function(req, res) {
+ router.post('/deletescene', function(req, res) {
 
-    var scenename = req.body.name;
-    var returndata = "error";
-    var found = false;
-    for(var i = 0; i < global.currentconfig.scenes.length; i++)
-    {
-        var group = global.currentconfig.scenes[i];
-        if(group.name == scenename)
-        {
-            global.currentconfig.scenes.splice(i,1);
-            found = true;
-            break;
-        }
-    }
-
-
-    // remove scene from any scene lists
-
-    for(var i = 0; i < global.currentconfig.scenelists.length; i++)
-    {
-        var scenelist = global.currentconfig.scenelists[i];
-
-        for(var j = 0; j < scenelist.scenes.length; j++)
-        {
-            var name = scenelist.scenes[j];
-            if(name == scenename)
-            {
-                scenelist.scenes.splice(j,1);
-                scenelist.activeindex = 0;
-            }
-
-        }
-    }
-
-    // 4/10/17 remove any sched events that use this scene.
-
-    schedule_mgr.removeSceneFromSchedule(scenename);
+ var scenename = req.body.name;
+ var returndata = "error";
+ var found = false;
+ for(var i = 0; i < global.currentconfig.scenes.length; i++)
+ {
+ var group = global.currentconfig.scenes[i];
+ if(group.name == scenename)
+ {
+ global.currentconfig.scenes.splice(i,1);
+ found = true;
+ break;
+ }
+ }
 
 
+ // remove scene from any scene lists
+
+ for(var i = 0; i < global.currentconfig.scenelists.length; i++)
+ {
+ var scenelist = global.currentconfig.scenelists[i];
+
+ for(var j = 0; j < scenelist.scenes.length; j++)
+ {
+ var name = scenelist.scenes[j];
+ if(name == scenename)
+ {
+ scenelist.scenes.splice(j,1);
+ scenelist.activeindex = 0;
+ }
+
+ }
+ }
+
+ // 4/10/17 remove any sched events that use this scene.
+
+ schedule_mgr.removeSceneFromSchedule(scenename);
 
 
 
 
 
 
-    var cfg = JSON.stringify(global.currentconfig,null,2);
-    data_utils.writeConfigToFile();
-    res.status(200).send(cfg);
-});
 
-*/
+
+ var cfg = JSON.stringify(global.currentconfig,null,2);
+ data_utils.writeConfigToFile();
+ res.status(200).send(cfg);
+ });
+
+ */
 
 
 router.post('/addfixturetoscene', function(req, res) {
@@ -738,13 +738,15 @@ router.post('/setgeneralsettings', function(req, res) {
 
     global.currentconfig.generalsettings.nodeip = req.body.nodeip;
     global.currentconfig.generalsettings.routerip = req.body.routerip;
-    service.enableHotspot(global.currentconfig.generalsettings.hotspotenable);
+
+    if(global.currentconfig.generalsettings.hotspotenable != req.body.hotspotenable)
+        service.enableHotspot(global.currentconfig.generalsettings.hotspotenable);
 
     var cfg = JSON.stringify(global.currentconfig,null,2);
 
 
     if(ipaddrchanged)
-         service.setLANIPAddress(global.currentconfig.generalsettings.nodeip, global.currentconfig.generalsettings.routerip);
+        service.setLANIPAddress(global.currentconfig.generalsettings.nodeip, global.currentconfig.generalsettings.routerip);
 
     data_utils.writeConfigToFile();
     res.status(200).send(cfg);

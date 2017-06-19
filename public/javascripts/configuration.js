@@ -2473,16 +2473,20 @@ function saveGeneralSettings()
 
     // validate...
 
-    var ipvalid = ValidateIPaddress(nodeip);
-    if(!ipvalid) {
-        $.Notification.notify('error', 'top left', 'Node IP Format Error', "Please refresh and submit again");
-        return;
+    if(nodeip.length > 0) {
+        var ipvalid = ValidateIPaddress(nodeip);
+        if (!ipvalid) {
+            $.Notification.notify('error', 'top left', 'Node IP Format Error', "Please refresh and submit again");
+            return;
+        }
     }
 
-    var ipvalid = ValidateIPaddress(routerip);
-    if(!ipvalid) {
-        $.Notification.notify('error', 'top left', 'Router IP Format Error', "Please refresh and submit again");
-        return;
+    if(routerip.length > 0) {
+        var ipvalid = ValidateIPaddress(routerip);
+        if (!ipvalid) {
+            $.Notification.notify('error', 'top left', 'Router IP Format Error', "Please refresh and submit again");
+            return;
+        }
     }
 
 
