@@ -732,6 +732,14 @@ var service = module.exports = {
             }
         })
 
+
+
+        // debug stub.
+      //  networkmap["192.168.50.200"] = "test_node_1";
+      //  networkmap["192.168.50.201"] = "test_node_2";
+      //  networkmap["192.168.50.202"] = "test_node_3";
+      //  networkmap["192.168.50.203"] = "test_node_4";
+
         // 6/14/17
         // * stub for setting static ip address **********************************************
         //     module.exports.setLANIPAddress('192.168.20.202', '192.168.20.1');

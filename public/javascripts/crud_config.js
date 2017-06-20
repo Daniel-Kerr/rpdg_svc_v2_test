@@ -67,6 +67,9 @@ var REST_GET_VERSION = "/version";
 
 var REST_SET_GENERAL_SETTINGS = "/config/setgeneralsettings";
 
+var REST_GET_NETWORK_MAP = "/config/networkmap";
+
+var REST_NODE_DISCOVER = "/config/nodediscover";
 // config get / set,
 function getConfig(callback)
 {
@@ -449,6 +452,37 @@ function getScriptNames(callback)
 
 
 
+
+function getNetworkMap(callback)
+{
+    function onDataReceived(series) {
+        if(series != null)
+            callback(series);
+    }
+    $.ajax({
+        url: REST_GET_NETWORK_MAP,
+        type: "GET",
+        dataType: "json",
+        success: onDataReceived,
+    });
+}
+
+
+
+function nodeDiscover(callback) {
+
+    $.ajax({
+        url: REST_NODE_DISCOVER,
+        type: 'post',
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            callback(result);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            callback("error");
+        }
+    });
+}
 
 function getGPSCordFromZipcode(obj, callback) {
 

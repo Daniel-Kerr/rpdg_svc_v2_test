@@ -469,6 +469,10 @@ function processConfig(configobj)
 
 
     inithsbutton = false;
+
+
+
+   updateNetworkTable();
 }
 
 var fixtureimgcount = 0;
@@ -2527,4 +2531,73 @@ function saveGeneralSettings()
 
         $.Notification.notify('success','top left', 'Config Saved', "");
     })
+}
+
+
+function updateNetworkTable()
+{
+    getNetworkMap(function(map){
+        var data = map;
+        updateNetworkMapTable(map);
+    });
+}
+
+function nodeDiscoverCRUD()
+{
+    nodeDiscover(function () {
+
+    });
+}
+
+
+function updateNetworkMapTable(netmap) {
+
+    var wetdrycontactlist = cachedconfig.contactinputs;
+    var oTable = document.getElementById("networkmaptable");
+    oTable.innerHTML = "";
+
+    var oTHead = document.createElement("THEAD");
+    var oTColGrp = document.createElement("colgroup");
+    var oTBody = document.createElement("TBODY");
+    var oTFoot = document.createElement("TFOOT");
+    var oRow, oCell1, oCell2, i;
+
+    oRow = document.createElement("TR");
+    oCell1 = document.createElement("TD");
+    oCell1.innerHTML = "ip";
+    oCell2 = document.createElement("TD");
+    oCell2.innerHTML = "Name";
+
+    oRow.appendChild(oCell1);
+    oRow.appendChild(oCell2);
+    oTHead.appendChild(oRow);
+
+    var coldef = document.createElement("col");
+    coldef.className = "col-md-2";
+    oTColGrp.appendChild(coldef);
+
+    coldef = document.createElement("col");
+    coldef.className = "col-md-1";
+    oTColGrp.appendChild(coldef);
+
+    oTable.appendChild(oTHead);
+    oTable.appendChild(oTColGrp);
+    oTable.appendChild(oTBody);
+
+    // Insert rows and cells into bodies.
+    if(netmap != undefined) {
+        for (i = 0; i < netmap.nodes.length; i++) {
+            var oBody = oTBody;
+            oRow = document.createElement("TR");
+            oBody.appendChild(oRow);
+            var col1part = document.createElement("TD");
+            col1part.innerHTML = netmap.nodes[i].ip;
+
+            var col2part = document.createElement("TD");
+            col2part.innerHTML = netmap.nodes[i].name;
+
+            oRow.appendChild(col1part);
+            oRow.appendChild(col2part);
+        }
+    }
 }
