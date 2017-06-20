@@ -56,41 +56,22 @@ var dim_bright_request_map = {};
 
 var rpdg_service_moment = undefined; // used as time reference for vairous functions 4/11/17,
 // can be either real time or virtual time,  for test.
-
-//var persistantstore = undefined;
-
-// 4/19/17, Networking start.
-var udp_handler = undefined; //require('./udp_handler.js');
-
-
+var udp_handler = undefined;
 var sw_version = "???";
-//var firmware_version = "???";
 
-
-// 5/8/17  post init hw init,
 var delayedHW_InitCount = 3;
 
 var reInitSchedMgrCount = 0; // counter used to periodically reinit the sched mgr.  cache. list
 
 
 var fixtureimagefilecount = 0;
-//var israspberrypi = (process.arch == 'arm');
-//var led = undefined;
-//var button0 = undefined;
-/*if(israspberrypi) {
- try {
- global.applogger.info(TAG, "this is a pi, initing the led port", "","");
- var Gpio = require('onoff').Gpio; // Constructor function for Gpio objects.
- led = new Gpio(22, 'out');   // Export GPIO #14 as an output...iv;
- button0 = new Gpio(4, 'in', 'both');
- } catch (ex1) {
- global.applogger.info(TAG, "error init led", "","");
- }
- }*/
+
+var networkmap = [];  // 6/20/17  map   ip key,  name
 
 
 function incommingUDPMessageHandler(messageobj)
 {
+    var ip = require('ip');
     // stub for now,  but will act on group / scene messages ..
     // add filter to check for group id, ..etc, and if found,,,
     global.applogger.info(TAG, "UDP rx handler got message", JSON.stringify(messageobj));
@@ -132,10 +113,43 @@ function incommingUDPMessageHandler(messageobj)
             module.exports.invokeScene(messageobj.scenename, messageobj.requesttype, false);
         }
     }
+    else if(messageobj.nodediscover != undefined)
+    {
+        networkmap[ip.address()] = global.currentconfig.generalsettings.nodename // update my entry.
+        global.applogger.info(TAG, "Got Node Discovery Command, will dispatch my info " , "");
+
+        if(messageobj.nodeinfo != undefined) {
+            networkmap[messageobj.nodeinfo.ip] = messageobj.nodeinfo.name;
+            printNetworkMap();
+        }
 
 
+        var element = {};
+        element.nodeinfo = {};
+        element.nodeinfo.ip = ip.address();
+        element.nodeinfo.name = global.currentconfig.generalsettings.nodename;
+        var packet = JSON.stringify(element);
+        udp_handler.transmitData(packet);
+    }
+    else if(messageobj.nodeinfo != undefined)
+    {
+
+        networkmap[ip.address()] = global.currentconfig.generalsettings.nodename; // update my entry.
+        //global.applogger.info(TAG, "Rx Node Info:  " , messageobj.nodeinfo.ip + " : "  +  messageobj.nodeinfo.name);
+        networkmap[messageobj.nodeinfo.ip] = messageobj.nodeinfo.name;
+        printNetworkMap();
+    }
+
+}
 
 
+function printNetworkMap() {
+    global.applogger.info(TAG, "Network Map " , "");
+    for(var key in networkmap)
+    {
+        var name = networkmap[key];
+        global.applogger.info(TAG, key + " : " + name , "");
+    }
 }
 //
 /***
@@ -1581,7 +1595,41 @@ var service = module.exports = {
             console.log( " udp server valid, cleanup call  ");
             udp_handler.cleanup();
         }
-    }
+    },
+    nodeDiscoverStart: function() {
+        global.applogger.info(TAG,  "Node Discovery started ", "");
+        if(udp_handler != undefined)
+        {
+            var ip = require('ip');
+            var element = {};
+            element.nodediscover = true;
+            element.nodeinfo = {};
+            element.nodeinfo.name = global.currentconfig.generalsettings.nodename;
+            element.nodeinfo.ip = ip.address();
+            var packet = JSON.stringify(element);
+            udp_handler.transmitData(packet);
+        }
+        else {
+            global.applogger.info(TAG,  "Node Discovery cant be started, no udp handler ", "");
+        }
+    },
+    getNetworkMap: function() {
+       // global.applogger.info(TAG,  "get net work called,  " + networkmap.length, "");
+       // printNetworkMap();
+        var element = {};
+        var nodes = [];
+        for(var key in networkmap)
+        {
+            var name = networkmap[key];
 
+            var node = {};
+            node.ip = key;
+            node.name = name;
+            nodes.push(node);
+        }
+
+        element.nodes = nodes;
+       return element;
+    }
 
 };

@@ -87,6 +87,19 @@ router.get('/miscinfo', function(req, res) {
 
 
 
+router.post('/nodediscover', function(req, res) {
+
+    service.nodeDiscoverStart();
+    res.status(200).send("OK");
+
+});
+
+
+router.get('/networkmap', function(req, res) {
+
+    var map = service.getNetworkMap();
+    res.status(200).send(JSON.stringify(map, null, 4));
+});
 
 /*
  router.post('/savecontactinput', function(req, res) {

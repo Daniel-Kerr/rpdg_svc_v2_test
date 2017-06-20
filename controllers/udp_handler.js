@@ -41,7 +41,7 @@ module.exports = {
             server.on("message", function (msg, rinfo) {
 
                 if (rinfo.address == local_ip_address) {
-                    // global.applogger.info(TAG, "Rx handler, ignored, from me", "");
+                     global.applogger.info(TAG, "Rx handler, ignored, from me", "");
                     return;
                 }
                 else
@@ -98,9 +98,12 @@ module.exports = {
 
     transmitData : function(data)
     {
-      //  transmitqueue.push(data);
+        global.applogger.info(TAG, "sending data", "");
         var message = new Buffer(data);
         server.send(message, 0, message.length, SRC_PORT, MULTICAST_ADDR, function () {
+
+
+
         });
     }
 
