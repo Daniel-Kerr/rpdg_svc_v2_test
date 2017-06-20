@@ -93,14 +93,37 @@ function initDriver()
             {
                 var bla = JSON.stringify(sensor);
                 var value = sensor.last[0].value;
-                // global.applogger.info(TAG, "@@@@@@@@ got ROCKER " +  value, "@@@@@@@@@@@@ " );
-                if ((sensor.last[0].value.includes('A1') || sensor.last[0].value.includes('B1')) && sensor.last[0].value.includes('down')) {
-                    rxhandler("enocean","contactinput", sensor.id, 1);  //up
+                global.applogger.info(TAG, "@@@@@@@@ got ROCKER " +  value, "@@@@@@@@@@@@ " );
 
+                var idsuffix = "";
+                // double rocker support 6/20/17
+                if(sensor.eepFunc.includes("2 Rocker")) {
+
+                    if (sensor.last[0].value.includes('A'))  // if includes an 'A'
+                        idsuffix = "(A)";
+                    if (sensor.last[0].value.includes('B'))  // if includes an 'A'
+                        idsuffix = "(B)";
                 }
-                else  if((sensor.last[0].value.includes('A0') || sensor.last[0].value.includes('B0')) && sensor.last[0].value.includes('down')) {
-                    rxhandler("enocean","contactinput", sensor.id, 0);
+
+                var sensorid = sensor.id + idsuffix;
+
+                if (sensor.last[0].value.includes('1') && sensor.last[0].value.includes('down')) {
+                    rxhandler("enocean", "contactinput", sensorid, 1);  //up
                 }
+                else if (sensor.last[0].value.includes('0') && sensor.last[0].value.includes('down')) {
+                    rxhandler("enocean", "contactinput", sensorid, 0);
+                }
+                // }
+                //else {
+                // Single Rocker case
+                //    if (sensor.last[0].value.includes('1') && sensor.last[0].value.includes('down')) {
+                //        rxhandler("enocean", "contactinput", sensor.id, 1);  //up
+
+                //    }
+                //     else if (sensor.last[0].value.includes('0')  && sensor.last[0].value.includes('down')) {
+                //         rxhandler("enocean", "contactinput", sensor.id, 0);
+                //     }
+                // }
             }
             else if(eep == 'a5-07-01')  // OCC Sensor
             {
@@ -246,7 +269,7 @@ function tranmitDequeueloop()
         var element = transmitequeue[0];
         var dimmer = element.dimmer;
         var level = element.level;
-     //   global.applogger.info(TAG, "tx deque item found ", "  ");
+        //   global.applogger.info(TAG, "tx deque item found ", "  ");
         dimmer.setValue(level);
         dimmer.setValue(level);
 
@@ -285,7 +308,7 @@ module.exports = {
 
         periodictimer = setInterval(function () {
             tranmitDequeueloop();
-          //  global.applogger.info(TAG, "****** tx deque loop fired. ",  "*************");
+            //  global.applogger.info(TAG, "****** tx deque loop fired. ",  "*************");
         }, 50);
 
 

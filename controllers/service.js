@@ -1272,7 +1272,12 @@ var service = module.exports = {
 
         for (var key in enocean_known_sensors) {
             var device = enocean_known_sensors[key];
-            if (device.eepFunc.includes("Occupancy") || device.eepFunc.includes("Rocker Switch")) {
+
+            if (device.eepFunc.includes("Rocker Switch") && device.eepFunc.includes("2 Rocker")) {
+                contactinputs.push(key + "(A)");
+                contactinputs.push(key + "(B)");
+            }
+            else if (device.eepFunc.includes("Occupancy") || device.eepFunc.includes("Rocker Switch")) {
                 contactinputs.push(key);
             }
         }
