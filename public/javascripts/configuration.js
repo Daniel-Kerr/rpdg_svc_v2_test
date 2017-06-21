@@ -5,16 +5,23 @@ const ATTR_PARAM = 'param';
 
 var loadedgroupnames = [];
 var loadedscenenames = [];
-
 var global_paramoptions;
 var cachedinterfaceio ;
 var availibleinputs = [];
 var hostip = "";
 var cachedconfig = "";
-
 var rpdg_highvoltage = false;
-
 var selected_edit_fixture = undefined;
+var fixturetable = undefined;
+var selectedfixtureindex = -1;
+var selectedcontactinputindex = -1;
+var selectedlevelinputindex = -1;
+
+var fixtureimgcount = 0;
+var scriptnames = undefined;
+
+var wetdrycontacttable = undefined;
+var levelinputstable = undefined;
 
 // These are the constraints used to validate the form
 var constraints = {
@@ -47,29 +54,12 @@ var constraints = {
 }
 
 
-function transformFixtureToDataSet()
-{
-    var datasetobj = {};
-    var datasetarray = [];
-    for(var i = 0;i < cachedconfig.fixtures.length; i++)
-    {
-        var fixobj = cachedconfig.fixtures[i];
-        datasetarray.push(fixobj);
-    }
-    datasetobj = datasetarray;
-    return datasetobj;
-}
 
 
-var fixturetable = undefined;
-var selectedfixtureindex = -1;
-var selectedcontactinputindex = -1;
-var selectedlevelinputindex = -1;
+
 
 $(document).ready(function() {
 
-
-    //$('#fixturetable > tbody > tr').click(function() {
 
     $("#fixturetable").on("click", " tbody > tr", function(e) {
 
@@ -335,30 +325,11 @@ function init()
 }
 
 
-/*
-$(function() {
-
-    $('#btwifienable').change(function() {
-
-        if(!inithsbutton) {
-            var enabled = $(this).prop('checked');
-            var element = {};
-            element.enable = enabled;
-            setHotspotEnable(element, function (cfg) {
-                var k = 0;
-            });
-        }
-
-    })
-})
-*/
 function cachehostipaddr(retval)
 {
     hostip = retval;
 }
 
-
-//var loadedlevelinputs;
 function processConfig(configobj)
 {
     cachedconfig = configobj;  // just so we can copy over groups on save.
@@ -367,9 +338,9 @@ function processConfig(configobj)
 
     getFixtureParameterOptions(cacheFixtureParamOptions);
 
-    updateWetDryContactTable();
+    constructContactInputsTable();
 
-    updateLevelInputsTable();
+    constructLevelInputsTable();
 
 
     // place holder,
@@ -475,8 +446,22 @@ function processConfig(configobj)
    updateNetworkTable();
 }
 
-var fixtureimgcount = 0;
-var scriptnames = undefined;
+
+
+
+function transformFixtureToDataSet()
+{
+    var datasetobj = {};
+    var datasetarray = [];
+    for(var i = 0;i < cachedconfig.fixtures.length; i++)
+    {
+        var fixobj = cachedconfig.fixtures[i];
+        datasetarray.push(fixobj);
+    }
+    datasetobj = datasetarray;
+    return datasetobj;
+}
+
 
 
 function constructFixtureTable()
@@ -1087,138 +1072,52 @@ function getAvailibleEnoceanOutputIDArray(filter)
     return ids;
 }
 
-
-// CONTACT INPUTS ************************************************************************************
-// ***************************************************************************************************
-
-// wet dry contact table v2
-
-function updateWetDryContactTable() {
-
-    var wetdrycontactlist = cachedconfig.contactinputs;
-    var oTable = document.getElementById("wetdrycontacttable");
-    oTable.innerHTML = ""; //blank out table,
-
-    var oTHead = document.createElement("THEAD");
-    var oTColGrp = document.createElement("colgroup");
-    var oTBody = document.createElement("TBODY");
-    var oTFoot = document.createElement("TFOOT");
-    var oRow, oCell1, oCell2, oCell3, oCell4,
-        oCell5,oCell6,oCell7,oCell8, i,j;
-
-    oRow = document.createElement("TR");
-    oCell1 = document.createElement("TD");
-    oCell1.innerHTML = "Name";
-    oCell2 = document.createElement("TD");
-    oCell2.innerHTML = "I-face";
-    oCell3 = document.createElement("TD");
-    oCell3.innerHTML = "#";
-    oCell4 = document.createElement("TD");
-    oCell4.innerHTML = "Type";
-    oCell5 = document.createElement("TD");
-    oCell5.innerHTML = "Active Action";
-    oCell6 = document.createElement("TD");
-    oCell6.innerHTML = "Inactive Action";
-    //  oCell7 = document.createElement("TD");
-    //  oCell7.innerHTML = "Delete";
-
-    oRow.appendChild(oCell1);
-    oRow.appendChild(oCell2);
-    oRow.appendChild(oCell3);
-    oRow.appendChild(oCell4);
-    oRow.appendChild(oCell5);
-    oRow.appendChild(oCell6);
-    // oRow.appendChild(oCell7);
-    oTHead.appendChild(oRow);
-
-    var coldef = document.createElement("col");
-    coldef.className = "col-md-2";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    // coldef.style.wordWrap="normal";
-    oTColGrp.appendChild(coldef);
-    // coldef = document.createElement("col");
-    // coldef.className = "col-md-1";
-    // oTColGrp.appendChild(coldef);
-
-    oTable.appendChild(oTHead);
-    oTable.appendChild(oTColGrp);
-    oTable.appendChild(oTBody);
-
-    // Insert rows and cells into bodies.
-    if(wetdrycontactlist != undefined) {
-        for (i = 0; i < wetdrycontactlist.length; i++) {
-            var oBody = oTBody;
-            oRow = document.createElement("TR");
-            oBody.appendChild(oRow);
-            var col1part = document.createElement("TD");
-            col1part.innerHTML = wetdrycontactlist[i].assignedname;
-
-            var col2part = document.createElement("TD");
-            col2part.innerHTML = wetdrycontactlist[i].interface;
-
-            var col3part = document.createElement("TD");
-            col3part.innerHTML = wetdrycontactlist[i].inputid;
+// ********************************************************************************************************************
+// **********************************************CONTACT INPUTS *******************************************************
+// ********************************************************************************************************************
 
 
-            var col4part = document.createElement("TD");
-            col4part.innerHTML = wetdrycontactlist[i].type;
-
-            var col5part = document.createElement("TD");
-
-
-            // var prewrap = document.createElement("pre");
-            // prewrap.innerHTML = wetdrycontactlist[i].active_action;
-
-            // col5part.appendChild(prewrap);
-            var cleanaa = wetdrycontactlist[i].active_action.replace(/_@@_/g,"/");
-            col5part.innerHTML = cleanaa; //wetdrycontactlist[i].active_action;
-
-            var col6part = document.createElement("TD");
-
-            var cleania = wetdrycontactlist[i].inactive_action.replace(/_@@_/g,"/");
-            col6part.innerHTML = cleania; //wetdrycontactlist[i].inactive_action;
-
-            //  var col7part = document.createElement("TD");
-            // col7part.innerHTML = wetdrycontactlist[i].inactive_action;
-
-
-            //  var col7part = document.createElement("TD");
-            //  var delbutton = document.createElement("input");
-            //  delbutton.value = "X";
-            //  delbutton.setAttribute("index", i);
-            //  delbutton.addEventListener("click", deleteInputContactItem);
-            //  delbutton.className = "btn btn-xs btn-danger";
-            //   col7part.appendChild(delbutton);
-
-            oRow.appendChild(col1part);
-            oRow.appendChild(col2part);
-            oRow.appendChild(col3part);
-            oRow.appendChild(col4part);
-            oRow.appendChild(col5part);
-            oRow.appendChild(col6part);
-            // oRow.appendChild(col7part);
-        }
+//6/21/17
+function transformContactInputsToDataSet()
+{
+    var datasetobj = {};
+    var datasetarray = [];
+    for(var i = 0;i < cachedconfig.contactinputs.length; i++)
+    {
+        var fixobj = cachedconfig.contactinputs[i];
+        datasetarray.push(fixobj);
     }
+    datasetobj = datasetarray;
+    return datasetobj;
 
-    $("#tableOutput").html(oTable);
 
-    wetdrycontactdiv.appendChild(oTable);
+    // maybe
+   // wetdrycontactlist[i].inactive_action.replace(/_@@_/g,"/");
 }
 
+
+
+function constructContactInputsTable()
+{
+    var dataset = transformContactInputsToDataSet();
+    wetdrycontacttable = $('#wetdrycontacttable').DataTable( {
+        "aaData": dataset,
+        /*  "dom": '<"top"i>rt<"bottom"flp><"clear">',  */
+        "pageLength": 5,
+        select: true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "aoColumns": [
+            { "mData": 'assignedname'},
+            { "mData": 'interface'},
+            { "mData": 'inputid'},
+            { "mData": 'type', "bSortable": false},
+            { "mData": 'active_action', "bSortable": false },
+            { "mData": 'inactive_action', "bSortable": false }
+        ]
+    } );
+}
+ // end new table bug 292
 
 function saveNewContactInputObj() {
 
@@ -1340,7 +1239,9 @@ function saveNewContactInputObj() {
         editConfigObject("edit", "contactinput", contactinput, selectedcontactinputindex, function (retval) {
             document.getElementById("contactname").value = "";
             cachedconfig = retval;
-            updateWetDryContactTable();
+
+            wetdrycontacttable.destroy();
+            constructContactInputsTable();
             selectedlevelinputindex = -1;
             selectedcontactinputindex = -1;
             selectedfixtureindex = -1;
@@ -1351,20 +1252,14 @@ function saveNewContactInputObj() {
         editConfigObject("create", "contactinput", contactinput, undefined, function (retval) {
             document.getElementById("contactname").value = "";
             cachedconfig = retval;
-            updateWetDryContactTable();
+
+            wetdrycontacttable.destroy();
+            constructContactInputsTable();
             selectedlevelinputindex = -1;
             selectedcontactinputindex = -1;
             selectedfixtureindex = -1;
         });
     }
-
-
-   // saveConfigObject("contactinput",contactinput ,function(retval) {
-   //     cachedconfig = retval;
-   //     updateWetDryContactTable();
-        //  populateBoundInputOptions();
-
-   // });
 
 }
 
@@ -1374,7 +1269,9 @@ function deleteInputContactItem()
         editConfigObject("delete", "contactinput", undefined, selectedcontactinputindex, function (retval) {
             document.getElementById("contactname").value = "";  //blank it out.
             cachedconfig = retval;
-            updateWetDryContactTable();
+            wetdrycontacttable.destroy();
+            constructContactInputsTable();
+
             selectedlevelinputindex = -1;
             selectedcontactinputindex = -1;
             selectedfixtureindex = -1;
@@ -1419,6 +1316,48 @@ function updateContactInputs_InputSel()
 
 
 
+//6/21/17
+function transformLevelInputsToDataSet()
+{
+    var datasetobj = {};
+    var datasetarray = [];
+    for(var i = 0;i < cachedconfig.levelinputs.length; i++)
+    {
+        var fixobj = cachedconfig.levelinputs[i];
+        datasetarray.push(fixobj);
+    }
+    datasetobj = datasetarray;
+    return datasetobj;
+}
+
+
+
+function constructLevelInputsTable()
+{
+    var dataset = transformLevelInputsToDataSet();
+    levelinputstable = $('#levelinputstable').DataTable( {
+        "aaData": dataset,
+        /*  "dom": '<"top"i>rt<"bottom"flp><"clear">',  */
+        "pageLength": 5,
+        select: true,
+        "bLengthChange": false,
+        "bInfo": false,
+        "aoColumns": [
+            { "mData": 'assignedname'},
+            { "mData": 'interface'},
+            { "mData": 'inputid'},
+            { "mData": 'type', "bSortable": false},
+            { "mData": 'drivelevel', "bSortable": false },
+            { "mData": 'group', "bSortable": false }
+        ]
+    } );
+}
+
+
+
+
+
+
 function updateLevelInputs_InputSel()
 {
     // clear all itesm ,
@@ -1449,114 +1388,6 @@ function updateLevelInputs_InputSel()
 
 }
 
-
-
-
-
-
-
-function updateLevelInputsTable() {
-
-    var levelinputlist = cachedconfig.levelinputs;
-
-    var oTable = document.getElementById("levelinputstable");
-    oTable.innerHTML = ""; //blank out table,
-
-    var oTHead = document.createElement("THEAD");
-    var oTColGrp = document.createElement("colgroup");
-    var oTBody = document.createElement("TBODY");
-    var oTFoot = document.createElement("TFOOT");
-    var oRow, oCell1, oCell2, oCell3, oCell4,
-        oCell5,oCell6, i,j;
-
-    oRow = document.createElement("TR");
-    oCell1 = document.createElement("TD");
-    oCell1.innerHTML = "Name";
-    oCell2 = document.createElement("TD");
-    oCell2.innerHTML = "Type";
-    oCell3 = document.createElement("TD");
-    oCell3.innerHTML = "Interface";
-    oCell4 = document.createElement("TD");
-    oCell4.innerHTML = "Input #";
-    oCell5 = document.createElement("TD");
-    oCell5.innerHTML = "Drive Level";
-    // oCell6 = document.createElement("TD");
-    // oCell6.innerHTML = "Delete";
-
-    oRow.appendChild(oCell1);
-    oRow.appendChild(oCell2);
-    oRow.appendChild(oCell3);
-    oRow.appendChild(oCell4);
-    oRow.appendChild(oCell5);
-    // oRow.appendChild(oCell6);
-    oTHead.appendChild(oRow);
-
-    var coldef = document.createElement("col");
-    coldef.className = "col-md-2";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    coldef = document.createElement("col");
-    coldef.className = "col-md-1";
-    oTColGrp.appendChild(coldef);
-    //  coldef = document.createElement("col");
-    //  coldef.className = "col-md-1";
-    //  oTColGrp.appendChild(coldef);
-
-    oTable.appendChild(oTHead);
-    oTable.appendChild(oTColGrp);
-    oTable.appendChild(oTBody);
-
-    // Insert rows and cells into bodies.
-    if(levelinputlist != undefined) {
-        for (i = 0; i < levelinputlist.length; i++) {
-            var oBody = oTBody;
-            oRow = document.createElement("TR");
-            oBody.appendChild(oRow);
-
-            var col1part = document.createElement("TD");
-            col1part.innerHTML = levelinputlist[i].assignedname;
-
-            var col2part = document.createElement("TD");
-            col2part.innerHTML = levelinputlist[i].type;
-
-            var col3part = document.createElement("TD");
-            col3part.innerHTML = levelinputlist[i].interface;
-
-            var col4part = document.createElement("TD");
-            col4part.innerHTML = levelinputlist[i].inputid;
-
-            var col5part = document.createElement("TD");
-            col5part.innerHTML = levelinputlist[i].drivelevel;
-
-            //  var col6part = document.createElement("TD");
-            //   var delbutton = document.createElement("input");
-            //   delbutton.value = "X";
-            ///   delbutton.setAttribute("index", i);
-            //  delbutton.addEventListener("click", deleteLevelInput);
-            //  delbutton.className = "btn btn-xs btn-danger";
-            //  col6part.appendChild(delbutton);
-
-            oRow.appendChild(col1part);
-            oRow.appendChild(col2part);
-            oRow.appendChild(col3part);
-            oRow.appendChild(col4part);
-            oRow.appendChild(col5part);
-            //  oRow.appendChild(col6part);
-        }
-    }
-
-    $("#tableOutput").html(oTable);
-
-    // levelinputdiv.appendChild(oTable);
-}
 
 
 function saveNewLevelInput() {
@@ -1601,7 +1432,9 @@ function saveNewLevelInput() {
         editConfigObject("edit", "levelinput", levelinput, selectedlevelinputindex, function (retval) {
             document.getElementById("levelinputname").value = "";  //blank it out.
             cachedconfig = retval;
-            updateLevelInputsTable();
+            levelinputstable.destroy();
+            constructLevelInputsTable();
+
             selectedlevelinputindex = -1;
             selectedcontactinputindex = -1;
             selectedfixtureindex = -1;
@@ -1612,7 +1445,9 @@ function saveNewLevelInput() {
         editConfigObject("create", "levelinput", levelinput, undefined, function (retval) {
             document.getElementById("levelinputname").value = "";
             cachedconfig = retval;
-            updateLevelInputsTable();
+            levelinputstable.destroy();
+            constructLevelInputsTable();
+
             selectedlevelinputindex = -1;
             selectedcontactinputindex = -1;
             selectedfixtureindex = -1;
@@ -1621,10 +1456,6 @@ function saveNewLevelInput() {
 
 
 
-   // saveConfigObject("levelinput",levelinput ,function(retval) {
-   //     cachedconfig = retval;
-   //     updateLevelInputsTable();
-   // });
 }
 
 
@@ -1634,7 +1465,9 @@ function deleteLevelInput()
         editConfigObject("delete", "levelinput", undefined, selectedlevelinputindex, function (retval) {
             document.getElementById("levelinputname").value = "";  //blank it out.
             cachedconfig = retval;
-            updateLevelInputsTable();
+            levelinputstable.destroy();
+            constructLevelInputsTable();
+
             selectedlevelinputindex = -1;
             selectedcontactinputindex = -1;
             selectedfixtureindex = -1;
@@ -1937,6 +1770,15 @@ function updateInputContactActionDropDowns(inputcontactobj) {
             }
 
         }
+        else
+        {
+            $('#active_action_sel_part1').val("action_none");
+            $('#active_action_sel_part2').val("N/A");
+            on_aa_part1_change();
+           // on_inactive_part1_change();
+           // on_aa_part2_change();
+          //  on_ina_part2_change();
+        }
     }
 
     if(inputcontactobj.inactive_action != undefined) {
@@ -1997,6 +1839,12 @@ function updateInputContactActionDropDowns(inputcontactobj) {
 
             }
 
+        }
+        else
+        {
+            $('#inactive_action_sel_part1').val("action_none");
+            $('#inactive_action_sel_part2').val("N/A");
+            on_inactive_part1_change();
         }
     }
 
