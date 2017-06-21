@@ -11,6 +11,7 @@ var cachedconfig;
 var selectedfixtureobj;
 var loading = false; // used for blocking plc controls from going to hw.
 var lastrgbcolor;
+var lastwhite;
 
 
 // timer added to peridoically fetch the status of script running,
@@ -33,23 +34,23 @@ $(document).ready(function() {
 
     //$(".clickable-row").click(function() {
     //    var k = 0;
-   //     k  = k + 1;
-        //window.location = $(this).data("href");
-  //  });
+    //     k  = k + 1;
+    //window.location = $(this).data("href");
+    //  });
 
 
     $('input[type="range"]').rangeslider({
         polyfill : false,
         onInit : function() {
-          //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+            //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
         },
         onSlide : function( position, value ) {
-          //  this.output.html( value );
+            //  this.output.html( value );
         }
     });
 
     // handler for fixture table,
-  //  $('#fixturetable tbody tr').click(function() {
+    //  $('#fixturetable tbody tr').click(function() {
     $("#fixturetable").on("click", " tbody > tr", function(e) {
 
         // 3/15/17, remove selected scene if on the table,
@@ -292,53 +293,56 @@ $(document).ready(function() {
             else if(type == "rgbw")
             {
 
-                var fixrow1 = document.createElement("DIV");
-                fixrow1.className = "rgbrowcell";
-                fixrow1.id = 'wheel'+index;
-                fixsetting.appendChild(fixrow1);
+                constructControlRGBW(fixsetting);
 
-                var $colorpicker1 = $("<div>", {id: "colorWheelDemo", "class": "wheel"});
-                $("#wheel"+index).append($colorpicker1);
+                /*
+                 var fixrow1 = document.createElement("DIV");
+                 fixrow1.className = "rgbw_wheel";
+                 fixrow1.id = 'wheel'+index;
+                 fixsetting.appendChild(fixrow1);
 
-                // get the last known status levels, and set up control
+                 var controls_right = document.createElement("div");
+                 controls_right.className = "rgbw_right";
+                 fixsetting.appendChild(controls_right);
 
-                var cwheelvalues = "rgb(255,255,255)";
-                //if(scenesettingsholdermap[selectedfixtureobj.uid] != undefined)
-                //{
-                // var rgbwlevels = scenesettingsholdermap[selectedfixtureobj.uid].status.currentlevels;
+                 var $colorpicker1 = $("<div>", {id: "colorWheelDemo", "class": "wheel"});
+                 $("#wheel"+index).append($colorpicker1);
+                 // get the last known status levels, and set up control
+                 var cwheelvalues = "rgb(255,255,255)";
+                 //convert from pct back to rgb 8 bit,
+                 var red = (selectedfixtureobj.red * 255)/100;
+                 var green = (selectedfixtureobj.green * 255)/100;
+                 var blue = (selectedfixtureobj.blue * 255)/100;
 
-                //if(rgbwlevels != undefined)
-                // {
-                //convert from pct back to rgb 8 bit,
-                var red = (selectedfixtureobj.red * 255)/100;
-                var green = (selectedfixtureobj.green * 255)/100;
-                var blue = (selectedfixtureobj.blue * 255)/100;
+                 cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
 
-                cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
-                // }
-                // }
+                 var colorWheel = iro.ColorWheel("#colorWheelDemo", {
+                 width: 270,
+                 height: 270,
+                 padding: 4,
+                 sliderMargin: 24,
+                 markerRadius: 4,
+                 color: cwheelvalues,
+                 CSS: {} // apply colors to any elements
+                 });
 
+                 colorWheel.watch(function(color) {
+                 startRGBWCallHWCallTimer(color);
+                 });
 
-                var colorWheel = iro.ColorWheel("#colorWheelDemo", {
-                    width: 300,
-                    height: 300,
-                    padding: 4,
-                    sliderMargin: 24,
-                    markerRadius: 4,
-                    color: cwheelvalues,
-                    CSS: {} // apply colors to any elements
-                });
+                 constructSliderBar(controls_right);
 
-                colorWheel.watch(function(color) {
-                    //console.log(color.rgb);
-                    startRGBWCallHWCallTimer(color);
-                });
-
+                 */
             }
         }
     });
 
 });  // end doc ready.
+
+
+
+
+
 
 
 function init() {
@@ -353,7 +357,7 @@ function processConfig(configobj)
     updateFixturesTable();
     redrawScenes();
 
-  //  populateDropDown("scriptsel", ["alarmmode","???"]);
+    //  populateDropDown("scriptsel", ["alarmmode","???"]);
 
 
     getScriptNames(function (data) {
@@ -380,28 +384,45 @@ function runscript()
 
 function setRGBWToHW()
 {
-    if(lastrgbcolor != undefined && selectedfixtureobj != undefined) {
-        var element = {};
-        element.requesttype = "override";
-        element.name = selectedfixtureobj.assignedname;
-        element.red = ((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);  // convert to pct
-        element.green = ((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);  // convert to pct
-        element.blue = ((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);  // convert to pct
-        element.white = 100;
-        setFixtureLevel(element);
+    //if(lastrgbcolor != undefined && selectedfixtureobj != undefined && lastwhite != undefined) {
+
+    if(pendingFixtureLevelObj != undefined)
+    {
+        // var element = {};
+        // element.requesttype = "override";
+        // element.name = selectedfixtureobj.assignedname;
+        // element.red = ((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);  // convert to pct
+        // element.green = ((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);  // convert to pct
+        // element.blue = ((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);  // convert to pct
+        // element.white = lastwhite;
+        setFixtureLevel(pendingFixtureLevelObj);
+
+        pendingFixtureLevelObj = undefined;
     }
 }
 
 
+var pendingFixtureLevelObj = undefined;
 
-function startRGBWCallHWCallTimer(color)
+
+function startRGBWCallHWCallTimer(redpct, greenpct, bluepct, whitepct)
 {
     // stop timer ,,
     if(rgbwsettimer != undefined)
     {
         clearTimeout(rgbwsettimer);
     }
-    lastrgbcolor = color;
+
+    pendingFixtureLevelObj = {};
+    pendingFixtureLevelObj.requesttype = "override";
+    pendingFixtureLevelObj.name = selectedfixtureobj.assignedname;
+
+    pendingFixtureLevelObj.red = redpct; //((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);  // convert to pct
+    pendingFixtureLevelObj.green = greenpct; //((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);  // convert to pct
+    pendingFixtureLevelObj.blue = bluepct; //((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);  // convert to pct
+    pendingFixtureLevelObj.white = whitepct; //lastwhite;
+
+
     rgbwsettimer = setTimeout(setRGBWToHW, 600)  //600ms,  reset,
 }
 
@@ -478,7 +499,7 @@ function updateFixturesTable() {
     for (i=0; i< fixtures.length; i++)   {
         var oBody = oTBody;
         oRow = document.createElement("TR");
-      //  oRow.className = "clickable-row";
+        //  oRow.className = "clickable-row";
         oBody.appendChild(oRow);
 
         // column1 = Zone Label
@@ -540,4 +561,209 @@ function populateDropDown(dropdown, optionslist)
         sel.appendChild(opt);
     }
 
+}
+
+
+
+
+
+
+// under dev,
+
+
+function constructControlRGBW(fixsettingdiv, ctrlidx)
+{
+    var fixrow1 = document.createElement("DIV");
+    fixrow1.className = "rgbw_wheel";
+    fixrow1.id = 'wheel'+ctrlidx;
+    fixsettingdiv.appendChild(fixrow1);
+
+    var controls_right = document.createElement("div");
+    controls_right.className = "rgbw_right";
+    fixsettingdiv.appendChild(controls_right);
+
+    var $colorpicker1 = $("<div>", {id: "colorWheelDemo", "class": "wheel"});
+    $("#wheel"+ctrlidx).append($colorpicker1);
+    // get the last known status levels, and set up control
+    var cwheelvalues = "rgb(255,255,255)";
+    //convert from pct back to rgb 8 bit,
+    var red = (selectedfixtureobj.red * 255)/100;
+    var green = (selectedfixtureobj.green * 255)/100;
+    var blue = (selectedfixtureobj.blue * 255)/100;
+
+    //var white = (selectedfixtureobj.white * 255)/100;
+
+    cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
+
+    lastrgbcolor = {};
+    lastrgbcolor.rgb = {};
+    lastrgbcolor.rgb.r = red;
+    lastrgbcolor.rgb.g = green;
+    lastrgbcolor.rgb.b = blue;
+
+    var colorWheel = iro.ColorWheel("#colorWheelDemo", {
+        width: 300,
+        height: 300,
+        padding: 4,
+        sliderMargin: 24,
+        markerRadius: 4,
+        color: cwheelvalues,
+        CSS: {} // apply colors to any elements
+    });
+
+    colorWheel.watch(function(color) {
+        lastrgbcolor = color;
+        var redpct = ((color.rgb.r * 100) / 255).toFixed(0);
+        var greenpct = ((color.rgb.g * 100) / 255).toFixed(0);
+        var bluepct = ((color.rgb.b * 100) / 255).toFixed(0);
+        var white = document.getElementById("brightctrl").value;
+
+        startRGBWCallHWCallTimer(redpct, greenpct, bluepct, white);
+    });
+
+
+
+
+    // right side,
+    var bright_grad = document.createElement("div");
+    bright_grad.className = "vert_brightness_grad";
+    controls_right.appendChild(bright_grad);
+
+    var guageholder = document.createElement("div");
+    guageholder.className = "vert_guage_holder";
+    bright_grad.appendChild(guageholder);
+
+    var bright_guage = document.createElement("input");
+    bright_guage.type = "range";
+    bright_guage.setAttribute("data-orientation","vertical");
+    bright_guage.id = "brightctrl";
+    bright_guage.value = selectedfixtureobj.white;
+    guageholder.appendChild(bright_guage);
+
+    $('input[type="range"]').rangeslider({
+        polyfill : false,
+        rangeClass: 'custom_slider_range',
+        fillClass: 'custom_slider_fill',
+        verticalClass: 'custom_rangeslider_vertical',
+
+        onInit : function() {
+            //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+        },
+        onSlideEnd : function( position, value ) {
+            if(this.$element[0].id == "brightctrl")
+            {
+                var redpct = ((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);
+                var greenpct = ((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);
+                var bluepct = ((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);
+
+                startRGBWCallHWCallTimer(redpct, greenpct, bluepct, this.value);
+
+            }
+        }
+    });
+
+}
+
+
+
+
+function constructSliderBar(currentdiv) {
+
+    var bright_grad = document.createElement("div");
+    bright_grad.className = "vert_brightness_grad";
+    currentdiv.appendChild(bright_grad);
+
+    var guageholder = document.createElement("div");
+    guageholder.className = "vert_guage_holder";
+    bright_grad.appendChild(guageholder);
+
+    var bright_guage = document.createElement("input");
+    bright_guage.type = "range";
+    bright_guage.setAttribute("data-orientation","vertical");
+    bright_guage.id = "brightctrl";
+    guageholder.appendChild(bright_guage);
+
+
+
+
+    $('input[type="range"]').rangeslider({
+        polyfill : false,
+        rangeClass: 'custom_slider_range',
+        fillClass: 'custom_slider_fill',
+        verticalClass: 'custom_rangeslider_vertical',
+
+        onInit : function() {
+            //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+        },
+        onSlideEnd : function( position, value ) {
+            //  this.output.html( value );
+            // var k = $("brightctrl");
+            if(this.$element[0].id == "brightctrl")
+            {
+                document.getElementById("brightvalue").innerHTML = this.value;
+
+                /* if (selected_fixture.type == "dim") {
+                 var element = {};
+                 element.requesttype = "wallstation";
+                 element.name = selected_fixture.assignedname;
+                 element.level = this.value;
+                 setFixtureLevel(element);
+                 }
+                 else if (selected_fixture.type == "cct") {
+                 var element = {};
+                 element.requesttype = "wallstation";
+                 element.name = selected_fixture.assignedname;
+                 element.brightness = this.value;
+                 var ctempslider = document.getElementById("colortempctrl");
+                 if(ctempslider != undefined) {
+
+                 // convert pct to ctemp.
+                 var min = Number(selected_fixture.min); //selected_fixture.min);
+                 var max = Number(selected_fixture.max); //.max);
+                 var ctempcalc = (min + (max-min)*(Number(ctempslider.value)/100));
+                 element.ctemp = ctempcalc;
+                 setFixtureLevel(element);
+                 }
+                 }  */
+            }
+
+            /* else
+             {
+             var min = Number(selected_fixture.min); //selected_fixture.min);
+             var max = Number(selected_fixture.max); //.max);
+             var ctempcalc = (min + (max-min)*(Number(this.value)/100));
+             document.getElementById("colortempvalue").innerHTML = ctempcalc + " K";
+
+             var element = {};
+             element.requesttype = "wallstation";
+             element.name = selected_fixture.assignedname;
+             element.brightness = document.getElementById("brightctrl").value;
+
+             element.colortemp = ctempcalc; //(2000 + (4500*value/100));
+             setFixtureLevel(element);
+             }  */
+
+        }
+    });
+
+    // var bright_val = document.createElement("div");
+    //  bright_val.className = "guage_value";
+    // currentdiv.appendChild(bright_val);
+
+
+    /*if(forfixture) {
+     if (selected_fixture.type == "dim") {
+     bright_guage.value = selected_fixture.level;
+     header.innerHTML = selected_fixture.level;
+     }
+     else {
+     bright_guage.value = selected_fixture.brightness;
+     header.innerHTML = selected_fixture.brightness;
+     }
+     }
+     else
+     {*/
+    //   bright_guage.value = 50;
+    //    header.innerHTML = 50;
+    //}
 }
