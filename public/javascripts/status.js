@@ -359,6 +359,13 @@ function updateFixtureStatusBox(fixture, index)
             var trim = Number(fixture.brightness).toFixed(0);
             constructColorTempIndicators(statright, trim, fixture.colortemp, fixture.min, fixture.max);
         }
+        else if(fixture.type == "rgb") {
+
+            var trimr = Number(fixture.red).toFixed(0);
+            var trimg = Number(fixture.green).toFixed(0);
+            var trimb = Number(fixture.blue).toFixed(0);
+            constructRGBndicators(statright, trimr, trimg, trimb);
+        }
         else if(fixture.type == "rgbw") {
 
             var trimr = Number(fixture.red).toFixed(0);
@@ -389,6 +396,13 @@ function constructColorTempIndicators(parentdiv, brightpct, colortemplevel, ctem
 }
 
 
+
+function constructRGBndicators(parentdiv, red, green, blue)
+{
+    constructBasicLevelIndicator(parentdiv,20,190,red,"red_bar", red);
+    constructBasicLevelIndicator(parentdiv,20,190,green,"green_bar", green);
+    constructBasicLevelIndicator(parentdiv,20,190,blue,"blue_bar", blue);
+}
 
 function constructRGBWndicators(parentdiv, red, green, blue, white)
 {

@@ -13,6 +13,7 @@ var OnOffSetting = require('../models/OnOffSetting.js');
 var DimSetting = require('../models/DimSetting.js');
 var CCTSetting = require('../models/CCTSetting.js');
 var RGBWSetting = require('../models/RGBWSetting.js');
+var RGBSetting = require('../models/RGBSetting.js');
 
 var data_utils = require('../utils/data_utils.js');
 
@@ -27,6 +28,7 @@ router.get('/', function(req, res, next) {
 var OnOffFixture = require('../models/OnOffFixture.js');
 var DimFixture = require('../models/DimFixture.js');
 var CCTFixture = require('../models/CCTFixture.js');
+var RGBFixture = require('../models/RGBFixture.js');
 var RGBWFixture = require('../models/RGBWFixture.js');
 
 var LevelInput = require('../models/LevelInput.js');
@@ -457,6 +459,14 @@ router.post('/addfixturetoscene', function(req, res) {
                     set.white = Number(fixobj.white);
 
                     break;
+
+                case "rgb":
+                    set = new RGBSetting();
+                    set.name = fixturename;
+                    set.red = Number(fixobj.red);
+                    set.green = Number(fixobj.green);
+                    set.blue = Number(fixobj.blue);
+                    break;
                 default:
                     break;
             }
@@ -514,6 +524,12 @@ router.post('/savefixturescenesettings', function(req, res) {
                 scenefix.colortemp = fixobj.colortemp;
                 scenefix.brightness = fixobj.brightness;
 
+            }
+            else if(fixobj.type == "rgb")
+            {
+                scenefix.red = Number(fixobj.red);
+                scenefix.green = Number(fixobj.green);
+                scenefix.blue = Number(fixobj.blue);
             }
             else if(fixobj.type == "rgbw")
             {
@@ -973,6 +989,15 @@ function addFixtureToConfig(fixobjjson)
             global.currentconfig.fixtures.push(fix);
             logobj.brightness = 0;
             logobj.colortemp = 3500;
+            break;
+        case "rgb":
+            var fix = new RGBFixture();
+            fix.fromJson(fixobjjson);
+            global.currentconfig.fixtures.push(fix);
+            logobj.red = 0;
+            logobj.green = 0;
+            logobj.blue = 0;
+
             break;
         case "rgbw":
             var fix = new RGBWFixture();

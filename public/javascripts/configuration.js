@@ -130,7 +130,7 @@ $(document).ready(function() {
                         show12VoltOption(false);
 
 
-                    if((fixture.type == "rgbw" || fixture.type == "cct") && !rpdg_highvoltage )
+                    if((fixture.type == "rgbw" || fixture.type == "cct" || fixture.type == "rgb") && !rpdg_highvoltage )
                     {
                         showCommonAnodeOption(true);
                         document.getElementById("commonanode").checked = fixture.commonanode;
@@ -602,7 +602,7 @@ function saveNewFixture(image) {
         fixture.max =  document.getElementById("maxctemp").value;
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
-    else if(seltype == "rgbw") {
+    else if(seltype == "rgbw" || seltype == "rgb") {
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
 
@@ -688,6 +688,12 @@ function deleteFixture()
         element.green = 0;
         element.blue = 0;
         element.white = 0;
+    }
+    else if(cachedconfig.fixtures[index].type == "rgb")
+    {
+        element.red = 0;
+        element.green = 0;
+        element.blue = 0;
     }
     setFixtureLevel2(element, function (result) {
 
@@ -989,7 +995,7 @@ function updateAvalibleStartingOutputNumbers(filter)
         //  document.getElementById("candledim").disabled = true;
     }
 
-    if((seltype == "rgbw" || seltype == "cct") && !rpdg_highvoltage) {
+    if((seltype == "rgbw" || seltype == "cct" || seltype == "rgb") && !rpdg_highvoltage) {
         showCommonAnodeOption(true);
         document.getElementById("commonanode").value = false;
     }
@@ -2232,6 +2238,14 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
                     inputlist.splice(idx, 1);
                 }
             }
+            if (fixobj.type == "rgb") {
+                var idx = inputlist.indexOf(String(outstart));
+                if (idx > -1) {
+                    inputlist.splice(idx, 1);
+                    inputlist.splice(idx, 1);  // do it X times,
+                    inputlist.splice(idx, 1);
+                }
+            }
         }
     }
 
@@ -2266,6 +2280,20 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
 
         var white = inputlist.indexOf(String(Number(desiredstartoutput)+3));
         if(white < 0)
+            return false;
+    }
+    else if(type == "rgb")
+    {
+        var red = inputlist.indexOf(String(desiredstartoutput));
+        if(red < 0)
+            return false;
+
+        var green = inputlist.indexOf(String(Number(desiredstartoutput)+1));
+        if(green < 0)
+            return false;
+
+        var blue = inputlist.indexOf(String(Number(desiredstartoutput)+2));
+        if(blue < 0)
             return false;
     }
     else {

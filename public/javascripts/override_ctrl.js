@@ -289,50 +289,13 @@ $(document).ready(function() {
                     }
                 });
             }
-
+            else if(type == "rgb")
+            {
+                constructControlRGB(fixsetting,index);
+            }
             else if(type == "rgbw")
             {
-
-                constructControlRGBW(fixsetting);
-
-                /*
-                 var fixrow1 = document.createElement("DIV");
-                 fixrow1.className = "rgbw_wheel";
-                 fixrow1.id = 'wheel'+index;
-                 fixsetting.appendChild(fixrow1);
-
-                 var controls_right = document.createElement("div");
-                 controls_right.className = "rgbw_right";
-                 fixsetting.appendChild(controls_right);
-
-                 var $colorpicker1 = $("<div>", {id: "colorWheelDemo", "class": "wheel"});
-                 $("#wheel"+index).append($colorpicker1);
-                 // get the last known status levels, and set up control
-                 var cwheelvalues = "rgb(255,255,255)";
-                 //convert from pct back to rgb 8 bit,
-                 var red = (selectedfixtureobj.red * 255)/100;
-                 var green = (selectedfixtureobj.green * 255)/100;
-                 var blue = (selectedfixtureobj.blue * 255)/100;
-
-                 cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
-
-                 var colorWheel = iro.ColorWheel("#colorWheelDemo", {
-                 width: 270,
-                 height: 270,
-                 padding: 4,
-                 sliderMargin: 24,
-                 markerRadius: 4,
-                 color: cwheelvalues,
-                 CSS: {} // apply colors to any elements
-                 });
-
-                 colorWheel.watch(function(color) {
-                 startRGBWCallHWCallTimer(color);
-                 });
-
-                 constructSliderBar(controls_right);
-
-                 */
+                constructControlRGBW(fixsetting,index);
             }
         }
     });
@@ -384,19 +347,9 @@ function runscript()
 
 function setRGBWToHW()
 {
-    //if(lastrgbcolor != undefined && selectedfixtureobj != undefined && lastwhite != undefined) {
-
     if(pendingFixtureLevelObj != undefined)
     {
-        // var element = {};
-        // element.requesttype = "override";
-        // element.name = selectedfixtureobj.assignedname;
-        // element.red = ((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);  // convert to pct
-        // element.green = ((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);  // convert to pct
-        // element.blue = ((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);  // convert to pct
-        // element.white = lastwhite;
         setFixtureLevel(pendingFixtureLevelObj);
-
         pendingFixtureLevelObj = undefined;
     }
 }
@@ -426,6 +379,26 @@ function startRGBWCallHWCallTimer(redpct, greenpct, bluepct, whitepct)
     rgbwsettimer = setTimeout(setRGBWToHW, 600)  //600ms,  reset,
 }
 
+
+
+function startRGBCallHWCallTimer(redpct, greenpct, bluepct)
+{
+    // stop timer ,,
+    if(rgbwsettimer != undefined)
+    {
+        clearTimeout(rgbwsettimer);
+    }
+
+    pendingFixtureLevelObj = {};
+    pendingFixtureLevelObj.requesttype = "override";
+    pendingFixtureLevelObj.name = selectedfixtureobj.assignedname;
+
+    pendingFixtureLevelObj.red = redpct; //((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);  // convert to pct
+    pendingFixtureLevelObj.green = greenpct; //((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);  // convert to pct
+    pendingFixtureLevelObj.blue = bluepct; //((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);  // convert to pct
+
+    rgbwsettimer = setTimeout(setRGBWToHW, 600)  //600ms,  reset,
+}
 
 
 
@@ -569,6 +542,57 @@ function populateDropDown(dropdown, optionslist)
 
 
 // under dev,
+
+
+
+function constructControlRGB(fixsettingdiv, ctrlidx)
+{
+    var fixrow1 = document.createElement("DIV");
+    fixrow1.className = "rgbw_wheel";
+    fixrow1.id = 'wheel'+ctrlidx;
+    fixsettingdiv.appendChild(fixrow1);
+
+    var controls_right = document.createElement("div");
+    controls_right.className = "rgbw_right";
+    fixsettingdiv.appendChild(controls_right);
+
+    var $colorpicker1 = $("<div>", {id: "colorWheelDemo", "class": "wheel"});
+    $("#wheel"+ctrlidx).append($colorpicker1);
+    // get the last known status levels, and set up control
+    var cwheelvalues = "rgb(255,255,255)";
+    //convert from pct back to rgb 8 bit,
+    var red = (selectedfixtureobj.red * 255)/100;
+    var green = (selectedfixtureobj.green * 255)/100;
+    var blue = (selectedfixtureobj.blue * 255)/100;
+
+    cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
+
+    lastrgbcolor = {};
+    lastrgbcolor.rgb = {};
+    lastrgbcolor.rgb.r = red;
+    lastrgbcolor.rgb.g = green;
+    lastrgbcolor.rgb.b = blue;
+
+    var colorWheel = iro.ColorWheel("#colorWheelDemo", {
+        width: 300,
+        height: 300,
+        padding: 4,
+        sliderMargin: 24,
+        markerRadius: 4,
+        color: cwheelvalues,
+        CSS: {} // apply colors to any elements
+    });
+
+    colorWheel.watch(function(color) {
+        lastrgbcolor = color;
+        var redpct = ((color.rgb.r * 100) / 255).toFixed(0);
+        var greenpct = ((color.rgb.g * 100) / 255).toFixed(0);
+        var bluepct = ((color.rgb.b * 100) / 255).toFixed(0);
+        startRGBCallHWCallTimer(redpct, greenpct, bluepct);
+    });
+
+}
+
 
 
 function constructControlRGBW(fixsettingdiv, ctrlidx)

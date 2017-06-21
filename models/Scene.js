@@ -6,6 +6,7 @@ var OnOffSetting = require('./OnOffSetting.js');
 var DimSetting = require('./DimSetting.js');
 var CCTSetting = require('./CCTSetting.js');
 var RGBWSetting = require('./RGBWSetting.js');
+var RGBSetting = require('./RGBSetting.js')
 var Scene = function()
 {
     this.name = "";
@@ -48,7 +49,14 @@ var Scene = function()
                         set.fromJson(setting);
                         this.fixtures.push(set);
                         break;
+
+                    case "rgb":
+                        var set = new RGBSetting();
+                        set.fromJson(setting);
+                        this.fixtures.push(set);
+                        break;
                     default:
+
                         break;
                 }
             }

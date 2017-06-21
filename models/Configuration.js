@@ -6,6 +6,7 @@ var moment = require('moment');
 var OnOffFixture = require('./OnOffFixture.js');
 var DimFixture = require('./DimFixture.js');
 var CCTFixture = require('./CCTFixture.js');
+var RGBFixture = require('./RGBFixture.js');
 var RGBWFixture = require('./RGBWFixture.js');
 // inputs(sensors..etc)
 
@@ -84,6 +85,11 @@ var Configuration = function()
 
                 case "rgbw":
                     var f = new RGBWFixture(fix);
+                    f.fromJson(fix);
+                    this.fixtures.push(f);
+                    break;
+                case "rgb":
+                    var f = new RGBFixture(fix);
                     f.fromJson(fix);
                     this.fixtures.push(f);
                     break;

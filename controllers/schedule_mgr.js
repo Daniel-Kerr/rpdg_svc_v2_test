@@ -11,10 +11,11 @@ var enocean = require('./enocean.js');
 var rpdg = require('./rpdg_board.js');
 var InputMessage = require('../models/InputMessage.js');
 
-var OnOffFixture = require('../models/OnOffFixture.js');
-var DimFixture = require('../models/DimFixture.js');
-var CCTFixture = require('../models/CCTFixture.js');
-var RGBWFixture = require('../models/RGBWFixture.js');
+//var OnOffFixture = require('../models/OnOffFixture.js');
+//var DimFixture = require('../models/DimFixture.js');
+//var CCTFixture = require('../models/CCTFixture.js');
+//var RGBFixture = require('../models/RGBFixture.js');
+//var RGBWFixture = require('../models/RGBWFixture.js');
 
 var Configuration = require('../models/Configuration.js');
 var FixtureParameters = require('../models/FixtureParameters.js');

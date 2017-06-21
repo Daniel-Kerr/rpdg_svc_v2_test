@@ -21,6 +21,7 @@ var LevelInput = require('../models/LevelInput.js');
 var OnOffFixture = require('../models/OnOffFixture.js');
 var DimFixture = require('../models/DimFixture.js');
 var CCTFixture = require('../models/CCTFixture.js');
+var RGBFixture = require('../models/RGBFixture.js');
 var RGBWFixture = require('../models/RGBWFixture.js');
 
 var Configuration = require('../models/Configuration.js');
@@ -281,6 +282,14 @@ function sendMessageToGroup(groupobj, requesttype, level)
                 reqobj.requesttype = requesttype;
                 module.exports.setFixtureLevels(reqobj,false);
             }
+            else if (fixobj instanceof RGBFixture) {
+               // stub for now
+                //var reqobj = {};
+                //reqobj.name = fixobj.assignedname;
+               // reqobj.white = level;
+               // reqobj.requesttype = requesttype;
+               // module.exports.setFixtureLevels(reqobj,false);
+            }
         }
     }
     module.exports.latchOutputValuesToHardware();
@@ -430,6 +439,15 @@ function invokeAllToLevel(level, requesttype)
                 reqobj.green = level;
                 reqobj.blue = level;
                 reqobj.white = level;
+                reqobj.requesttype = requesttype;
+                module.exports.setFixtureLevels(reqobj,false);
+            }
+            else if (fixobj instanceof RGBFixture) {
+                var reqobj = {};
+                reqobj.name = fixobj.assignedname;
+                reqobj.red = level;
+                reqobj.green = level;
+                reqobj.blue = level;
                 reqobj.requesttype = requesttype;
                 module.exports.setFixtureLevels(reqobj,false);
             }
@@ -856,6 +874,18 @@ var service = module.exports = {
 
                         // global.applogger.info(TAG, "polling", "updated power on cct device: " + fixobj.assignedname + "   outid=" + fixobj.outputid + "   " + powerwarm + "  +  " + powercool + "  = " + totalpower);
                     }
+                    else if (fixobj instanceof RGBFixture) {
+                        var powerred = power_watts[Number(fixobj.outputid) - 1];
+                        var powergreen = power_watts[Number(fixobj.outputid)];
+                        var powerblue = power_watts[Number(fixobj.outputid) + 1];
+
+                        var totalpower = (Number(powerred) + Number(powergreen) + Number(powerblue));
+                        if (fixobj.twelvevolt)
+                            totalpower /= 2;
+
+                        fixobj.powerwatts = totalpower.toFixed(2);
+                        // global.applogger.info(TAG, "polling", "updated power on cct device: " + fixobj.assignedname + "   outid=" + fixobj.outputid + "   " + powerwarm + "  +  " + powercool + "  = " + totalpower);
+                    }
                 }
             }
 
@@ -1203,6 +1233,15 @@ var service = module.exports = {
                     reqobj.green = scenefix.green;
                     reqobj.blue = scenefix.blue;
                     reqobj.white = scenefix.white;
+                    reqobj.requesttype = requesttype;
+                    module.exports.setFixtureLevels(reqobj, false);
+                }
+                else if (fixobj instanceof RGBFixture) {
+                    var reqobj = {};
+                    reqobj.name = fixobj.assignedname;
+                    reqobj.red = scenefix.red;
+                    reqobj.green = scenefix.green;
+                    reqobj.blue = scenefix.blue;
                     reqobj.requesttype = requesttype;
                     module.exports.setFixtureLevels(reqobj, false);
                 }
