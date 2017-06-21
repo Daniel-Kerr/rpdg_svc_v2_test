@@ -539,16 +539,16 @@ function saveNewFixture(image) {
     var newitem = (selected_edit_fixture == undefined)? true:false;
 
 
-    //6/9/17, dup name check, new item only
-    if(selectedfixtureindex == -1) {
+    //6/9/17, dup name check, if new item,  or output id /
+  //  if(selectedfixtureindex == -1 || ) {
         for (j = 0; j < cachedconfig.fixtures.length; j++) {
             var name = cachedconfig.fixtures[j].assignedname;
-            if (name == fixname) {
+            if (name == fixname && selectedfixtureindex != j) {
                 $.Notification.notify('error', 'top left', 'Fixture Save Error', "Duplicate Name");
                 return;
             }
         }
-    }
+   // }
 
 
     if(interface == "rpdg-pwm" || interface == "rpdg-plc" || interface == "enocean") {
@@ -1130,15 +1130,15 @@ function saveNewContactInputObj() {
     }
 
     //6/9/17, dup name check, new item only
-    if(selectedcontactinputindex == -1) {
+    //if(selectedcontactinputindex == -1) {
         for (j = 0; j < cachedconfig.contactinputs.length; j++) {
             var name = cachedconfig.contactinputs[j].assignedname;
-            if (name == objname) {
+            if (name == objname && selectedcontactinputindex != j) {
                 $.Notification.notify('error', 'top left', 'Contact Save Error', "Duplicate Name");
                 return;
             }
         }
-    }
+   // }
 
 
 
@@ -1401,15 +1401,15 @@ function saveNewLevelInput() {
     }
 
     //6/9/17, dup name check, new item only
-    if(selectedlevelinputindex == -1) {
+   // if(selectedlevelinputindex == -1) {
         for (j = 0; j < cachedconfig.levelinputs.length; j++) {
             var name = cachedconfig.levelinputs[j].assignedname;
-            if (name == objname) {
+            if (name == objname && selectedlevelinputindex != j) {
                 $.Notification.notify('error', 'top left', 'Level Input Save Error', "Duplicate Name");
                 return;
             }
         }
-    }
+  //  }
 
 
 

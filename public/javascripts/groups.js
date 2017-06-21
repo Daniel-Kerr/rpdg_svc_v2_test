@@ -157,6 +157,15 @@ function openNewGroupEditDialog(index)
                 }
 
 
+                // dup name check ,
+                for (j = 0; j < loadedconfig.groups.length; j++) {
+                    var name = loadedconfig.groups[j].name;
+                    if (name == groupname && index != j) {
+                        $.Notification.notify('error', 'top left', 'Group Save Error', "Duplicate Name");
+                        return; false
+                    }
+                }
+
                 if(index >= 0) {
 
                     editConfigObject("edit", "group", group1, index, function (retval) {

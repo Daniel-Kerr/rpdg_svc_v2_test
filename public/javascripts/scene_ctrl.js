@@ -147,6 +147,16 @@ function openNewSceneEditDlg(index)
                 }
 
 
+                // dup name check ,
+                for (j = 0; j < cachedconfig.scenes.length; j++) {
+                    var name = cachedconfig.scenes[j].name;
+                    if (name == scenename && index != j) {
+                        $.Notification.notify('error', 'top left', 'Scene Save Error', "Duplicate Name");
+                        return; false
+                    }
+                }
+
+
                 if(index >= 0) {
 
                     editConfigObject("edit", "scene", scene, index, function (retval) {
