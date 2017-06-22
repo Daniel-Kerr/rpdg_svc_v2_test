@@ -93,8 +93,7 @@
 							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].white == 60;",
 							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[1].red == 60;",
 							"tests[\"Value of output 6 is correct\"] = jsonData.fixtures[1].green == 50;",
-							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[1].blue == 40;",
-							"tests[\"Value of output 8 is correct\"] = jsonData.fixtures[1].white == 30;"
+							"tests[\"Value of output 7 is correct\"] = jsonData.fixtures[1].blue == 40;"
 						]
 					}
 				}
