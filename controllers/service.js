@@ -572,9 +572,21 @@ function constructPWMPolarityMask()
         var fix = fixlist[i];
         if(fix.interfacename == "rpdg-pwm") {
             if(fix.commonanode == true) {
-                if (fix.type == "rgbw") {
+                if (fix.type == "rgb") {
+                    var baseidx = fix.outputid - 1; // zero based index.
+                    for (var k = baseidx; k < baseidx + 3; k++) {
+                        mask |= (0x01 << k);
+                    }
+                }
+                else if (fix.type == "rgbw") {
                     var baseidx = fix.outputid - 1; // zero based index.
                     for (var k = baseidx; k < baseidx + 4; k++) {
+                        mask |= (0x01 << k);
+                    }
+                }
+                else if (fix.type == "rgbwwcw") {
+                    var baseidx = fix.outputid - 1; // zero based index.
+                    for (var k = baseidx; k < baseidx + 5; k++) {
                         mask |= (0x01 << k);
                     }
                 }

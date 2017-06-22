@@ -772,7 +772,7 @@ function constructControlRGBWWCW(fixsettingdiv, ctrlidx)
 
     // right side, (warm white.
     var bright_grad = document.createElement("div");
-    bright_grad.className = "vert_brightness_grad";
+    bright_grad.className = "vert_brightness_grad_warm";
     controls_right.appendChild(bright_grad);
 
     var guageholder = document.createElement("div");
@@ -789,7 +789,7 @@ function constructControlRGBWWCW(fixsettingdiv, ctrlidx)
 
     // cold white,
     var cw_div = document.createElement("div");   // gradient div
-    cw_div.className = "vert_brightness_grad";
+    cw_div.className = "vert_brightness_grad_cool";
     controls_right.appendChild(cw_div);
 
     var cw_gh = document.createElement("div");    // guage control holder inside of gradient div(transparent)
