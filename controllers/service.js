@@ -161,7 +161,7 @@ function printNetworkMap() {
  * @param level
  * type -- level input, vs contact input,
  */
-function incommingHWChangeHandler(interface, type, inputid,level)
+function incommingHWChangeHandler(interface, type, inputid,level, options)
 {
     //global.applogger.info(TAG, "rx handler -- interface:"+  interface + " type: " + type + "  inputid: " + inputid + "  level: " + level, "");
     // loop through inputdevices looking for device, then,
@@ -227,13 +227,20 @@ function incommingHWChangeHandler(interface, type, inputid,level)
     }
 
     if(type == "contactinput") {
+
+        var modid = inputid;
+        if(options != undefined)
+            modid += "("+ options + ")";
+
         var contactinputs = global.currentconfig.contactinputs;
 
+        var assigned = false;
         for (var i = 0; i < contactinputs.length; i++) {
             // match up interface,
             var dev = contactinputs[i];
             if (dev.interface == interface) {
-                if (dev.inputid == inputid) {
+                if (dev.inputid == modid) {
+                    assigned = true;
                     global.applogger.info(TAG, "(CONTACT INPUT) message handler found device ", dev.interface + " : " + dev.assignedname + " : at level: " + level);
                     dev.setvalue(level);
                     // if type is momentary and == "active",  or maintained,  act on it,
@@ -242,13 +249,22 @@ function incommingHWChangeHandler(interface, type, inputid,level)
                         if(!dev.enabled)
                         {
                             global.applogger.info(TAG, "(CONTACT INPUT) " , dev.assignedname , "device is disabled, changed ignored");
-                            continue;
+                           // continue;
+                            //break;
                         }
                         else
                             contactSwitchHandler(dev);
                     }
+
+                    break;  // 6/22/17 break out of loop,
                 }
             }
+        } // end for loop check,
+
+        if(!assigned && interface == "enocean" && options != undefined)
+        {
+            if(options == "B")
+                 setEnoceanDoubleRocker(inputid);
         }
     }
 
@@ -648,6 +664,42 @@ function ScriptResultHandler(name, result)
     global.applogger.info(TAG, " Script: " + name + "  result: " + result, "");
     activescript = undefined;
 }
+
+
+function setEnoceanDoubleRocker(id)
+{
+    var enocean_known_sensors = require('../../datastore/enocean_db/knownSensors.json');
+
+    var modfile = false;
+
+    for (var key in enocean_known_sensors) {
+        var device = enocean_known_sensors[key];
+        if (device.id == id) {
+
+            if(device.isdouble == undefined) {
+                device.isdouble = true;
+                modfile = true;
+                break;
+            }
+        }
+    }
+
+    if(modfile) {
+        var filefixed = '../datastore/enocean_db/knownSensors.json';
+        var target = path.resolve(filefixed);
+
+        var output = JSON.stringify(enocean_known_sensors, null, 4);
+        fs.writeFile(target, output, function (err) {
+            if (err) {
+                console.log(err);
+            }
+            else
+                console.log("The file was saved!");
+        });
+    }
+
+}
+
 var service = module.exports = {
 
 
@@ -1325,7 +1377,7 @@ var service = module.exports = {
 
 // this handles all level / contact inputs.
     testSetInputLevelVolts: function (interface, type, inputid, level) {
-        incommingHWChangeHandler(interface, type, inputid, level);
+        incommingHWChangeHandler(interface, type, inputid, level, undefined);
     },
     sendOccupancyMessageToGroup: function (groupname) {
         var groupobj = global.currentconfig.getGroupByName(groupname);
@@ -1388,8 +1440,17 @@ var service = module.exports = {
             var device = enocean_known_sensors[key];
 
             if (device.eepFunc.includes("Rocker Switch") && device.eepFunc.includes("2 Rocker")) {
-                contactinputs.push(key + "(A)");
-                contactinputs.push(key + "(B)");
+
+                if(device.isdouble != undefined && device.isdouble) {
+                    contactinputs.push(key + "(A)");
+                    contactinputs.push(key + "(B)");
+                }
+                else
+                {
+                    contactinputs.push(key + "(A)");
+                }
+
+
             }
             else if (device.eepFunc.includes("Occupancy") || device.eepFunc.includes("Rocker Switch")) {
                 contactinputs.push(key);

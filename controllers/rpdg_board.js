@@ -564,7 +564,7 @@ function readHW_0to10inputs() {
                             if(txvalue > 10.0)
                                 txvalue = 10;
 
-                            rxhandler("rpdg","levelinput", index+1, txvalue);
+                            rxhandler("rpdg","levelinput", index+1, txvalue, undefined);
                         }
 
                         TeensyI2cErrorHandler("Read 0 to 10 inputs",err);
@@ -599,7 +599,7 @@ function readHW_WetDryContactinputs() {
                         var state = ((statebits >> i) & 0x01);
 
                         if(state != WetDryContacts[i]) {
-                            rxhandler("rpdg", "contactinput", i + 1, state);
+                            rxhandler("rpdg", "contactinput", i + 1, state, undefined);
                         }
                         WetDryContacts[i] = state;
                     }

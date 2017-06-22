@@ -95,23 +95,26 @@ function initDriver()
                 var value = sensor.last[0].value;
                 global.applogger.info(TAG, "@@@@@@@@ got ROCKER " +  value, "@@@@@@@@@@@@ " );
 
-                var idsuffix = "";
+               // var idsuffix = "";
+                var options = undefined;
                 // double rocker support 6/20/17
                 if(sensor.eepFunc.includes("2 Rocker")) {
 
                     if (sensor.last[0].value.includes('A'))  // if includes an 'A'
-                        idsuffix = "(A)";
+                        options = "A";
+                       // idsuffix = "(A)";
                     if (sensor.last[0].value.includes('B'))  // if includes an 'A'
-                        idsuffix = "(B)";
+                        options = "B";
+                       // idsuffix = "(B)";
                 }
 
-                var sensorid = sensor.id + idsuffix;
+                var sensorid = sensor.id; // + idsuffix;
 
                 if (sensor.last[0].value.includes('1') && sensor.last[0].value.includes('down')) {
-                    rxhandler("enocean", "contactinput", sensorid, 1);  //up
+                    rxhandler("enocean", "contactinput", sensorid, 1,options);  //up
                 }
                 else if (sensor.last[0].value.includes('0') && sensor.last[0].value.includes('down')) {
-                    rxhandler("enocean", "contactinput", sensorid, 0);
+                    rxhandler("enocean", "contactinput", sensorid, 0,options);
                 }
                 // }
                 //else {
