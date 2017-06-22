@@ -8,6 +8,7 @@ var DimFixture = require('./DimFixture.js');
 var CCTFixture = require('./CCTFixture.js');
 var RGBFixture = require('./RGBFixture.js');
 var RGBWFixture = require('./RGBWFixture.js');
+var RGBWWCWFixture = require('./RGBWWCWFixture.js');
 // inputs(sensors..etc)
 
 //var Dimmer = require('./Dimmer.js');
@@ -85,6 +86,11 @@ var Configuration = function()
 
                 case "rgbw":
                     var f = new RGBWFixture(fix);
+                    f.fromJson(fix);
+                    this.fixtures.push(f);
+                    break;
+                case "rgbwwcw":
+                    var f = new RGBWWCWFixture(fix);
                     f.fromJson(fix);
                     this.fixtures.push(f);
                     break;

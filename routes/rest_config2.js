@@ -12,8 +12,10 @@ var file_config = '../datastore/config.json';
 var OnOffSetting = require('../models/OnOffSetting.js');
 var DimSetting = require('../models/DimSetting.js');
 var CCTSetting = require('../models/CCTSetting.js');
-var RGBWSetting = require('../models/RGBWSetting.js');
 var RGBSetting = require('../models/RGBSetting.js');
+var RGBWSetting = require('../models/RGBWSetting.js');
+var RGBWWCWSetting = require('../models/RGBWWCWSetting.js');
+
 
 var data_utils = require('../utils/data_utils.js');
 
@@ -30,6 +32,7 @@ var DimFixture = require('../models/DimFixture.js');
 var CCTFixture = require('../models/CCTFixture.js');
 var RGBFixture = require('../models/RGBFixture.js');
 var RGBWFixture = require('../models/RGBWFixture.js');
+var RGBWWCWFixture = require('../models/RGBWWCWFixture.js');
 
 var LevelInput = require('../models/LevelInput.js');
 
@@ -450,6 +453,13 @@ router.post('/addfixturetoscene', function(req, res) {
                     set.brightness = fixobj.brightness;
 
                     break;
+                case "rgb":
+                    set = new RGBSetting();
+                    set.name = fixturename;
+                    set.red = Number(fixobj.red);
+                    set.green = Number(fixobj.green);
+                    set.blue = Number(fixobj.blue);
+                    break;
                 case "rgbw":
                     set = new RGBWSetting();
                     set.name = fixturename;
@@ -457,15 +467,16 @@ router.post('/addfixturetoscene', function(req, res) {
                     set.green = Number(fixobj.green);
                     set.blue = Number(fixobj.blue);
                     set.white = Number(fixobj.white);
-
                     break;
 
-                case "rgb":
-                    set = new RGBSetting();
+                case "rgbwwcw":
+                    set = new RGBWWCWSetting();
                     set.name = fixturename;
                     set.red = Number(fixobj.red);
                     set.green = Number(fixobj.green);
                     set.blue = Number(fixobj.blue);
+                    set.warmwhite = Number(fixobj.warmwhite);
+                    set.coldwhite = Number(fixobj.coldwhite);
                     break;
                 default:
                     break;
@@ -537,6 +548,14 @@ router.post('/savefixturescenesettings', function(req, res) {
                 scenefix.green = Number(fixobj.green);
                 scenefix.blue = Number(fixobj.blue);
                 scenefix.white = Number(fixobj.white);
+            }
+            else if(fixobj.type == "rgbwwcw")
+            {
+                scenefix.red = Number(fixobj.red);
+                scenefix.green = Number(fixobj.green);
+                scenefix.blue = Number(fixobj.blue);
+                scenefix.warmwhite = Number(fixobj.warmwhite);
+                scenefix.coldwhite = Number(fixobj.coldwhite);
             }
         }
     }
@@ -1007,6 +1026,16 @@ function addFixtureToConfig(fixobjjson)
             logobj.green = 0;
             logobj.blue = 0;
             logobj.white = 0;
+            break;
+        case "rgbwwcw":
+            var fix = new RGBWWCWFixture();
+            fix.fromJson(fixobjjson);
+            global.currentconfig.fixtures.push(fix);
+            logobj.red = 0;
+            logobj.green = 0;
+            logobj.blue = 0;
+            logobj.warmwhite = 0;
+            logobj.coldwhite = 0;
             break;
         default:
             break;

@@ -23,6 +23,7 @@ var DimFixture = require('../models/DimFixture.js');
 var CCTFixture = require('../models/CCTFixture.js');
 var RGBFixture = require('../models/RGBFixture.js');
 var RGBWFixture = require('../models/RGBWFixture.js');
+var RGBWWCWFixture = require('../models/RGBWWCWFixture.js');
 
 var Configuration = require('../models/Configuration.js');
 var FixtureParameters = require('../models/FixtureParameters.js');
@@ -290,6 +291,15 @@ function sendMessageToGroup(groupobj, requesttype, level)
                // reqobj.requesttype = requesttype;
                // module.exports.setFixtureLevels(reqobj,false);
             }
+            else if (fixobj instanceof RGBWWCWFixture) {
+                // stub for now
+                //var reqobj = {};
+                //reqobj.name = fixobj.assignedname;
+                // reqobj.white = level;
+                // reqobj.requesttype = requesttype;
+                // module.exports.setFixtureLevels(reqobj,false);
+            }
+
         }
     }
     module.exports.latchOutputValuesToHardware();
@@ -411,10 +421,6 @@ function invokeAllToLevel(level, requesttype)
 
         var fixobj = global.currentconfig.fixtures[i];
 
-        // if(fixobj.interfacename == "enocean")  //6/9/17
-        // {
-
-        //  }
         if (fixobj != undefined) {
             // create a reqeuest obj, pass it in
             if (fixobj instanceof OnOffFixture || fixobj instanceof DimFixture) {
@@ -451,7 +457,17 @@ function invokeAllToLevel(level, requesttype)
                 reqobj.requesttype = requesttype;
                 module.exports.setFixtureLevels(reqobj,false);
             }
-
+            else if (fixobj instanceof RGBWWCWFixture) {
+                var reqobj = {};
+                reqobj.name = fixobj.assignedname;
+                reqobj.red = level;
+                reqobj.green = level;
+                reqobj.blue = level;
+                reqobj.warmwhite = level;
+                reqobj.coldwhite = level;
+                reqobj.requesttype = requesttype;
+                module.exports.setFixtureLevels(reqobj,false);
+            }
         }
     }
 
@@ -886,6 +902,20 @@ var service = module.exports = {
                         fixobj.powerwatts = totalpower.toFixed(2);
                         // global.applogger.info(TAG, "polling", "updated power on cct device: " + fixobj.assignedname + "   outid=" + fixobj.outputid + "   " + powerwarm + "  +  " + powercool + "  = " + totalpower);
                     }
+                    else if (fixobj instanceof RGBWWCWFixture) {
+                        var powerred = power_watts[Number(fixobj.outputid) - 1];
+                        var powergreen = power_watts[Number(fixobj.outputid)];
+                        var powerblue = power_watts[Number(fixobj.outputid) + 1];
+                        var powerwarmwhite = power_watts[Number(fixobj.outputid) + 2];
+                        var powercoldwhite = power_watts[Number(fixobj.outputid) + 3];
+
+                        var totalpower = (Number(powerred) + Number(powergreen) + Number(powerblue) + Number(powerwarmwhite)+ Number(powercoldwhite));
+                        if (fixobj.twelvevolt)
+                            totalpower /= 2;
+
+                        fixobj.powerwatts = totalpower.toFixed(2);
+                    }
+
                 }
             }
 
@@ -1233,6 +1263,17 @@ var service = module.exports = {
                     reqobj.green = scenefix.green;
                     reqobj.blue = scenefix.blue;
                     reqobj.white = scenefix.white;
+                    reqobj.requesttype = requesttype;
+                    module.exports.setFixtureLevels(reqobj, false);
+                }
+                else if (fixobj instanceof RGBWWCWFixture) {
+                    var reqobj = {};
+                    reqobj.name = fixobj.assignedname;
+                    reqobj.red = scenefix.red;
+                    reqobj.green = scenefix.green;
+                    reqobj.blue = scenefix.blue;
+                    reqobj.warmwhite = scenefix.warmwhite;
+                    reqobj.coldwhite = scenefix.coldwhite;
                     reqobj.requesttype = requesttype;
                     module.exports.setFixtureLevels(reqobj, false);
                 }

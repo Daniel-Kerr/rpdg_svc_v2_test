@@ -6,6 +6,7 @@ var OnOffSetting = require('./OnOffSetting.js');
 var DimSetting = require('./DimSetting.js');
 var CCTSetting = require('./CCTSetting.js');
 var RGBWSetting = require('./RGBWSetting.js');
+var RGBWWCWSetting = require('./RGBWWCWSetting.js');
 var RGBSetting = require('./RGBSetting.js')
 var Scene = function()
 {
@@ -49,7 +50,11 @@ var Scene = function()
                         set.fromJson(setting);
                         this.fixtures.push(set);
                         break;
-
+                    case "rgbwwcw":
+                        var set = new RGBWWCWSetting();
+                        set.fromJson(setting);
+                        this.fixtures.push(set);
+                        break;
                     case "rgb":
                         var set = new RGBSetting();
                         set.fromJson(setting);
@@ -97,31 +102,31 @@ var Scene = function()
     {
         this.fixtures.push(scenefixture);
         /*switch(type)
-        {
-            case "on_off":
-                var set = new OnOffSetting();
-                set.name = name;
-                this.fixtures.push(set);
-                break;
-            case "dim":
-                var set = new DimSetting();
-                set.name = name;
-                this.fixtures.push(set);
-                break;
+         {
+         case "on_off":
+         var set = new OnOffSetting();
+         set.name = name;
+         this.fixtures.push(set);
+         break;
+         case "dim":
+         var set = new DimSetting();
+         set.name = name;
+         this.fixtures.push(set);
+         break;
 
-            case "cct":
-                var set = new CCTSetting();
-                set.name = name;
-                this.fixtures.push(set);
-                break;
-            case "rgbw":
-                var set = new RGBWSetting();
-                set.name = name;
-                this.fixtures.push(set);
-                break;
-            default:
-                break;
-        }*/
+         case "cct":
+         var set = new CCTSetting();
+         set.name = name;
+         this.fixtures.push(set);
+         break;
+         case "rgbw":
+         var set = new RGBWSetting();
+         set.name = name;
+         this.fixtures.push(set);
+         break;
+         default:
+         break;
+         }*/
     }
 
     this.getFixtureByName = function(name)

@@ -297,6 +297,10 @@ $(document).ready(function() {
             {
                 constructControlRGBW(fixsetting,index);
             }
+            else if(type == "rgbwwcw")
+            {
+                constructControlRGBWWCW(fixsetting,index);
+            }
         }
     });
 
@@ -358,29 +362,6 @@ function setRGBWToHW()
 var pendingFixtureLevelObj = undefined;
 
 
-function startRGBWCallHWCallTimer(redpct, greenpct, bluepct, whitepct)
-{
-    // stop timer ,,
-    if(rgbwsettimer != undefined)
-    {
-        clearTimeout(rgbwsettimer);
-    }
-
-    pendingFixtureLevelObj = {};
-    pendingFixtureLevelObj.requesttype = "override";
-    pendingFixtureLevelObj.name = selectedfixtureobj.assignedname;
-
-    pendingFixtureLevelObj.red = redpct; //((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);  // convert to pct
-    pendingFixtureLevelObj.green = greenpct; //((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);  // convert to pct
-    pendingFixtureLevelObj.blue = bluepct; //((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);  // convert to pct
-    pendingFixtureLevelObj.white = whitepct; //lastwhite;
-
-
-    rgbwsettimer = setTimeout(setRGBWToHW, 600)  //600ms,  reset,
-}
-
-
-
 function startRGBCallHWCallTimer(redpct, greenpct, bluepct)
 {
     // stop timer ,,
@@ -399,6 +380,53 @@ function startRGBCallHWCallTimer(redpct, greenpct, bluepct)
 
     rgbwsettimer = setTimeout(setRGBWToHW, 600)  //600ms,  reset,
 }
+
+
+function startRGBWCallHWCallTimer(redpct, greenpct, bluepct, whitepct)
+{
+    // stop timer ,,
+    if(rgbwsettimer != undefined)
+    {
+        clearTimeout(rgbwsettimer);
+    }
+
+    pendingFixtureLevelObj = {};
+    pendingFixtureLevelObj.requesttype = "override";
+    pendingFixtureLevelObj.name = selectedfixtureobj.assignedname;
+
+    pendingFixtureLevelObj.red = redpct; //((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);  // convert to pct
+    pendingFixtureLevelObj.green = greenpct; //((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);  // convert to pct
+    pendingFixtureLevelObj.blue = bluepct; //((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);  // convert to pct
+    pendingFixtureLevelObj.white = whitepct; //lastwhite;
+
+    rgbwsettimer = setTimeout(setRGBWToHW, 600)  //600ms,  reset,
+}
+
+
+
+function startRGBWWCWCallHWCallTimer(redpct, greenpct, bluepct, warmwhitepct, coldwhitepct)
+{
+    // stop timer ,,
+    if(rgbwsettimer != undefined)
+    {
+        clearTimeout(rgbwsettimer);
+    }
+
+    pendingFixtureLevelObj = {};
+    pendingFixtureLevelObj.requesttype = "override";
+    pendingFixtureLevelObj.name = selectedfixtureobj.assignedname;
+
+    pendingFixtureLevelObj.red = redpct;
+    pendingFixtureLevelObj.green = greenpct;
+    pendingFixtureLevelObj.blue = bluepct;
+    pendingFixtureLevelObj.warmwhite = warmwhitepct;
+    pendingFixtureLevelObj.coldwhite = coldwhitepct;
+
+
+    rgbwsettimer = setTimeout(setRGBWToHW, 600)  //600ms,  reset,
+}
+
+
 
 
 
@@ -690,12 +718,62 @@ function constructControlRGBW(fixsettingdiv, ctrlidx)
 
 
 
+function constructControlRGBWWCW(fixsettingdiv, ctrlidx)
+{
+    var fixrow1 = document.createElement("DIV");
+    fixrow1.className = "rgbw_wheel";
+    fixrow1.id = 'wheel'+ctrlidx;
+    fixsettingdiv.appendChild(fixrow1);
 
-function constructSliderBar(currentdiv) {
+    var controls_right = document.createElement("div");
+    controls_right.className = "rgbw_right";
+    fixsettingdiv.appendChild(controls_right);
 
+    var $colorpicker1 = $("<div>", {id: "colorWheelDemo", "class": "wheel"});
+    $("#wheel"+ctrlidx).append($colorpicker1);
+    // get the last known status levels, and set up control
+    var cwheelvalues = "rgb(255,255,255)";
+    //convert from pct back to rgb 8 bit,
+    var red = (selectedfixtureobj.red * 255)/100;
+    var green = (selectedfixtureobj.green * 255)/100;
+    var blue = (selectedfixtureobj.blue * 255)/100;
+
+    //var white = (selectedfixtureobj.white * 255)/100;
+
+    cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
+
+    lastrgbcolor = {};
+    lastrgbcolor.rgb = {};
+    lastrgbcolor.rgb.r = red;
+    lastrgbcolor.rgb.g = green;
+    lastrgbcolor.rgb.b = blue;
+
+    var colorWheel = iro.ColorWheel("#colorWheelDemo", {
+        width: 300,
+        height: 300,
+        padding: 4,
+        sliderMargin: 24,
+        markerRadius: 4,
+        color: cwheelvalues,
+        CSS: {} // apply colors to any elements
+    });
+
+    colorWheel.watch(function(color) {
+        lastrgbcolor = color;
+        var redpct = ((color.rgb.r * 100) / 255).toFixed(0);
+        var greenpct = ((color.rgb.g * 100) / 255).toFixed(0);
+        var bluepct = ((color.rgb.b * 100) / 255).toFixed(0);
+        var warmwhite = document.getElementById("warmwhite").value;
+        var coldwhite = document.getElementById("coldwhite").value;
+
+        startRGBWWCWCallHWCallTimer(redpct, greenpct, bluepct, warmwhite, coldwhite);
+    });
+
+
+    // right side, (warm white.
     var bright_grad = document.createElement("div");
     bright_grad.className = "vert_brightness_grad";
-    currentdiv.appendChild(bright_grad);
+    controls_right.appendChild(bright_grad);
 
     var guageholder = document.createElement("div");
     guageholder.className = "vert_guage_holder";
@@ -704,10 +782,26 @@ function constructSliderBar(currentdiv) {
     var bright_guage = document.createElement("input");
     bright_guage.type = "range";
     bright_guage.setAttribute("data-orientation","vertical");
-    bright_guage.id = "brightctrl";
+    bright_guage.id = "warmwhite";
+    bright_guage.value = selectedfixtureobj.warmwhite;
     guageholder.appendChild(bright_guage);
 
 
+    // cold white,
+    var cw_div = document.createElement("div");   // gradient div
+    cw_div.className = "vert_brightness_grad";
+    controls_right.appendChild(cw_div);
+
+    var cw_gh = document.createElement("div");    // guage control holder inside of gradient div(transparent)
+    cw_gh.className = "vert_guage_holder";
+    cw_div.appendChild(cw_gh);
+
+    var cw_guage = document.createElement("input");   // guage inside of holder.
+    cw_guage.type = "range";
+    cw_guage.setAttribute("data-orientation","vertical");
+    cw_guage.id = "coldwhite";
+    cw_guage.value = selectedfixtureobj.warmwhite;
+    cw_gh.appendChild(cw_guage);
 
 
     $('input[type="range"]').rangeslider({
@@ -720,74 +814,30 @@ function constructSliderBar(currentdiv) {
             //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
         },
         onSlideEnd : function( position, value ) {
-            //  this.output.html( value );
-            // var k = $("brightctrl");
-            if(this.$element[0].id == "brightctrl")
+            if(this.$element[0].id == "warmwhite")
             {
-                document.getElementById("brightvalue").innerHTML = this.value;
+                var redpct = ((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);
+                var greenpct = ((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);
+                var bluepct = ((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);
 
-                /* if (selected_fixture.type == "dim") {
-                 var element = {};
-                 element.requesttype = "wallstation";
-                 element.name = selected_fixture.assignedname;
-                 element.level = this.value;
-                 setFixtureLevel(element);
-                 }
-                 else if (selected_fixture.type == "cct") {
-                 var element = {};
-                 element.requesttype = "wallstation";
-                 element.name = selected_fixture.assignedname;
-                 element.brightness = this.value;
-                 var ctempslider = document.getElementById("colortempctrl");
-                 if(ctempslider != undefined) {
+                var warmwhite = document.getElementById("warmwhite").value;
+                var coldwhite = document.getElementById("coldwhite").value;
+                startRGBWWCWCallHWCallTimer(redpct, greenpct, bluepct, warmwhite, coldwhite);
 
-                 // convert pct to ctemp.
-                 var min = Number(selected_fixture.min); //selected_fixture.min);
-                 var max = Number(selected_fixture.max); //.max);
-                 var ctempcalc = (min + (max-min)*(Number(ctempslider.value)/100));
-                 element.ctemp = ctempcalc;
-                 setFixtureLevel(element);
-                 }
-                 }  */
             }
+            if(this.$element[0].id == "coldwhite")
+            {
+                var redpct = ((lastrgbcolor.rgb.r * 100) / 255).toFixed(0);
+                var greenpct = ((lastrgbcolor.rgb.g * 100) / 255).toFixed(0);
+                var bluepct = ((lastrgbcolor.rgb.b * 100) / 255).toFixed(0);
 
-            /* else
-             {
-             var min = Number(selected_fixture.min); //selected_fixture.min);
-             var max = Number(selected_fixture.max); //.max);
-             var ctempcalc = (min + (max-min)*(Number(this.value)/100));
-             document.getElementById("colortempvalue").innerHTML = ctempcalc + " K";
+                var warmwhite = document.getElementById("warmwhite").value;
+                var coldwhite = document.getElementById("coldwhite").value;
+                startRGBWWCWCallHWCallTimer(redpct, greenpct, bluepct, warmwhite, coldwhite);
 
-             var element = {};
-             element.requesttype = "wallstation";
-             element.name = selected_fixture.assignedname;
-             element.brightness = document.getElementById("brightctrl").value;
-
-             element.colortemp = ctempcalc; //(2000 + (4500*value/100));
-             setFixtureLevel(element);
-             }  */
-
+            }
         }
     });
 
-    // var bright_val = document.createElement("div");
-    //  bright_val.className = "guage_value";
-    // currentdiv.appendChild(bright_val);
-
-
-    /*if(forfixture) {
-     if (selected_fixture.type == "dim") {
-     bright_guage.value = selected_fixture.level;
-     header.innerHTML = selected_fixture.level;
-     }
-     else {
-     bright_guage.value = selected_fixture.brightness;
-     header.innerHTML = selected_fixture.brightness;
-     }
-     }
-     else
-     {*/
-    //   bright_guage.value = 50;
-    //    header.innerHTML = 50;
-    //}
 }
+

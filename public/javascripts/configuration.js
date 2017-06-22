@@ -130,7 +130,7 @@ $(document).ready(function() {
                         show12VoltOption(false);
 
 
-                    if((fixture.type == "rgbw" || fixture.type == "cct" || fixture.type == "rgb") && !rpdg_highvoltage )
+                    if((fixture.type == "rgbw" || fixture.type == "cct" || fixture.type == "rgb" || fixture.type == "rgbwwcw") && !rpdg_highvoltage )
                     {
                         showCommonAnodeOption(true);
                         document.getElementById("commonanode").checked = fixture.commonanode;
@@ -489,7 +489,7 @@ function constructFixtureTable()
     } );
 }
 
-
+/*
 function buildassignment(start, type)
 {
     var ass = [];
@@ -512,7 +512,7 @@ function buildassignment(start, type)
     ass.push(start);
     return ass;
 }
-
+*/
 
 function saveNewFixture(image) {
 
@@ -602,7 +602,7 @@ function saveNewFixture(image) {
         fixture.max =  document.getElementById("maxctemp").value;
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
-    else if(seltype == "rgbw" || seltype == "rgb") {
+    else if(seltype == "rgbw" || seltype == "rgb" || seltype == "rgbwwcw") {
         fixture.commonanode = document.getElementById("commonanode").checked;
     }
 
@@ -682,6 +682,12 @@ function deleteFixture()
         element.brightness = 0;
         element.colortemp =  2200;
     }
+    else if(cachedconfig.fixtures[index].type == "rgb")
+    {
+        element.red = 0;
+        element.green = 0;
+        element.blue = 0;
+    }
     else if(cachedconfig.fixtures[index].type == "rgbw")
     {
         element.red = 0;
@@ -689,12 +695,15 @@ function deleteFixture()
         element.blue = 0;
         element.white = 0;
     }
-    else if(cachedconfig.fixtures[index].type == "rgb")
+    else if(cachedconfig.fixtures[index].type == "rgbwwcw")
     {
         element.red = 0;
         element.green = 0;
         element.blue = 0;
+        element.warmwhite = 0;
+        element.coldwhite = 0;
     }
+
     setFixtureLevel2(element, function (result) {
 
         var i = 0;  //cb stub
@@ -995,7 +1004,7 @@ function updateAvalibleStartingOutputNumbers(filter)
         //  document.getElementById("candledim").disabled = true;
     }
 
-    if((seltype == "rgbw" || seltype == "cct" || seltype == "rgb") && !rpdg_highvoltage) {
+    if((seltype == "rgbw" || seltype == "cct" || seltype == "rgb" || seltype == "rgbwwcw") && !rpdg_highvoltage) {
         showCommonAnodeOption(true);
         document.getElementById("commonanode").value = false;
     }
@@ -2229,6 +2238,14 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
                     inputlist.splice(idx, 1);  // do it 2 times,  to remove both channels,
                 }
             }
+            if (fixobj.type == "rgb") {
+                var idx = inputlist.indexOf(String(outstart));
+                if (idx > -1) {
+                    inputlist.splice(idx, 1);
+                    inputlist.splice(idx, 1);  // do it X times,
+                    inputlist.splice(idx, 1);
+                }
+            }
             if (fixobj.type == "rgbw") {
                 var idx = inputlist.indexOf(String(outstart));
                 if (idx > -1) {
@@ -2238,14 +2255,17 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
                     inputlist.splice(idx, 1);
                 }
             }
-            if (fixobj.type == "rgb") {
+            if (fixobj.type == "rgbwwcw") {
                 var idx = inputlist.indexOf(String(outstart));
                 if (idx > -1) {
                     inputlist.splice(idx, 1);
                     inputlist.splice(idx, 1);  // do it X times,
                     inputlist.splice(idx, 1);
+                    inputlist.splice(idx, 1);
+                    inputlist.splice(idx, 1);
                 }
             }
+
         }
     }
 
@@ -2263,6 +2283,20 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
         if(bright < 0)
             return false;
 
+    }
+    else if(type == "rgb")
+    {
+        var red = inputlist.indexOf(String(desiredstartoutput));
+        if(red < 0)
+            return false;
+
+        var green = inputlist.indexOf(String(Number(desiredstartoutput)+1));
+        if(green < 0)
+            return false;
+
+        var blue = inputlist.indexOf(String(Number(desiredstartoutput)+2));
+        if(blue < 0)
+            return false;
     }
     else if(type == "rgbw")
     {
@@ -2282,7 +2316,7 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
         if(white < 0)
             return false;
     }
-    else if(type == "rgb")
+    else if(type == "rgbwwcw")
     {
         var red = inputlist.indexOf(String(desiredstartoutput));
         if(red < 0)
@@ -2294,6 +2328,14 @@ function outputAvalibleCheck(inputlist, desiredstartoutput, type, name, interfac
 
         var blue = inputlist.indexOf(String(Number(desiredstartoutput)+2));
         if(blue < 0)
+            return false;
+
+        var warmwhite = inputlist.indexOf(String(Number(desiredstartoutput)+3));
+        if(warmwhite < 0)
+            return false;
+
+        var coldwhite = inputlist.indexOf(String(Number(desiredstartoutput)+4));
+        if(coldwhite < 0)
             return false;
     }
     else {
