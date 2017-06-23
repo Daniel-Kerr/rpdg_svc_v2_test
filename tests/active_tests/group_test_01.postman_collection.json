@@ -50,7 +50,7 @@
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Value of fixture 1 is correct\"] = jsonData.fixtures[0].level == 44;",
-							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 44;",
+							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 50;",
 							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 44;",
 							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 44;",
 							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 44;",
