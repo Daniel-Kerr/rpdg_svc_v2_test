@@ -8,10 +8,10 @@ var TAG = pad(path.basename(__filename),15);
 var platform = (process.arch == 'arm')?"RaspberryPI":"x86";
 var data_utils = require('../utils/data_utils.js');  //1/15/17,
 var boardmode = (data_utils.commandLineArgPresent("nohw"))?"HW NOT Present":"RPDG board present";
-var boardvolts = (data_utils.commandLineArgPresent("hv"))?"HIGH":"LOW";
+//var boardvolts = (data_utils.commandLineArgPresent("hv"))?"HIGH":"LOW";
 
 var nohw = data_utils.commandLineArgPresent("nohw");
-var ishv = data_utils.commandLineArgPresent("hv");
+//var ishv = data_utils.commandLineArgPresent("hv");
 var i2cwire = undefined;  // set at startup, for hw interface.
 
 var tempcounter = 0;
@@ -42,7 +42,7 @@ if(platform == "RaspberryPI" && !nohw) {
 
 }
 // for debug info.
-global.applogger.info(TAG,"Board TYPE: " + boardvolts + " Voltage Board", "");
+//global.applogger.info(TAG,"Board TYPE: " + boardvolts + " Voltage Board", "");
 global.applogger.info(TAG,"Board MODE: " + boardmode, "");
 global.applogger.info(TAG,"PLATFORM: " + platform, "");
 
@@ -81,7 +81,7 @@ exports.init = function(callback)
     rxhandler = callback;
     module.exports.setPollingPeriod(100);
     //startHWPolling();
-    read_HWInfo(); // 5/8/17
+    read_HWInfo();
 }
 
 exports.setOutputToLevel = function(outputid, level, apply, options) {
@@ -448,14 +448,16 @@ function setHW_PWMLevels()
         var zoneidx = 0;
         for (var i = 0; i < pmw_outputs_pct.length; i++) {
             var npct = pmw_outputs_pct[i];
-            if(ishv && i < 7) { // dont invert output 8
+
+            // removed 6/23/17,  not needed any more.
+            /* if(ishv && i < 7) { // dont invert output 8
                 npct = 100 - npct;   //invert
                 // if(i == 6) {    // for demo on 2/12/17,  only do scale / inversion  on channel 6 output 7
                 npct = npct / 10;   // scale. 2/12/17
 
                 if(npct > 9)
                     npct = 100;
-            }
+            }  */
 
             var lev = (npct / 100) * 65535;
             var bytes = data_utils.intToByteArray(lev);
