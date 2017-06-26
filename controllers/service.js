@@ -709,7 +709,7 @@ var service = module.exports = {
 
         global.applogger.info(TAG, " --init---", "");
         enocean.init(incommingHWChangeHandler);
-        rpdg.init(incommingHWChangeHandler);
+      //  rpdg.init(incommingHWChangeHandler);
 
         if (data_utils.commandLineArgPresent("udp")) {
             var sender = data_utils.commandLineArgPresent("sender");
@@ -756,7 +756,7 @@ var service = module.exports = {
 
 
         //4/17/17/
-        module.exports.invokeScene("ALL_ON", "override",false);
+      //  module.exports.invokeScene("ALL_ON", "override",false);
 
 
         var ip = require('ip');
@@ -895,9 +895,16 @@ var service = module.exports = {
                 if (delayedHW_InitCount <= 0) {
                     global.applogger.info(TAG, "************** executing delayed hw init **************", "");
 
+                    rpdg.init(incommingHWChangeHandler);
+
+
                     module.exports.updateRPDGInputDrive();
                     //   rpdg.readWetDryContacts();
                     module.exports.updatePWMPolarity();
+
+
+                    //4/17/17/
+                    module.exports.invokeScene("ALL_ON", "override",false);
                 }
             }
 

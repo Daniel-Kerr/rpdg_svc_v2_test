@@ -80,8 +80,10 @@ exports.init = function(callback)
     global.applogger.info(TAG, "init", "");
     rxhandler = callback;
     module.exports.setPollingPeriod(100);
-    //startHWPolling();
     read_HWInfo();
+  //  read_HWInfo();
+   // read_HWInfo();
+   // read_HWInfo();
 }
 
 exports.setOutputToLevel = function(outputid, level, apply, options) {
