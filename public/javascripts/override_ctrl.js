@@ -569,9 +569,6 @@ function populateDropDown(dropdown, optionslist)
 
 
 
-// under dev,
-
-
 
 function constructControlRGB(fixsettingdiv, ctrlidx)
 {

@@ -54,9 +54,9 @@ function init() {
 
     var cwheelvalues = "rgb(255,255,255)";
     //convert from pct back to rgb 8 bit,
-    //var red = (selected_fixture.red * 255)/100;
-    // var green = (selected_fixture.green * 255)/100;
-    // var blue = (selected_fixture.blue * 255)/100;
+    //var red = (selectedfixtureobj.red * 255)/100;
+    // var green = (selectedfixtureobj.green * 255)/100;
+    // var blue = (selectedfixtureobj.blue * 255)/100;
 
     // cwheelvalues = "rgb(" + red.toFixed()+ "," + green.toFixed() + "," + blue.toFixed() + ")";
 
@@ -393,9 +393,9 @@ function constructFixtureButtons()
                   //  var ctempcalc = (min + (max-min)*(Number(value)/100));
 
 
-                    var barval = barval2; //((Number(selected_fixture.colortemp) - 2000)*100) / 4500;
-                   // var min = selected_fixture.min;
-                   // var max = selected_fixture.max;
+                    var barval = barval2; //((Number(selectedfixtureobj.colortemp) - 2000)*100) / 4500;
+                   // var min = selectedfixtureobj.min;
+                   // var max = selectedfixtureobj.max;
 
                     document.getElementById("CCTsliderobject").value = barval;
                     break;
