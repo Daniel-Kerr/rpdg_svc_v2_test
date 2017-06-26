@@ -280,7 +280,7 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var t = new Date().getTime();",
-							"while (new Date().getTime() < t + 5500);"
+							"while (new Date().getTime() < t + 8000);"
 						]
 					}
 				}
