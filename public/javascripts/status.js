@@ -22,7 +22,7 @@ function initStatusHandler(config)
 {
     cachedconfig = config;
     document.title = cachedconfig.generalsettings.nodename;
-    constructFixtureStatusBoxes();
+    constructFixtureStatusBoxes("fixture_row1",cachedconfig.fixtures);
     updateUIPageComponents(undefined);
 }
 
@@ -256,6 +256,8 @@ function updateWetDryContactTable() {
 // ******************************************** 5/26/17 **************************** new fixture status boxes
 // ***********************************************************************************************************
 
+
+/*
 function removeElement(id) {
     var elem = document.getElementById(id);
     if(elem != undefined)
@@ -448,4 +450,4 @@ function constructBasicLevelIndicator(parentdiv, width, height, pct, barclass, l
 
 }
 
-
+*/

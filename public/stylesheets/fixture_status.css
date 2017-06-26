@@ -1,12 +1,12 @@
 .contentholder {
-    /*   background-color: lightgrey;   */
+    /*   background-color: lightgrey;  */
     height: 200px;
-    width: 240px;
+    width: 270px;
 
 }
 
 .status_left {
-    /*   background-color: blue;   */
+    /*   background-color: blue;  */
     height: 200px;
     width: 100px;
     vertical-align: top;
@@ -14,9 +14,9 @@
 }
 
 .status_right {
-    /*    background-color: red;   */
+    /*background-color: red;  */
     height: 200px;
-    width: 130px;
+    width: 160px;
     display: inline-block;
 }
 
@@ -51,7 +51,7 @@
 
 .level_holder {
     display: inline-block;
-    /*     background-color: lightblue;   */
+     /*   background-color: lightblue;  */
     height: 190px;
     margin-top: 0px;
     margin-left: 10px;
@@ -76,10 +76,18 @@
 .level_mark {
     position: absolute;
     /* margin-top: 20px;  */
-
     width: 100px;
     height: 3px;
     background-color: red;
+}
+
+
+.level_mark_white {
+    position: absolute;
+    /* margin-top: 20px;  */
+    width: 100px;
+    height: 3px;
+    background-color: white;
 }
 
 
@@ -121,4 +129,20 @@
     margin-top: 0px;
     width: 100%;
     background: linear-gradient(to top, black, white);
+}
+
+
+.warmwhite_bar {
+    height: 150px;
+    margin-top: 0px;
+    width: 100%;
+    background: linear-gradient(to top, black, #ffad33);
+}
+
+
+.coldwhite_bar {
+    height: 150px;
+    margin-top: 0px;
+    width: 100%;
+    background: linear-gradient(to top, black, #99ceff);
 }
