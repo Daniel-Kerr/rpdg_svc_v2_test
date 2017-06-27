@@ -1,0 +1,228 @@
+{
+	"variables": [],
+	"info": {
+		"name": "rgbwwcw_test_01",
+		"_postman_id": "1dce0236-4309-a982-2f97-ca680d65d47d",
+		"description": "Basic testing of the rgbwwcw object type. Will test to make sure that both the rgbw part as well as the color tuning part works as expected.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "SetConfig_1rgbwwcw",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/config/setconfig",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"Configuration\",\n    \"fixtures\": [\n        {\n            \"type\": \"rgbwwcw\",\n            \"assignedname\": \"Test_RGBWWCW\",\n            \"interface\": {},\n            \"interfacename\": \"rpdg-pwm\",\n            \"outputid\": \"1\",\n            \"image\": \"/fixtureimg/1.jpg\",\n            \"commonanode\": false,\n            \"twelvevolt\": false,\n            \"parameters\": {\n                \"dimoptions\": \"0\",\n                \"dimrate\": \"0\",\n                \"brightenrate\": \"0\",\n                \"resptoocc\": \"-1\",\n                \"resptovac\": \"-1\",\n                \"resptodl50\": \"-1\",\n                \"resptodl40\": \"-1\",\n                \"resptodl30\": \"-1\",\n                \"resptodl20\": \"-1\",\n                \"resptodl10\": \"-1\",\n                \"resptodl0\": \"-1\",\n                \"daylightceiling\": \"-1\",\n                \"manualceiling\": \"-1\",\n                \"daylightfloor\": \"-1\",\n                \"manualfloor\": \"-1\"\n            },\n            \"red\": 0,\n            \"green\": 0,\n            \"blue\": 0,\n            \"warmwhite\": 0,\n            \"coldwhite\": 0,\n            \"lastuserrequestedwarmwhite\": 0,\n            \"lastuserrequestedcoldwhite\": 0,\n            \"previousred\": \"0\",\n            \"previousgreen\": \"0\",\n            \"previousblue\": \"0\",\n            \"previouswarmwhite\": \"0\",\n            \"previouscoldwhite\": \"0\",\n            \"lastupdated\": \"2017-06-27T16:47:10.133Z\",\n            \"powerwatts\": \"NaN\",\n            \"daylightlimited\": false,\n            \"status\": 0,\n            \"boundinputs\": []\n        }\n    ],\n    \"levelinputs\": [],\n    \"contactinputs\": [],\n    \"groups\": [],\n    \"scenes\": [],\n    \"enocean\": [],\n    \"scenelists\": [],\n    \"occupiedstate\": 0,\n    \"daylightpollsec\": 600,\n    \"sitezip\": 97219,\n    \"sitelatt\": 45.4736058,\n    \"sitelong\": -122.7349017,\n    \"generalsettings\": {\n        \"nodename\": \"Test\",\n        \"boardvoltage\": 0,\n        \"hotspotenable\": false,\n        \"nodeip\": \"\",\n        \"routerip\": \"\"\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBWWCW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 100;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 100;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 100;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].warmwhite == 100;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[0].coldwhite == 100;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"Test_RGBWWCW\",\n\t\t\"red\": 100,\n\t\t\"green\": 100,\n\t\t\"blue\": 100,\n\t\t\"warmwhite\": 100,\n        \"coldwhite\": 100\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBWWCW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 80;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 40;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 20;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].warmwhite == 50;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[0].coldwhite == 50;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"Test_RGBWWCW\",\n\t\t\"red\": 80,\n\t\t\"green\": 40,\n\t\t\"blue\": 20,\n\t\t\"warmwhite\": 50,\n        \"coldwhite\": 50\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBWWCW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 60;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 5;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].warmwhite == 20;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[0].coldwhite == 60;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"Test_RGBWWCW\",\n\t\t\"red\": 0,\n\t\t\"green\": 60,\n\t\t\"blue\": 5,\n\t\t\"warmwhite\": 20,\n        \"coldwhite\": 60\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBWWCW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red == 95;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green == 10;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue == 30;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].warmwhite == 10;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[0].coldwhite == 9;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"Test_RGBWWCW\",\n\t\t\"red\": 95,\n\t\t\"green\": 10,\n\t\t\"blue\": 30,\n\t\t\"warmwhite\": 10,\n        \"coldwhite\": 9\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "set RGBWWCW",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].red === 0;",
+							"tests[\"Value of output 2 is correct\"] = jsonData.fixtures[0].green === 0;",
+							"tests[\"Value of output 3 is correct\"] = jsonData.fixtures[0].blue === 0;",
+							"tests[\"Value of output 4 is correct\"] = jsonData.fixtures[0].warmwhite === 0;",
+							"tests[\"Value of output 5 is correct\"] = jsonData.fixtures[0].coldwhite === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:3000/override_scene/setmultiplefixturelevels",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\t\"name\": \"Test_RGBWWCW\",\n\t\t\"red\": 0,\n\t\t\"green\": 0,\n\t\t\"blue\": 0,\n\t\t\"warmwhite\": 0,\n        \"coldwhite\": 0\n    }\n]"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
