@@ -128,7 +128,7 @@ exports.getPWMPower = function() {
     for (var i = 0; i < pwm_current_amps.length; i++) {
         var amps = pwm_current_amps[i];
 
-        var power = (amps * global.currentconfig.boardvoltage); //24);
+        var power = (amps * global.currentconfig.generalsettings.boardvoltage); //24);
         watts.push(power.toFixed(2))
     }
     return watts;
@@ -665,12 +665,16 @@ function printPWMOutputLevels()
 function printCurrentCounts()
 {
     if(global.loghw.pwmcurrent) {
+
+      //  global.applogger.info(TAG, "Board Voltage: ", Number(global.currentconfig.generalsettings.boardvoltage));
+
         var msg = "";
         // console.log("Current Counts: " + pwm_current_amps.length);
         for (var i = 0; i < pwm_current_amps.length; i++) {
             var amps = pwm_current_amps[i];
-            var power = (amps * global.currentconfig.boardvoltage);
-            msg += "zone: " + i + " current: " + amps.toFixed(2) + " (amps)  power: " + power.toFixed(2) + " watts";
+
+            var power = (amps * Number(global.currentconfig.generalsettings.boardvoltage));
+            msg += "\nzone: " + i + " current: " + amps.toFixed(2) + " (amps)  power: " + power.toFixed(2) + " watts";
         }
         global.applogger.info(TAG, "PWM Current / Power Levels   ", msg);
     }

@@ -737,6 +737,8 @@ var service = module.exports = {
             data_utils.writeConfigToFile();
 
 
+      //  global.applogger.info(TAG, " Init Board Voltage: ",  global.currentconfig.generalsettings.boardvoltage);
+
         //setup the 0-10 v drive values for current config,
 
         // 5/8/17 mvoed to timer loop on delay
