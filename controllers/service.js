@@ -176,14 +176,26 @@ function incommingHWChangeHandler(interface, type, inputid,level, options)
             var dev = levelinputs[i];
             if (dev.interface == interface) {
                 if (dev.inputid == inputid) {
+
+
                     global.applogger.info(TAG, "(LEVEL INPUT) message handler found device ", dev.interface + " : " + dev.assignedname + " : at level: " + level);
 
+                    var modlevel = level;
 
-
+                    if(modlevel < 0.5)
+                    {
+                        global.applogger.info(TAG, "(LEVEL INPUT) below threshold, forcing to 0 value ", "");
+                        modlevel = 0;
+                    }
+                    else if(modlevel > 9.5)
+                    {
+                        global.applogger.info(TAG, "(LEVEL INPUT) above threshold, forcing to 10 (100%) value ", "");
+                        modlevel = 10;
+                    }
 
 
                     // store value of the input device for reference.
-                    dev.setvalue(level.toFixed(2));
+                    dev.setvalue(modlevel.toFixed(2));
 
                     if(!dev.enabled)
                     {
@@ -201,12 +213,12 @@ function incommingHWChangeHandler(interface, type, inputid,level, options)
                                 var groupobj = global.currentconfig.getGroupByName(groupname);
                                 if (groupobj != undefined) {
                                     if(groupobj.type == "brightness") {
-                                        var targetlevel = level * 10;
+                                        var targetlevel = modlevel * 10;
                                         service.setGroupToBrightnessLevel(groupname, targetlevel, "wallstation",true);
                                     }
                                     else if(groupobj.type == "ctemp") {
                                         //scale color temp. between 2200 / 6500
-                                        var scale = level / 10;
+                                        var scale = modlevel / 10;
                                         var targetctemp = ((6500-2200) * scale) + 2200;
                                         service.setGroupToColorTemp(groupname,targetctemp,100,true);
                                     }

@@ -69,7 +69,7 @@ module.exports = {
 
         if (RequestType == undefined)                  { global.applogger.error (TAG, "RequestType is undefined to LightLevelFilter", "");   }
         if (fixtureparams == undefined)                { global.applogger.error(TAG,"fixtureparams is undefined to LightLevelFilter", "");   }
-        if (DaylightZerotoTenValueVolts == undefined)  { global.applogger.info(TAG,"DaylightZerotoTenValueVolts is undefined (NO DL SENSOR PRESENT)" ,"");   }
+       // if (DaylightZerotoTenValueVolts == undefined)  { global.applogger.info(TAG,"DaylightZerotoTenValueVolts is undefined (NO DL SENSOR PRESENT)" ,"");   }
 
         if(global.loghw.lightfilter)
             global.applogger.info (TAG, "LightLevelFilter", "  The requested level UserLevelRequestedPCT in is: " + UserLevelRequestedPCT);

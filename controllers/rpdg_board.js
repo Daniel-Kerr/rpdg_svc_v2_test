@@ -96,19 +96,18 @@ exports.setOutputToLevel = function(outputid, level, apply, options) {
             plc_output_switch[0] &= ~mask;
         }
         if(global.loghw.pwmlevels)
-            global.applogger.info(TAG, "set output ", outputid + "  to  " + level + "   applied " + apply + "  opts  " + options);
+            global.applogger.info(TAG, "set PLC output ", outputid + "  to  " + level + "   applied " + apply + "  opts  " + options);
 
         if (apply)
             setHW_PLC();
     }
     else {
 
-
         var outindex = Number(outputid)
         pmw_outputs_pct[outindex - 1] = level;
 
         if(global.loghw.pwmlevels)
-            global.applogger.info(TAG, "set output ", outputid + "  to  " + level + "   applied " + apply + "  opts  " + options);
+            global.applogger.info(TAG, "set PWM output ", outputid + "  to  " + level + "   applied " + apply + "  opts  " + options);
 
         if (apply)
             setHW_PWMLevels();
@@ -304,7 +303,7 @@ function peroidicHWPollingLoop()
     if(polling_enabled) {
         readHW_0to10inputs();
        readHW_WetDryContactinputs();
-        readHW_CurrentCounts();
+       readHW_CurrentCounts();
 
         // ****************************************TINSEY RESET CODE  *****************************
         // check if the reset is in progress, or needs to get started..
