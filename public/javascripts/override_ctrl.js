@@ -92,7 +92,9 @@ $(document).ready(function() {
 
             if(type == "on_off")
             {
-                var curr_state = selectedfixtureobj.level;
+                var curr_state = (selectedfixtureobj.level == 100);
+
+
 
                 var fixrow1 = document.createElement("DIV");
                 fixrow1.id = 'fix_toggle1';
