@@ -157,9 +157,9 @@ exports.setZero2TenDrive = function(inputs)
                 wire.writeBytes(CMD_SET_ZERO_2_TEN_DRIVE, config, function (err) {
                     TeensyI2cErrorHandler("Set Config 0 to 10 drive",err);
                 });
-                wire.writeBytes(CMD_SET_ZERO_2_TEN_DRIVE, config, function (err) {
-                    TeensyI2cErrorHandler("Set Config 0 to 10 drive",err);
-                });
+               // wire.writeBytes(CMD_SET_ZERO_2_TEN_DRIVE, config, function (err) {
+              //      TeensyI2cErrorHandler("Set Config 0 to 10 drive",err);
+              //  });
             }
             else {
                 global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive", "no i2c hw");
@@ -195,9 +195,9 @@ exports.setPWMOutputPolarity = function(polconfig)
 
 
             });
-            wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
-                TeensyI2cErrorHandler("Set PWM Polarity",err);
-            });
+           // wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
+           //     TeensyI2cErrorHandler("Set PWM Polarity",err);
+           // });
         }
         else {
             global.applogger.info(TAG, "setPWMOutputPolarity", "no i2c hw");
@@ -224,9 +224,9 @@ exports.setHVDimMode = function(dimmodemask)
                     TeensyI2cErrorHandler("Set HV Dim Mode",err);
 
             });
-            wire.writeBytes(CMD_SET_HV_DIM_MODE, config, function (err) {
-                    TeensyI2cErrorHandler("Set HV Dim Mode",err);
-            });
+           // wire.writeBytes(CMD_SET_HV_DIM_MODE, config, function (err) {
+           //         TeensyI2cErrorHandler("Set HV Dim Mode",err);
+           // });
         }
         else {
             global.applogger.info(TAG, "setHVDimMode", "no i2c hw");
@@ -303,7 +303,7 @@ function peroidicHWPollingLoop()
 {
     if(polling_enabled) {
         readHW_0to10inputs();
-        readHW_WetDryContactinputs();
+       readHW_WetDryContactinputs();
         readHW_CurrentCounts();
 
         // ****************************************TINSEY RESET CODE  *****************************
@@ -429,9 +429,9 @@ function setHW_PLC()
             wire.writeBytes(CMD_SETPLC, plc_output_switch, function (err) {
                 TeensyI2cErrorHandler("Set PLC",err);
             });
-            wire.writeBytes(CMD_SETPLC, plc_output_switch, function (err) {
-                TeensyI2cErrorHandler("Set PLC",err);
-            });
+           // wire.writeBytes(CMD_SETPLC, plc_output_switch, function (err) {
+           //     TeensyI2cErrorHandler("Set PLC",err);
+           // });
         }
     } catch(err)
     {
@@ -469,15 +469,26 @@ function setHW_PWMLevels()
             zoneidx += 2;
         }
 
+
+         // var buff = "buffer: ";
+         //for (var i = 0; i < zone_levels.length; i++) {
+         //      buff += zone_levels[i] + "|";
+         //}
+         // global.applogger.info(TAG, "DEBUG pwm output set levels " , buff);
+
+
+
+
         var wire = getI2cWire();
         if (wire != undefined) {
             wire.writeBytes(CMD_SETPWM, zone_levels, function (err) {
                 TeensyI2cErrorHandler("Set PWM",err);
 
             });
-            wire.writeBytes(CMD_SETPWM, zone_levels, function (err) {
-                TeensyI2cErrorHandler("Set PWM",err);
-            });
+
+           // wire.writeBytes(CMD_SETPWM, zone_levels, function (err) {
+           //     TeensyI2cErrorHandler("Set PWM",err);
+           // });
         }
         // else {
         //     global.applogger.info(TAG, "setHW_PWMLevels:",  "no i2c wire");
@@ -500,6 +511,15 @@ function readHW_CurrentCounts()
             wire.readBytes(CMD_READ_PWM_CURRENT, 17, function (err, res) {
                 if (res != null) {
                     var length = res[0];
+
+                   //   var buff = "buffer: " + res.length + "   -- ";
+                   //  for (var i = 0; i < res.length; i++) {
+                   //        buff += res[i] + "|";
+                   //  }
+                   //   global.applogger.info(TAG, "DEBUG(PWMCURRENT BUFF) " , buff);
+
+
+
                     var index = 0;
                     for (var i = 1; i < res.length;) {
                         var msb = res[i];
@@ -544,11 +564,22 @@ function readHW_0to10inputs() {
                 if (res != null) {
                     var length = res[0];
                     var index = 0;
+
+                   // global.applogger.info(TAG, "DEBUG got 0 - 10 volt length " , res.length);
+
+                  //  var buff = "buffer: ";
+                   // for (var i = 0; i < res.length; i++) {
+                   //       buff += res[i] + "|";
+                   // }
+                   //  global.applogger.info(TAG, "DEBUG" , buff);
+
+
                     // read the latest  value into our array.
                     for (var i = 1; i < res.length;) {
                         var msb = res[i];
                         var lsb = res[i + 1];
                         var val = (msb << 8) | lsb;
+                      //  global.applogger.info(TAG, "DEBUG  " + msb + "  " + lsb,  "");
                         i += 2;
                         // 12/9/16 offset fix .
                         val = val * 1.1;
