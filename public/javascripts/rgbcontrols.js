@@ -151,14 +151,28 @@ function constructControlRGB(fixsettingdiv, ctrlidx)
 
 function constructControlRGBW(fixsettingdiv, ctrlidx)
 {
+    var bsrow = document.createElement("DIV");
+    bsrow.className = "row";
+    fixsettingdiv.appendChild(bsrow);
+
+    var bswheelhold = document.createElement("DIV");
+    bswheelhold.className = "col-lg-6";
+    bsrow.appendChild(bswheelhold);
+
+    var bscoolbar = document.createElement("DIV");
+    bscoolbar.className = "col-lg-6";
+    bsrow.appendChild(bscoolbar);
+
+
     var fixrow1 = document.createElement("DIV");
     fixrow1.className = "rgbw_wheel";
     fixrow1.id = 'wheel'+ctrlidx;
-    fixsettingdiv.appendChild(fixrow1);
+    bswheelhold.appendChild(fixrow1);
+   // fixsettingdiv.appendChild(fixrow1);
 
-    var controls_right = document.createElement("div");
-    controls_right.className = "rgbw_right";
-    fixsettingdiv.appendChild(controls_right);
+    //var controls_right = document.createElement("div");
+    //controls_right.className = "rgbw_right";
+   // fixsettingdiv.appendChild(controls_right);
 
     var $colorpicker1 = $("<div>", {id: "colorWheelDemo", "class": "wheel"});
     $("#wheel"+ctrlidx).append($colorpicker1);
@@ -205,7 +219,8 @@ function constructControlRGBW(fixsettingdiv, ctrlidx)
     // right side,
     var bright_grad = document.createElement("div");
     bright_grad.className = "vert_brightness_grad";
-    controls_right.appendChild(bright_grad);
+    bscoolbar.appendChild(bright_grad);
+    //controls_right.appendChild(bright_grad);
 
     var guageholder = document.createElement("div");
     guageholder.className = "vert_guage_holder";
@@ -246,14 +261,35 @@ function constructControlRGBW(fixsettingdiv, ctrlidx)
 
 function constructControlRGBWWCW(fixsettingdiv, ctrlidx)
 {
+
+    var bsrow = document.createElement("DIV");
+    bsrow.className = "row";
+    fixsettingdiv.appendChild(bsrow);
+
+
+    var bswheelhold = document.createElement("DIV");
+    bswheelhold.className = "col-lg-8";
+    bsrow.appendChild(bswheelhold);
+
+    var bswarmbar = document.createElement("DIV");
+    bswarmbar.className = "col-lg-1";
+    bsrow.appendChild(bswarmbar);
+
+    var bscoolbar = document.createElement("DIV");
+    bscoolbar.className = "col-lg-1";
+    bsrow.appendChild(bscoolbar);
+
+
+
     var fixrow1 = document.createElement("DIV");
     fixrow1.className = "rgbw_wheel";
     fixrow1.id = 'wheel'+ctrlidx;
-    fixsettingdiv.appendChild(fixrow1);
+    bswheelhold.appendChild(fixrow1);
+   // fixsettingdiv.appendChild(fixrow1);
 
-    var controls_right = document.createElement("div");
-    controls_right.className = "rgbw_right";
-    fixsettingdiv.appendChild(controls_right);
+    //var controls_right = document.createElement("div");
+   // controls_right.className = "rgbw_right";
+   // fixsettingdiv.appendChild(controls_right);
 
     var $colorpicker1 = $("<div>", {id: "colorWheelDemo", "class": "wheel"});
     $("#wheel"+ctrlidx).append($colorpicker1);
@@ -299,7 +335,8 @@ function constructControlRGBWWCW(fixsettingdiv, ctrlidx)
     // right side, (warm white.
     var bright_grad = document.createElement("div");
     bright_grad.className = "vert_brightness_grad_warm";
-    controls_right.appendChild(bright_grad);
+    bswarmbar.appendChild(bright_grad);
+    //controls_right.appendChild(bright_grad);
 
     var guageholder = document.createElement("div");
     guageholder.className = "vert_guage_holder";
@@ -316,7 +353,8 @@ function constructControlRGBWWCW(fixsettingdiv, ctrlidx)
     // cold white,
     var cw_div = document.createElement("div");   // gradient div
     cw_div.className = "vert_brightness_grad_cool";
-    controls_right.appendChild(cw_div);
+    bscoolbar.appendChild(cw_div);
+   // controls_right.appendChild(cw_div);
 
     var cw_gh = document.createElement("div");    // guage control holder inside of gradient div(transparent)
     cw_gh.className = "vert_guage_holder";
