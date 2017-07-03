@@ -131,7 +131,7 @@ function startStatusFetchTimer()
 
 
 
-        }, 5000);
+    }, 5000);
 }
 
 function cancelStatusFetchTimer()
@@ -555,7 +555,8 @@ function constructBrightnessBar(currentdiv, forfixture) {
     guageholder.appendChild(bright_guage);
 
     var bright_val = document.createElement("div");
-    bright_val.className = "guage_value";
+    bright_val.className = "guage_label_value";
+
     fixbox.appendChild(bright_val);
 
     var header = document.createElement("h3");
@@ -580,6 +581,41 @@ function constructBrightnessBar(currentdiv, forfixture) {
         bright_guage.value = 50;
         header.innerHTML = 50;
     }
+
+
+    if(forfixture) {
+        // 7/3/ 17
+        $('input[type="range"]').rangeslider({
+            polyfill: false,
+            rangeClass: 'custom_slider_range',
+            fillClass: 'custom_slider_fill',
+            onInit: function () {
+                //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+            },
+            onSlideEnd: function (position, value) {
+                var level = document.getElementById("brightctrl").value;
+
+
+                var bla2 = selectedfixtureobj.assignedname;
+                if (bla2 != undefined) {
+                    if (selectedfixtureobj.type == "dim") {
+                        setDimFixtureToLevel(selectedfixtureobj.assignedname, level);
+                    }
+                    else if (selectedfixtureobj.type == "cct") {
+                        var ctemp = document.getElementById("colortempctrl").value;
+                        var min = Number(selectedfixtureobj.min); //selected_fixture.min);
+                        var max = Number(selectedfixtureobj.max); //.max);
+                        var ctempcalc = (min + (max - min) * (Number(ctemp) / 100));
+                        setCCTFixtureToLevel(selectedfixtureobj.assignedname, level, ctempcalc);
+                    }
+                }
+
+
+            }
+        });
+    }
+
+
 }
 
 function constructColorTempBar(currentdiv, forfixture) {
@@ -611,7 +647,7 @@ function constructColorTempBar(currentdiv, forfixture) {
     guageholder.appendChild(ctemp_guage);
 
     var bright_val = document.createElement("div");
-    bright_val.className = "guage_value";
+    bright_val.className = "guage_label_value";
     fixbox.appendChild(bright_val);
 
     var header = document.createElement("h3");
@@ -644,7 +680,55 @@ function constructColorTempBar(currentdiv, forfixture) {
         header.innerHTML = 3500;
     }
 
+
+
+    if(forfixture) {
+        $('input[type="range"]').rangeslider({
+            polyfill: false,
+            rangeClass: 'custom_slider_range',
+            fillClass: 'custom_slider_fill',
+            onInit: function () {
+                //  this.output = $( '<div class="range-output" />' ).insertAfter( this.$range ).html( this.$element.val() );
+            },
+            onSlideEnd: function (position, value) {
+                var ctemp = document.getElementById("colortempctrl").value;
+                var bright = document.getElementById("brightctrl").value;
+                var bla2 = selectedfixtureobj.assignedname;
+                // convert pct to ctemp.
+                var min = Number(selectedfixtureobj.min); //selected_fixture.min);
+                var max = Number(selectedfixtureobj.max); //.max);
+                var ctempcalc = (min + (max - min) * (Number(ctemp) / 100));
+                if (bla2 != undefined) {
+                    setCCTFixtureToLevel(selectedfixtureobj.assignedname, bright, ctempcalc);
+                }
+            }
+        });
+    }
 }
+
+
+function setDimFixtureToLevel(name, level)
+{
+    var element = {};
+    element.name = name;
+    element.requesttype = "override";
+    element.level = level;
+    setFixtureLevel(element);
+    document.getElementById("brightvalue").innerHTML = level;
+}
+
+function setCCTFixtureToLevel(name, brightness, colortemp)
+{
+    var element = {};
+    element.name = name;
+    element.requesttype = "override";
+    element.colortemp = colortemp;
+    element.brightness = brightness;
+    setFixtureLevel(element);
+    document.getElementById("brightvalue").innerHTML = brightness;
+    document.getElementById("colortempvalue").innerHTML = colortemp;
+}
+
 
 
 function constructLevelInputStatusBox() {
