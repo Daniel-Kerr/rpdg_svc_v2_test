@@ -156,11 +156,11 @@ function constructControlRGBW(fixsettingdiv, ctrlidx)
     fixsettingdiv.appendChild(bsrow);
 
     var bswheelhold = document.createElement("DIV");
-    bswheelhold.className = "col-lg-6";
+    bswheelhold.className = "col-lg-6 col-md-6 col-sm-6";
     bsrow.appendChild(bswheelhold);
 
     var bscoolbar = document.createElement("DIV");
-    bscoolbar.className = "col-lg-6";
+    bscoolbar.className = "col-lg-1 col-md-2 col-sm-2";
     bsrow.appendChild(bscoolbar);
 
 
@@ -268,15 +268,15 @@ function constructControlRGBWWCW(fixsettingdiv, ctrlidx)
 
 
     var bswheelhold = document.createElement("DIV");
-    bswheelhold.className = "col-lg-8";
+    bswheelhold.className = "col-lg-8 col-md-8 col-sm-4";
     bsrow.appendChild(bswheelhold);
 
     var bswarmbar = document.createElement("DIV");
-    bswarmbar.className = "col-lg-1";
+    bswarmbar.className = "col-lg-1 col-md-1 col-sm-1";
     bsrow.appendChild(bswarmbar);
 
     var bscoolbar = document.createElement("DIV");
-    bscoolbar.className = "col-lg-1";
+    bscoolbar.className = "col-lg-1 col-md-1 col-sm-1";
     bsrow.appendChild(bscoolbar);
 
 

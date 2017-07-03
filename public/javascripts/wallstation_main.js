@@ -402,12 +402,21 @@ function constructFixtureButtons()
             }
             if(selectedfixtureobj.type == "rgbw")
             {
-                constructControlRGBW(ctrlsholder,idx);
+                var controls_right = document.createElement("div");
+                controls_right.className = "col-lg-8";
+                ctrlsholder.appendChild(controls_right);
+
+
+                constructControlRGBW(controls_right,idx);
             }
 
             if(selectedfixtureobj.type == "rgbwwcw")
             {
-                constructControlRGBWWCW(ctrlsholder,idx);
+                var controls_right = document.createElement("div");
+                controls_right.className = "col-lg-8";
+                ctrlsholder.appendChild(controls_right);
+
+                constructControlRGBWWCW(controls_right,idx);
             }
         }
 
