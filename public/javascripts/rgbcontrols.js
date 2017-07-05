@@ -272,12 +272,12 @@ function constructControlRGBWWCW(fixsettingdiv, ctrlidx)
     bsrow.appendChild(bswheelhold);
 
     var bswarmbar = document.createElement("DIV");
-    bswarmbar.className = "col-lg-1 col-md-1 col-sm-1";
+    bswarmbar.className = "col-lg-3 col-md-3 col-sm-3";
     bsrow.appendChild(bswarmbar);
 
-    var bscoolbar = document.createElement("DIV");
-    bscoolbar.className = "col-lg-1 col-md-1 col-sm-1";
-    bsrow.appendChild(bscoolbar);
+   // var bscoolbar = document.createElement("DIV");
+   // bscoolbar.className = "col-lg-1 col-md-1 col-sm-1";
+  //  bsrow.appendChild(bscoolbar);
 
 
 
@@ -353,7 +353,7 @@ function constructControlRGBWWCW(fixsettingdiv, ctrlidx)
     // cold white,
     var cw_div = document.createElement("div");   // gradient div
     cw_div.className = "vert_brightness_grad_cool";
-    bscoolbar.appendChild(cw_div);
+    bswarmbar.appendChild(cw_div);
    // controls_right.appendChild(cw_div);
 
     var cw_gh = document.createElement("div");    // guage control holder inside of gradient div(transparent)
