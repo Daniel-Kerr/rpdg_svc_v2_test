@@ -76,6 +76,14 @@ $(document).ready(function() {
 
         if ( $(this).hasClass('bg-primary') ) {
             $(this).removeClass('bg-primary');
+
+            // 7/5/17 set sel item to null,
+            selectedfixtureindex = -1;
+            selected_edit_fixture = undefined;
+            document.getElementById("fixturetype").value = "on_off";
+            document.getElementById("fixturename").value = "";
+            document.getElementById("starting_output").value = "1";
+            document.getElementById("interface").value = "rpdg-pwm";
         }
         else {
 
