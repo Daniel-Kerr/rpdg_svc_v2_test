@@ -3,6 +3,12 @@
 	"name": "TEST_RACK_NET_SCENES1",
 	"description": "",
 	"order": [
+		"efb15cf5-9c47-5bc8-ef8d-6bfe4298f97b",
+		"49d9df69-78ce-2ef1-99fc-93e9248ba6a0",
+		"2dcca32e-ef3e-4dfa-7832-a1e160b14089",
+		"7c29076d-9e77-9144-f67c-aa5458d280dd",
+		"bfa3811a-ece4-e9b9-c760-90f760bf8081",
+		"87faa34a-bf79-235b-10ef-0de0ea2d1868",
 		"94e0a17e-095a-402f-63a8-fb1df9c0e88f",
 		"b4dc1358-ffaa-f2a8-9844-3723437c31c3",
 		"57622773-12c9-8af0-7623-41015b08d20f",
@@ -16,6 +22,64 @@
 	"public": false,
 	"requests": [
 		{
+			"id": "2dcca32e-ef3e-4dfa-7832-a1e160b14089",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://testrack-03:3000/config/setconfig",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1499360058762,
+			"name": "setConfig-testrack-03",
+			"description": "",
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": [],
+			"rawModeData": "{\n  \"type\": \"Configuration\",\n  \"fixtures\": [\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"dim_1_A\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"1\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 33,\n      \"lastuserequestedlevel\": \"33\",\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-07-06T16:39:33.049Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    }\n  ],\n  \"levelinputs\": [],\n  \"contactinputs\": [],\n  \"groups\": [],\n  \"scenes\": [\n    {\n      \"name\": \"sceneA\",\n      \"isglobal\": true,\n      \"fixtures\": [\n        {\n          \"name\": \"dim_1_A\",\n          \"type\": \"dim\",\n          \"level\": 33\n        }\n      ]\n    }\n  ],\n  \"enocean\": [],\n  \"scenelists\": [],\n  \"occupiedstate\": 0,\n  \"daylightpollsec\": 600,\n  \"sitezip\": 97219,\n  \"sitelatt\": 45.4736058,\n  \"sitelong\": -122.7349017,\n  \"generalsettings\": {\n    \"nodename\": \"testrack_03\",\n    \"boardvoltage\": 0,\n    \"hotspotenable\": false,\n    \"nodeip\": \"\",\n    \"routerip\": \"\"\n  }\n}"
+		},
+		{
+			"id": "49d9df69-78ce-2ef1-99fc-93e9248ba6a0",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://testrack-02:3000/config/setconfig",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1499359501295,
+			"name": "setConfig-testrack-02",
+			"description": "",
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": [],
+			"rawModeData": "{\n  \"type\": \"Configuration\",\n  \"fixtures\": [\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"dim_1_A\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"1\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 33,\n      \"lastuserequestedlevel\": \"33\",\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-07-06T16:39:33.049Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    }\n  ],\n  \"levelinputs\": [],\n  \"contactinputs\": [],\n  \"groups\": [],\n  \"scenes\": [\n    {\n      \"name\": \"sceneA\",\n      \"isglobal\": true,\n      \"fixtures\": [\n        {\n          \"name\": \"dim_1_A\",\n          \"type\": \"dim\",\n          \"level\": 22\n        }\n      ]\n    }\n  ],\n  \"enocean\": [],\n  \"scenelists\": [],\n  \"occupiedstate\": 0,\n  \"daylightpollsec\": 600,\n  \"sitezip\": 97219,\n  \"sitelatt\": 45.4736058,\n  \"sitelong\": -122.7349017,\n  \"generalsettings\": {\n    \"nodename\": \"testrack_02\",\n    \"boardvoltage\": 0,\n    \"hotspotenable\": false,\n    \"nodeip\": \"\",\n    \"routerip\": \"\"\n  }\n}"
+		},
+		{
 			"id": "57622773-12c9-8af0-7623-41015b08d20f",
 			"headers": "",
 			"headerData": [],
@@ -27,13 +91,14 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 55;",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 33;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499294527233,
-			"name": "get-testrack-03-status-55",
+			"time": 1499359613430,
+			"name": "get-testrack-03-status-33",
 			"description": "",
-			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245"
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": []
 		},
 		{
 			"id": "7174776a-d238-ae33-0bc4-14678e63a7ca",
@@ -47,16 +112,17 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 94;",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 44;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499294680989,
-			"name": "get-testrack-04-status-55",
+			"time": 1499359620199,
+			"name": "get-testrack-04-status-44",
 			"description": "",
-			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245"
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": []
 		},
 		{
-			"id": "94e0a17e-095a-402f-63a8-fb1df9c0e88f",
+			"id": "7c29076d-9e77-9144-f67c-aa5458d280dd",
 			"headers": "Content-Type: application/json\n",
 			"headerData": [
 				{
@@ -66,7 +132,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://testrack-01:3000/override_scene/invokescene",
+			"url": "http://testrack-04:3000/config/setconfig",
 			"queryParams": [],
 			"preRequestScript": null,
 			"pathVariables": {},
@@ -77,11 +143,71 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499294321424,
-			"name": "set-testrack-01-sceneA",
+			"time": 1499359519839,
+			"name": "setConfig-testrack-04",
 			"description": "",
 			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
-			"rawModeData": "{\n  \"name\": \"sceneA\"\n}"
+			"responses": [],
+			"rawModeData": "{\n  \"type\": \"Configuration\",\n  \"fixtures\": [\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"dim_1_A\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"1\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 33,\n      \"lastuserequestedlevel\": \"33\",\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-07-06T16:39:33.049Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    }\n  ],\n  \"levelinputs\": [],\n  \"contactinputs\": [],\n  \"groups\": [],\n  \"scenes\": [\n    {\n      \"name\": \"sceneA\",\n      \"isglobal\": true,\n      \"fixtures\": [\n        {\n          \"name\": \"dim_1_A\",\n          \"type\": \"dim\",\n          \"level\": 44\n        }\n      ]\n    }\n  ],\n  \"enocean\": [],\n  \"scenelists\": [],\n  \"occupiedstate\": 0,\n  \"daylightpollsec\": 600,\n  \"sitezip\": 97219,\n  \"sitelatt\": 45.4736058,\n  \"sitelong\": -122.7349017,\n  \"generalsettings\": {\n    \"nodename\": \"testrack_04\",\n    \"boardvoltage\": 0,\n    \"hotspotenable\": false,\n    \"nodeip\": \"\",\n    \"routerip\": \"\"\n  }\n}"
+		},
+		{
+			"id": "87faa34a-bf79-235b-10ef-0de0ea2d1868",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://testrack-06:3000/config/setconfig",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1499359531239,
+			"name": "setConfig-testrack-06",
+			"description": "",
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": [],
+			"rawModeData": "{\n  \"type\": \"Configuration\",\n  \"fixtures\": [\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"dim_1_A\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"1\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 33,\n      \"lastuserequestedlevel\": \"33\",\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-07-06T16:39:33.049Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    }\n  ],\n  \"levelinputs\": [],\n  \"contactinputs\": [],\n  \"groups\": [],\n  \"scenes\": [\n    {\n      \"name\": \"sceneA\",\n      \"isglobal\": true,\n      \"fixtures\": [\n        {\n          \"name\": \"dim_1_A\",\n          \"type\": \"dim\",\n          \"level\": 66\n        }\n      ]\n    }\n  ],\n  \"enocean\": [],\n  \"scenelists\": [],\n  \"occupiedstate\": 0,\n  \"daylightpollsec\": 600,\n  \"sitezip\": 97219,\n  \"sitelatt\": 45.4736058,\n  \"sitelong\": -122.7349017,\n  \"generalsettings\": {\n    \"nodename\": \"testrack_06\",\n    \"boardvoltage\": 0,\n    \"hotspotenable\": false,\n    \"nodeip\": \"\",\n    \"routerip\": \"\"\n  }\n}"
+		},
+		{
+			"folder": null,
+			"id": "94e0a17e-095a-402f-63a8-fb1df9c0e88f",
+			"name": "set-testrack-01-sceneA",
+			"dataMode": "raw",
+			"data": [],
+			"rawModeData": "{\n  \"name\": \"sceneA\"\n}",
+			"descriptionFormat": null,
+			"description": "",
+			"headers": "Content-Type: application/json\n",
+			"method": "POST",
+			"pathVariables": {},
+			"url": "http://testrack-01:3000/override_scene/invokescene",
+			"preRequestScript": null,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": "{}",
+			"queryParams": null,
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"pathVariableData": null,
+			"responses": [],
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245"
 		},
 		{
 			"id": "b0d09e8d-6761-4362-cb88-d75e6e436e4e",
@@ -95,13 +221,14 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 9;",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 55;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499294693388,
+			"time": 1499359666622,
 			"name": "get-testrack-05-status-55",
 			"description": "",
-			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245"
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": []
 		},
 		{
 			"id": "b4dc1358-ffaa-f2a8-9844-3723437c31c3",
@@ -115,13 +242,43 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 20;",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 22;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499294444048,
-			"name": "get-testrack-02-status-20",
+			"time": 1499359601527,
+			"name": "get-testrack-02-status-22",
 			"description": "",
-			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245"
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": []
+		},
+		{
+			"id": "bfa3811a-ece4-e9b9-c760-90f760bf8081",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://testrack-05:3000/config/setconfig",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1499359525775,
+			"name": "setConfig-testrack-05",
+			"description": "",
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": [],
+			"rawModeData": "{\n  \"type\": \"Configuration\",\n  \"fixtures\": [\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"dim_1_A\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"1\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 33,\n      \"lastuserequestedlevel\": \"33\",\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-07-06T16:39:33.049Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    }\n  ],\n  \"levelinputs\": [],\n  \"contactinputs\": [],\n  \"groups\": [],\n  \"scenes\": [\n    {\n      \"name\": \"sceneA\",\n      \"isglobal\": true,\n      \"fixtures\": [\n        {\n          \"name\": \"dim_1_A\",\n          \"type\": \"dim\",\n          \"level\": 55\n        }\n      ]\n    }\n  ],\n  \"enocean\": [],\n  \"scenelists\": [],\n  \"occupiedstate\": 0,\n  \"daylightpollsec\": 600,\n  \"sitezip\": 97219,\n  \"sitelatt\": 45.4736058,\n  \"sitelong\": -122.7349017,\n  \"generalsettings\": {\n    \"nodename\": \"testrack_05\",\n    \"boardvoltage\": 0,\n    \"hotspotenable\": false,\n    \"nodeip\": \"\",\n    \"routerip\": \"\"\n  }\n}"
 		},
 		{
 			"id": "c8002dd3-02b2-2f7d-9202-b7ac3ac4f2c9",
@@ -135,13 +292,43 @@
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 42;",
+			"tests": "var jsonData = JSON.parse(responseBody);\ntests[\"Value of output 1 is correct\"] = jsonData.fixtures[0].level === 66;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1499294741860,
-			"name": "get-testrack-06-status-55",
+			"time": 1499359679846,
+			"name": "get-testrack-06-status-66",
 			"description": "",
-			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245"
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": []
+		},
+		{
+			"id": "efb15cf5-9c47-5bc8-ef8d-6bfe4298f97b",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://testrack-01:3000/config/setconfig",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1499359487591,
+			"name": "setConfig-testrack-01",
+			"description": "",
+			"collectionId": "6446b43f-7544-2af1-8a4f-3251f9c9f245",
+			"responses": [],
+			"rawModeData": "{\n  \"type\": \"Configuration\",\n  \"fixtures\": [\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"dim_1_A\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"1\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 33,\n      \"lastuserequestedlevel\": \"11\",\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-07-06T16:39:33.049Z\",\n      \"powerwatts\": \"NaN\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    }\n  ],\n  \"levelinputs\": [],\n  \"contactinputs\": [],\n  \"groups\": [],\n  \"scenes\": [\n    {\n      \"name\": \"sceneA\",\n      \"isglobal\": true,\n      \"fixtures\": [\n        {\n          \"name\": \"dim_1_A\",\n          \"type\": \"dim\",\n          \"level\": 11\n        }\n      ]\n    }\n  ],\n  \"enocean\": [],\n  \"scenelists\": [],\n  \"occupiedstate\": 0,\n  \"daylightpollsec\": 600,\n  \"sitezip\": 97219,\n  \"sitelatt\": 45.4736058,\n  \"sitelong\": -122.7349017,\n  \"generalsettings\": {\n    \"nodename\": \"testrack_01\",\n    \"boardvoltage\": 0,\n    \"hotspotenable\": false,\n    \"nodeip\": \"\",\n    \"routerip\": \"\"\n  }\n}"
 		}
 	]
 }
