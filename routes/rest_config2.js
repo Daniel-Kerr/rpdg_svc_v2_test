@@ -777,7 +777,7 @@ router.post('/setgeneralsettings', function(req, res) {
 
     global.currentconfig.generalsettings.nodename = req.body.nodename;
     global.currentconfig.generalsettings.boardvoltage = Number(req.body.boardvoltage);
-    global.currentconfig.generalsettings.hotspotenable = req.body.hotspotenable;
+
 
     if(global.currentconfig.generalsettings.nodeip != req.body.nodeip ||
         global.currentconfig.generalsettings.routerip != req.body.routerip) {
@@ -787,10 +787,12 @@ router.post('/setgeneralsettings', function(req, res) {
     global.currentconfig.generalsettings.nodeip = req.body.nodeip;
     global.currentconfig.generalsettings.routerip = req.body.routerip;
 
-    if(global.currentconfig.generalsettings.hotspotenable != req.body.hotspotenable)
+    if(global.currentconfig.generalsettings.hotspotenable != req.body.hotspotenable) {
+        global.currentconfig.generalsettings.hotspotenable = req.body.hotspotenable;
         service.enableHotspot(global.currentconfig.generalsettings.hotspotenable);
+    }
 
-    var cfg = JSON.stringify(global.currentconfig,null,2);
+    var cfg = JSON.stringify(global.currentconfig, null, 2);
 
 
     if(ipaddrchanged)

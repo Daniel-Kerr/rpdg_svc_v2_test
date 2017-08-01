@@ -1599,7 +1599,7 @@ var service = module.exports = {
     enableHotspot: function (enable) {
         var command = (enable) ? "start" : "stop";
         try {
-            global.applogger.info(TAG, " **** Attempting to enable wlan0 ****", "");
+            global.applogger.info(TAG, " **** Attempting to change state of wlan0 to ****", command);
 
             if (process.arch == 'arm') {
                 var childProcess = require('child_process'),
