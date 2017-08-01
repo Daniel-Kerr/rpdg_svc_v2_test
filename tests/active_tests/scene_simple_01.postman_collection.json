@@ -40,7 +40,7 @@
 			"response": []
 		},
 		{
-			"name": "save_scene_ALL_ON",
+			"name": "save_scene_Everything_ON",
 			"event": [
 				{
 					"listen": "test",
@@ -49,7 +49,7 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of Scene 1 is correct\"] = jsonData.scenes[0].name == \"ALL_ON_01\";",
+							"tests[\"Value of Scene 1 is correct\"] = jsonData.scenes[0].name == \"Everything_ON\";",
 							"tests[\"Value of fixture 1 is correct\"] = jsonData.scenes[0].fixtures[0].name == \"TEST_FIX_Dim_1\";",
 							"tests[\"Value of fixture 2 is correct\"] = jsonData.scenes[0].fixtures[1].name == \"TEST_FIX_Dim_2\";",
 							"tests[\"Value of fixture 3 is correct\"] = jsonData.scenes[0].fixtures[2].name == \"TEST_FIX_Dim_3\";",
@@ -80,14 +80,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"scene\",\n   \"object\": {\n   \t   \"name\":\"ALL_ON_01\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": [\n {\n              \"name\": \"TEST_FIX_Dim_1\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_2\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_3\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_4\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_5\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_6\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_7\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_8\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_1\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_2\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_3\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_4\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_1\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_2\",\n              \"type\": \"dim\",\n              \"level\": 100\n            }\n        ]\n   },\n   \"index\": -1\n}"
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"scene\",\n   \"object\": {\n   \t   \"name\":\"Everything_ON\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": [\n {\n              \"name\": \"TEST_FIX_Dim_1\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_2\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_3\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_4\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_5\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_6\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_7\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_8\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_1\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_2\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_3\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_4\",\n              \"type\": \"on_off\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_1\",\n              \"type\": \"dim\",\n              \"level\": 100\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_2\",\n              \"type\": \"dim\",\n              \"level\": 100\n            }\n        ]\n   },\n   \"index\": -1\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "save_scene_ALL_OFF",
+			"name": "save_scene_Everything_OFF",
 			"event": [
 				{
 					"listen": "test",
@@ -96,7 +96,7 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of Scene 1 is correct\"] = jsonData.scenes[1].name == \"ALL_OFF_01\";",
+							"tests[\"Value of Scene 2 is correct\"] = jsonData.scenes[1].name == \"Everything_OFF\";",
 							"tests[\"Value of fixture 1 is correct\"] = jsonData.scenes[0].fixtures[0].name == \"TEST_FIX_Dim_1\";",
 							"tests[\"Value of fixture 2 is correct\"] = jsonData.scenes[0].fixtures[1].name == \"TEST_FIX_Dim_2\";",
 							"tests[\"Value of fixture 3 is correct\"] = jsonData.scenes[0].fixtures[2].name == \"TEST_FIX_Dim_3\";",
@@ -127,14 +127,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"scene\",\n   \"object\": {\n   \t   \"name\":\"ALL_OFF_01\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": [\n\t\t\t{\n              \"name\": \"TEST_FIX_Dim_1\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_2\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_3\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_4\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_5\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_6\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_7\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_8\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_1\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_2\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_3\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_4\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_1\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_2\",\n              \"type\": \"dim\",\n              \"level\": 0\n            }\n          ]\n  },\n  \"index\": -1\n}\n  "
+					"raw": "{\n   \"action\":\"create\",\n   \"objecttype\":\"scene\",\n   \"object\": {\n   \t   \"name\":\"Everything_OFF\",\n   \t   \"isglobal\":false,\n   \t    \"fixtures\": [\n\t\t\t{\n              \"name\": \"TEST_FIX_Dim_1\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_2\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_3\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_4\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_5\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_6\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_7\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Dim_8\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_1\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_2\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_3\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_Plc_4\",\n              \"type\": \"on_off\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_1\",\n              \"type\": \"dim\",\n              \"level\": 0\n            },\n            {\n              \"name\": \"TEST_FIX_ENO_2\",\n              \"type\": \"dim\",\n              \"level\": 0\n            }\n          ]\n  },\n  \"index\": -1\n}\n  "
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "invoke_scene_ALL_ON",
+			"name": "invoke_scene_Everything_ON",
 			"event": [
 				{
 					"listen": "test",
@@ -173,14 +173,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"ALL_ON_01\"\n}"
+					"raw": "{\n\t\"name\": \"Everything_ON\"\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "invoke_scene_ALL_OFF",
+			"name": "invoke_scene_Everything_OFF",
 			"event": [
 				{
 					"listen": "test",
@@ -217,14 +217,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"ALL_OFF_01\"\n}"
+					"raw": "{\n\t\"name\": \"Everything_OFF\"\n}"
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "delete_scene ALL_ON",
+			"name": "delete_scene Everything_ON",
 			"event": [
 				{
 					"listen": "test",
@@ -233,7 +233,7 @@
 						"exec": [
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
 							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Value of Scene 1 is correct\"] = jsonData.scenes[0].name == \"ALL_OFF_01\";"
+							"tests[\"Value of Scene 1 is correct\"] = jsonData.scenes[0].name == \"Everything_OFF\";"
 						]
 					}
 				}
