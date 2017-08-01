@@ -918,7 +918,7 @@ var service = module.exports = {
 
 
                     //4/17/17/
-                    module.exports.invokeScene("ALL_ON", "override",false);
+                    module.exports.invokeScene("ALL_100", "override",false);
                 }
             }
 
@@ -1293,7 +1293,22 @@ var service = module.exports = {
     },
     invokeScene: function (name, requesttype, broadcast) {
 
-        if (name == "ALL_ON") {
+        if(name.includes("ALL_"))
+        {
+            var sublevel = name.substring(4);
+            var level = 0;
+            if(sublevel == "ON")
+                level = 100;
+            else if(sublevel == "OFF")
+                level = 0;
+            else {
+                 level = Number(name.substring(4));
+            }
+            invokeAllToLevel(level, requesttype);
+            return;
+        }
+
+        /*if (name == "ALL_ON") {
             invokeAllToLevel(100, requesttype);
             return;
         }
@@ -1309,6 +1324,7 @@ var service = module.exports = {
             invokeAllToLevel(10, requesttype);
             return;
         }
+        */
 
 
         var sceneobj = global.currentconfig.getSceneByName(name);

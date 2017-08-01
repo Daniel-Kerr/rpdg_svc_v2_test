@@ -119,19 +119,27 @@ function filterAvalibleScenes()
 
     // 4/3/17,  add default "built in scenes",
     // var sceneobj = cachedconfig.scenes[i];
-    var fixdiv = document.createElement("div");
-  //  fixdiv.className = "availiblescene";
-    fixdiv.className = "btn btn-md btn-primary availiblescene";
-    fixturebucketdiv.appendChild(fixdiv);
-    var debug_label = document.createElement("label");
-    debug_label.innerHTML  = "ALL_ON";
-    fixdiv.appendChild(debug_label);
+
 
     var fixdiv = document.createElement("div");
     fixdiv.className = "btn btn-md btn-primary availiblescene";
     fixturebucketdiv.appendChild(fixdiv);
     var debug_label = document.createElement("label");
     debug_label.innerHTML  = "ALL_OFF";
+    fixdiv.appendChild(debug_label);
+
+    var fixdiv = document.createElement("div");
+    fixdiv.className = "btn btn-md btn-primary availiblescene";
+    fixturebucketdiv.appendChild(fixdiv);
+    var debug_label = document.createElement("label");
+    debug_label.innerHTML  = "ALL_15";
+    fixdiv.appendChild(debug_label);
+
+    var fixdiv = document.createElement("div");
+    fixdiv.className = "btn btn-md btn-primary availiblescene";
+    fixturebucketdiv.appendChild(fixdiv);
+    var debug_label = document.createElement("label");
+    debug_label.innerHTML  = "ALL_30";
     fixdiv.appendChild(debug_label);
 
     var fixdiv = document.createElement("div");
@@ -145,8 +153,16 @@ function filterAvalibleScenes()
     fixdiv.className = "btn btn-md btn-primary availiblescene";
     fixturebucketdiv.appendChild(fixdiv);
     var debug_label = document.createElement("label");
-    debug_label.innerHTML  = "ALL_10";
+    debug_label.innerHTML  = "ALL_70";
     fixdiv.appendChild(debug_label);
+
+    var fixdiv = document.createElement("div");
+    fixdiv.className = "btn btn-md btn-primary availiblescene";
+    fixturebucketdiv.appendChild(fixdiv);
+    var debug_label = document.createElement("label");
+    debug_label.innerHTML  = "ALL_ON";
+    fixdiv.appendChild(debug_label);
+
 
     for(var i = 0; i < cachedconfig.scenes.length; i++) {
 

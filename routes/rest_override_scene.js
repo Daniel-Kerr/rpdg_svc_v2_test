@@ -60,7 +60,7 @@ router.post('/invokescene', function(req, res) {
             service.invokeScene(name, requesttype, true);
             code = 200;
         }
-        else if(name == "ALL_ON" || name == "ALL_50" || name == "ALL_10" || name == "ALL_OFF")
+        else if(name.includes("ALL_")) // == "ALL_0" || name == "ALL_50" || name == "ALL_10" || name == "ALL_OFF")
         {
             service.invokeScene(name, requesttype, true);
             code = 200;

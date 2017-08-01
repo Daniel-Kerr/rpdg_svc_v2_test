@@ -133,9 +133,9 @@ function openNewSceneEditDlg(index)
                 scene.name = scenename;
                 scene.isglobal = global;
 
-                if(scenename == "ALL_ON" || scenename == "ALL_OFF")
+                if(scenename.includes("ALL_")) // == "ALL_ON" || scenename == "ALL_OFF")
                 {
-                    $.Notification.notify('error','top left', 'Error',  "Reserved scene name");
+                    $.Notification.notify('error','top left', 'Error',  "Reserved scene name, cannot use:  ALL_  in name ");
                     return ;
                 }
 
@@ -696,6 +696,7 @@ function getFixtureByName(name)
 }
 
 
+/*
 
 function invokeAllOn()
 {
@@ -748,7 +749,7 @@ function invokeAll50()
     });
 }
 
-
+*/
 
 function invokeAllOff() {
     var element = {};
@@ -762,5 +763,23 @@ function invokeAllOff() {
         else if(retval.error != undefined)
             $.Notification.notify('error','top left', 'Error Inovking',  retval.error);
             //noty({text: 'Error invoking ' + retval.error, type: 'error'});
+    });
+}
+
+
+
+function invokeAllToLevel(level)
+{
+    var element = {};
+    element.name = "ALL_"+ level;
+    element.requesttype = "override";
+    invokescene(element,function (retval) {
+        if(retval != undefined)  // as of 1/24/17, added version.
+        {
+            cachedconfig = retval;
+        }
+        else if(retval.error != undefined)
+            $.Notification.notify('error','top left', 'Error Inovking',  retval.error);
+        //noty({text: 'Error invoking ' + retval.error, type: 'error'});
     });
 }

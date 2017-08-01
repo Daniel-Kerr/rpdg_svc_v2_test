@@ -268,6 +268,18 @@
 
         }
 
+        .blocks .btn-primary
+        {
+
+            margin: 0 5px;
+
+        }
+
+        .top-buffer
+        {
+            margin-top:20px;
+        }
+
     </style>
 </head>
 
@@ -386,10 +398,18 @@
                     </div>
                     <div id="portlet_ql" class="panel-collapse collapse in">
                         <div class="portlet-body">
-                            <input type="button" id = "btalloff" class="btn btn-large btn-primary" onclick=invokeAllOff() value="Invoke All OFF"/>
-                            <input type="button" id = "btall10" class="btn btn-large btn-primary" onclick=invokeAll10() value="Invoke All 10%"/>
-                            <input type="button" id = "btall50" class="btn btn-large btn-primary" onclick=invokeAll50() value="Invoke All 50%"/>
-                            <input type="button" id = "btallon" class="btn btn-large btn-primary" onclick=invokeAllOn() value="Invoke All 100%"/>
+
+                            <div class="btn-group blocks">
+
+                                    <input type="button" id = "btalloff" class="btn btn-large btn-primary" onclick=invokeAllToLevel("OFF") value="Invoke All OFF"/>
+                                    <input type="button" id = "btall15" class="btn btn-large btn-primary" onclick=invokeAllToLevel("15") value="Invoke All 15%"/>
+                                    <input type="button" id = "btall30" class="btn btn-large btn-primary" onclick=invokeAllToLevel("30") value="Invoke All 30%"/>
+                            </div>
+                            <div class="btn-group blocks top-buffer">
+                                    <input type="button" id = "btall50" class="btn btn-large btn-primary" onclick=invokeAllToLevel("50") value="Invoke All 50%"/>
+                                    <input type="button" id = "btall70" class="btn btn-large btn-primary" onclick=invokeAllToLevel("70") value="Invoke All 70%"/>
+                                    <input type="button" id = "btall100" class="btn btn-large btn-primary" onclick=invokeAllToLevel("ON") value="Invoke All ON"/>
+                            </div>
                         </div>
                     </div>
                 </div>
