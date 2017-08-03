@@ -61,7 +61,7 @@ var rpdg_service_moment = undefined; // used as time reference for vairous funct
 var udp_handler = undefined;
 var sw_version = "???";
 
-var delayedHW_InitCount = 3;
+var delayedHW_InitCount = 5;
 
 var reInitSchedMgrCount = 0; // counter used to periodically reinit the sched mgr.  cache. list
 
@@ -901,24 +901,22 @@ var service = module.exports = {
         var BasePollingPeriod = 1000;        // Time interval in mSec that we do the most frequent checks.
         periodictimer = setInterval(function () {
 
-
             // rpdg.testToggleGPIO();  // for test only
 
             if (delayedHW_InitCount > 0) {
                 delayedHW_InitCount--;
-                if (delayedHW_InitCount <= 0) {
-                    global.applogger.info(TAG, "************** executing delayed hw init **************", "");
-
+                if (delayedHW_InitCount == 2) {
+                    global.applogger.info(TAG, "************** executing delayed hw init (stage 1)**************", "");
                     rpdg.init(incommingHWChangeHandler);
-
-
-                    module.exports.updateRPDGInputDrive();
-                    //   rpdg.readWetDryContacts();
-                    module.exports.updatePWMPolarity();
-
-
-                    //4/17/17/
-                    module.exports.invokeScene("ALL_100", "override",false);
+                   // module.exports.updateRPDGInputDrive();
+                   // module.exports.updatePWMPolarity();
+                   // module.exports.invokeScene("ALL_100", "override",false);
+                }
+                else if (delayedHW_InitCount <= 0) {
+                        global.applogger.info(TAG, "************** executing delayed hw init (stage 2) **************", "");
+                        module.exports.updateRPDGInputDrive();
+                        module.exports.updatePWMPolarity();
+                        module.exports.invokeScene("ALL_100", "override",false);
                 }
             }
 
