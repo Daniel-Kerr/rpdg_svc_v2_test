@@ -7,28 +7,20 @@ var TAG = pad(path.basename(__filename),15);
 
 var platform = (process.arch == 'arm')?"RaspberryPI":"x86";
 var data_utils = require('../utils/data_utils.js');  //1/15/17,
-var boardmode = (data_utils.commandLineArgPresent("nohw"))?"HW NOT Present":"RPDG board present";
-//var boardvolts = (data_utils.commandLineArgPresent("hv"))?"HIGH":"LOW";
+//var boardmode = (data_utils.commandLineArgPresent("nohw"))?"HW NOT Present":"RPDG board present";
 
-var nohw = data_utils.commandLineArgPresent("nohw");
-//var ishv = data_utils.commandLineArgPresent("hv");
+var attached_to_rpdg_board = true; //  8/3/17,  assume hw is attached, so we can try to read out. data_utils.commandLineArgPresent("nohw");
 var i2cwire = undefined;  // set at startup, for hw interface.
-
 var tempcounter = 0;
 var polling_enabled = true;
 var reset_tinsy_counter = -1;
 var periodictimer = undefined;
-
-
 var teensy_reset_line = undefined;  // obj that will toggle io to reset tennsy.
-
 var i2c_error_count = 0;  // if > 3  call to reset teensy.
 
 
-
-
-
-if(platform == "RaspberryPI" && !nohw) {
+ // 8/3/17 moved to init func.
+if(platform == "RaspberryPI") { //} && !nohw) {
     var i2c = require('i2c');
 
     try {
@@ -41,9 +33,10 @@ if(platform == "RaspberryPI" && !nohw) {
     }
 
 }
+
 // for debug info.
 //global.applogger.info(TAG,"Board TYPE: " + boardvolts + " Voltage Board", "");
-global.applogger.info(TAG,"Board MODE: " + boardmode, "");
+//global.applogger.info(TAG,"Board MODE: " + boardmode, "");
 global.applogger.info(TAG,"PLATFORM: " + platform, "");
 
 // OutPuts
@@ -61,7 +54,7 @@ var fwversion = "??";
 
 var rxhandler = undefined;
 
-global.applogger.info(TAG,"I2C VALID: " + getI2cWire(), "");
+//global.applogger.info(TAG,"I2C VALID: " + getI2cWire(), "");
 
 var CMD_GET_INFO = 0;
 var CMD_SETPWM = 1;
@@ -77,13 +70,20 @@ var CMD_SET_HV_DIM_MODE = 8;   // 8 bit bit mask, for setting between 0-10 v dim
 
 exports.init = function(callback)
 {
+    if(platform == "RaspberryPI") {
+        global.applogger.info(TAG, "Platform is rpi, setting up i2c lib and gpio lib", "","");
+        getI2cWire();  //force creation
+        global.applogger.info(TAG, "Requesting HW info now", "","");
+        read_HWInfo();  // 8/3/17, this is first i2c tx,  and will set  attached_to_rpdg_board
+    }
+    else
+    {
+        attached_to_rpdg_board = false;
+    }
+
     global.applogger.info(TAG, "init", "");
     rxhandler = callback;
     module.exports.setPollingPeriod(100);
-    read_HWInfo();
-  //  read_HWInfo();
-   // read_HWInfo();
-   // read_HWInfo();
 }
 
 exports.setOutputToLevel = function(outputid, level, apply, options) {
@@ -156,9 +156,7 @@ exports.setZero2TenDrive = function(inputs)
                 wire.writeBytes(CMD_SET_ZERO_2_TEN_DRIVE, config, function (err) {
                     TeensyI2cErrorHandler("Set Config 0 to 10 drive",err);
                 });
-               // wire.writeBytes(CMD_SET_ZERO_2_TEN_DRIVE, config, function (err) {
-              //      TeensyI2cErrorHandler("Set Config 0 to 10 drive",err);
-              //  });
+
             }
             else {
                 global.applogger.info(TAG, "setHW_ConfigureZero2TenDrive", "no i2c hw");
@@ -194,9 +192,7 @@ exports.setPWMOutputPolarity = function(polconfig)
 
 
             });
-           // wire.writeBytes(CMD_SET_PWM_POLARITY, config, function (err) {
-           //     TeensyI2cErrorHandler("Set PWM Polarity",err);
-           // });
+
         }
         else {
             global.applogger.info(TAG, "setPWMOutputPolarity", "no i2c hw");
@@ -223,9 +219,7 @@ exports.setHVDimMode = function(dimmodemask)
                     TeensyI2cErrorHandler("Set HV Dim Mode",err);
 
             });
-           // wire.writeBytes(CMD_SET_HV_DIM_MODE, config, function (err) {
-           //         TeensyI2cErrorHandler("Set HV Dim Mode",err);
-           // });
+
         }
         else {
             global.applogger.info(TAG, "setHVDimMode", "no i2c hw");
@@ -245,7 +239,9 @@ exports.enableHardwarePolling = function(enable)
 
 exports.getBoardType = function()
 {
-    if(getI2cWire() == undefined || boardtype == undefined)
+
+   // if(getI2cWire() == undefined || boardtype == undefined)
+    if(!attached_to_rpdg_board)
         return "N/A";
 
     if(boardtype.toLowerCase().includes("high"))
@@ -259,7 +255,7 @@ exports.getBoardType = function()
 exports.getFWVersionNumber = function()
 {
     try {
-        if(fwversion == "??")
+        if(fwversion == "??" || !attached_to_rpdg_board)
             return "n/a";
 
         return parseFloat(fwversion);
@@ -376,33 +372,49 @@ function read_HWInfo() {
             wire.readBytes(CMD_GET_INFO, 4, function (err, res) {
                 if (res != null) {
                     var length = res[0];
-                    var statebits = res[1];
-                    if(res[1] == 0)
-                        boardtype = "Low Voltage";
+                    global.applogger.info(TAG, "read_HWInfo -- length of return ",  length);
+                   // var statebits = res[1];
+                    if(length >= 3) {
+
+                        if (res[1] == 0)
+                            boardtype = "Low Voltage";
+                        else
+                            boardtype = "High Voltage";
+
+                        // mask in next two bytes
+                        var major = res[2];
+                        var minor = res[3];
+                        fwversion = major + "." + minor;
+                    }
                     else
-                        boardtype = "High Voltage";
+                    {
+                        attached_to_rpdg_board = false;
+                        global.applogger.error(TAG, "read_HWInfo -- no valid data came back(length) ",  " res is null");
+                    }
 
-                    // mask in next two bytes
-                    var major = res[2];
-                    var minor = res[3];
-
-
-                    fwversion = major + "." + minor; //((res[2] << 8) | res[3]);
                     printHWInfo();
                 }
                 else
                 {
-                    global.applogger.error(TAG, "read_HWInfo",  " res is null");
+                    attached_to_rpdg_board = false;
+                    global.applogger.error(TAG, "read_HWInfo -- no data back ",  " res is null");
                 }
 
-                if (err != null)
-                    global.applogger.error(TAG, "read_HWInfo",  err);
+                if (err != null) {
+                    attached_to_rpdg_board = false;
+                    global.applogger.error(TAG, "read_HWInfo - exception", err);
+                }
             });
+        }
+        else
+        {
+            global.applogger.error(TAG, "read_HWInfo -- now i2c wire", err);
         }
 
     } catch(err)
     {
-        global.applogger.error(TAG, "read_HWInfo",  err);
+        attached_to_rpdg_board = false;
+        global.applogger.error(TAG, "read_HWInfo -- exception",  err);
     }
 }
 
@@ -764,7 +776,7 @@ function printPLCOutputLevels()
  * @returns {*}
  */
 function getI2cWire() {
-    if (platform == "RaspberryPI" && !nohw) {
+    if (platform == "RaspberryPI" && attached_to_rpdg_board) {
         var address = 102;
         if(i2cwire == undefined)
             i2cwire = new i2c(address, {device: '/dev/i2c-1'});
