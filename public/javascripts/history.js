@@ -67,15 +67,19 @@ function init()
             }
 
             // totalmomentarycontacts =  cfg.contactinputs.length;
-
+            var temparray = [];
             for (var i = 0; i < fixtures.length; i++) {
-                // FAUX data .
+                temparray.push(fixtures[i].assignedname);
+            }
+            temparray.sort();
+            for (var i = 0; i < temparray.length; i++) {
                 var element = {};
-                element.name = fixtures[i].assignedname;
+                element.name = temparray[i];
                 element.type = "output";
                 getDataForObject(element, processOutputDataFetch);
             }
 
+            
             for (var i = 0; i < levelinputs.length; i++) {
                 // FAUX data .
                 var element = {};
@@ -177,6 +181,10 @@ function processOutputDataFetch(name, resultdata) {
             detailOptions
         );
 
+
+
+
+
         // ***************************************************
       //  var par_out_div = $("#parent_output");  // 6/8/17 set
         var height = totaloutputs * 27;
@@ -199,6 +207,9 @@ function processOutputDataFetch(name, resultdata) {
         choiceContainer.find("input").click(function() {
             var someData = output_plot.getData();
             someData[this.name].lines.show = !someData[this.name].lines.show;
+
+            var show = someData[this.name].lines.show;
+            $.cookie("output."+this.name, show); //
             output_plot.setData(someData);
             output_plot.draw();
 
@@ -229,6 +240,16 @@ function processOutputDataFetch(name, resultdata) {
                 maintainedcontact_plot.draw();
             }
         });
+
+
+        // cookie code to hold check boxes over , under dev. 8 /3
+        var someData = output_plot.getData();
+        for(var i = 0 ; i < someData.length; i++) {
+            var bla = ($.cookie("output."+i) == "false")?false:true;
+            someData[i].lines.show = bla;
+            $("#id"+i).prop('checked', bla);
+        }
+
     }
 }
 
