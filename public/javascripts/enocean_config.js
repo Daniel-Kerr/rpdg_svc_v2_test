@@ -43,19 +43,20 @@ setInterval(function () {
 function init()
 {
     getConfig(processConfig);
-    getInterfaceOutputs(processio);
+   // getInterfaceOutputs(processio);
 }
 
 
 function processConfig(configobj) {
     cachedconfig = configobj;
     updateDeviceMapTable();
+    updateInputDeviceMapTable();
 }
 
 
 function updateDeviceMapTable() {
 
-    var enoceanmap = cachedconfig.enocean;
+    var enoceanmap = cachedconfig.enocean.outputs;
 
     var oTable = document.getElementById("outputdevtable");
     oTable.innerHTML = ""; //blank out table,
@@ -107,7 +108,7 @@ function updateDeviceMapTable() {
             oBody.appendChild(oRow);
 
             var col1part = document.createElement("TD");
-            col1part.innerHTML = enoceanmap[i].enoceanid;
+            col1part.innerHTML = enoceanmap[i].id;
 
            // var col2part = document.createElement("TD");
            // col2part.innerHTML = enoceanmap[i].systemid;
@@ -141,7 +142,7 @@ function updateDeviceMapTable() {
     outputdevtablediv.appendChild(oTable);
 }
 
-
+/*
 function systemidtaken(id)
 {
     for(var i = 0 ; i < cachedconfig.enocean.length; i++)
@@ -152,6 +153,7 @@ function systemidtaken(id)
     }
     return false;
 }
+*/
 
 function adddevice()
 {
@@ -161,13 +163,12 @@ function adddevice()
     if(j != undefined && j.name != undefined && j.name.length > 0)
     {
         $.Notification.notify('error','top left', 'Error', j.name[0]);
-       // noty({text: j.name[0], type: 'error', timeout:750});
         return;
     }
 
     var element = {}
     element.enoceanid = devid; // document.getElementById("deviceid").value;
-    for(var i = 4; i < 50; i+=1)
+   /* for(var i = 4; i < 50; i+=1)
     {
         if(!systemidtaken(i))
         {
@@ -175,7 +176,7 @@ function adddevice()
             break;
         }
 
-    }
+    }*/
 
     saveConfigObject("enocean",element,function (retval) {
         cachedconfig = retval;
@@ -188,7 +189,7 @@ function deleteOutputItem()
 {
     var index =  Number(this.getAttribute('index'));
     var element = {}
-    element.enoceanid = cachedconfig.enocean[index].enoceanid;
+    element.enoceanid = cachedconfig.enocean.outputs[index].id;
 
     deleteConfigObject("enocean",element,function (retval) {
         cachedconfig = retval;
@@ -201,7 +202,7 @@ function deleteOutputItem()
 function teachOutputItem()
 {
     var index =  Number(this.getAttribute('index'));
-    var id = cachedconfig.enocean[index].enoceanid;
+    var id = cachedconfig.enocean.outputs[index].id;
     var element = {};
     element.enoceanid = id;
     teachenocean(element);
@@ -218,17 +219,17 @@ function startLearning()
 
 
 
-var cahcediomap;
-function processio(data)
-{
-    cahcediomap = data;
-    updateInputDeviceMapTable()
-}
+//var cahcediomap;
+//function processio(data)
+//{
+//    cahcediomap = data;
+  //  updateInputDeviceMapTable()
+//}
 
 
 function updateInputDeviceMapTable() {
 
-    var iomap = cahcediomap.enocean;
+    var iomap = cachedconfig.enocean.inputs; //cahcediomap.enocean;
 
     var oTable = document.getElementById("inputdevtable");
     oTable.innerHTML = ""; //blank out table,
@@ -244,12 +245,18 @@ function updateInputDeviceMapTable() {
     oCell1.innerHTML = "enocean device id";
     oCell2 = document.createElement("TD");
     oCell2.innerHTML = "type";
+    oCell3 = document.createElement("TD");
+    oCell3.innerHTML = "Delete";
     oRow.appendChild(oCell1);
     oRow.appendChild(oCell2);
+    oRow.appendChild(oCell3);
     oTHead.appendChild(oRow);
 
     var coldef = document.createElement("col");
     coldef.className = "col-md-2";
+    oTColGrp.appendChild(coldef);
+    coldef = document.createElement("col");
+    coldef.className = "col-md-1";
     oTColGrp.appendChild(coldef);
     coldef = document.createElement("col");
     coldef.className = "col-md-1";
@@ -261,35 +268,89 @@ function updateInputDeviceMapTable() {
 
     // Insert rows and cells into bodies.
     if(iomap != undefined) {
-        for (i = 0; i < iomap.contactinputs.length; i++) {
+        for (i = 0; i < cachedconfig.enocean.inputs.length; i++) {
+
             var oBody = oTBody;
-            oRow = document.createElement("TR");
-            oBody.appendChild(oRow);
 
-            var col1part = document.createElement("TD");
-            col1part.innerHTML = iomap.contactinputs[i];
+            var dev = cachedconfig.enocean.inputs[i];
+            if (dev.eep == "F6-02-02") {
+                if (dev.isdouble) {
 
-             var col2part = document.createElement("TD");
-             col2part.innerHTML = "Contact Input";
+                    oRow = document.createElement("TR");
+                    oBody.appendChild(oRow);
+                    var col1part = document.createElement("TD");
+                    col1part.innerHTML = cachedconfig.enocean.inputs[i].id + "(A)";
+                    var col2part = document.createElement("TD");
+                    col2part.innerHTML = "double " + dev.type;
 
-            oRow.appendChild(col1part);
-            oRow.appendChild(col2part);
-        }
+
+                    var col3part = document.createElement("TD");
+                    var delbutton = document.createElement("input");
+                    delbutton.value = "X";
+                    delbutton.setAttribute("index", i);
+                    delbutton.addEventListener("click", deleteInputItem);
+                    delbutton.className = "btn btn-xs btn-danger";
+                    col3part.appendChild(delbutton);
+
+                    oRow.appendChild(col1part);
+                    oRow.appendChild(col2part);
+                    oRow.appendChild(col3part);
 
 
-        for (i = 0; i < iomap.levelinputs.length; i++) {
-            var oBody = oTBody;
-            oRow = document.createElement("TR");
-            oBody.appendChild(oRow);
+                    oRow = document.createElement("TR");
+                    oBody.appendChild(oRow);
+                    var col1part = document.createElement("TD");
+                    col1part.innerHTML = cachedconfig.enocean.inputs[i].id + "(B)";
+                    var col2part = document.createElement("TD");
+                    col2part.innerHTML = "double " + dev.type;
 
-            var col1part = document.createElement("TD");
-            col1part.innerHTML = iomap.levelinputs[i];
+                    var col3part = document.createElement("TD");
+                    var delbutton = document.createElement("input");
+                    delbutton.value = "X";
+                    delbutton.setAttribute("index", i);
+                    delbutton.addEventListener("click", deleteInputItem);
+                    delbutton.className = "btn btn-xs btn-danger";
+                    col3part.appendChild(delbutton);
 
-            var col2part = document.createElement("TD");
-            col2part.innerHTML = "Level Input";
+                    oRow.appendChild(col1part);
+                    oRow.appendChild(col2part);
+                    oRow.appendChild(col3part);
+                }
+                else {
 
-            oRow.appendChild(col1part);
-            oRow.appendChild(col2part);
+                    oRow = document.createElement("TR");
+                    oBody.appendChild(oRow);
+                    var col1part = document.createElement("TD");
+                    col1part.innerHTML = cachedconfig.enocean.inputs[i].id + "(A)";
+                    var col2part = document.createElement("TD");
+                    col2part.innerHTML = dev.type;
+
+                    var col3part = document.createElement("TD");
+                    var delbutton = document.createElement("input");
+                    delbutton.value = "X";
+                    delbutton.setAttribute("index", i);
+                    delbutton.addEventListener("click", deleteInputItem);
+                    delbutton.className = "btn btn-xs btn-danger";
+                    col3part.appendChild(delbutton);
+
+                    oRow.appendChild(col1part);
+                    oRow.appendChild(col2part);
+                    oRow.appendChild(col3part);
+                }
+
+            }
+            else {
+
+                oRow = document.createElement("TR");
+                oBody.appendChild(oRow);
+                var col1part = document.createElement("TD");
+                var col2part = document.createElement("TD");
+                col2part.innerHTML = dev.type; //"Contact Input";
+                oRow.appendChild(col1part);
+                oRow.appendChild(col2part);
+                oRow.appendChild(col3part);
+            }
+
         }
     }
 
@@ -297,3 +358,17 @@ function updateInputDeviceMapTable() {
     inputdevtablediv.appendChild(oTable);
 }
 
+
+function deleteInputItem()
+{
+    var index =  Number(this.getAttribute('index'));
+    var element = {}
+    element.enoceanid = cachedconfig.enocean.inputs[index].id;
+
+    deleteConfigObject("enocean",element,function (retval) {
+        cachedconfig = retval;
+        //updateDeviceMapTable();
+        updateInputDeviceMapTable();
+    });
+
+}

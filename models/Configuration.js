@@ -30,7 +30,9 @@ var Configuration = function()
     this.contactinputs = [];
     this.groups = [];
     this.scenes = [];
-    this.enocean = [];
+    this.enocean = {};
+    this.enocean.inputs = [];
+    this.enocean.outputs = [];
     this.scenelists = [];
     this.occupiedstate = 0;
 
@@ -155,10 +157,23 @@ var Configuration = function()
         }
 
         if (obj.enocean != undefined) {
-            for (var i = 0; i < obj.enocean.length; i++) {
-                this.enocean.push(obj.enocean[i]);
-                // f.fromJson(scene);
-                // this.scenes.push(f);
+
+            if(obj.enocean.hubid != undefined) {
+                this.enocean.hubid = obj.enocean.hubid;
+            }
+
+            if(obj.enocean.inputs != undefined) {
+
+                for (var i = 0; i < obj.enocean.inputs.length; i++) {
+                    this.enocean.inputs.push(obj.enocean.inputs[i]);
+                }
+            }
+
+            if(obj.enocean.outputs != undefined) {
+
+                for (var i = 0; i < obj.enocean.outputs.length; i++) {
+                    this.enocean.outputs.push(obj.enocean.outputs[i]);
+                }
             }
         }
 

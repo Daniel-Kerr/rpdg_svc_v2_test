@@ -571,14 +571,25 @@ router.post('/savefixturescenesettings', function(req, res) {
 
 router.post('/deleteenocean', function(req, res) {
 
-
-    for(var i = 0 ; i < global.currentconfig.enocean.length; i++)
+    var found = false;
+    for(var i = 0 ; i < global.currentconfig.enocean.outputs.length; i++)
     {
-        var endev = global.currentconfig.enocean[i];
-        if(endev.enoceanid == req.body.enoceanid)
+        var endev = global.currentconfig.enocean.outputs[i];
+        if(endev.id == req.body.enoceanid)
         {
-            global.currentconfig.enocean.splice(i,1);
+            global.currentconfig.enocean.outputs.splice(i,1);
+            found = true;
             break;
+        }
+    }
+
+    if(!found) {
+        for (var i = 0; i < global.currentconfig.enocean.inputs.length; i++) {
+            var endev = global.currentconfig.enocean.inputs[i];
+            if (endev.id == req.body.enoceanid) {
+                global.currentconfig.enocean.inputs.splice(i, 1);
+                break;
+            }
         }
     }
 
@@ -594,17 +605,21 @@ router.post('/deleteenocean', function(req, res) {
 
 router.post('/saveenocean', function(req, res) {
 
-    for(var i = 0 ; i < global.currentconfig.enocean.length; i++)
+
+    for(var i = 0 ; i < global.currentconfig.enocean.outputs.length; i++)
     {
-        var endev = global.currentconfig.enocean[i];
-        if(endev.enoceanid == req.body.enoceanid)
+        var endev = global.currentconfig.enocean.outputs[i];
+        if(endev.id == req.body.enoceanid)
         {
             global.currentconfig.enocean.splice(i,1);
             break;
         }
     }
 
-    global.currentconfig.enocean.push(req.body);
+    var element = {};
+    element.id = req.body.enoceanid;
+    element.eep = "F6-02-02";
+    global.currentconfig.enocean.outputs.push(element);
 
     var cfg = JSON.stringify(global.currentconfig,null,2);
     data_utils.writeConfigToFile();

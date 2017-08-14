@@ -8,35 +8,59 @@ var TAG = pad(path.basename(__filename),15);
 var rxhandler = undefined;
 var data_utils = require('../utils/data_utils.js');  //1/15/17,
 var fs = require('fs');
-
-
-//var known_s = path.join(__dirname) + "/../enocean_db/knownSensors.json";
-//var config = path.join(__dirname) + "/../enocean_db/enocean_config.json";
-
 var supported = false;
 var israspberrypi = (process.arch == 'arm');
 var isready = false;
 var comport = '/dev/ttyUSB0';
 var last_rx_messages = [];
-var enocean = undefined;
-var Dimmer = undefined;
 
-// if com port is present,
-if(!israspberrypi && process.argv.length > 0 && data_utils.commandLineArgPresent("COM"))
+// new 8/11/17
+var enocean_util = require('./enocean_util.js');
+var SerialPort = undefined;
+var iswindows = (process.platform == 'win32');
+
+var periodictimer = undefined;  // tx que
+var transmitequeue = [];
+var port = undefined;
+var pendingRx = [];  // Rx data fifo,
+var learntimer = undefined;
+var islearningmode = false;
+
+var teachintarget = undefined;
+var teachtimer = undefined;
+var teachstate = 0;
+
+
+var hubid = ""; //"019C415B";// this is the id of the usb hub,  variable per system,
+
+
+//                 019D8FBC
+if(iswindows)
+    SerialPort = require("../../crossplatform_modules/windows/port/node_modules/serialport");
+else {
+    if (israspberrypi)
+        SerialPort = require("../../crossplatform_modules/rpi/port/node_modules/serialport");
+    else
+        SerialPort = require("../../crossplatform_modules/linux/port/node_modules/serialport");
+}
+
+// if windows try to find port number,
+if(iswindows &&  process.argv.length > 0 && data_utils.commandLineArgPresent("COM"))
 {
     for(var i = 0; i < process.argv.length; i++)
     {
         var argval = process.argv[i];
         if(argval.includes("COM"))
         {
-            comport = argval; //
+            comport = argval;
             supported = true;
-            break;// return true;
+            break;
         }
     }
 }
-else if(israspberrypi)
+else  // linux and rpi
 {
+    comport = '/dev/ttyUSB0';
     global.applogger.info(TAG, "checking if port is valid", "");
     var fs = require('fs');
     if (fs.existsSync(comport)) {
@@ -44,162 +68,6 @@ else if(israspberrypi)
         supported = true;
     }
 }
-
-
-
-function initDriver()
-{
-    // note:  construction of fdimmer needs absolute dir.  hence the path join, ..
-    var known_s = path.join(__dirname) + "/../../datastore/enocean_db/knownSensors.json";
-    var config = path.join(__dirname) + "/../../datastore/enocean_db/enocean_config.json";
-
-    if(!israspberrypi) {
-        enocean = require("../../crossplatform_modules/windows/node-enocean")(
-            {sensorFilePath: known_s},
-            {configFilePath: config},
-            {timeout: 30}
-        );
-
-        Dimmer = require("../../crossplatform_modules/windows/node-enocean-dimmer");
-    }
-    else
-    {
-        enocean = require("../../crossplatform_modules/rpi/node-enocean")(
-            {sensorFilePath:known_s},
-            {configFilePath:config},
-            {timeout:30}
-        );
-
-        Dimmer = require("../../crossplatform_modules/rpi/node-enocean-dimmer");
-    }
-
-    enocean.on("ready",function(data){
-        global.applogger.info(TAG, "isReady", "  Enocean device is now Ready");
-        isready = true;
-    });
-
-// ****************** Incomming data handler,  (from sensors, rockers..etc) ***************************
-// ****************************************************************************************************
-    enocean.on("known-data",function(data){
-
-        storeRxMessage("known device: " + data.sensor.id);
-        //  var message = {};
-        if(data.sensor != undefined)
-        {
-            var sensor = data.sensor;
-            var eep = sensor.eep;
-
-            if(eep == 'f6-02-03')  // ROCKER SWITCH
-            {
-                var bla = JSON.stringify(sensor);
-                var value = sensor.last[0].value;
-                global.applogger.info(TAG, "@@@@@@@@ got ROCKER " +  value, "@@@@@@@@@@@@ " );
-
-               // var idsuffix = "";
-                var options = undefined;
-                // double rocker support 6/20/17
-                if(sensor.eepFunc.includes("2 Rocker")) {
-
-                    if (sensor.last[0].value.includes('A'))  // if includes an 'A'
-                        options = "A";
-                       // idsuffix = "(A)";
-                    if (sensor.last[0].value.includes('B'))  // if includes an 'A'
-                        options = "B";
-                       // idsuffix = "(B)";
-                }
-
-                var sensorid = sensor.id; // + idsuffix;
-
-                if (sensor.last[0].value.includes('1') && sensor.last[0].value.includes('down')) {
-                    rxhandler("enocean", "contactinput", sensorid, 1,options);  //up
-                }
-                else if (sensor.last[0].value.includes('0') && sensor.last[0].value.includes('down')) {
-                    rxhandler("enocean", "contactinput", sensorid, 0,options);
-                }
-                // }
-                //else {
-                // Single Rocker case
-                //    if (sensor.last[0].value.includes('1') && sensor.last[0].value.includes('down')) {
-                //        rxhandler("enocean", "contactinput", sensor.id, 1);  //up
-
-                //    }
-                //     else if (sensor.last[0].value.includes('0')  && sensor.last[0].value.includes('down')) {
-                //         rxhandler("enocean", "contactinput", sensor.id, 0);
-                //     }
-                // }
-            }
-            else if(eep == 'a5-07-01')  // OCC Sensor
-            {
-                for(var i = 0 ; i < data.values.length; i++)
-                {
-                    //extract pir status
-                    var entry = data.values[i];
-                    if(entry.type == "PIR Status")
-                    {
-                        var status = entry.value;
-                        if(status == "on") {
-                            global.applogger.info(TAG, "^^^^^^^ contact input value ON: " + sensor.id );
-                            rxhandler("enocean", "contactinput", sensor.id, 1);  //occupancy
-                        }
-                        else if(status == "off") {
-                            global.applogger.info(TAG, "^^^^^^ contact input value OFF: " + sensor.id );
-                            rxhandler("enocean", "contactinput", sensor.id, 0);  //  //vacancy
-                        }
-                        break;
-                    }
-                }
-            }
-            else if(eep == 'a5-06-02')  // light sensor
-            {
-                if (sensor.last[0].unit != undefined && sensor.last[0].unit.includes('lux') && sensor.last[0].value != undefined)
-                {
-                    var voltage = convertLuxToVoltage(sensor.last[0].value);  //5/26/17  // value is in lux,  so weneed to convert.
-
-                    rxhandler("enocean","levelinput", sensor.id, voltage);
-                }
-
-            }
-            else
-                global.applogger.info(TAG, "known data", "  not handled");
-        }
-        else
-            global.applogger.info(TAG, "known data", "  not handled");
-
-    })
-
-// ******************************Enocean callback functions that are not used currently ******************
-// *******************************************************************************************************
-    enocean.on("unknown-data",function(data){
-        global.applogger.info(TAG, "unknown data from enocean device id: ",data.senderId);
-        storeRxMessage("unknown data from enocean device id: " + data.senderId);
-    })
-
-    enocean.on("unknown-teach-in",function(data){
-        global.applogger.info(TAG, "unknown teach in  ",data);
-    })
-
-    enocean.on("learn-mode-start",function(){
-        global.applogger.info(TAG, "learn mode has been started ","");
-    })
-
-    enocean.on("learn-mode-stop",function(data){
-        global.applogger.info(TAG, "learn mode stopped: ",data.reason);
-
-    })
-
-    enocean.on("learned",function(data){
-        global.applogger.info(TAG, "Device Learned: ",data);
-        storeRxMessage("Device Learned: " + data);
-    })
-
-    enocean.on("forgotten",function(data){
-        global.applogger.info(TAG, "Device Forgotton: ",data);
-        storeRxMessage("Device Forgotton: " + data);
-    })
-
-}
-
-
 
 function storeRxMessage(msg)
 {
@@ -217,9 +85,7 @@ function convertLuxToVoltage(lux)
 {
     // first convert lux to foot candles.
     // 1 lux = 0.092903 fc,
-
     var footcandles = Number(lux)* 0.092903;
-
     var Zero2TenLevels = [
         [0.0,50],
         [1.5,50],
@@ -247,60 +113,67 @@ function convertLuxToVoltage(lux)
 }
 
 
-function getSystemIDFromEnoceanID(enoceanid)
-{
-    for(var i = 0 ; i < global.currentconfig.enocean.length; i++)
-    {
-        if(global.currentconfig.enocean[i].enoceanid == enoceanid)
-        {
-            return global.currentconfig.enocean[i].systemid;
-        }
-    }
-    return undefined;
-}
-
-var fixturemap = [];
-
-
-
-// deque
-
 function tranmitDequeueloop()
 {
     if(transmitequeue.length > 0)
     {
         var element = transmitequeue[0];
-        var dimmer = element.dimmer;
+        //var dimmer = element.dimmer;
         var level = element.level;
         //   global.applogger.info(TAG, "tx deque item found ", "  ");
-        dimmer.setValue(level);
-        dimmer.setValue(level);
-
+       // dimmer.setValue(level);
+        //dimmer.setValue(level);
         transmitequeue.splice(0,1);  //remove index 0
     }
 }
 
-var periodictimer = undefined;
-var transmitequeue = [];
 
+function getHubInfo()  // read out hub info , and store as hub id ..
+{
+    if(port != undefined) {
+        var msg = "5500010005700309";
+        console.log("Hub Version info request: " + msg);
+        var buf1 = new Buffer(msg, "hex"); // turn msg into a Buffer
+        port.write(buf1);
+    }
+}
 module.exports = {
 
     init : function(callback)
     {
-
         global.applogger.info(TAG, "init enocean driver ", "  enocean support enabled on comport: " + comport);
 
-        initDriver(); // 6/9/17
-
         rxhandler = callback;
+        if(supported && SerialPort != undefined) {
 
-        if(supported) {
-            if(israspberrypi)
-                enocean.listen(comport); //"/dev/ttyUSB0");
-            else
-                enocean.listen(comport); //"COM8");
+            global.applogger.info(TAG, "init enocean driver ", " attempting to create serial port obj" );
+            port = new SerialPort(comport, {
+                baudRate: 57600
+            });
 
+            getHubInfo();
         }
+        else
+        {
+            global.applogger.info(TAG, "init enocean driver ", " no valid com port ,  will not be activated" );
+        }
+
+        if(port != undefined) {
+            port.on('open', function () {
+                global.applogger.info(TAG, 'port has been opened ');
+            });
+
+            port.on('error', function (err) {
+                global.applogger.info(TAG, 'Serial Error: ', err.message);
+            })
+
+            port.on('data', function (data) {
+                //var hex = Buffer.from(data).toString('hex');
+                pendingRx.push.apply(pendingRx, data);
+                processPendingRx();
+            });
+        }
+
 
         if(periodictimer != undefined)
         {
@@ -311,7 +184,6 @@ module.exports = {
 
         periodictimer = setInterval(function () {
             tranmitDequeueloop();
-            //  global.applogger.info(TAG, "****** tx deque loop fired. ",  "*************");
         }, 50);
 
 
@@ -322,68 +194,18 @@ module.exports = {
     },
     setOutputToLevel :function(outputid, level, apply, options)
     {
-        if(supported) {
+        // to do ,  use tx que. ???, to test .
+        if(supported && port != undefined) {
 
-            var k = fixturemap[outputid];
-
-            // if its not there,
-            if(fixturemap[outputid] == undefined)
-            {
-                var sysid = getSystemIDFromEnoceanID(outputid);
-                if(sysid != undefined)
-                {
-                    var dimmer = new Dimmer(enocean, Number(sysid));
-                    fixturemap[outputid] = dimmer;
-                    global.applogger.info(TAG, "set new dimmer: ", outputid + "  sysid  " + sysid +   "  to  " + level); // + "   applied " + apply + "  opts: " + options);
-
-                    // dimmer.setValue(level);
-
-
-                    var element = {};
-                    element.dimmer = dimmer;
-                    element.level = level;
-                    transmitequeue.push(element);
-                }
-            }
-            else
-            {
-                var sysid = getSystemIDFromEnoceanID(outputid);
-                global.applogger.info(TAG, "set existing dimmer: ", outputid + "  sysid  " + sysid +   "  to  " + level); // + "   applied " + apply + "  opts: " + options);
-
-                var dimmer = fixturemap[outputid];
-                // dimmer.setValue(level);
-
-                var element = {};
-                element.dimmer = dimmer;
-                element.level = level;
-                transmitequeue.push(element);
-            }
+            var msg = enocean_util.constructRemoteCommand(hubid, outputid, "level", level);
+            var buf1 = new Buffer(msg, "hex"); // turn msg into a Buffer
+            port.write(buf1);
         }
     },
     // for teaching output devices ,
-    teachFixture: function (enoceanid) {   // will want to add callback,, of some kind,
+    teachFixture: function (enoceanid) {
         try {
-
-            if(fixturemap[enoceanid] == undefined)
-            {
-                var sysid = getSystemIDFromEnoceanID(enoceanid);
-                if(sysid != undefined)
-                {
-                    global.applogger.info(TAG, "  teachFixture","TEACHING / CREATING ENOCEAN DEVICE ID: " + enoceanid + "   system id :" + sysid);
-                    var dimmer = new Dimmer(enocean, Number(sysid));
-                    fixturemap[enoceanid] = dimmer;
-                    dimmer.teach();
-                }
-            }
-            else
-            {
-                var sysid = getSystemIDFromEnoceanID(enoceanid);
-                global.applogger.info(TAG, "  teachFixture","TEACHING / CREATING ENOCEAN DEVICE ID: " + enoceanid + "   system id :" + sysid);
-
-                var dimmer = fixturemap[enoceanid];
-                dimmer.teach();
-            }
-            global.applogger.info(TAG, "  teachFixture","Teach command sent to hw" );
+            teachInOutputDevice(enoceanid);
         } catch (err)
         {
             global.applogger.error(TAG, "  teachFixture :",  err);
@@ -392,11 +214,347 @@ module.exports = {
     // For learning inputs (sensors, rocker switches, ..etc),
     startLearning: function () {
         try {
-            global.applogger.error(TAG, "  startLearning :","");
-            enocean.startLearning();
+            global.applogger.info(TAG, "  startLearning :","");
+            storeRxMessage("learning mode started");
+            if (port != undefined) {
+                islearningmode = true;
+                learntimer = setTimeout(function () {
+                    cancelLearnMode();
+                }, 15*1000);
+            }
         } catch(err)
         {
             global.applogger.error(TAG, "  learning exception :",  err);
         }
     }
+}
+
+
+
+
+function processPendingRx()
+{
+    var syncstart = undefined;
+    for(var i = 0; i < pendingRx.length; i++)
+    {
+        if(pendingRx[i] == 0x55);
+        {
+            syncstart = i;
+            // try to extract out the lengths,
+            if(i < pendingRx.length-3) // if atleast 3 more bytes.
+            {
+                var data_length = (pendingRx[i+1] << 0x08) | pendingRx[i+2];
+                var opt_length = pendingRx[i+3];
+
+                // is there enough data to process entire packet.
+                var total_length = 6 + data_length + opt_length + 1;
+                if(pendingRx.length >= i+total_length)
+                {
+                    // copy packet out...
+                    var end = i + total_length;
+                    var packet = pendingRx.slice(i,end);
+                    // remove items
+                    pendingRx.splice(i,end);
+                    var hex = Buffer.from(packet).toString('hex');
+                    // console.log("packet: " + hex );
+                    processRxPacket(packet);
+                    return;
+                }
+            }
+        }
+    }
+    // console.log("no packet found");
+}
+
+
+
+function processRxPacket(packet)
+{
+    if(packet.length >= 4) {
+
+        var data_length = (packet[1] << 0x08) | packet[2];
+        var opt_length = packet[3];
+        var total_length = 6 + data_length + opt_length + 1;
+        var type = packet[4];
+        if(packet.length >= total_length) {
+            var dataend = 6+data_length;
+            var optdata_start = dataend+1;
+            var optdata_end = optdata_start+opt_length;
+
+            var data = packet.slice(6, 6 + data_length);
+
+            // console.log("data portion as buffer: "+ Buffer.from(data).toString('hex'));
+
+            var senderid = "";
+
+            // special case, (Hub info read) is a response packet
+            if(data.length == 33 && packet[3] == 0 && packet[4] == 2)
+            {
+                   var rxhubid = packet.slice(15, 19);
+                rxhubid = Buffer.from(rxhubid).toString('hex').toUpperCase();
+
+                    var k = 0 ;
+                hubid = rxhubid;
+                console.log("Hub ID read out : " + hubid);
+              // .. 019C415B
+
+
+            }
+            else if(data[0] == 0xA5)   //  4 bytes of comm,  followed by 4 bytes sender id,
+            {
+                var pktinfo = data.slice(1, 5);  //bytes 1:5
+                var longval = enocean_util.ByteArrayToLong(pktinfo);
+                var LRNbit = (longval >> 3) & 0x01; // if 0  then learn it,  if in learning mode.
+
+                senderid = data.slice(5, 9);
+                senderid = Buffer.from(senderid).toString('hex').toUpperCase();  // convert to single hex value.
+                // console.log("A5 packet " + senderid + "   LRN BIT " + LRNbit);
+                var device = enocean_util.isKnownInputDevice(senderid);
+                if(LRNbit > 0)  // data telegram
+                {
+                    if (device != undefined) {
+                        if (device.eep == "A5-06-02") {   // Daylight Sensorr Decode
+                            var voltbyte = (longval >> 24) & 0xFF;   // 0--5.1 volts
+                            var volts = ((5.1) / (255)) * (voltbyte);
+
+                            var lux1byte = (longval >> 16) & 0xFF;   // 0 -- 510 range.(ILL2)
+                            var ill2 = ((510) / (255)) * (lux1byte);
+
+                            var lux2byte = (longval >> 8) & 0xFF;  // 0 - 1020 range  (ILL1)
+                            var ill1 = ((1020) / (255)) * (lux2byte);
+
+                            var illumsel = (longval >> 0) & 0x01;   // 0 : use ILL1,  1: use ILL2
+
+                            var lux = "??";
+                            if (illumsel == 0)
+                                lux = ill1;
+                            else
+                                lux = ill2;
+
+                            console.log("daylight sensor update message: (LUX) " + lux +   "supply volts: " + volts);
+
+                            var voltage = convertLuxToVoltage(lux);  //5/26/17  // value is in lux,  so weneed to convert.
+                            rxhandler("enocean","levelinput", senderid, voltage);
+                        }
+                        else if (device.eep == "A5-07-01") {
+                            // page 36,
+                            // byte 0  supply voltage  - 0..5V
+
+                            // console.log("Raw occ buffer " +  Buffer.from(pktinfo).toString('hex').toUpperCase());
+
+                            var voltbyte = (longval >> 24) & 0xFF;   // 0--5.1 volts  (
+                            var volts = ((5) / (255)) * (voltbyte);
+
+
+                            var pirstatebyte = (longval >> 8) & 0xFF;   // pir status
+                            var pirstatus = (pirstatebyte <= 127) ? 0 : 1;
+
+
+                            console.log("OCC Sensor Update,  Pir status is: " + pirstatus + "    supply volts: " + volts);
+
+                            rxhandler("enocean", "contactinput", senderid, pirstatus);  // send off occ/vac to service.
+
+                        }
+                        else {
+                            console.log("data telegram from unknown device: " + senderid);
+                        }
+                    }
+                }
+                else  // teach in telegram
+                {
+                    var type = (longval >> 26) & 0x3F;
+                    var func = (longval >> 19) & 0x7F;
+                    var eep = "a5-"+ enocean_util.pad(type,2) + "-" + enocean_util.pad(func,2);
+                    if(device != undefined) {
+                        console.log("Raw pkt info: " +  Buffer.from(pktinfo).toString('hex').toUpperCase());
+                        console.log("Got Teach in Telegram(Known Device): " + senderid + "  : eep: " + eep);
+                    }
+                    else {
+                        console.log("Raw pkt info: " +  Buffer.from(pktinfo).toString('hex').toUpperCase());
+                        console.log("Got Teach in Telegram(UNKNOWN Device): " + senderid + "  : eep: " + eep);
+                    }
+                    if(islearningmode)
+                    {
+                        if(eep == "a5-06-02") // daylight sensor
+                        {
+                            storeRxMessage("learned device: " + senderid + "  eep:" + eep);
+                            enocean_util.addInputDevice(senderid, eep);
+                            cancelLearnMode();
+                        }
+                        else if(eep == "a5-07-01") // daylight sensor
+                        {
+                            storeRxMessage("learned device: " + senderid + "  eep:" + eep);
+                            enocean_util.addInputDevice(senderid, eep);
+                            cancelLearnMode();
+                        }
+                    }
+                }
+                // var opt_data = packet.slice(optdata_start, optdata_end);
+                // var subtel = opt_data[0];
+                // var dest_id = opt_data.slice(1, 4);
+            }
+            else if(data[0] == 0xF6)   //example from rockerf6 -02-02  (eg)
+            {
+                // F6 should always be Data byte |  sender (4 bytes)  | status byte
+                // so length should always be 7 bytes,  with no teach in bit...,
+                senderid = data.slice(2, 6);
+                senderid = Buffer.from(senderid).toString('hex').toUpperCase();  // convert to single hex value.
+                var device =  enocean_util.isKnownInputDevice(senderid);
+                //
+                var buttonaction = "";
+                var buttondecode = (data[1] >> 5) & 0x03;  // bits 5-7
+                var energybow = (data[1] >> 4) & 0x01;  // bits 5-7
+
+                if(device == undefined) {
+
+                    console.log("Got Teach in Telegram(UNKNOWN Rocker): " + senderid + "  : eep: " + eep);
+                    if(islearningmode) {
+                        storeRxMessage("learned device: " + senderid + "  eep:" + eep);
+                        enocean_util.addInputDevice(senderid, "F6-02-02");  // hard coded, for now. , need to switch this...
+                        cancelLearnMode();
+                    }
+                }
+                else if(device != undefined) {
+
+
+                    if (energybow == 0)
+                        buttonaction = "released";
+                    else {
+                        var options = undefined;
+                        var direction = undefined;
+                        switch (buttondecode) {
+                            case 0:
+                                buttonaction = "A1 down";
+                                options = "A";
+                                direction = 1;
+                                break;
+                            case 1:
+                                buttonaction = "A0 down";
+                                options = "A";
+                                direction = 0;
+                                break;
+                            case 2:
+                                buttonaction = "B1 down";
+                                options = "B";
+                                direction = 1;
+                                if(!device.isdouble)
+                                {
+                                    device.isdouble = true;
+                                    data_utils.writeConfigToFile();
+                                }
+                                break;
+                            case 3:
+                                buttonaction = "B0 down";
+                                options = "B";
+                                direction = 0;
+                                if(!device.isdouble)
+                                {
+                                    device.isdouble = true;
+                                    data_utils.writeConfigToFile();
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+
+                        rxhandler("enocean", "contactinput", senderid, direction,options);  //up
+
+                    }
+                    console.log("packet: Known Rocker: " + senderid + "   --- " + buttonaction);
+                }
+            }
+            else
+            {
+                console.log("uknown packet type, ");
+                //todo,
+            }
+        }
+    }
+}
+
+function cancelLearnMode()
+{
+    if(learntimer != undefined)
+    {
+        clearTimeout(learntimer);
+        learntimer = undefined;
+    }
+    islearningmode = false;
+    storeRxMessage("learning mode stopped");
+    global.applogger.info(TAG,"****learn mode stopped,  ",  "*************","");
+}
+
+
+
+function teachInOutputDevice(targetdev)
+{
+    teachstate = 0;
+    teachintarget = targetdev;
+    teachtimer = setInterval(function () {
+        var msg = undefined;
+        switch(teachstate)
+        {
+            case 0: //unlock
+                storeRxMessage("teach sequence started");
+                global.applogger.error(TAG,"Teach in -- Start ");
+                msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "unlock");
+
+                break;
+            case 1:
+                msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "reset");
+
+                break;
+            case 2:
+                msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "unlock");
+
+                break;
+            case 3:
+                msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "link");
+
+                break;
+            case 4:
+                msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "apply");
+
+                break;
+
+            case 5:
+                msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "level", 100);
+                break;
+            case 6:
+                // wait state
+                break;
+            case 7:
+                msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "level", 0);
+                break;
+            case 8:
+                // wait state,
+                break;
+            case 9:
+                msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "level", 100);
+                break;
+            case 10:
+                // wait state,
+                break;
+            case 11:
+                msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "level", 0);
+                break;
+            default:
+                teachstate = 0;
+                clearInterval(teachtimer);
+                teachtimer = undefined;
+                global.applogger.error(TAG,"Teach in is now Done");
+                storeRxMessage("teach sequence completed successfully");
+                // add item to config,
+                // enocean_util.addOutputDevice(teachintarget);
+                break;
+        }  // end switch,
+
+        if(msg != undefined) {
+            var buf1 = new Buffer(msg, "hex"); // turn msg into a Buffer
+            port.write(buf1);
+        }
+
+
+        teachstate++;
+    }, 1000);
 }

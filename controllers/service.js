@@ -261,7 +261,7 @@ function incommingHWChangeHandler(interface, type, inputid,level, options)
                         if(!dev.enabled)
                         {
                             global.applogger.info(TAG, "(CONTACT INPUT) " , dev.assignedname , "device is disabled, changed ignored");
-                           // continue;
+                            // continue;
                             //break;
                         }
                         else
@@ -276,7 +276,7 @@ function incommingHWChangeHandler(interface, type, inputid,level, options)
         if(!assigned && interface == "enocean" && options != undefined)
         {
             if(options == "B")
-                 setEnoceanDoubleRocker(inputid);
+                setEnoceanDoubleRocker(inputid);
         }
     }
 
@@ -312,12 +312,12 @@ function sendMessageToGroup(groupobj, requesttype, level)
                 module.exports.setFixtureLevels(reqobj,false);
             }
             else if (fixobj instanceof RGBFixture) {
-               // stub for now
+                // stub for now
                 //var reqobj = {};
                 //reqobj.name = fixobj.assignedname;
-               // reqobj.white = level;
-               // reqobj.requesttype = requesttype;
-               // module.exports.setFixtureLevels(reqobj,false);
+                // reqobj.white = level;
+                // reqobj.requesttype = requesttype;
+                // module.exports.setFixtureLevels(reqobj,false);
             }
             else if (fixobj instanceof RGBWWCWFixture) {
                 // stub for now
@@ -719,22 +719,11 @@ var service = module.exports = {
 
         constructMiscDirs();
 
-        global.applogger.info(TAG, " --init---", "");
-        enocean.init(incommingHWChangeHandler);
-      //  rpdg.init(incommingHWChangeHandler);
-
-        if (data_utils.commandLineArgPresent("udp")) {
-            var sender = data_utils.commandLineArgPresent("sender");
-            global.applogger.info(TAG, " Initilizing the udp handler now. ", "is sender: " +sender);
-            udp_handler = require('./udp_handler.js');
-            udp_handler.init(incommingUDPMessageHandler, sender);
-        }
-
+        // load up the config into global space. *************
         var cfg = data_utils.getConfigFromFile();
         var active_cfg = undefined;
         var created = false;
-        //if(cfg == undefined)
-        // {
+
         active_cfg = new Configuration();
         if (cfg != undefined) {
             active_cfg.fromJson(cfg); // load from file,
@@ -747,9 +736,24 @@ var service = module.exports = {
 
         if (created)
             data_utils.writeConfigToFile();
+        // end config load..
 
 
-      //  global.applogger.info(TAG, " Init Board Voltage: ",  global.currentconfig.generalsettings.boardvoltage);
+
+
+        global.applogger.info(TAG, " --init---", "");
+        enocean.init(incommingHWChangeHandler);
+        //  rpdg.init(incommingHWChangeHandler);
+
+        if (data_utils.commandLineArgPresent("udp")) {
+            var sender = data_utils.commandLineArgPresent("sender");
+            global.applogger.info(TAG, " Initilizing the udp handler now. ", "is sender: " +sender);
+            udp_handler = require('./udp_handler.js');
+            udp_handler.init(incommingUDPMessageHandler, sender);
+        }
+
+
+        //  global.applogger.info(TAG, " Init Board Voltage: ",  global.currentconfig.generalsettings.boardvoltage);
 
         //setup the 0-10 v drive values for current config,
 
@@ -770,7 +774,7 @@ var service = module.exports = {
 
 
         //4/17/17/
-      //  module.exports.invokeScene("ALL_ON", "override",false);
+        //  module.exports.invokeScene("ALL_ON", "override",false);
 
 
         var ip = require('ip');
@@ -778,7 +782,7 @@ var service = module.exports = {
 
 
         // ************************************************** FAUX ****************DATA ***
-          //  data_utils.generateFauxDataSeries();
+        //  data_utils.generateFauxDataSeries();
         // **********************************************************************************
 
 
@@ -847,10 +851,10 @@ var service = module.exports = {
 
 
         // debug stub.
-      //  networkmap["192.168.50.200"] = "test_node_1";
-      //  networkmap["192.168.50.201"] = "test_node_2";
-      //  networkmap["192.168.50.202"] = "test_node_3";
-      //  networkmap["192.168.50.203"] = "test_node_4";
+        //  networkmap["192.168.50.200"] = "test_node_1";
+        //  networkmap["192.168.50.201"] = "test_node_2";
+        //  networkmap["192.168.50.202"] = "test_node_3";
+        //  networkmap["192.168.50.203"] = "test_node_4";
 
         // 6/14/17
         // * stub for setting static ip address **********************************************
@@ -908,15 +912,15 @@ var service = module.exports = {
                 if (delayedHW_InitCount == 2) {
                     global.applogger.info(TAG, "************** executing delayed hw init (stage 1)**************", "");
                     rpdg.init(incommingHWChangeHandler);
-                   // module.exports.updateRPDGInputDrive();
-                   // module.exports.updatePWMPolarity();
-                   // module.exports.invokeScene("ALL_100", "override",false);
+                    // module.exports.updateRPDGInputDrive();
+                    // module.exports.updatePWMPolarity();
+                    // module.exports.invokeScene("ALL_100", "override",false);
                 }
                 else if (delayedHW_InitCount <= 0) {
-                        global.applogger.info(TAG, "************** executing delayed hw init (stage 2) **************", "");
-                        module.exports.updateRPDGInputDrive();
-                        module.exports.updatePWMPolarity();
-                        module.exports.invokeScene("ALL_100", "override",false);
+                    global.applogger.info(TAG, "************** executing delayed hw init (stage 2) **************", "");
+                    module.exports.updateRPDGInputDrive();
+                    module.exports.updatePWMPolarity();
+                    module.exports.invokeScene("ALL_100", "override",false);
                 }
             }
 
@@ -1300,29 +1304,29 @@ var service = module.exports = {
             else if(sublevel == "OFF")
                 level = 0;
             else {
-                 level = Number(name.substring(4));
+                level = Number(name.substring(4));
             }
             invokeAllToLevel(level, requesttype);
             return;
         }
 
         /*if (name == "ALL_ON") {
-            invokeAllToLevel(100, requesttype);
-            return;
-        }
-        if (name == "ALL_OFF") {
-            invokeAllToLevel(0, requesttype);
-            return;
-        }
-        if (name == "ALL_50") {
-            invokeAllToLevel(50, requesttype);
-            return;
-        }
-        if (name == "ALL_10") {
-            invokeAllToLevel(10, requesttype);
-            return;
-        }
-        */
+         invokeAllToLevel(100, requesttype);
+         return;
+         }
+         if (name == "ALL_OFF") {
+         invokeAllToLevel(0, requesttype);
+         return;
+         }
+         if (name == "ALL_50") {
+         invokeAllToLevel(50, requesttype);
+         return;
+         }
+         if (name == "ALL_10") {
+         invokeAllToLevel(10, requesttype);
+         return;
+         }
+         */
 
 
         var sceneobj = global.currentconfig.getSceneByName(name);
@@ -1438,10 +1442,6 @@ var service = module.exports = {
     teachEnoceanDevice: function (enoceanid) {
         try {
             enocean.teachFixture(enoceanid);
-
-            //var package = this.getStatus2();
-            //var dataset = JSON.stringify(package, null, 2);
-            // return dataset;
         } catch (err) {
             global.applogger.error("rpdg_driver.js ", "teachEnoceanDevice :", err);
         }
@@ -1468,49 +1468,62 @@ var service = module.exports = {
     getEnoceanKnownContactInputs: function ()    // contacts are occ and rocker switches
     {
         var contactinputs = [];
-        // refresh
-        var enocean_known_sensors = require('../../datastore/enocean_db/knownSensors.json');
-
-        for (var key in enocean_known_sensors) {
-            var device = enocean_known_sensors[key];
-
-            if (device.eepFunc.includes("Rocker Switch") && device.eepFunc.includes("2 Rocker")) {
-
-                if(device.isdouble != undefined && device.isdouble) {
-                    contactinputs.push(key + "(A)");
-                    contactinputs.push(key + "(B)");
+        for (var i = 0 ; i <  global.currentconfig.enocean.inputs.length; i++) {
+            var device = global.currentconfig.enocean.inputs[i];
+            if(device.eep == "F6-02-02") {  // look for rocker..
+                if(device.isdouble)
+                {
+                    contactinputs.push(device.id + "(A)");
+                    contactinputs.push(device.id + "(B)");
                 }
                 else
-                {
-                    contactinputs.push(key + "(A)");
-                }
-
-
+                    contactinputs.push(device.id + "(A)");
             }
-            else if (device.eepFunc.includes("Occupancy") || device.eepFunc.includes("Rocker Switch")) {
-                contactinputs.push(key);
+            if(device.eep == "A5-07-01") {  // look for occ sensor
+                contactinputs.push(device.id);
             }
         }
+        /*
+         for (var key in enocean_known_sensors) {
+         var device = enocean_known_sensors[key];
+
+         if (device.eepFunc.includes("Rocker Switch") && device.eepFunc.includes("2 Rocker")) {
+
+         if(device.isdouble != undefined && device.isdouble) {
+         contactinputs.push(key + "(A)");
+         contactinputs.push(key + "(B)");
+         }
+         else
+         {
+         contactinputs.push(key + "(A)");
+         }
+
+
+         }
+         else if (device.eepFunc.includes("Occupancy") || device.eepFunc.includes("Rocker Switch")) {
+         contactinputs.push(key);
+         }
+         }*/
         return contactinputs;
     },
     getEnoceanKnownLevelInputs: function ()    // level is light sensors.
     {
         var levelinputs = [];
-        // refresh
-        var enocean_known_sensors = require('../../datastore/enocean_db/knownSensors.json');
-        for (var key in enocean_known_sensors) {
-            var device = enocean_known_sensors[key];
-            if (device.eepFunc.includes("Light Sensors")) {
-                levelinputs.push(key);
+
+        for (var i = 0 ; i <  global.currentconfig.enocean.inputs.length; i++) {
+            var device = global.currentconfig.enocean.inputs[i];
+            if(device.eep == "A5-06-02") {  // lux meter(daylight sensor)
+                levelinputs.push(device.id);
             }
         }
+
         return levelinputs;
     },
     getEnoceanKnownOutputDevices: function () {
         var outputdevs = [];
-        for (var i = 0; i < global.currentconfig.enocean.length; i++) {
-            var dev = global.currentconfig.enocean[i];
-            outputdevs.push(dev.enoceanid);
+        for (var i = 0; i < global.currentconfig.enocean.outputs.length; i++) {
+            var dev = global.currentconfig.enocean.outputs[i];
+            outputdevs.push(dev.id);
         }
         return outputdevs;
     },
@@ -1810,8 +1823,8 @@ var service = module.exports = {
         }
     },
     getNetworkMap: function() {
-       // global.applogger.info(TAG,  "get net work called,  " + networkmap.length, "");
-       // printNetworkMap();
+        // global.applogger.info(TAG,  "get net work called,  " + networkmap.length, "");
+        // printNetworkMap();
         var element = {};
         var nodes = [];
         for(var key in networkmap)
@@ -1825,7 +1838,7 @@ var service = module.exports = {
         }
 
         element.nodes = nodes;
-       return element;
+        return element;
     }
 
 };
