@@ -129,8 +129,8 @@ module.exports = {
                 element.type = "PIR";
             if(eep.toUpperCase() == "F6-02-02")
                 element.type = "ROCKER";
-            if(eep.toUpperCase() == "A6-06-02")
-                element.type = "MOTION";
+            if(eep.toUpperCase() == "A5-06-02")
+                element.type = "DAYLIGHT";
 
             global.currentconfig.enocean.inputs.push(element);
             console.log("added device: " + id.toUpperCase());

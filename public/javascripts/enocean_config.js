@@ -341,11 +341,32 @@ function updateInputDeviceMapTable() {
             }
             else {
 
+                //oRow = document.createElement("TR");
+                //oBody.appendChild(oRow);
+                //var col1part = document.createElement("TD");
+                //var col2part = document.createElement("TD");
+                //var col3part = document.createElement("TD");
+                //col2part.innerHTML = dev.type; //"Contact Input";
+               // oRow.appendChild(col1part);
+               // oRow.appendChild(col2part);
+               // oRow.appendChild(col3part);
+
+
+
                 oRow = document.createElement("TR");
                 oBody.appendChild(oRow);
                 var col1part = document.createElement("TD");
+                col1part.innerHTML = cachedconfig.enocean.inputs[i].id;
                 var col2part = document.createElement("TD");
-                col2part.innerHTML = dev.type; //"Contact Input";
+                col2part.innerHTML = dev.type;
+                var col3part = document.createElement("TD");
+                var delbutton = document.createElement("input");
+                delbutton.value = "X";
+                delbutton.setAttribute("index", i);
+                delbutton.addEventListener("click", deleteInputItem);
+                delbutton.className = "btn btn-xs btn-danger";
+                col3part.appendChild(delbutton);
+
                 oRow.appendChild(col1part);
                 oRow.appendChild(col2part);
                 oRow.appendChild(col3part);
