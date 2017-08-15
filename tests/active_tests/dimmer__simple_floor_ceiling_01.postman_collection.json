@@ -73,7 +73,7 @@
 							"tests[\"Value of fixture 2 is correct\"] = jsonData.fixtures[1].level == 100;",
 							"tests[\"Value of fixture 3 is correct\"] = jsonData.fixtures[2].level == 100;",
 							"tests[\"Value of fixture 4 is correct\"] = jsonData.fixtures[3].level == 100;",
-							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level == 100;",
+							"tests[\"Value of fixture 5 is correct\"] = jsonData.fixtures[4].level === 0;",
 							"tests[\"Value of fixture 6 is correct\"] = jsonData.fixtures[5].level == 100;",
 							"tests[\"Value of fixture 7 is correct\"] = jsonData.fixtures[6].level == 100;",
 							"tests[\"Value of fixture 8 is correct\"] = jsonData.fixtures[7].level == 100;",
