@@ -57,6 +57,7 @@ var Configuration = function()
 
 
         this.generalsettings = obj.generalsettings;
+        this.generalsettings.boardvoltage = 24;
 
         if(obj.daylightpollsec != undefined)
             this.daylightpollsec = obj.daylightpollsec;

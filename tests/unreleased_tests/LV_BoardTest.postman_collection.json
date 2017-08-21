@@ -1,0 +1,278 @@
+{
+	"id": "0392df21-3895-d464-41d4-38bf1460de74",
+	"name": "LV_BoardTest",
+	"description": "",
+	"order": [
+		"4982731a-7943-18d2-ca3e-5c34c0af1669",
+		"043183bd-29a8-be43-8864-a26925a6747e",
+		"798c0613-625f-7448-a2e0-e5cb87b14872",
+		"e3d71b72-34d5-7f2e-6bad-d5d5cb07d56b",
+		"034b1205-d9e2-d629-74a3-a1efc1d8b52d",
+		"bdd97207-41b1-4e6a-ac6c-cc0cf744b5af",
+		"6a1ffc09-c7f0-73da-71cf-b56e8eb76d92",
+		"7fa499b1-7c3a-25c8-d80b-d0edaca0b821",
+		"75add0ad-b34c-bee8-308d-6fae1cc12cfb"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1502898117215,
+	"owner": "1393659",
+	"public": false,
+	"requests": [
+		{
+			"id": "034b1205-d9e2-d629-74a3-a1efc1d8b52d",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{host}}:3000/config/getconfig",
+			"queryParams": [],
+			"preRequestScript": "var t = new Date().getTime();\nwhile (new Date().getTime() < t + 3000);",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502908425821,
+			"name": "Wait for X Secons",
+			"description": "",
+			"collectionId": "0392df21-3895-d464-41d4-38bf1460de74",
+			"responses": [],
+			"rawModeData": "{\r\n  \"interval\": 1\r\n}"
+		},
+		{
+			"id": "043183bd-29a8-be43-8864-a26925a6747e",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://relay-01:3000/openall",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502903968568,
+			"name": "relay_openall",
+			"description": "",
+			"collectionId": "0392df21-3895-d464-41d4-38bf1460de74",
+			"responses": [],
+			"rawModeData": ""
+		},
+		{
+			"id": "4982731a-7943-18d2-ca3e-5c34c0af1669",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{host}}:3000/config/setconfig",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502901745894,
+			"name": "set config init",
+			"description": "",
+			"collectionId": "0392df21-3895-d464-41d4-38bf1460de74",
+			"responses": [],
+			"rawModeData": "{\n  \"type\": \"Configuration\",\n  \"fixtures\": [\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"pwm1\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"1\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-08-16T16:26:06.900Z\",\n      \"powerwatts\": \"0.62\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"pwm2\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"2\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-08-16T16:26:06.903Z\",\n      \"powerwatts\": \"0.62\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"pwm3\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"3\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-08-16T16:26:06.904Z\",\n      \"powerwatts\": \"0.46\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"pwm4\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"4\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-08-16T16:26:06.905Z\",\n      \"powerwatts\": \"0.46\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"pwm5\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"5\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-08-16T16:26:06.906Z\",\n      \"powerwatts\": \"0.54\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"pwm6\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"6\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-08-16T16:26:06.907Z\",\n      \"powerwatts\": \"0.54\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"pmw7\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"7\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-08-16T16:26:06.908Z\",\n      \"powerwatts\": \"0.54\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"dim\",\n      \"assignedname\": \"pwm8\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-pwm\",\n      \"outputid\": \"8\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": null,\n      \"lastupdated\": \"2017-08-16T16:26:06.909Z\",\n      \"powerwatts\": \"0.70\",\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"on_off\",\n      \"assignedname\": \"plc1\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-plc\",\n      \"outputid\": \"1\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": 100,\n      \"lastupdated\": \"2017-08-16T16:26:06.912Z\",\n      \"powerwatts\": 0,\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"on_off\",\n      \"assignedname\": \"plc2\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-plc\",\n      \"outputid\": \"2\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": 100,\n      \"lastupdated\": \"2017-08-16T16:26:06.914Z\",\n      \"powerwatts\": 0,\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"on_off\",\n      \"assignedname\": \"plc3\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-plc\",\n      \"outputid\": \"3\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": 100,\n      \"lastupdated\": \"2017-08-16T16:26:06.916Z\",\n      \"powerwatts\": 0,\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    },\n    {\n      \"type\": \"on_off\",\n      \"assignedname\": \"plc4\",\n      \"interface\": {},\n      \"interfacename\": \"rpdg-plc\",\n      \"outputid\": \"4\",\n      \"image\": \"/fixtureimg/1.jpg\",\n      \"candledim\": false,\n      \"twelvevolt\": false,\n      \"parameters\": {\n        \"dimoptions\": \"0\",\n        \"dimrate\": \"0\",\n        \"brightenrate\": \"0\",\n        \"resptoocc\": \"-1\",\n        \"resptovac\": \"-1\",\n        \"resptodl50\": \"-1\",\n        \"resptodl40\": \"-1\",\n        \"resptodl30\": \"-1\",\n        \"resptodl20\": \"-1\",\n        \"resptodl10\": \"-1\",\n        \"resptodl0\": \"-1\",\n        \"daylightceiling\": \"-1\",\n        \"manualceiling\": \"-1\",\n        \"daylightfloor\": \"-1\",\n        \"manualfloor\": \"-1\"\n      },\n      \"level\": 0,\n      \"lastuserequestedlevel\": 0,\n      \"previousvalue\": 100,\n      \"lastupdated\": \"2017-08-16T16:26:06.917Z\",\n      \"powerwatts\": 0,\n      \"daylightlimited\": false,\n      \"status\": 0,\n      \"boundinputs\": []\n    }\n  ],\n  \"levelinputs\": [\n    {\n      \"type\": \"dimmer\",\n      \"assignedname\": \"level1\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"1\",\n      \"drivelevel\": \"0\",\n      \"group\": null,\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"enabled\": true\n    },\n    {\n      \"type\": \"dimmer\",\n      \"assignedname\": \"level2\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"2\",\n      \"drivelevel\": \"0\",\n      \"group\": null,\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"enabled\": true\n    },\n    {\n      \"type\": \"dimmer\",\n      \"assignedname\": \"level3\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"3\",\n      \"drivelevel\": \"0\",\n      \"group\": null,\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"enabled\": true\n    },\n    {\n      \"type\": \"dimmer\",\n      \"assignedname\": \"level4\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"4\",\n      \"drivelevel\": \"0\",\n      \"group\": null,\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"enabled\": true\n    }\n  ],\n  \"contactinputs\": [\n    {\n      \"assignedname\": \"wetdry1\",\n      \"type\": \"maintained\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"1\",\n      \"active_action\": \"action_none\",\n      \"inactive_action\": \"action_none\",\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"lastupdated\": \"2017-08-16T16:30:35.905Z\",\n      \"enabled\": true\n    },\n    {\n      \"assignedname\": \"wetdry2\",\n      \"type\": \"momentary\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"2\",\n      \"active_action\": \"action_none\",\n      \"inactive_action\": \"action_none\",\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"lastupdated\": \"2017-08-16T16:30:56.276Z\",\n      \"enabled\": true\n    },\n    {\n      \"assignedname\": \"wetdry3\",\n      \"type\": \"momentary\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"3\",\n      \"active_action\": \"action_none\",\n      \"inactive_action\": \"action_none\",\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"lastupdated\": \"2017-08-16T16:31:03.180Z\",\n      \"enabled\": true\n    },\n    {\n      \"assignedname\": \"wetdry4\",\n      \"type\": \"momentary\",\n      \"interface\": \"rpdg\",\n      \"inputid\": \"4\",\n      \"active_action\": \"action_none\",\n      \"inactive_action\": \"action_none\",\n      \"value\": 0,\n      \"previousvalue\": 0,\n      \"lastupdated\": \"2017-08-16T16:31:16.928Z\",\n      \"enabled\": true\n    }\n  ],\n  \"groups\": [],\n  \"scenes\": [],\n  \"enocean\": {\n    \"inputs\": [\n     \n    ],\n    \"outputs\": [\n      \n    ]\n  },\n  \"scenelists\": [],\n  \"occupiedstate\": 0,\n  \"daylightpollsec\": 600,\n  \"sitezip\": 97219,\n  \"sitelatt\": 45.4736058,\n  \"sitelong\": -122.7349017,\n  \"generalsettings\": {\n    \"hotspotenable\": true,\n    \"boardvoltage\": 24\n  }\n}"
+		},
+		{
+			"id": "6a1ffc09-c7f0-73da-71cf-b56e8eb76d92",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{host}}:3000/config/getconfig",
+			"queryParams": [],
+			"preRequestScript": "var t = new Date().getTime();\nwhile (new Date().getTime() < t + 3000);",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502908439947,
+			"name": "Wait for X Secons copy",
+			"description": "",
+			"collectionId": "0392df21-3895-d464-41d4-38bf1460de74",
+			"responses": [],
+			"rawModeData": "{\r\n  \"interval\": 1\r\n}"
+		},
+		{
+			"id": "75add0ad-b34c-bee8-308d-6fae1cc12cfb",
+			"headers": "",
+			"headerData": [],
+			"url": "http://{{host}}:3000/config/getconfig",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502898489484,
+			"name": "get config",
+			"description": "",
+			"collectionId": "0392df21-3895-d464-41d4-38bf1460de74",
+			"responses": []
+		},
+		{
+			"id": "798c0613-625f-7448-a2e0-e5cb87b14872",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://{{host}}:3000/config/getconfig",
+			"queryParams": [],
+			"preRequestScript": "var t = new Date().getTime();\nwhile (new Date().getTime() < t + 3000);",
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": [],
+			"dataMode": "raw",
+			"tests": "tests[\"Status code is 200\"] = responseCode.code === 200;",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502908421141,
+			"name": "Wait for 2 sec",
+			"description": "",
+			"collectionId": "0392df21-3895-d464-41d4-38bf1460de74",
+			"responses": [],
+			"rawModeData": "{\r\n  \"interval\": 1\r\n}"
+		},
+		{
+			"id": "7fa499b1-7c3a-25c8-d80b-d0edaca0b821",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://relay-01:3000/openall",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502903968568,
+			"name": "relay_openall copy",
+			"description": "",
+			"collectionId": "0392df21-3895-d464-41d4-38bf1460de74",
+			"responses": [],
+			"isFromCollection": true,
+			"collectionRequestId": "043183bd-29a8-be43-8864-a26925a6747e",
+			"rawModeData": ""
+		},
+		{
+			"id": "bdd97207-41b1-4e6a-ac6c-cc0cf744b5af",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://relay-01:3000/setrelays",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502907671535,
+			"name": "relay_set_test1",
+			"description": "",
+			"collectionId": "0392df21-3895-d464-41d4-38bf1460de74",
+			"responses": [],
+			"rawModeData": "[\n\t\n  {\n  \t\"number\": 1,\n  \t\"state\":\"open\"\n  },\t\n  {\n  \t\"number\": 3,\n  \t\"state\":\"open\"\n  }\t\n]"
+		},
+		{
+			"id": "e3d71b72-34d5-7f2e-6bad-d5d5cb07d56b",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://relay-01:3000/closeall",
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1502903929578,
+			"name": "relay_closeall",
+			"description": "",
+			"collectionId": "0392df21-3895-d464-41d4-38bf1460de74",
+			"responses": [],
+			"rawModeData": ""
+		}
+	]
+}

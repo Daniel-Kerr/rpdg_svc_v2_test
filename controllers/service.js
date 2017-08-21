@@ -860,7 +860,7 @@ var service = module.exports = {
         // * stub for setting static ip address **********************************************
         //     module.exports.setLANIPAddress('192.168.20.202', '192.168.20.1');
         // * **********************************************************************************
-
+        global.applogger.info(TAG, "  %%%% general settings board voltage is set to :  ", global.currentconfig.generalsettings.boardvoltage);
     },
     getVersionObject: function () {
 

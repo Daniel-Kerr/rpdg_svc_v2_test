@@ -118,11 +118,11 @@ function tranmitDequeueloop()
     if(transmitequeue.length > 0)
     {
         var element = transmitequeue[0];
-        //var dimmer = element.dimmer;
         var level = element.level;
-        //   global.applogger.info(TAG, "tx deque item found ", "  ");
-       // dimmer.setValue(level);
-        //dimmer.setValue(level);
+        var outputid = element.id;
+        var msg = enocean_util.constructRemoteCommand(hubid, outputid, "level", level);
+        var buf1 = new Buffer(msg, "hex"); // turn msg into a Buffer
+        port.write(buf1);
         transmitequeue.splice(0,1);  //remove index 0
     }
 }
@@ -196,10 +196,13 @@ module.exports = {
     {
         // to do ,  use tx que. ???, to test .
         if(supported && port != undefined) {
-
-            var msg = enocean_util.constructRemoteCommand(hubid, outputid, "level", level);
-            var buf1 = new Buffer(msg, "hex"); // turn msg into a Buffer
-            port.write(buf1);
+            var element = {};
+            element.id = outputid;
+            element.level = level;
+            transmitequeue.push(element);
+           // var msg = enocean_util.constructRemoteCommand(hubid, outputid, "level", level);
+           // var buf1 = new Buffer(msg, "hex"); // turn msg into a Buffer
+           // port.write(buf1);
         }
     },
     // for teaching output devices ,
@@ -255,7 +258,7 @@ function processPendingRx()
                     var packet = pendingRx.slice(i,end);
                     // remove items
                     pendingRx.splice(i,end);
-                    var hex = Buffer.from(packet).toString('hex');
+                    //var hex = Buffer.from(packet).toString('hex');
                     // console.log("packet: " + hex );
                     processRxPacket(packet);
                     return;
