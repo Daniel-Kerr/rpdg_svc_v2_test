@@ -491,6 +491,11 @@ function cancelLearnMode()
 
 function teachInOutputDevice(targetdev)
 {
+    if(teachstate != 0)
+    {
+        storeRxMessage("Cant start teach for: "+ targetdev + " system teaching device already.");
+        return;
+    }
     teachstate = 0;
     teachintarget = targetdev;
     teachtimer = setInterval(function () {
@@ -498,7 +503,7 @@ function teachInOutputDevice(targetdev)
         switch(teachstate)
         {
             case 0: //unlock
-                storeRxMessage("teach sequence started");
+                storeRxMessage("teach sequence started - device: " + teachintarget);
                 global.applogger.error(TAG,"Teach in -- Start ");
                 msg = enocean_util.constructRemoteCommand(hubid,teachintarget, "unlock");
 
@@ -545,8 +550,8 @@ function teachInOutputDevice(targetdev)
                 teachstate = 0;
                 clearInterval(teachtimer);
                 teachtimer = undefined;
-                global.applogger.error(TAG,"Teach in is now Done");
-                storeRxMessage("teach sequence completed successfully");
+               // global.applogger.error(TAG,"Teach in is now Done");
+                storeRxMessage("teach sequence completed - device: " + teachintarget);
                 // add item to config,
                 // enocean_util.addOutputDevice(teachintarget);
                 break;

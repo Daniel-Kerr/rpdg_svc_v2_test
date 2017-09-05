@@ -199,6 +199,8 @@ function deleteOutputItem()
 }
 
 
+var teachprompt = undefined;
+
 function teachOutputItem()
 {
     var index =  Number(this.getAttribute('index'));
@@ -207,6 +209,18 @@ function teachOutputItem()
     element.enoceanid = id;
     teachenocean(element);
 
+    $("#outputdevtable").find("input,button").attr("disabled", "disabled");
+
+    teachprompt = bootbox.dialog({
+        title: 'Teach Sequence Started',
+        message: '<p><i class="fa fa-spin fa-spinner"></i> Please Wait for teach sequence to complete ... </p>'
+    });
+    teachprompt.init(function(){
+        setTimeout(function(){
+            teachprompt.find('.bootbox-body').html('Teach Completed, please check log for result');
+            $("#outputdevtable").find("input,button").attr("disabled", false);
+        }, 20000);
+    });
 }
 
 function startLearning()
