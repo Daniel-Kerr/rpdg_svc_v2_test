@@ -237,8 +237,11 @@ module.exports = {
 
 function processPendingRx()
 {
+
+   // console.log("############### --- process called" );
+
     var syncstart = undefined;
-    for(var i = 0; i < pendingRx.length; i++)
+    for(var i = 0; i < pendingRx.length; i++)  // dig trhough all pending RX data.
     {
         if(pendingRx[i] == 0x55);
         {
@@ -261,11 +264,26 @@ function processPendingRx()
                     //var hex = Buffer.from(packet).toString('hex');
                     // console.log("packet: " + hex );
                     processRxPacket(packet);
-                    return;
+
+
+                    if(pendingRx.length > 0)
+                        i = 0; //reset proc index  9/5/17 --- 
+
+                   // if(pendingRx.length > 0)
+                   // {
+                    //    var hex = Buffer.from(pendingRx).toString('hex');
+                        console.log("######################THERE IS STILL DATA IN THE BUFF,, try to  process  " +  pendingRx.length + "   " + hex);
+                    //}
+                    //return;
                 }
             }
         }
     }
+
+
+    //var hex = Buffer.from(pendingRx).toString('hex');
+    //console.log("^^^^^^^^^^^^^^ leaving process routine " +  pendingRx.length + "   " + hex);
+
     // console.log("no packet found");
 }
 
