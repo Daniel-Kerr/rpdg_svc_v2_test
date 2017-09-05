@@ -267,7 +267,7 @@ function processPendingRx()
 
 
                     if(pendingRx.length > 0)
-                        i = 0; //reset proc index  9/5/17 --- 
+                        i = 0; //reset proc index  9/5/17 ---
 
                    // if(pendingRx.length > 0)
                    // {

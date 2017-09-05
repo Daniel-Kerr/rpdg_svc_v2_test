@@ -61,6 +61,14 @@ var constraints = {
 $(document).ready(function() {
 
 
+    $('#portlet1').collapse({'toggle': false});   //bug 322 9/5/17
+    $('#portlet_gs').collapse({'toggle': false});
+    $('#portlet_netinfo').collapse({'toggle': false});
+    $('#portlet2').collapse({'toggle': false});
+    $('#portlet3').collapse({'toggle': false});
+
+
+
     $("#fixturetable").on("click", " tbody > tr", function(e) {
 
         selectedlevelinputindex = -1;
