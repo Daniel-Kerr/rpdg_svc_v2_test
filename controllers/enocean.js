@@ -266,13 +266,11 @@ function processPendingRx()
                     processRxPacket(packet);
 
 
-                    if(pendingRx.length > 0)
+                    if(pendingRx.length > 0) {
                         i = 0; //reset proc index  9/5/17 ---
-
-                   // if(pendingRx.length > 0)
-                   // {
-                    //    var hex = Buffer.from(pendingRx).toString('hex');
-                        console.log("######################THERE IS STILL DATA IN THE BUFF,, try to  process  " +  pendingRx.length + "   " + hex);
+                        var hex = Buffer.from(pendingRx).toString('hex');
+                        console.log("######################THERE IS STILL DATA IN THE BUFF,, try to  process  " + pendingRx.length + "   " + hex);
+                    }
                     //}
                     //return;
                 }
